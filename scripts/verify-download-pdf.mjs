@@ -1,0 +1,34 @@
+import assert from 'node:assert/strict';
+import { mkdir, writeFile } from 'node:fs/promises';
+if (process.env.MONGODB_URI) throw new Error('Run this fixture without a configured MongoDB.');
+const { default: handler } = await import('../api/downloads.js');
+const call = async (method, body = {}) => {
+  const res = { code: 200, setHeader() {}, status(code) { this.code = code; return this; }, json(body) { this.body = body; return this; } };
+  await handler({ method, body, query: {}, user: { username: 'fixture-actor' } }, res);
+  return res;
+};
+const get = async query => {
+  const res = { code: 200, setHeader() {}, status(code) { this.code = code; return this; }, json(body) { this.body = body; return this; } };
+  await handler({ method: 'GET', query, user: { username: 'fixture-actor' } }, res);
+  return res;
+};
+const rows = Array.from({ length: 12 }, (_, index) => [`SKU-${String(index).padStart(4, '0')}`, index, '₹ 1,250.00', `Fixture detail ${index}. ` + 'Long field text wraps without dropping information. '.repeat(index === 5 ? 100 : 3)]);
+const response = await call('POST', { action: 'generate-pdf', title: 'Export verification — café & currency', baseName: 'pdf-fixture', data: { columns: ['SKU', 'Quantity', 'Amount', 'Description'], rows } });
+assert.equal(response.code, 201);
+assert.equal(response.body.mime, 'application/pdf');
+assert.equal(response.body.format, 'PDF');
+assert.equal(response.body.content_encoding, 'base64');
+const bytes = Buffer.from(response.body.content, 'base64');
+assert.ok(bytes.subarray(0, 8).toString().startsWith('%PDF-'));
+assert.equal(response.body.size, bytes.length);
+assert.equal(response.body.exported_by, 'fixture-actor');
+const history = await call('GET');
+assert.equal(history.body[0].content, undefined, 'History lists must not include file payloads.');
+const detail = await get({ id: String(response.body.id) });
+assert.equal(detail.code, 200);
+assert.deepEqual(Buffer.from(detail.body.content, 'base64'), bytes);
+assert.equal((await get({ id: 'invalid' })).code, 400);
+assert.equal((await get({ id: '999999' })).code, 404);
+await mkdir('tmp/pdfs', { recursive: true });
+await writeFile('tmp/pdfs/download-fixture.pdf', bytes);
+console.log('PASS PDF: real PDF bytes, matching size/MIME, authenticated actor, metadata-only list and exact detail re-download. Layout fixture saved.');

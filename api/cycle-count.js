@@ -1,6 +1,56 @@
-import{cors,find,findOne,insert,update}from'./mongo.js';const t=v=>String(v??'').trim(),has=(v,q)=>!t(q)||t(q)==='-1'||t(v).toLowerCase().includes(t(q).toLowerCase()),types=[['-1','--- Select ---'],['1','Bin'],['2','LPN']],statuses=[['-1','--- Select ---'],['21','Pending'],['5','Adjustment Required'],['22','Awaiting Verification'],['7','Canceled'],['20','Closed'],['4','Confirmed'],['17','Error'],['15','Partial Posted'],['10','Pending For Post'],['24','Recount Confirmed'],['23','Recount WIP'],['1','WIP']],statusName=Object.fromEntries(statuses);const norm=x=>({id:x.id,cycleID:x.code||x.cycle_id,type:x.cycle_type||'Bin',typeCode:x.cycle_type_code||'1',status:x.status||'WIP',statusCode:String(x.status_code||'1'),createDate:x.created_date||'',updatedDate:x.modified_date||x.created_date||'',bin:x.bin||'',lpn:x.lpn||'',user:x.updated_by||'',scannedStock:Number(x.scanned_stock||0),reason:x.reason||'',waveFilter:x.wave_filter||'',taskId:x.task_id||'',totalSkuScan:Number(x.total_sku_scan||0),totalQtyScan:Number(x.total_qty_scan||0),lastSkuScan:x.last_sku_scan||''});
-export default async function handler(req,res){if(cors(req,res))return;try{const b=req.body||{},raw=await find('generic_records',{module:'cycle-count'});if(req.method==='GET')return res.json({types,statuses,pageSizes:[20,50,100,200],bins:[...new Set((await find('inventory')).map(x=>x.bin).filter(Boolean))],lpns:[...new Set((await find('inventory')).map(x=>x.lpn).filter(Boolean))]});if(req.method!=='POST')return res.status(405).json({error:'Method not allowed'});
- if(b.action==='search'){let rows=raw.map(norm).filter(x=>has(x.cycleID,b.cycleID)&&has(x.typeCode,b.type)&&has(x.statusCode,b.status)&&has(x.bin,b.bin)&&has(x.lpn,b.lpn)&&has(x.user,b.user)&&has(x.reason,b.reason)&&has(x.taskId,b.taskId)&&(!t(b.createDate)||has(x.createDate,b.createDate))&&(!t(b.updatedDate)||has(x.updatedDate,b.updatedDate)));rows.sort((a,z)=>t(a.updatedDate).localeCompare(t(z.updatedDate))*(b.sord==='asc'?1:-1));const size=[20,50,100,200].includes(+b.rows)?+b.rows:20,page=Math.max(1,+b.page||1),records=rows.length,total=Math.ceil(records/size);return res.json({rows:rows.slice((page-1)*size,page*size),page,total,records,sidx:b.sidx||'updDate',sord:b.sord||'desc'})}
- if(b.action==='create'){const type=String(b.type||'1'),reference=type==='1'?t(b.bin):t(b.lpn);if(!reference)return res.status(400).json({error:type==='1'?'Bin is mandatory.':'LPN is mandatory.'});const inv=(await find('inventory')).filter(x=>type==='1'?t(x.bin).toLowerCase()===reference.toLowerCase():t(x.lpn).toLowerCase()===reference.toLowerCase());if(!inv.length)return res.status(404).json({error:type==='1'?'Invalid Bin':'Invalid LPN'});const now=new Date().toISOString(),row=await insert('generic_records',{module:'cycle-count',code:`CC${Date.now().toString().slice(-9)}`,cycle_type:type==='1'?'Bin':'LPN',cycle_type_code:type,status:'WIP',status_code:1,bin:type==='1'?reference:'',lpn:type==='2'?reference:'',scanned_stock:inv.reduce((s,x)=>s+Number(x.on_hand||0),0),total_sku_scan:new Set(inv.map(x=>x.sku_code)).size,total_qty_scan:inv.reduce((s,x)=>s+Number(x.on_hand||0),0),last_sku_scan:inv.at(-1)?.sku_code||'',created_date:now,modified_date:now});return res.status(201).json({jsonMessage:'Cycle Count created successfully',row:norm(row)})}
- if(['cancel','post','confirm'].includes(b.action)){if(!Array.isArray(b.ids)||!b.ids.length)return res.status(400).json({error:'Please select a row.'});const code=b.action==='cancel'?'7':b.action==='post'?'20':'4',name=statusName[code],now=new Date().toISOString();for(const id of b.ids){const row=await findOne('generic_records',{id:+id,module:'cycle-count'});if(row)await update('generic_records',row.id,{status:name,status_code:+code,modified_date:now})}return res.json({jsonMessage:b.action==='cancel'?'Cycle Count canceled successfully':b.action==='post'?'Cycle Count posted successfully':'Cycle Count confirmed successfully'})}
- return res.status(400).json({error:'Invalid action'});}catch(e){res.status(500).json({error:e.message})}}
+import { sendDatabaseUnavailable, cors, find, findOne, update } from './mongo.js';
+
+const text = value => String(value ?? '').trim();
+const has = (value, query) => !text(query) || text(query) === '-1' || text(value).toLowerCase().includes(text(query).toLowerCase());
+const types = [['-1', '--- Select ---'], ['1', 'Bin'], ['2', 'LPN']];
+const statuses = [['-1', '--- Select ---'], ['21', 'Pending'], ['5', 'Adjustment Required'], ['22', 'Awaiting Verification'], ['7', 'Canceled'], ['20', 'Closed'], ['4', 'Confirmed'], ['17', 'Error'], ['15', 'Partial Posted'], ['10', 'Pending For Post'], ['24', 'Recount Confirmed'], ['23', 'Recount WIP'], ['1', 'WIP']];
+const norm = row => ({
+  id: row.id, cycleID: row.code || row.cycle_id || '', type: row.cycle_type || 'Bin', typeCode: row.cycle_type_code || '1',
+  status: row.status || 'WIP', statusCode: String(row.status_code || '1'), createDate: row.created_date || '',
+  updatedDate: row.modified_date || row.created_date || '', bin: row.bin || '', lpn: row.lpn || '',
+  user: row.updated_by || '', scannedStock: Number(row.scanned_stock || 0), reason: row.reason || '',
+  waveFilter: row.wave_filter || '', taskId: row.task_id || '', totalSkuScan: Number(row.total_sku_scan || 0),
+  totalQtyScan: Number(row.total_qty_scan || 0), lastSkuScan: row.last_sku_scan || '',
+});
+
+export default async function handler(req, res) {
+  if (cors(req, res)) return;
+  try {
+    const body = req.body || {};
+    if (req.method === 'GET') return res.json({
+      types, statuses, pageSizes: [20, 50, 100, 200], bins: [], lpns: [],
+      available: false,
+      message: 'Bin/LPN cycle counts are paused until those identities and count variances are mapped to Central Inventory.',
+    });
+    if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+    if (body.action === 'search') {
+      const raw = await find('generic_records', { module: 'cycle-count' });
+      let rows = raw.map(norm).filter(row => has(row.cycleID, body.cycleID) && has(row.typeCode, body.type)
+        && has(row.statusCode, body.status) && has(row.bin, body.bin) && has(row.lpn, body.lpn)
+        && has(row.user, body.user) && has(row.reason, body.reason) && has(row.taskId, body.taskId)
+        && (!text(body.createDate) || has(row.createDate, body.createDate))
+        && (!text(body.updatedDate) || has(row.updatedDate, body.updatedDate)));
+      rows.sort((a, b) => text(a.updatedDate).localeCompare(text(b.updatedDate)) * (body.sord === 'asc' ? 1 : -1));
+      const size = [20, 50, 100, 200].includes(+body.rows) ? +body.rows : 20;
+      const page = Math.max(1, +body.page || 1), records = rows.length, total = Math.ceil(records / size);
+      return res.json({ rows: rows.slice((page - 1) * size, page * size), page, total, records, sidx: body.sidx || 'updDate', sord: body.sord || 'desc' });
+    }
+    if (['create', 'confirm', 'post'].includes(body.action)) {
+      return res.status(501).json({ error: 'Cycle count create, confirmation, and posting are paused until counted SKU/location variances can be recorded through Central Inventory.' });
+    }
+    if (body.action === 'cancel') {
+      if (!Array.isArray(body.ids) || !body.ids.length) return res.status(400).json({ error: 'Please select a row.' });
+      const timestamp = new Date().toISOString();
+      for (const id of body.ids) {
+        const row = await findOne('generic_records', { id: +id, module: 'cycle-count' });
+        if (row) await update('generic_records', row.id, { status: 'Canceled', status_code: 7, modified_date: timestamp });
+      }
+      return res.json({ jsonMessage: 'Cycle Count canceled successfully' });
+    }
+    return res.status(400).json({ error: 'Invalid action' });
+  } catch (error) {
+    if (sendDatabaseUnavailable(res, error)) return;
+    return res.status(error.statusCode || 500).json({ error: error.message });
+  }
+}

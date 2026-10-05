@@ -1,0 +1,137 @@
+[
+  {
+    "name": "verify-amazon-mfn-api",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-ajio-api",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-mp-inventory-log",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-transhipment",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-transhipment-old",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-returns-integrity",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-dispatch-checkpoint",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-ars-integrity",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-back-order-integrity",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-manage-manifests",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-sort-to-box",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-download-pdf",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-download-workbook",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-common-import",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-order-refund",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-order-allocation",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-delivery-shipping",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-bulk-order-update",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-manage-picklists",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-manage-picking",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-delivery-split",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-shipment-handover",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-order-acknowledgement",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-consolidate-ewb",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-inventory-move",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-order-maintenance",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-inbound-realtime-integrity",
+    "code": 0,
+    "passed": true
+  }
+]

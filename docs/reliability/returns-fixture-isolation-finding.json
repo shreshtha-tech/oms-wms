@@ -1,0 +1,27 @@
+{
+  "at": "2026-10-05",
+  "finding": "RETURNS_BROWSER_FIXTURE_POSTGRES_ISOLATION_UNPROVEN",
+  "source": "scripts/verify-return-without-order.mjs",
+  "attackPath": "Operator runs fixture with configured PostgreSQL; fixture overrides admin credentials and starts real server then logs in",
+  "rootCause": "Mongo memory override alone does not isolate PostgreSQL-backed sessions; no PostgreSQL target guard in script",
+  "impact": "Potential test session writes to configured authentication database; actual execution against configured DB not established",
+  "status": "REPAIRED_CONTROLLED_ACCEPTANCE",
+  "requiredAction": "Run under disposable PostgreSQL harness with target validation before server import; verify negative targets fail before writes",
+  "evidence": [
+    "scripts/verify-return-without-order.mjs",
+    "api/auth-session.js"
+  ],
+  "executionThisTurn": "Initial missing Chromium and closed-pool failures retained; final isolated workflow passed",
+  "credentialsOrHistoryChanged": false,
+  "repair": "Require local disposable harness database name before imports/migration/server startup; add fixture to create/drop harness and initialize its schema without closing shared same-process pool",
+  "verification": [
+    "Negative guards reject production credential-marker and remote test targets before migration",
+    "Returns authenticated browser workflow passes with installed Chrome and disposable PostgreSQL",
+    "Disposable database removal confirmed"
+  ],
+  "evidenceLogs": [
+    "tmp/mongo-reliability/returns-test-database-guard-current.log",
+    "tmp/mongo-reliability/returns-isolated-retry-current.log"
+  ],
+  "remainingGap": "Name/locality guard does not prove ownership; use harness. No configured tenant or hosted browser certification"
+}

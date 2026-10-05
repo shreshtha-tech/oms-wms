@@ -1,4 +1,4 @@
-import { find, findOne, insert, update, cors } from './mongo.js';
+import { sendDatabaseUnavailable, find, findOne, insert, update, cors } from './mongo.js';
 
 const clean = (value) => String(value ?? '').trim();
 const requestPath = (req) => String(req.path || req.url || '').split('?')[0];
@@ -66,5 +66,6 @@ export default async function handler(req, res) {
       return res.status(current ? 200 : 201).json({ ...saved, actionMessage: 'Charge Master saved successfully' });
     }
     return res.status(405).json({ error: 'Method not allowed' });
-  } catch (error) { console.error('Purchase Charge Masters API error:', error); return res.status(500).json({ error: error.message || 'Unable to process purchase charge master' }); }
+  } catch (error) {
+    if (sendDatabaseUnavailable(res, error)) return; console.error('Purchase Charge Masters API error:', { name: error?.name, code: error?.code }); return res.status(500).json({ error: error.message || 'Unable to process purchase charge master' }); }
 }

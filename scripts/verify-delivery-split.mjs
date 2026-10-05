@@ -1,2 +1,56 @@
-import assert from'node:assert/strict';import{chromium}from'playwright';const base=process.env.ERETAIL_BASE_URL||'http://127.0.0.1:3002',send=async body=>{const r=await fetch(`${base}/api/delivery-split`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)});return{r,j:await r.json()}};const meta=await(await fetch(`${base}/api/delivery-split`)).json();assert.deepEqual(meta.pageSizes,[20,50,100,200]);assert.ok(meta.deliveries.length);let x=await send({action:'search',outDelNo:'',rows:20,page:1});assert.equal(x.j.error,'Outbound Del No is mandatory.');x=await send({action:'search',outDelNo:'MISSING',rows:20,page:1});assert.equal(x.j.error,'Outbound Delivery not found.');for(const rows of[20,50,100,200]){x=await send({action:'search',outDelNo:'WO500126',rows,page:1,sidx:'orderNo',sord:'asc'});for(const k of['rowDTOListFromUpdate','gridModel','rows','page','total','records','outboundP'])assert.ok(k in x.j)}x=await send({action:'sku-lookup',outDelNo:'WO500126',skuCode:'KURTA-MAROON-L'});assert.equal(x.j.skuCode,'KURTA-MAROON-L');x=await send({action:'add-sku',outDelNo:'WO500126',skuCode:'KURTA-MAROON-L',uQty:2,fromBinCode:'DEFAULT'});assert.match(x.j.error,/less than available/);x=await send({action:'add-sku',outDelNo:'WO500126',skuCode:'KURTA-MAROON-L',uQty:1,fromBinCode:'DEFAULT'});assert.equal(x.j.rowDTOListFromUpdate[0].statusCode,'7');const staged=x.j.rowDTOListFromUpdate;x=await send({action:'confirm',outDelNo:'WO500126',lines:[]});assert.match(x.j.error,/No unSplitted SKU/);x=await send({action:'confirm',outDelNo:'WO500126',lines:staged});assert.match(x.j.outboundP.newOutDelNo,/^OB/);const newNo=x.j.outboundP.newOutDelNo;x=await send({action:'audit',outDelNo:newNo});assert.equal(x.j.rows.length,1);const orders=await(await fetch(`${base}/api/fulfillment`)).json();assert.equal(orders.find(r=>r.order_no==='WO500126').qty,1);assert.equal(orders.find(r=>r.delivery_no===newNo).qty,1);
-const b=await chromium.launch({headless:true}),p=await b.newPage({viewport:{width:1440,height:1000}}),errors=[];p.on('pageerror',e=>errors.push(e.message));p.on('console',m=>m.type()==='error'&&errors.push(m.text()));try{await p.goto(base);const cap=(await p.locator('.font-mono').textContent()).trim();await p.getByPlaceholder('Username').fill('split');await p.getByPlaceholder('Password').fill('local');await p.getByPlaceholder('Enter captcha').fill(cap);await p.getByRole('button',{name:'Login'}).click();await p.waitForURL('**/app/dashboard');await p.goto(`${base}/app/fulfillment/delivery-split`);for(const a of['Audit','Search','Reset'])await p.getByRole('button',{name:a,exact:true}).waitFor();await p.getByLabel('Outbound Del No').waitFor();for(const size of['20','50','100','200'])await p.getByLabel('Records per Page').selectOption(size);for(const h of['Outbound Del No','Order No','Ext Order No','Order Type','SKU Code','SKU Desc','Uom','Quantity','FromId','ToId','Status','From Bin','Lot','Scanned Unique','IMEI No'])await p.getByRole('columnheader',{name:h,exact:true}).first().waitFor();await p.getByRole('button',{name:'Search',exact:true}).click();await p.getByText('Outbound Del No is mandatory.').waitFor();await p.getByLabel('Outbound Del No').fill('WO500128');await p.getByRole('button',{name:'Search',exact:true}).click();await p.getByLabel('Scan SKU').waitFor();for(const a of['Add','Reset Added SKU','Confirm Splitting'])await p.getByRole('button',{name:a,exact:true}).waitFor();await p.getByRole('button',{name:'Reset',exact:true}).click();assert.equal(await p.getByLabel('Outbound Del No').inputValue(),'');assert.equal(await p.locator('vite-error-overlay').count(),0);assert.deepEqual(errors.filter(e=>!e.includes('status of 400')&&!e.includes('status of 404')),[]);console.log('PASS Delivery Split: live search/scan/confirm contract, quantity validation, real split lifecycle, audit, paging, reset, and clean browser state.')}finally{await b.close()}
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+
+// This verifier must never touch a configured database or a running tenant.
+process.env.MONGODB_URI = '';
+process.env.DMILLS_REQUIRE_PERSISTENCE = '';
+process.env.INVENTORY_DATABASE_URL = '';
+process.env.INVENTORY_ALLOWED_TENANT_ID = '';
+const { find, insert } = await import('../api/mongo.js');
+const deliverySplit = (await import('../api/delivery-split.js')).default;
+
+async function invoke(method, body = {}) {
+  const response = {
+    statusCode: 200,
+    status(value) { this.statusCode = value; return this; },
+    json(value) { this.payload = value; return this; },
+    setHeader() {},
+  };
+  await deliverySplit({ method, body, query: {}, headers: {} }, response);
+  return response;
+}
+
+const order = await insert('fulfillment_orders', {
+  order_no: 'SAFE-SPLIT-ORDER', delivery_no: 'SAFE-SPLIT-DELIVERY',
+  sku_code: 'SAFE-SPLIT-SKU', qty: 7, amount: 700, status: 'Allocated',
+});
+const meta = await invoke('GET');
+assert.equal(meta.payload.available, false);
+assert.equal(meta.payload.dataTrust, 'legacy-unverified');
+assert.equal(meta.payload.deliveries[0].outDelNo, order.delivery_no);
+
+const search = await invoke('POST', { action: 'search', outDelNo: order.delivery_no, rows: 20, page: 1 });
+assert.equal(search.statusCode, 200);
+assert.equal(search.payload.rows[0].qty, 7, 'read-only enquiry must show the stored quantity');
+
+for (const body of [
+  { action: 'sku-lookup', outDelNo: order.delivery_no, skuCode: order.sku_code },
+  { action: 'add-sku', outDelNo: order.delivery_no, skuCode: order.sku_code, uQty: 2 },
+  { action: 'confirm', outDelNo: order.delivery_no, lines: [{ statusCode: '7', qty: 2 }] },
+]) {
+  const result = await invoke('POST', body);
+  assert.equal(result.statusCode, 501);
+  assert.match(result.payload.error, /Central Inventory/);
+}
+
+const audit = await invoke('POST', { action: 'audit', outDelNo: order.delivery_no });
+assert.equal(audit.payload.trust, 'legacy-unverified');
+assert.deepEqual(audit.payload.rows, []);
+assert.deepEqual(await find('fulfillment_orders'), [order], 'blocked split requests must not mutate or create fulfillment orders');
+assert.deepEqual(await find('generic_records', { module: 'delivery-split-audit' }), [], 'blocked split requests must not create audit rows');
+
+const ui = await readFile(new URL('../src/eretail/modules/DeliverySplit.tsx', import.meta.url), 'utf8');
+assert.match(ui, /Delivery splitting is unavailable until Central Inventory/);
+assert.match(ui, /Legacy split audit rows are unverified/);
+assert.doesNotMatch(ui, /Confirm Splitting|Scan SKU|action:\s*'add-sku'/);
+console.log('PASS Delivery Split: isolated in-memory search is read-only, SKU and split writes fail closed, quantities and audit rows stay unchanged, and the UI explains the boundary.');

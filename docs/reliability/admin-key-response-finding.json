@@ -1,0 +1,18 @@
+{
+  "at": "2026-10-05",
+  "finding": "GENERIC_ADMIN_API_STORED_KEY_RESPONSE_DISCLOSURE",
+  "attackPath": "Caller authorized for generic admin list/create/update receives persisted API key value",
+  "rootCause": "Handler returned storage rows directly; update inferred a masked display value from any uppercase X character",
+  "impact": "Stored API key disclosure and incorrect replacement preservation; actual credential authorization scope UNKNOWN",
+  "repair": "List/create/update serialize API-key rows using constant stored marker; update preserves only exact marker or exact stored-key-derived legacy display mask",
+  "regression": "scripts/verify-admin-key-response-boundary.mjs",
+  "evidenceLog": "tmp/mongo-reliability/admin-key-response-boundary-current.log",
+  "evidenceLayer": "CONTROLLED_DIRECT_HANDLER_MEMORY",
+  "status": "REPAIRED_FOR_INSPECTED_RESPONSE_PATHS",
+  "remainingGaps": [
+    "Stored legacy keys remain plaintext; no migration or rotation performed",
+    "Parity-specific routes retain independent response builders requiring audit",
+    "Generic user records/PII, server roles and full tenant boundary not proven",
+    "Historical/browser/log exposure and error response safety remain incomplete"
+  ]
+}

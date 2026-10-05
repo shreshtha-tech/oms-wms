@@ -17,10 +17,10 @@
 
 - Dedicated implementation: `src/eretail/SkuChannelListing.tsx`.
 - Persistent APIs: `api/sku-channel-links.js` and the existing `api/sku-moderation.js` for Unmapped SKU.
-- Import is a first-class tab with preview, row results, and persistent commit rather than an unrelated toolbar modal.
-- Playwright exercised search payloads, all three tabs, exact validation, create, close, reload, persisted search, import preview, Unmapped SKU request, pagination, console, and API errors.
-- `npm run typecheck`: passed.
-- `npm run build`: passed; Node/Vite version and large-bundle warnings remain environmental/non-blocking.
-- `ERETAIL_BASE_URL=http://127.0.0.1:3011 npm run test:sku-channel-listing`: passed.
-- Second authenticated live/local comparison: passed after resetting the reused live iframe, with zero tab/action/column/option/editor-field differences.
-
+- `npm run test:sku-channel-listing` now runs the full isolated signed-in app harness. The harness creates generated PostgreSQL and MongoDB `codexqa_` databases and removes them after the run.
+- Playwright verified Channel/SKU/Client catalogs, required-field behavior, create/edit, actor/date ownership, rejected invalid references/status/numbers, duplicate/stale guards, filtered search, export chooser, quoted CSV values, truthful partial-failure summary and row statuses, MongoDB readback, unmapped linking, and a concurrent mapping race with one success and one HTTP 409.
+- The workflow added no Central Inventory events. It proves mapping metadata persistence only; it does not prove seller feed authorization, external account mapping, inventory publication, or order ingestion.
+- `npm run test:sku-channel-listing`: passed against generated loopback databases.
+- Full `scripts/verify-isolated-browser-workflow.mjs`: passed with this workflow integrated among existing signed-in module checks; both generated databases were removed.
+- `npm run typecheck`, `npm run build`, JavaScript syntax checks, and `git diff --check`: passed. Build emits the existing Node 20.14.0 versus Vite 20.19+ requirement and large ExcelJS chunk warnings.
+- Exact post-change LIVE role/action parity, production MongoDB availability, provider feed readback, durable import batch history, and create/edit duplicate races remain unverified. An earlier local/reference comparison predates these changes and should not be treated as current parity evidence.

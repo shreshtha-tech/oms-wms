@@ -2,22 +2,24 @@
 
 Historical source used by the original implementation: `Vin eRetail _ ARS (procurement) – Vinculum Product Guide.pdf` (7 pages). That guide is not present in the current workspace and is not a substitute for authenticated LIVE evidence.
 
-Current verification boundary (2026-08-26): **ARS SKU-Location Link, ARS Rules, ARS Execution Log, and B2B ARS/ROS Settings are authenticated-live inspected and locally verified.**
+Historical verification boundary (2026-08-26): **ARS SKU-Location Link, ARS Rules, ARS Execution Log, and B2B ARS/ROS Settings were authenticated-live inspected and locally verified for the actions recorded at that time.**
 
-## 1. Modules replicated
+Current checkout update (2026-09-29): the pending full export job, Run Now purchase-order generation, and log Approve All/Process All paths failed integrity review. They now return HTTP 501; visible ARS link rows and stored log detail use the actual local download flow. `npm run test:ars-integrity` verifies no PO, log, status, or fake download is created. The historical browser comparisons below do not verify the changed actions, tenant persistence, Central Inventory propagation, or current LIVE parity.
+
+## 1. Historical implementation evidence (26 August 2026)
 
 | Module | Route | Implemented surface |
 |---|---|---|
-| ARS SKU-Location Link | `/app/procurement/ars/sku-location` | **VERIFIED:** authenticated live handlers/UI/API/validation; local add/edit/bulk persistence; Common Import type 33; Pending Report download; Playwright/typecheck/build/second comparison |
-| ARS Rules | `/app/procurement/ars/rules` | **VERIFIED:** authenticated enquiry/editor/SKU-set dialog/handler/API/validation inspection; module-specific local search, editor, scheduling, persistence, Playwright/typecheck/build/second comparison |
-| ARS Execution Log | `/app/procurement/ars/logs` | **VERIFIED:** authenticated parent/detail/status/picker/handler/API inspection; local search, detail, approve/process, download contract, Playwright/typecheck/build/second comparison |
-| B2B ARS/ROS Settings | `/app/procurement/ars/settings` | **VERIFIED:** authenticated Settings HTML/control/SettingBS.js handler/validation/API inspection; local save/persistence, Playwright/typecheck/build/second comparison |
+| ARS SKU-Location Link | `/app/procurement/ars/sku-location` | Authenticated live handlers/UI/API/validation; historical local add/edit/bulk persistence and Pending Report behavior. Current full export job is disabled. |
+| ARS Rules | `/app/procurement/ars/rules` | Authenticated enquiry/editor/SKU-set dialog/validation inspection and historical local search/editor persistence. Current Run Now is disabled. |
+| ARS Execution Log | `/app/procurement/ars/logs` | Authenticated parent/detail/status/picker inspection and historical local approve/process behavior. Current approve/process actions are disabled. |
+| B2B ARS/ROS Settings | `/app/procurement/ars/settings` | Authenticated Settings HTML/control/SettingBS.js handler/validation/API inspection; historical local save and second comparison. |
 
-## 2. Local workflows and verification status
+## 2. Historical local workflows and verification status
 
 1. Create or edit a SKU-location link, resolving SKU name/category/brand from SKU Master and validating SKU existence.
-2. Search/filter links, open the hierarchy picker, reset, request a Pending Report download, route Bulk Import to Common Import type 33, or checkbox-gate bulk-update matching links.
-3. The local code also contains rule creation, Min-Max/Sales History fields, SKU sets, save/confirm/delete/run, execution logs, and ROS settings. **These workflows are guide-derived and are not authenticated-live verified.**
+2. Search/filter links, open the hierarchy picker, reset, formerly request a Pending Report download, route Bulk Import to Common Import type 33, or checkbox-gate bulk-update matching links. Current downloads use the displayed rows.
+3. Rule creation, Min-Max/Sales History fields, SKU sets, save/confirm/delete, execution enquiry, and ROS settings remain in the local code. Run and execution processing are disabled in the current checkout. The historical guide-derived workflow claims do not prove current end-to-end behavior.
 
 ## 3. Documentation-to-video discrepancy matrix
 
@@ -83,8 +85,8 @@ All ARS routes use the application's existing authenticated `ProtectedRoute`. Th
 
 - Authenticated LIVE inspection confirmed preloaded `POST fetchExecutionLog`, Search/Reset, Rule ID and Execution ID pick lists, exact eight-column grid and option sets, 20/50/100/200 pagination, clickable Execution ID detail, Rule Name editor navigation, and clickable status detail.
 - Recursive execution-detail inspection confirmed Search, Download, Approve All, Process All, Reset, Rule/Execution pickers, execution-summary/info dialogs, `fetchExecutionLogDetail`, `downloadExecutionLogDetail`, `approveAll`, `processExecDetail`, document links, and the visible Location/SKU/Vendor/Inventory/ARS Calc/ARS Approved/Status/Doc Generated projection.
-- The local dedicated API persists approve/process status changes and returns affected counts; Download uses the existing Pending Report pipeline. Rule links reopen the dedicated ARS Rules editor, and execution/status children are no longer represented by a generic generated-PO message modal.
-- `npm run test:ars-execution-log` passed against a freshly rebuilt isolated server. It verifies automatic search, remote filters, both pickers, pagination, nested detail/status, approve/process persistence, console and API health.
+- At that time, the local API persisted approve/process status changes and returned affected counts; Download used the Pending Report pipeline. Those local processing and report-job paths are disabled in the current checkout.
+- `npm run test:ars-execution-log` passed against a freshly rebuilt isolated server in the historical run. The script has since been updated to assert that unverified approval and processing controls are unavailable; it has not been rerun against a signed-in tenant.
 - Final typecheck/build and `git diff --check` passed. The mandatory second authenticated LIVE/local comparison passed for parent/detail actions, frequency/vendor/output/status options, and visible detail columns.
 
 ### B2B ARS/ROS Settings verification (2026-08-26)
@@ -92,7 +94,7 @@ All ARS routes use the application's existing authenticated `ProtectedRoute`. Th
 - The authenticated `Admin > Settings` route was confirmed as `displayAdminSettings`; its ARS section was inspected from the exact authenticated HTML and `SettingBS.js?version=4.80` because direct top-level navigation redirects to the shell.
 - LIVE controls are Save, Enable ARS, ROS Calculation Hour 0–23, PUF/TUF Round Up/Round Down, five standard ROS periods, and three independently enabled custom day periods.
 - LIVE `saveARSSetting` posts enable state, standard/custom ROS flags and days, calculation hour and PUF/TUF. Validation requires enabled custom periods to have a value, days between 2 and 365, and at least two active ROS parameters when ARS is enabled. Exact messages and `Configuration updated Successfully` were reproduced.
-- `npm run test:ars-settings` passed with an API-reset baseline. It verifies exact options, both validation branches, save payload, persistence across reload, console and API health.
+- The signed-in ARS focus now verifies all 24 calculation hours, both PUF/TUF options, every standard and custom period control, three server-side validation failures without mutation, the browser validation messages, save/readback with authenticated actor and date, all custom periods including 2- and 365-day values, and reload persistence. It used the generated `codexqa_*` MongoDB database and was included in `npm run test:isolated-browser-workflow` with `ISOLATED_BROWSER_FOCUS=ars`; both generated databases were removed.
 - Mandatory second comparison passed for section labels, hour and PUF/TUF options, five standard ROS toggles, and all three custom inputs/toggles. Typecheck/build passed after the implementation.
 - No current authenticated-live verification claim is made for Rules, Execution Log, or Settings.
 

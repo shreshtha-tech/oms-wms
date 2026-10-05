@@ -1,0 +1,54 @@
+{
+  "sections": [
+    {
+      "label": "Stock overview",
+      "selected": "page",
+      "heading": [
+        "Master SKU balances",
+        "Add Master SKU"
+      ]
+    },
+    {
+      "label": "Record physical stock",
+      "selected": "page",
+      "heading": [
+        "Record physical stock",
+        "Add stock location"
+      ]
+    },
+    {
+      "label": "Excel upload",
+      "selected": "page",
+      "heading": [
+        "Upload Excel"
+      ]
+    },
+    {
+      "label": "Low-stock alerts",
+      "selected": "page",
+      "heading": [
+        "Low-stock rules",
+        "Open low-stock alerts"
+      ]
+    },
+    {
+      "label": "Channel connections",
+      "selected": "page",
+      "heading": [
+        "Channel connections and requirements"
+      ]
+    },
+    {
+      "label": "Ledger activity",
+      "selected": "page",
+      "heading": [
+        "Recent ledger activity"
+      ]
+    }
+  ],
+  "locationDialog": true,
+  "downloads": {
+    "url": "/app/downloads",
+    "body": "e\nDownloads\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nDownloads\n\nEvery file you export across the app is recorded here. Re-down"
+  }
+}

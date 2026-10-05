@@ -1,0 +1,29 @@
+{
+  "id": "ADMIN_PARITY_KEY_FRAGMENT_DISCLOSURE",
+  "date": "2026-10-05",
+  "status": "REPAIRED_FOR_INSPECTED_RESPONSE_PATHS",
+  "attack": "A caller reaching api-catalog or api-save could obtain the first and last four characters of stored API keys; short keys could be disclosed completely.",
+  "rootCause": "Response builders derived masks from secret characters.",
+  "impact": "Credential fragment exposure; operational authenticity, authorization and historical attacker access remain UNKNOWN.",
+  "boundary": "api/admin-parity.js catalog and create/update JSON responses",
+  "repair": "Constant [stored] marker for present keys and empty marker for absent keys. Database keys and existing update behavior retained.",
+  "regression": "scripts/verify-admin-parity-key-boundary.mjs",
+  "negativeCases": [
+    "Short key does not appear in catalog",
+    "Generated full key and either four-character fragment do not appear in create/update/catalog",
+    "Client replacement input does not alter the stored generated key",
+    "Empty key remains empty"
+  ],
+  "evidence": {
+    "layer": "Controlled direct handlers with explicit in-memory Mongo; synthetic records and user",
+    "parityLog": "tmp/mongo-reliability/admin-parity-key-boundary-current.log",
+    "genericLog": "tmp/mongo-reliability/admin-key-response-boundary-current.log",
+    "result": "Both exit 0 PASS"
+  },
+  "limits": [
+    "No server authentication, tenant or role proof",
+    "No hosted/browser/provider proof",
+    "Legacy plaintext storage and other admin response/error/export surfaces remain unfinished",
+    "No production readiness certification"
+  ]
+}

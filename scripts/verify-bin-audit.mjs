@@ -1,2 +1,103 @@
-import assert from'node:assert/strict';import{chromium}from'playwright';const base=process.env.ERETAIL_BASE_URL||'http://127.0.0.1:3002',post=async body=>{const r=await fetch(`${base}/api/bin-audit`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)});return{r,j:await r.json()}};const meta=await(await fetch(`${base}/api/bin-audit`)).json();assert.deepEqual(meta.statuses,[['-1','--- Select ---'],['7','Completed'],['1','Start'],['2','Waiting']]);assert.deepEqual(meta.pageSizes,[20,50,100,200]);assert.equal(meta.maxBins,500);let x=await post({action:'search',rows:20,page:1,location:'-1',status:'-1'});assert.equal(x.r.status,200);x=await post({action:'end',ids:[]});assert.equal(x.j.error,'Please select a row.');x=await post({action:'start',bins:''});assert.equal(x.j.error,'Enter Bin Only , After each Bin press Enter');
-const b=await chromium.launch({headless:true}),p=await b.newPage({viewport:{width:1440,height:1000}}),errors=[];p.on('pageerror',e=>errors.push(e.message));p.on('console',m=>m.type()==='error'&&errors.push(m.text()));try{await p.goto(base);const c=(await p.locator('.font-mono').textContent()).trim();await p.getByPlaceholder('Username').fill('audit');await p.getByPlaceholder('Password').fill('local');await p.getByPlaceholder('Enter captcha').fill(c);await p.getByRole('button',{name:'Login'}).click();await p.waitForURL('**/app/dashboard');await p.goto(`${base}/app/r/bin-audit`);const main=p.getByRole('main');for(const a of['Search','Reset','End Audit','Start Audit'])await main.getByRole('button',{name:a,exact:true}).waitFor();for(const h of['Location','BIN','AuditStart','AuditEnd','AuditVaildFrom','Bulk BatchId','Status','StartBy','EndBy'])await main.getByRole('columnheader',{name:h,exact:false}).waitFor();assert.deepEqual(await main.getByLabel('Page size').locator('option').allTextContents(),['20','50','100','200']);await main.getByRole('button',{name:'End Audit',exact:true}).click();await p.getByText('Please select a row.').waitFor();await main.getByRole('button',{name:'Start Audit',exact:true}).click();await main.getByText('Import',{exact:true}).waitFor();for(const l of['Site Location','Start Date','Bins'])await main.getByLabel(l,{exact:true}).waitFor();await main.getByRole('button',{name:'OK',exact:true}).click();await p.getByText('Enter Bin Only , After each Bin press Enter').last().waitFor();await main.getByRole('button',{name:'Close',exact:true}).click();assert.equal(await p.locator('vite-error-overlay').count(),0);assert.deepEqual(errors.filter(e=>!e.includes('400')),[]);console.log('PASS BIN Audit: exact enquiry actions/statuses/grid/paging, end selection validation, start dialog, 500-line rule, reset, API contract, and clean browser state.')}finally{await b.close()}
+import assert from 'node:assert/strict';
+import { chromium } from 'playwright';
+
+const base = process.env.ERETAIL_BASE_URL || 'http://127.0.0.1:3002';
+const testUsername = process.env.ERETAIL_TEST_USERNAME || 'audit';
+const testPassword = process.env.ERETAIL_TEST_PASSWORD || 'local';
+const testLocation = process.env.ERETAIL_TEST_LOCATION || 'UWH';
+const suffix = Date.now().toString().slice(-8);
+const apiBinCode = `BA${suffix}`;
+const uiBinCode = `BU${suffix}`;
+const login = await fetch(`${base}/api/auth/login`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ username: testUsername, password: testPassword }) });
+assert.equal(login.status, 200, 'The isolated administrator must authenticate before calling WMS APIs.');
+const sessionCookie = (login.headers.get('set-cookie') || '').split(';', 1)[0];
+assert.match(sessionCookie, /^dmills_session=[a-f0-9]{64}$/);
+const send = async (path, method, body) => {
+  const response = await fetch(`${base}${path}`, { method, headers: { 'content-type': 'application/json', cookie: sessionCookie }, body: body === undefined ? undefined : JSON.stringify(body) });
+  return { response, json: await response.json() };
+};
+const auditMeta = await send('/api/bin-audit', 'GET');
+assert.equal(auditMeta.response.status, 200);
+assert.deepEqual(auditMeta.json.statuses, [['-1', '--- Select ---'], ['7', 'Completed'], ['1', 'Start'], ['2', 'Waiting']]);
+assert.deepEqual(auditMeta.json.pageSizes, [20, 50, 100, 200]);
+assert.equal(auditMeta.json.maxBins, 500);
+assert.ok(auditMeta.json.locations.some(([code]) => code === testLocation));
+const binMeta = await send('/api/bin-editor', 'GET');
+assert.ok(binMeta.json.zones.length, 'A WMS Zone is required for disposable audit bins.');
+const makeBin = async (binCode) => {
+  const created = await send('/api/bin-editor', 'POST', { locCode: testLocation, binCode, binType: '2', binFlag: '2', status: true, invBucket: '10', zone: binMeta.json.zones[0], binLocationType: '1', clients: [], approximateUnits: '10', thresholdQty: '5' });
+  assert.equal(created.response.status, 201);
+  return created.json.row;
+};
+const apiBin = await makeBin(apiBinCode);
+const uiBin = await makeBin(uiBinCode);
+const events = async () => (await send('/api/inventory-sync/central/events', 'GET')).json.map((event) => event.event_key).sort();
+const eventsBefore = await events();
+const blank = await send('/api/bin-audit', 'POST', { action: 'start', location: testLocation, bins: '' });
+assert.equal(blank.response.status, 400);
+assert.equal(blank.json.error, 'Enter Bin Only , After each Bin press Enter');
+const invalid = await send('/api/bin-audit', 'POST', { action: 'start', location: testLocation, bins: 'NO-SUCH-BIN' });
+assert.equal(invalid.response.status, 400);
+assert.equal(invalid.json.error, 'Invalid Bin: NO-SUCH-BIN');
+const started = await send('/api/bin-audit', 'POST', { action: 'start', location: testLocation, bins: `${apiBinCode}\n${apiBinCode}` });
+assert.equal(started.response.status, 201);
+assert.equal(started.json.rows.length, 1, 'Duplicate codes within one audit request must create a single task.');
+assert.equal(started.json.rows[0].status, 'Start');
+assert.equal(started.json.rows[0].startBy, testUsername);
+assert.match(started.json.jsonMessage, /quantity capture and completion are unavailable/i);
+const query = (bin = '') => ({ action: 'search', REQ_SEARCH_FLAG: true, rows: 20, page: 1, sidx: 'auditStart', sord: 'desc', location: testLocation, bin, auditStart: '', auditEnd: '', auditValidFrom: '', bulkBatchId: '', status: '-1', startBy: '', endBy: '' });
+const searched = await send('/api/bin-audit', 'POST', query(apiBinCode));
+assert.equal(searched.response.status, 200);
+assert.equal(searched.json.records, 1);
+assert.equal(searched.json.rows[0].bin, apiBinCode);
+assert.equal(searched.json.rows[0].auditEnd, '');
+const refusedEnd = await send('/api/bin-audit', 'POST', { action: 'end', ids: [started.json.rows[0].id] });
+assert.equal(refusedEnd.response.status, 501);
+assert.match(refusedEnd.json.error, /quantity capture is connected to Central Inventory/);
+const unchanged = await send('/api/bin-audit', 'POST', query(apiBinCode));
+assert.equal(unchanged.json.rows[0].status, 'Start');
+assert.equal(unchanged.json.rows[0].auditEnd, '');
+assert.deepEqual(await events(), eventsBefore, 'Scheduling/closing audit metadata must not mutate Central Inventory stock events.');
+
+const browser = await chromium.launch({ headless: true, ...(process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE ? { executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE } : {}) });
+const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+const errors = [];
+page.on('pageerror', (error) => errors.push(error.message));
+page.on('console', (message) => { if (message.type() === 'error') errors.push(message.text()); });
+try {
+  await page.goto(base);
+  await page.getByLabel('Login Id').fill(testUsername);
+  await page.getByLabel('Password').fill(testPassword);
+  await page.getByRole('button', { name: 'Login', exact: true }).click();
+  await page.waitForURL('**/app/dashboard');
+  await page.goto(`${base}/app/r/bin-audit`);
+  await page.getByRole('button', { name: 'Search', exact: true }).last().waitFor();
+  await page.getByRole('status').getByText('It cannot capture quantities or complete an audit', { exact: false }).waitFor();
+  const endButton = page.getByRole('button', { name: 'End Audit', exact: true });
+  assert.equal(await endButton.isDisabled(), true);
+  for (const heading of ['Location', 'BIN', 'AuditStart', 'AuditEnd', 'AuditVaildFrom', 'Bulk BatchId', 'Status', 'StartBy', 'EndBy']) await page.getByText(heading, { exact: true }).first().waitFor();
+  const startDialog = page.getByRole('button', { name: 'Start Audit', exact: true });
+  await startDialog.click();
+  const modal = page.getByRole('dialog', { name: 'Start Audit' });
+  await modal.getByLabel('Site Location').selectOption(testLocation);
+  await modal.getByLabel('Bins').fill(uiBinCode);
+  const createResponse = page.waitForResponse((response) => response.url().endsWith('/api/bin-audit') && response.request().method() === 'POST' && response.status() === 201);
+  await modal.getByRole('button', { name: 'OK', exact: true }).click();
+  const uiStarted = await (await createResponse).json();
+  assert.equal(uiStarted.rows.length, 1);
+  await page.getByText('BIN audit tasks created. Quantity capture and completion are unavailable.', { exact: true }).waitFor();
+  await page.getByText(uiBinCode, { exact: true }).waitFor();
+  assert.equal(await page.getByRole('button', { name: 'End Audit', exact: true }).isDisabled(), true);
+  assert.equal(await page.getByLabel(`Select ${uiBinCode}`).isDisabled(), true);
+  for (const size of ['20', '50', '100', '200']) await page.getByLabel('Page size').selectOption(size);
+  await page.getByRole('button', { name: 'Reset', exact: true }).click();
+  await page.getByText('No records to view', { exact: true }).waitFor();
+  assert.deepEqual(errors, []);
+  console.log('PASS BIN Audit: signed-in task creation/search/paging, bin validation and de-duplication, audit actor, end-audit fail-closed guard, disabled completion UI, and no Central Inventory event changes.');
+} finally {
+  await browser.close();
+}
+for (const bin of [apiBin, uiBin]) {
+  const deleted = await send('/api/bin-editor', 'DELETE', { id: bin.id });
+  assert.equal(deleted.response.status, 200);
+}

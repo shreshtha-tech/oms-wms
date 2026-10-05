@@ -1,0 +1,512 @@
+{
+  "source_path": "/Users/shreshthagupta/.codex/attachments/d57b6a8e-4c08-4bbe-81f5-2f4894a77faa/pasted-text-1.txt",
+  "source_sha256": "17fe71aca071d31e624b1bff4fc79fc0861dff4242f38214e9febcd44debf8cf",
+  "baseline_dossier": "docs/PRODUCTION_READINESS_FORENSIC_DOSSIER_2026-09-30.docx",
+  "baseline_dossier_sha256": "8cea754fec1dade5730531d8648b87ded10a555445d52de3333932cd0c0732ba",
+  "scope": "All 47 numbered sections preserved verbatim; subordinate checklist decomposition and dossier finding linkage remain required. No section is marked complete.",
+  "requirements": [
+    {
+      "requirement_id": "R01",
+      "title": "PRIMARY SOURCE OF TRUTH \u2014 FORENSIC DOSSIER",
+      "source_start_line": 31,
+      "source_end_line": 92,
+      "source_text": "# 1. PRIMARY SOURCE OF TRUTH \u2014 FORENSIC DOSSIER\n\nUse the supplied:\n\n**PRODUCTION_READINESS_FORENSIC_DOSSIER_2026-09-30.docx**\n\nas the primary audit baseline.\n\nIt records:\n\n- 170 requested modules\n- 89 partial\n- 38 nonfunctional\n- 43 unverified\n- 0 fully functional\n- 174 menu entries\n- route/navigation defects\n- configured MongoDB failure\n- configured PostgreSQL state\n- Central Inventory architecture\n- isolated transactional evidence\n- provider/integration gaps\n- R01\u2013R16 risk register\n- operational trace requirements\n- G0\u2013G8 release gates\n- detailed module-by-module findings\n- historical generic/fabricated behavior\n- intentionally fail-closed functionality\n- integration limitations\n- security/reliability gaps\n- evidence boundaries\n\nTreat every documented failure, limitation, uncertainty, and \u201cnext proof\u201d item as an existing engineering requirement.\n\nDo not erase an audit finding merely because the code has changed.\n\nDo not assume a historical finding is still present.\n\nDo not assume it has been fixed either.\n\nFor every important historical finding:\n\n1. locate the current implementation;\n2. reproduce or disprove the finding;\n3. identify what changed;\n4. determine whether the underlying risk still exists;\n5. verify the new behavior;\n6. retain the historical finding as historical evidence;\n7. record the current status separately.\n\nNever convert:\n\n`previously broken`\n\ninto:\n\n`currently fixed`\n\nwithout fresh evidence.\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R02",
+      "title": "DO A SECOND FORENSIC AUDIT YOURSELF",
+      "source_start_line": 93,
+      "source_end_line": 168,
+      "source_text": "# 2. DO A SECOND FORENSIC AUDIT YOURSELF\n\nThe dossier is not the complete universe of possible defects.\n\nAfter absorbing the dossier, independently inspect the repository and search for problems that the audit may not have discovered.\n\nYou must actively investigate:\n\n### Architecture\n\n- frontend/backend boundaries\n- service boundaries\n- worker boundaries\n- synchronous vs asynchronous operations\n- database ownership\n- source-of-truth conflicts\n- duplicated business logic\n- legacy code paths\n- fallback code paths\n- hidden mock data\n- seeded data\n- test-only behavior leaking into runtime\n- environment-dependent behavior\n- feature flags\n- dead code\n- duplicate routes\n- duplicate modules\n- shadow implementations\n- obsolete APIs\n- compatibility layers\n- accidental bypasses\n\n### Database\n\nInspect:\n\n- migrations\n- indexes\n- constraints\n- foreign keys\n- unique constraints\n- transactions\n- isolation levels\n- locking\n- optimistic concurrency\n- stale writes\n- orphan records\n- soft deletes\n- hard deletes\n- audit fields\n- tenant fields\n- timestamps\n- timezone behavior\n- sequence generation\n- event keys\n- idempotency keys\n- retry records\n- outbox/inbox structures\n- dead-letter structures\n- reconciliation tables\n\nSearch for:\n\n- missing indexes\n- dangerous unbounded queries\n- race-prone read-modify-write operations\n- writes without transaction boundaries\n- writes that update multiple stores without recovery\n- inconsistent identifiers\n- inconsistent SKU/location/channel identity\n- data that can exist without its parent\n- records that can be duplicated\n- records that can be silently overwritten\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R03",
+      "title": "CENTRAL INVENTORY IS A HARD BUSINESS INVARIANT",
+      "source_start_line": 169,
+      "source_end_line": 225,
+      "source_text": "# 3. CENTRAL INVENTORY IS A HARD BUSINESS INVARIANT\n\nTreat Central Inventory as the authoritative quantity path unless the repository/evidence proves otherwise.\n\nThe fundamental invariant is:\n\n> Every physical on-hand change must correspond to a committed Central Inventory event.\n\nReservations must affect sellable inventory correctly.\n\nDispatch must consume the correct quantity.\n\nApproved returns must restore inventory through an explicit verified transition.\n\nTransfers must conserve stock.\n\nPhysical counts and adjustments must create traceable events.\n\nNever allow:\n\n- Mongo status to masquerade as physical stock movement\n- UI state to represent inventory truth\n- provider quantity to become internal stock truth\n- cached quantity to overwrite authoritative quantity\n- duplicate webhook delivery to double-reserve stock\n- retry to duplicate a physical movement\n- concurrent receipt to exceed PO quantity\n- cancellation to release stock twice\n- return processing to restock twice\n- partial failure to silently diverge stores\n\nFor every inventory mutation establish:\n\n```text\nrequest\n\u2192 authentication\n\u2192 authorization\n\u2192 validation\n\u2192 identity resolution\n\u2192 idempotency\n\u2192 transaction\n\u2192 ledger/event\n\u2192 balance\n\u2192 outbox\n\u2192 worker\n\u2192 provider\n\u2192 provider acknowledgement\n\u2192 provider readback\n\u2192 reconciliation\n\u2192 UI observation\n\n```\n\nIf one link is missing, explicitly identify the missing guarantee.\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R04",
+      "title": "NEVER \u201cFIX\u201d A FAIL-CLOSED FEATURE BY INVENTING IT",
+      "source_start_line": 226,
+      "source_end_line": 260,
+      "source_text": "# 4. NEVER \u201cFIX\u201d A FAIL-CLOSED FEATURE BY INVENTING IT\n\nThe existing system deliberately contains 501/503 behavior for unsupported functionality.\n\nDo NOT blindly replace these with fake implementations.\n\nBefore implementing any currently unsupported action, determine:\n\n1. What is the real business contract?\n2. What data does it require?\n3. Which system owns that data?\n4. Which database should change?\n5. What event should be generated?\n6. What downstream consumer should react?\n7. What external system should receive it?\n8. What acknowledgement is required?\n9. What happens on timeout?\n10. What happens on retry?\n11. What happens if the process crashes halfway?\n12. What is the rollback/reconciliation strategy?\n13. What permissions are required?\n14. What audit record must exist?\n15. What should the UI display before completion?\n16. What evidence proves completion?\n\nIf those answers cannot be established, keep the action fail-closed.\n\nA truthful:\n\n`501 Not Implemented \u2014 integration contract unavailable`\n\nis better than a fake successful transaction.\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R05",
+      "title": "RECONSTRUCT THE BUSINESS DOMAIN BEFORE CHANGING CODE",
+      "source_start_line": 261,
+      "source_end_line": 362,
+      "source_text": "# 5. RECONSTRUCT THE BUSINESS DOMAIN BEFORE CHANGING CODE\n\nUnderstand the actual lifecycle of:\n\n## Master data\n\nVendor\n\n\u2192 SKU\n\n\u2192 SKU group/company mapping\n\n\u2192 pack/unit structure\n\n\u2192 location\n\n\u2192 warehouse/bin\n\n\u2192 channel mapping\n\n\u2192 provider listing\n\n\u2192 inventory identity\n\n## Procurement\n\nPO\n\n\u2192 approval/release\n\n\u2192 budget/OTB\n\n\u2192 ASN\n\n\u2192 inbound\n\n\u2192 QC\n\n\u2192 putaway\n\n\u2192 Central Inventory receipt\n\n\u2192 reconciliation\n\n## Customer order\n\nProvider order\n\n\u2192 webhook/poll ingestion\n\n\u2192 inbox persistence\n\n\u2192 mapping\n\n\u2192 reservation\n\n\u2192 allocation\n\n\u2192 picking\n\n\u2192 packing\n\n\u2192 shipping\n\n\u2192 carrier acknowledgement\n\n\u2192 provider fulfillment update\n\n\u2192 final readback\n\n## Cancellation\n\nOrder\n\n\u2192 cancellation\n\n\u2192 reservation release\n\n\u2192 provider acknowledgement\n\n\u2192 reconciliation\n\n## Return\n\nReturn request\n\n\u2192 approval\n\n\u2192 physical receipt\n\n\u2192 QC\n\n\u2192 disposition\n\n\u2192 Central Inventory event\n\n\u2192 refund/reconciliation\n\nNever implement a downstream screen independently of the business lifecycle it belongs to.\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R06",
+      "title": "REBUILD EACH MODULE FROM BUSINESS CONTRACT, NOT UI",
+      "source_start_line": 363,
+      "source_end_line": 414,
+      "source_text": "# 6. REBUILD EACH MODULE FROM BUSINESS CONTRACT, NOT UI\n\nFor every one of the 170 modules, determine:\n\n```text\nModule\nBusiness purpose\nActor\nRole\nTenant\nPreconditions\nInputs\nValidation\nDatabase reads\nDatabase writes\nTransaction boundary\nExternal dependencies\nState machine\nSide effects\nEvents\nIdempotency requirement\nConcurrency requirement\nFailure modes\nRecovery\nAudit requirements\nUI state\nAPI state\nReport impact\nSecurity impact\nOperational observability\nReference parity requirement\nEvidence required for completion\n\n```\n\nDo not classify a module as functional because:\n\n- route loads\n- component renders\n- GET returns 200\n- button exists\n- modal opens\n- data is hardcoded\n- generated test DB works\n- seeded fallback works\n- a mock provider responds\n- a success toast appears\n\nA module is complete only when its\u00a0**business contract**\u00a0is actually proven.\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R07",
+      "title": "BUILD A MACHINE-VERIFIABLE MODULE MATRIX",
+      "source_start_line": 415,
+      "source_end_line": 471,
+      "source_text": "# 7. BUILD A MACHINE-VERIFIABLE MODULE MATRIX\n\nCreate or maintain a matrix containing all 170 modules.\n\nMinimum fields:\n\n```text\nmodule_id\nmodule_name\nroute\nfrontend_component\nbackend_handler\ndatabase\ntables\nbusiness_owner\nactor_roles\ntenant_scope\nstate_machine\nsupported_actions\nunsupported_actions\ncentral_inventory_dependency\nexternal_provider_dependency\nidempotency_requirement\nconcurrency_requirement\naudit_requirement\ncurrent_status\nhistorical_status\ncurrent_evidence\nremaining_gap\nrisk\ntest_command\nproduction_evidence_required\nrelease_gate\n\n```\n\nUse only evidence-backed statuses.\n\nAllowed examples:\n\n```text\nVERIFIED\nVERIFIED_ISOLATED\nVERIFIED_CONFIGURED\nVERIFIED_PROVIDER\nPARTIAL\nUNVERIFIED\nNONFUNCTIONAL\nBLOCKED_BY_DEPENDENCY\nFAIL_CLOSED\n\n```\n\nNever invent a status.\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R08",
+      "title": "DATABASE AUTHORITY FORENSICS",
+      "source_start_line": 472,
+      "source_end_line": 534,
+      "source_text": "# 8. DATABASE AUTHORITY FORENSICS\n\nTrace every writer.\n\nSearch the entire repository for every place that can mutate:\n\n- inventory\n- reservation\n- sellable quantity\n- orders\n- returns\n- PO quantities\n- receipts\n- dispatch state\n- provider listing state\n- mappings\n- users\n- roles\n- tenants\n\nProduce:\n\n```text\nwriter\n\u2192 endpoint\n\u2192 service\n\u2192 database\n\u2192 table/document\n\u2192 transaction\n\u2192 event\n\u2192 downstream consumer\n\n```\n\nFind unauthorized alternative writers.\n\nEspecially detect:\n\n```text\nMongo quantity writer\nlegacy stock writer\ndirect SQL update\nadmin repair endpoint\nseed script\nfixture route\nbackground worker\nmigration\nmanual endpoint\n\n```\n\nIf Central Inventory is authoritative, every competing writer must be:\n\n- removed\n- migrated\n- guarded\n- reconciled\n- explicitly classified\n\nDo not leave silent bypasses.\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R09",
+      "title": "DUAL-DATABASE FAILURE ENGINEERING",
+      "source_start_line": 535,
+      "source_end_line": 573,
+      "source_text": "# 9. DUAL-DATABASE FAILURE ENGINEERING\n\nThe system uses multiple persistence domains.\n\nAssume crashes can happen between any two operations.\n\nTest scenarios such as:\n\n```text\nMongo succeeds \u2192 PostgreSQL fails\nPostgreSQL succeeds \u2192 Mongo fails\nMongo commit \u2192 process dies\nPostgreSQL commit \u2192 worker dies\noutbox write succeeds \u2192 worker crashes\nprovider accepts \u2192 response is lost\nprovider rejects \u2192 local request thinks it succeeded\nprovider accepts \u2192 local transaction rolls back\nwebhook arrives before polling\npolling arrives before webhook\nduplicate webhook\nchanged duplicate webhook\nout-of-order webhook\nworker retry after partial completion\n\n```\n\nFor each case determine:\n\n- whether the system remains correct\n- whether it becomes inconsistent\n- whether reconciliation detects it\n- whether recovery is automatic\n- whether operator intervention is required\n- whether the UI truthfully represents the state\n\nDo not claim atomicity across systems unless it is actually implemented.\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R10",
+      "title": "REAL-TIME MEANS TRACEABLE PROPAGATION",
+      "source_start_line": 574,
+      "source_end_line": 621,
+      "source_text": "# 10. REAL-TIME MEANS TRACEABLE PROPAGATION\n\nNever use the phrase \u201creal-time\u201d merely because an API responds quickly.\n\nFor every asynchronous operation measure:\n\n```text\nT0 input\nT1 ingress acknowledgement\nT2 authoritative transaction commit\nT3 outbox enqueue\nT4 worker start\nT5 provider request\nT6 provider acknowledgement\nT7 provider readback\nT8 UI refresh\nT9 notification delivery\n\n```\n\nRecord:\n\n- timestamps\n- correlation ID\n- request ID\n- event ID\n- job ID\n- provider request ID\n- provider response\n- retry count\n- queue age\n- failure reason\n\nCalculate actual:\n\n- p50\n- p95\n- p99\n- max\n- error rate\n- queue delay\n- provider latency\n- readback delay\n\nNever convert a handful of local 5\u201317 ms dependency reads into a production SLA.\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R11",
+      "title": "WEBHOOK FORENSICS",
+      "source_start_line": 622,
+      "source_end_line": 694,
+      "source_text": "# 11. WEBHOOK FORENSICS\n\nFor every webhook integration verify:\n\n### Authentication\n\n- signature validation\n- timestamp tolerance\n- secret rotation\n- replay resistance\n- correct raw-body handling\n\n### Persistence\n\nPersist the incoming event before claiming durable acceptance.\n\n### Idempotency\n\nSame event:\n\n```text\n\u2192 same result\n\u2192 no duplicate business effect\n\n```\n\nChanged payload with same event identity:\n\n```text\n\u2192 reject\n\u2192 do not mutate business state\n\n```\n\n### Ordering\n\nHandle:\n\n```text\nA\nB\nA\n\n```\n\nand:\n\n```text\nB\nA\n\n```\n\ncorrectly.\n\nUse provider revision/version/event timestamps only when their semantics are actually reliable.\n\n### Failure\n\nTest:\n\n- duplicate\n- delayed\n- reordered\n- malformed\n- invalid signature\n- valid signature with invalid business data\n- provider retry storm\n- worker outage\n- database outage\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R12",
+      "title": "WORKER / QUEUE ENGINEERING",
+      "source_start_line": 695,
+      "source_end_line": 724,
+      "source_text": "# 12. WORKER / QUEUE ENGINEERING\n\nInspect every worker.\n\nVerify:\n\n- startup behavior\n- graceful shutdown\n- heartbeat\n- lease handling\n- retry policy\n- exponential backoff\n- maximum attempts\n- dead-letter behavior\n- poison message handling\n- duplicate execution\n- visibility timeout\n- stuck jobs\n- queue age\n- concurrency limits\n- provider rate limits\n- circuit breaking\n- recovery after restart\n\nA worker that silently stops is a production incident.\n\nA worker that retries infinitely is also a production incident.\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R13",
+      "title": "PROVIDER INTEGRATION AUTHENTICITY",
+      "source_start_line": 725,
+      "source_end_line": 765,
+      "source_text": "# 13. PROVIDER INTEGRATION AUTHENTICITY\n\nTreat provider states separately:\n\n```text\nconfigured\nauthorized\nauthenticated\ncatalog accessible\ninventory writable\norders readable\norders writable\nwebhook registered\nwebhook receiving\nfulfillment writable\nprovider acknowledgement received\nprovider readback verified\n\n```\n\nNever collapse these into:\n\n```text\nConnected = Yes\n\n```\n\nFor Shopify, Amazon, WooCommerce, AJIO, Myntra, Flipkart, Snapdeal, quick-commerce providers, WhatsApp, carriers, government systems, POS/accounting systems, etc.:\n\nDetermine the exact contract before activating behavior.\n\nIf a provider cannot be genuinely tested:\n\n- keep it disabled\n- show its exact state\n- do not fabricate synchronization\n- do not generate fake acknowledgements\n- do not mark stock as published\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R14",
+      "title": "GENUINE REAL-TIME OPERATIONS, INVENTORY MANAGEMENT & CREDENTIAL REQUIREMENTS",
+      "source_start_line": 766,
+      "source_end_line": 1170,
+      "source_text": "# 14. GENUINE REAL-TIME OPERATIONS, INVENTORY MANAGEMENT & CREDENTIAL REQUIREMENTS\n\nThis is a **mandatory production-authenticity investigation**.\n\nDo not assume that real-time operations or inventory management are genuinely operational because the code, UI, API routes, environment variable names, provider names, or configuration objects exist.\n\nBefore implementing, enabling, or declaring any real-time operational workflow complete, determine the **actual external systems, genuine credentials, access scopes, account relationships, infrastructure, and business prerequisites** required for that workflow to operate in the real world.\n\n## 14.1 Identify the genuine operational path\n\nFor every critical real-time operation reconstruct the actual path:\n\n```text\nReal user / operator\n\u2192 authenticated session\n\u2192 authorized role\n\u2192 tenant / company\n\u2192 SKU / item identity\n\u2192 location / warehouse identity\n\u2192 internal API\n\u2192 authoritative database transaction\n\u2192 Central Inventory event / ledger\n\u2192 outbox / queue\n\u2192 worker / integration service\n\u2192 authenticated external provider\n\u2192 provider acknowledgement\n\u2192 provider-side state change\n\u2192 provider readback\n\u2192 reconciliation\n\u2192 UI / notification / operational result\n```\n\nDo not skip a boundary simply because the previous layer works.\n\nFor each operation determine what is **actually required in production**, not merely what is present in the repository.\n\n## 14.2 Determine exactly which genuine credentials are required\n\nFor every real-time integration identify the exact credential and access mechanism required, including where applicable:\n\n- database credentials\n- API keys\n- API secrets\n- OAuth client ID\n- OAuth client secret\n- access tokens\n- refresh tokens\n- service-account credentials\n- webhook signing secrets\n- webhook registration credentials\n- merchant / seller IDs\n- store / channel IDs\n- warehouse / location IDs\n- tenant IDs\n- carrier credentials\n- shipping-provider credentials\n- marketplace credentials\n- WMS / ERP credentials\n- cloud IAM permissions\n- queue / broker credentials\n- object-storage credentials\n- notification-provider credentials\n- callback / redirect configuration\n- provider-specific account identifiers\n- provider-specific API versions or base URLs\n\nDo not invent any credential.\n\nDo not generate fake credentials to make a test pass.\n\nDo not treat `.env.example`, placeholder values, configuration field names, seeded records, test fixtures, or mock tokens as proof of genuine access.\n\n## 14.3 Verify credential authenticity, scope and ownership\n\nFor every credential/configuration determine:\n\n```text\nCredential type\n\u2192 actual source/configuration location\n\u2192 owning provider/service\n\u2192 owning account\n\u2192 environment (local/test/staging/production)\n\u2192 tenant/company\n\u2192 seller/merchant/store\n\u2192 warehouse/location\n\u2192 permitted scopes\n\u2192 expiration/rotation behavior\n\u2192 current verification status\n\u2192 operations it can actually perform\n```\n\nA credential is **not verified** merely because authentication succeeds.\n\nVerify separately whether it is authorized to perform the operations required by the business workflow.\n\nExamples:\n\n```text\nCan read catalog?\nCan read inventory?\nCan write inventory?\nCan read orders?\nCan create/update fulfillment?\nCan cancel orders?\nCan read returns?\nCan access locations?\nCan register/receive webhooks?\nCan perform reconciliation?\nCan access the required warehouse?\nCan operate against the correct seller/channel?\n```\n\nIf authentication succeeds but the required scope is missing, classify the integration as insufficiently authorized.\n\nDo not broaden permissions unnecessarily just to make the workflow work.\n\n## 14.4 Verify the actual credentials needed for inventory management\n\nFor the inventory-management domain specifically, identify the genuine credentials and permissions needed for:\n\n```text\nSKU master\nSKU/channel mapping\nWarehouse/location master\nInventory reads\nInventory writes\nReservation\nRelease\nAdjustment\nReceipt\nTransfer\nDispatch\nReturn\nReconciliation\nProvider inventory synchronization\nProvider inventory readback\n```\n\nDetermine which systems require credentials for each operation.\n\nFor every inventory writer answer:\n\n```text\nWho is allowed to initiate it?\nWhich account authenticates it?\nWhich role authorizes it?\nWhich database records are authoritative?\nWhich external system is updated?\nWhich credential performs that update?\nWhich scope permits the update?\nHow is the external result verified?\nHow is failure recovered?\n```\n\nNever allow a local database row or UI status such as `Connected`, `Configured`, `Synced`, `Published`, `Completed`, or `Success` to substitute for genuine provider evidence.\n\n## 14.5 Verify real-time provider access end-to-end\n\nFor each enabled provider independently prove:\n\n```text\nconfigured\n\u2192 authenticated\n\u2192 authorized\n\u2192 correct account\n\u2192 correct tenant/channel\n\u2192 catalog accessible\n\u2192 inventory readable\n\u2192 inventory writable\n\u2192 orders readable\n\u2192 required order/fulfillment operations writable\n\u2192 webhook registered\n\u2192 webhook received and verified\n\u2192 worker processing active\n\u2192 provider acknowledgement received\n\u2192 provider-side state changed\n\u2192 provider readback matches approved Central Inventory state\n\u2192 reconciliation succeeds\n```\n\nIf any step is not proven, do not mark the entire integration as live.\n\nUse precise states such as:\n\n```text\nNOT_CONFIGURED\nCONFIGURED_NOT_VERIFIED\nAUTHENTICATION_FAILED\nAUTHENTICATED_INSUFFICIENT_SCOPE\nAUTHENTICATED_WRONG_ACCOUNT\nSANDBOX_ONLY\nPROVIDER_WRITE_UNVERIFIED\nWEBHOOK_UNVERIFIED\nWORKER_UNVERIFIED\nREADBACK_UNVERIFIED\nPARTIALLY_OPERATIONAL\nPROVIDER_VERIFIED\n```\n\n## 14.6 Determine what is required before claiming \"real-time\"\n\nThe phrase **real-time** must correspond to an actual measurable operational path.\n\nFor every real-time inventory or order operation measure:\n\n```text\nT0 user/provider input\nT1 ingress acknowledgement\nT2 Central Inventory commit\nT3 outbox enqueue\nT4 worker start\nT5 external provider request\nT6 provider acknowledgement\nT7 provider-side readback\nT8 reconciliation\nT9 UI observation\n```\n\nRecord:\n\n- timestamps\n- correlation ID\n- request ID\n- event ID\n- job ID\n- provider request ID\n- credential/account identity in redacted form\n- retry count\n- queue delay\n- provider latency\n- readback delay\n- final reconciliation status\n- failure/recovery result\n\nDo not advertise \"real-time\" from internal API speed alone.\n\nDo not convert local dependency latency into provider latency or a production SLA.\n\n## 14.7 Verify operational prerequisites beyond credentials\n\nCredentials are only one dependency.\n\nFor each real-time operation determine whether the following are genuinely available and correctly mapped:\n\n```text\ntenant\ncompany\nuser\nrole\nSKU\nSKU mapping\npack/unit conversion\nwarehouse\nlocation\nbin where applicable\nchannel\nseller/merchant account\nprovider account\ninventory authority\nopening balance\nCentral Inventory\noutbox\nqueue\nworker\nwebhook\nprovider API\nprovider permissions\ncarrier where applicable\nreconciliation mechanism\nobservability\n```\n\nIf a required prerequisite is missing, identify exactly which stage is blocked.\n\nDo not bypass the missing dependency with hardcoded IDs, local-only state, fake credentials, mock responses, fabricated acknowledgements, or simulated provider synchronization.\n\n## 14.8 Verify credential failure and rotation behavior\n\nSafely test in a disposable/test environment where possible:\n\n```text\nvalid credential\nexpired credential\nrevoked credential\nwrong credential\nwrong scope\nwrong account\nprovider 401\nprovider 403\nprovider 429\nprovider timeout\nprovider 5xx\nnetwork failure\ncredential rotation\nworker restart during credential rotation\n```\n\nVerify:\n\n- authentication failure is visible\n- authorization failure is distinguishable from transient failure\n- permanent credential failures are not retried forever\n- transient failures use appropriate retry/backoff\n- operations do not falsely appear successful\n- existing accepted work is recoverable\n- credentials are never exposed in logs\n- rotation does not silently break unrelated tenants/providers\n- stale credentials are not accidentally reused\n\n## 14.9 Inventory truth must survive provider failure\n\nWhen an external provider is unavailable:\n\n```text\nProvider unavailable\n\u2260\nCentral Inventory unavailable\n\u2260\nphysical stock changed\n```\n\nThe system must preserve the authoritative internal state and clearly represent the external synchronization state.\n\nFor example:\n\n```text\nCentral Inventory = 97\nProvider update = pending\nProvider readback = unavailable\n```\n\nmust never become:\n\n```text\nProvider synced = true\n```\n\nwithout evidence.\n\nDetermine whether the correct state is:\n\n```text\nPENDING\nRETRYING\nFAILED_REQUIRES_RECONCILIATION\nDEAD_LETTERED\nRECONCILIATION_REQUIRED\n```\n\nand verify the recovery path.\n\n## 14.10 Verify no credential or provider simulation is leaking into production behavior\n\nSearch the repository and runtime configuration for:\n\n- default credentials\n- placeholder tokens\n- fake provider IDs\n- mock adapters\n- local provider simulators\n- hardcoded API responses\n- fake webhook generators\n- seeded provider accounts\n- development bypasses\n- test-only authentication paths\n- environment fallbacks\n- credentials embedded in frontend code\n- secrets in logs\n- secrets in database fixtures\n- legacy plaintext credentials\n\nDetermine whether any of these can influence a production workflow.\n\nIf they can, remove or isolate the path safely.\n\n## 14.11 Final credential/evidence rule\n\nFor every real-time operation report separately:\n\n```text\nCode exists\nAuthentication verified\nAuthorization verified\nCorrect account verified\nCorrect tenant verified\nRequired scopes verified\nInternal persistence verified\nCentral Inventory verified\nWorker verified\nProvider request verified\nProvider acknowledgement verified\nProvider state change verified\nProvider readback verified\nReconciliation verified\nRecovery verified\n```\n\nOnly mark the operation **provider-verified / genuinely real-time operational** when the evidence supports the complete required chain.\n\nIf credentials, provider access, account mapping, scopes, worker execution, or readback cannot be verified, say so explicitly and keep the workflow disabled or fail-closed where appropriate.\n\n**The objective is not to make the system look connected. The objective is to prove that a real authorized actor can cause a real business operation to propagate through the actual inventory and integration architecture and reach verified external state without creating an incorrect stock or order state.**\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R15",
+      "title": "SECURITY \u2014 GO BEYOND THE DOSSIER",
+      "source_start_line": 1171,
+      "source_end_line": 1300,
+      "source_text": "# 15. SECURITY \u2014 GO BEYOND THE DOSSIER\n\nPerform a dedicated application-security audit.\n\nCheck at minimum:\n\n### Authentication\n\n- session handling\n- token lifetime\n- refresh behavior\n- logout invalidation\n- password policy\n- credential leakage\n- session fixation\n\n### Authorization\n\nTest every important endpoint as:\n\n```text\nunauthenticated\nwrong tenant\nwrong role\nread-only user\noperator\nmanager\nadministrator\n\n```\n\nDo not trust frontend permission checks.\n\nAuthorization must be enforced server-side.\n\n### Multi-tenancy\n\nAttempt:\n\n```text\ntenant A \u2192 tenant B\ntenant B \u2192 tenant A\nID enumeration\nUUID substitution\nforeign object access\nreport access\nexport access\nfile access\n\n```\n\n### Injection\n\nInspect:\n\n- SQL injection\n- NoSQL injection\n- command injection\n- template injection\n- path traversal\n- header injection\n- log injection\n\n### Web\n\nCheck:\n\n- CSRF\n- CORS\n- CSP\n- XSS\n- clickjacking\n- insecure cookies\n- SameSite\n- Secure\n- HttpOnly\n\n### SSRF\n\nSearch every:\n\n```text\nURL fetch\nwebhook tester\nprovider callback\nimage import\nfile import\nremote document\nintegration URL\n\n```\n\nfor SSRF risk.\n\n### Upload security\n\nTest:\n\n- MIME spoofing\n- extension spoofing\n- oversized files\n- malicious filenames\n- path traversal\n- ZIP bombs\n- executable uploads\n- HTML/SVG uploads\n- formula injection in CSV/XLSX\n\n### Secrets\n\nSearch:\n\n- source code\n- Git history if available\n- logs\n- database\n- fixtures\n- error messages\n- generated reports\n- client bundles\n- localStorage\n- sessionStorage\n- configuration files\n\nfor secrets and credentials.\n\nNever expose them in the final report.\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R16",
+      "title": "DATA INTEGRITY ATTACKS",
+      "source_start_line": 1301,
+      "source_end_line": 1347,
+      "source_text": "# 16. DATA INTEGRITY ATTACKS\n\nDo not only test normal input.\n\nAttack business invariants.\n\nExamples:\n\n```text\nquantity = -1\nquantity = 0\nquantity = 0.000001\nquantity = 999999999\nquantity = NaN\nquantity = Infinity\nquantity = \"5\"\nquantity = null\n\n```\n\nTry:\n\n```text\nduplicate SKU\nduplicate mapping\nduplicate order\nduplicate PO receipt\nduplicate return\nduplicate transfer\nduplicate webhook\nstale version\ndeleted parent\nunknown location\nunknown channel\nwrong tenant\nwrong provider SKU\nwrong pack size\nwrong unit conversion\n\n```\n\nFor every mutation ask:\n\n> Can this operation make the system mathematically inconsistent?\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R17",
+      "title": "MONEY / FINANCIAL CORRECTNESS",
+      "source_start_line": 1348,
+      "source_end_line": 1371,
+      "source_text": "# 17. MONEY / FINANCIAL CORRECTNESS\n\nWhere money exists, inspect:\n\n- decimal precision\n- rounding\n- tax calculation\n- discount calculation\n- coupon application\n- refund amount\n- partial refund\n- currency\n- exchange rate\n- inclusive/exclusive tax\n- line total vs order total\n- integer cents vs floating point\n- negative amounts\n- duplicate settlement\n- reconciliation\n\nNever use floating-point arithmetic for monetary state unless there is a deliberate, verified design.\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R18",
+      "title": "TIME AND DATE FORENSICS",
+      "source_start_line": 1372,
+      "source_end_line": 1405,
+      "source_text": "# 18. TIME AND DATE FORENSICS\n\nExplicitly test:\n\n- Asia/Kolkata\n- UTC\n- database timezone\n- application timezone\n- browser timezone\n- DST where relevant to external systems\n- midnight boundaries\n- date-only fields\n- timestamp fields\n- report date ranges\n- inclusive/exclusive boundaries\n\nTest:\n\n```text\n23:59:59\n00:00:00\nmonth-end\nyear-end\nleap day\nsame-day filtering\ncross-timezone provider event\nlate-arriving event\n\n```\n\nA report that is correct at 2 PM but wrong at midnight is not production-correct.\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R19",
+      "title": "UI MUST NEVER LIE",
+      "source_start_line": 1406,
+      "source_end_line": 1445,
+      "source_text": "# 19. UI MUST NEVER LIE\n\nAudit every button.\n\nFor every action determine:\n\n```text\nvisible?\nenabled?\nauthorized?\nAPI exists?\nvalidation exists?\nmutation exists?\ntransaction exists?\nside effect exists?\nsuccess state exists?\nfailure state exists?\nloading state exists?\nretry state exists?\npartial state exists?\n\n```\n\nEliminate:\n\n- fake success toasts\n- fake progress\n- fake report downloads\n- fabricated counts\n- static dashboard numbers\n- placeholder success\n- meaningless loaders\n- dead buttons\n- actions that silently do nothing\n- UI states that contradict backend truth\n\nIf something is unsupported, make the UI explicitly communicate that.\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R20",
+      "title": "REPORT FORENSICS",
+      "source_start_line": 1446,
+      "source_end_line": 1479,
+      "source_text": "# 20. REPORT FORENSICS\n\nEvery report must be traceable.\n\nFor every number shown:\n\n```text\nUI value\n\u2192 API response\n\u2192 query\n\u2192 source record\n\u2192 event\n\u2192 transaction\n\u2192 timestamp\n\n```\n\nTest whether:\n\n- UI matches API\n- API matches DB\n- DB matches ledger\n- export matches UI\n- filters actually filter\n- pagination is correct\n- totals reconcile\n- dates are correct\n- tenant filtering is correct\n- permissions are correct\n\nNever synthesize a business metric because the screen expects one.\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R21",
+      "title": "FILE / EXPORT AUTHENTICITY",
+      "source_start_line": 1480,
+      "source_end_line": 1508,
+      "source_text": "# 21. FILE / EXPORT AUTHENTICITY\n\nFor every CSV/XLSX/PDF/download:\n\nVerify:\n\n- MIME type\n- file signature\n- extension\n- actual binary content\n- encoding\n- headers\n- formulas\n- row counts\n- totals\n- tenant data\n- authorization\n- filename\n- duplicate generation\n- stale download\n- partial generation\n- corrupted output\n\nDo not return HTML with a\u00a0`.pdf`\u00a0extension.\n\nDo not return CSV text while claiming an XLSX exists.\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R22",
+      "title": "CONCURRENCY TESTING IS MANDATORY",
+      "source_start_line": 1509,
+      "source_end_line": 1555,
+      "source_text": "# 22. CONCURRENCY TESTING IS MANDATORY\n\nFor every state-changing operation, create concurrent races.\n\nExamples:\n\n```text\ntwo receipts\ntwo reservations\ntwo cancellations\ntwo returns\ntwo adjustments\ntwo transfers\ntwo SKU links\ntwo edits\ntwo imports\ntwo webhook deliveries\ntwo workers\n\n```\n\nVerify:\n\n```text\nexactly one valid commit\nor\nwell-defined commutative/idempotent result\n\n```\n\nLook specifically for:\n\n```text\nTOCTOU\nlost updates\ndouble spend\ndouble reservation\nduplicate event\nstale overwrite\nunique constraint race\nphantom read\nincorrect retry\n\n```\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R23",
+      "title": "FAILURE INJECTION",
+      "source_start_line": 1556,
+      "source_end_line": 1587,
+      "source_text": "# 23. FAILURE INJECTION\n\nDo not only test success.\n\nInject failure after each important boundary:\n\n```text\nbefore validation\nafter validation\nbefore DB write\nafter DB write\nbefore second DB write\nafter second DB write\nbefore event\nafter event\nbefore outbox\nafter outbox\nbefore worker\nduring worker\nafter provider request\nbefore provider response\nafter provider response\nbefore readback\nafter readback\nbefore UI refresh\n\n```\n\nThen determine whether recovery produces the same correct final state.\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R24",
+      "title": "CRASH-RECOVERY TESTING",
+      "source_start_line": 1588,
+      "source_end_line": 1615,
+      "source_text": "# 24. CRASH-RECOVERY TESTING\n\nKill/restart:\n\n- API\n- worker\n- frontend\n- database connection\n- provider connection\n- queue consumer\n\nduring real workflows.\n\nAfter restart verify:\n\n```text\nno duplicate inventory\nno lost order\nno lost event\nno lost audit\nno phantom success\nno permanently stuck job\nno incorrect UI state\n\n```\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R25",
+      "title": "OBSERVABILITY",
+      "source_start_line": 1616,
+      "source_end_line": 1666,
+      "source_text": "# 25. OBSERVABILITY\n\nEvery consequential operation must be traceable.\n\nRequire:\n\n```text\nrequest_id\ncorrelation_id\ntenant_id\nactor_id\nevent_id\njob_id\nprovider_request_id\n\n```\n\nwhere appropriate.\n\nLogs must answer:\n\n> What happened?\n\n> To which tenant?\n\n> By whom?\n\n> Which object?\n\n> Which request?\n\n> Which event?\n\n> Which provider?\n\n> What failed?\n\n> Was it retried?\n\n> What is the final state?\n\nDo not log:\n\n- passwords\n- access tokens\n- API keys\n- signatures\n- sensitive customer data unnecessarily\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R26",
+      "title": "BACKUP / RESTORE",
+      "source_start_line": 1667,
+      "source_end_line": 1689,
+      "source_text": "# 26. BACKUP / RESTORE\n\nDo not accept \u201cdatabase backups are configured\u201d as evidence.\n\nVerify:\n\n- backup existence\n- retention\n- encryption\n- restore procedure\n- restore integrity\n- migration compatibility\n- point-in-time recovery where applicable\n- RPO\n- RTO\n- restoration of dependent services\n- restoration of queues/outbox state\n- restoration of provider reconciliation state\n\nPerform an actual restore rehearsal in a disposable environment where possible.\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R27",
+      "title": "DEPLOYMENT / PRODUCTION ENGINEERING",
+      "source_start_line": 1690,
+      "source_end_line": 1720,
+      "source_text": "# 27. DEPLOYMENT / PRODUCTION ENGINEERING\n\nInspect:\n\n- Docker/build\n- environment configuration\n- Render/deployment configuration\n- startup ordering\n- health checks\n- readiness checks\n- liveness checks\n- worker startup\n- migrations\n- rollback\n- graceful shutdown\n- connection pooling\n- resource limits\n- memory behavior\n- CPU behavior\n- disk usage\n- log rotation\n- HTTPS\n- callback URLs\n- CORS\n- secrets\n- environment separation\n\nNever call a deployment \u201cproduction ready\u201d merely because the build succeeds.\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R28",
+      "title": "PERFORMANCE",
+      "source_start_line": 1721,
+      "source_end_line": 1744,
+      "source_text": "# 28. PERFORMANCE\n\nDo not optimize blindly.\n\nFirst identify:\n\n- slow queries\n- N+1 requests\n- unnecessary renders\n- large payloads\n- unbounded reports\n- missing indexes\n- blocking worker tasks\n- serial provider calls\n- duplicate reads\n- excessive polling\n- memory-heavy imports\n\nThen measure.\n\nUse actual measurements rather than assumptions.\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R29",
+      "title": "LOAD / STRESS / SOAK",
+      "source_start_line": 1745,
+      "source_end_line": 1781,
+      "source_text": "# 29. LOAD / STRESS / SOAK\n\nFor critical flows test realistic concurrency.\n\nAt minimum consider:\n\n```text\nnormal load\npeak load\nburst load\nslow provider\nprovider timeout\nworker restart\ndatabase latency\nqueue backlog\nduplicate event storm\nlarge import\nlarge report\n\n```\n\nObserve:\n\n- latency\n- error rate\n- DB connections\n- memory\n- CPU\n- queue age\n- retry volume\n- provider rate limiting\n- transaction contention\n\nDo not create artificial benchmark claims from a local development laptop.\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R30",
+      "title": "REFERENCE PARITY",
+      "source_start_line": 1782,
+      "source_end_line": 1809,
+      "source_text": "# 30. REFERENCE PARITY\n\nWhere the system is intended to reproduce an existing eRetail workflow:\n\nDo not assume visual similarity equals functional parity.\n\nCompare:\n\n- navigation\n- labels\n- field semantics\n- validation\n- role behavior\n- state transitions\n- error behavior\n- search behavior\n- filters\n- pagination\n- reports\n- workflow sequence\n- business rules\n\nWhere evidence is insufficient, mark parity unverified.\n\nDo not invent behavior to make the replica appear complete.\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R31",
+      "title": "DUPLICATE / GENERIC IMPLEMENTATION FORENSICS",
+      "source_start_line": 1810,
+      "source_end_line": 1838,
+      "source_text": "# 31. DUPLICATE / GENERIC IMPLEMENTATION FORENSICS\n\nSearch for:\n\n- generic CRUD pages\n- copied components\n- generic API handlers\n- generic database models\n- placeholder records\n- hardcoded statuses\n- generic success responses\n- shared fake datasets\n- \u201cdemo\u201d\n- \u201ctest\u201d\n- \u201csample\u201d\n- \u201cmock\u201d\n- \u201cplaceholder\u201d\n- \u201cTODO\u201d\n- \u201ccoming soon\u201d\n- default credentials\n- seeded fallback data\n- fabricated metrics\n\nBut do not remove legitimate test infrastructure simply because it contains test data.\n\nDetermine whether test behavior can leak into production.\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R32",
+      "title": "TEST PYRAMID",
+      "source_start_line": 1839,
+      "source_end_line": 1890,
+      "source_text": "# 32. TEST PYRAMID\n\nCreate multiple levels:\n\n### Unit\n\nBusiness invariants.\n\n### Integration\n\nDatabase transactions.\n\n### Contract\n\nProvider/API contracts.\n\n### Component\n\nUI behavior.\n\n### Browser\n\nReal authenticated workflows.\n\n### End-to-end\n\nCross-system business flows.\n\n### Failure injection\n\nCrash/retry/recovery.\n\n### Security\n\nAuthorization and abuse cases.\n\n### Concurrency\n\nRace testing.\n\n### Reconciliation\n\nIndependent source comparison.\n\n### Regression\n\nEvery repaired defect.\n\nA green unit-test suite is not production evidence.\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R33",
+      "title": "EVERY BUG MUST HAVE A ROOT CAUSE",
+      "source_start_line": 1891,
+      "source_end_line": 1918,
+      "source_text": "# 33. EVERY BUG MUST HAVE A ROOT CAUSE\n\nFor each discovered defect record:\n\n```text\nsymptom\nactual impact\nreproduction\nroot cause\naffected boundary\nwhy existing tests missed it\nminimal correct fix\narchitectural fix if needed\nregression test\nsecurity implication\ndata migration implication\noperational implication\nverification evidence\nremaining limitation\n\n```\n\nDo not patch symptoms repeatedly.\n\nIf five endpoints fail because they share one incorrect service abstraction, fix the abstraction.\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R34",
+      "title": "DO NOT OVER-REFACTOR",
+      "source_start_line": 1919,
+      "source_end_line": 1936,
+      "source_text": "# 34. DO NOT OVER-REFACTOR\n\nPreserve working behavior.\n\nBefore modifying shared infrastructure determine:\n\n- dependency radius\n- callers\n- consumers\n- database impact\n- migration impact\n- integration impact\n- regression risk\n\nPrefer small, reversible, evidence-driven changes.\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R35",
+      "title": "CHANGE SAFETY",
+      "source_start_line": 1937,
+      "source_end_line": 1965,
+      "source_text": "# 35. CHANGE SAFETY\n\nBefore each significant change:\n\n```text\nWhat depends on this?\nWhat can break?\nWhat database state changes?\nWhat external contract changes?\nWhat migration is required?\nHow will rollback work?\nHow will I prove no regression?\n\n```\n\nAfter the change:\n\n```text\ntargeted test\nintegration test\nbrowser test\nfailure test\nsecurity test\nregression test\n\n```\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R36",
+      "title": "SELF-CRITIQUE LOOP",
+      "source_start_line": 1966,
+      "source_end_line": 2021,
+      "source_text": "# 36. SELF-CRITIQUE LOOP\n\nAfter you believe a workflow is fixed:\n\nSTOP.\n\nDo not immediately declare success.\n\nAttack your own implementation.\n\nAsk:\n\n> What assumption am I making?\n\n> What if the request happens twice?\n\n> What if two users do it simultaneously?\n\n> What if the database commits and the process dies?\n\n> What if the provider accepts but the response disappears?\n\n> What if the webhook arrives twice?\n\n> What if it arrives out of order?\n\n> What if the worker is offline for 30 minutes?\n\n> What if the user belongs to another tenant?\n\n> What if the record is deleted halfway through?\n\n> What if the mapping is wrong?\n\n> What if the provider changes its response?\n\n> What if the UI refreshes before the worker completes?\n\n> What if the same event is replayed tomorrow?\n\n> What if the system restarts during the transaction?\n\n> What if the configured database is unavailable?\n\n> What if the report runs at midnight?\n\n> What if the generated file is corrupted?\n\n> What if the user has no permission?\n\n> What if the input is malicious?\n\nThen test those scenarios.\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R37",
+      "title": "TWO-ENGINEER REVIEW",
+      "source_start_line": 2022,
+      "source_end_line": 2045,
+      "source_text": "# 37. TWO-ENGINEER REVIEW\n\nBefore declaring a critical workflow complete, perform an internal second-engineer review.\n\nEngineer A:\n\n> \u201cHere is why this implementation is correct.\u201d\n\nEngineer B:\n\n> \u201cHere are the ways it can still fail.\u201d\n\nResolve the disagreement through:\n\n- source evidence\n- executable tests\n- database readback\n- provider readback\n- trace evidence\n\nNever resolve it through confidence.\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R38",
+      "title": "RELEASE GATES",
+      "source_start_line": 2046,
+      "source_end_line": 2093,
+      "source_text": "# 38. RELEASE GATES\n\nRespect the dossier's G0\u2013G8 release-gate concept.\n\nDo not mark a gate complete merely because code exists.\n\nRequire evidence for:\n\n### G0\n\nData-plane recovery.\n\n### G1\n\nMaster-data provenance.\n\n### G2\n\nStock authority.\n\n### G3\n\nOrder and fulfillment.\n\n### G4\n\nIntegrations.\n\n### G5\n\nPreviously nonfunctional modules.\n\n### G6\n\nSecurity and reliability.\n\n### G7\n\nReference fidelity.\n\n### G8\n\nLaunch decision.\n\nIf a gate is not evidenced, keep it open.\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R39",
+      "title": "PRODUCTION PILOT TRACE",
+      "source_start_line": 2094,
+      "source_end_line": 2151,
+      "source_text": "# 39. PRODUCTION PILOT TRACE\n\nFor every critical pilot workflow capture:\n\n```text\nT0 input\nT1 ingress acknowledgement\nT2 central transaction\nT3 outbox/worker\nT4 provider response\nT5 provider readback\nT6 UI/notification\nT7 recovery\n\n```\n\nRecord:\n\n```text\ntimestamp\ntenant\nactor\nrequest ID\ncorrelation ID\nevent ID\njob ID\nprovider ID\ndatabase state\nbefore quantity\nafter quantity\nretry count\nlatency\nfailure\nrecovery\nfinal reconciliation\n\n```\n\nNever fill an unknown measurement with a plausible value.\n\nUnknown means:\n\n`UNKNOWN`\n\nnot:\n\n`0`\n\nnot:\n\n`<100ms`\n\nnot:\n\n`real-time`\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R40",
+      "title": "REAL PRODUCTION READINESS STANDARD",
+      "source_start_line": 2152,
+      "source_end_line": 2193,
+      "source_text": "# 40. REAL PRODUCTION READINESS STANDARD\n\nA workflow may be called:\n\n### Code-complete\n\nwhen implementation exists.\n\n### Test-complete\n\nwhen automated tests pass.\n\n### Environment-verified\n\nwhen configured infrastructure has been exercised.\n\n### Provider-verified\n\nwhen real provider interaction and readback have been proven.\n\n### Production-ready\n\nonly when:\n\n- business workflow works\n- persistence is correct\n- concurrency is safe\n- idempotency is safe\n- security is verified\n- recovery is verified\n- observability exists\n- external dependencies are verified\n- reports are truthful\n- permissions are correct\n- deployment is verified\n- rollback/recovery exists\n- residual risks are explicitly accepted\n\nDo not collapse these states.\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R41",
+      "title": "ABSOLUTE ANTI-FABRICATION RULE",
+      "source_start_line": 2194,
+      "source_end_line": 2238,
+      "source_text": "# 41. ABSOLUTE ANTI-FABRICATION RULE\n\nNever manufacture:\n\n- database rows\n- provider responses\n- inventory quantities\n- order states\n- report metrics\n- latency measurements\n- successful integrations\n- webhook delivery\n- carrier acknowledgements\n- user permissions\n- backup success\n- restore success\n- security compliance\n- production readiness\n\nIf something was not observed:\n\nsay it was not observed.\n\nIf something was only tested in generated databases:\n\nsay:\n\n`isolated/generated environment`\n\nIf provider propagation was not measured:\n\nsay:\n\n`provider propagation unverified`\n\nIf Mongo is unavailable:\n\ndo not substitute memory as production persistence.\n\nIf a workflow is unsupported:\n\nfail closed.\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R42",
+      "title": "IMPLEMENTATION ORDER",
+      "source_start_line": 2239,
+      "source_end_line": 2338,
+      "source_text": "# 42. IMPLEMENTATION ORDER\n\nDo not randomly fix modules.\n\nPrioritize by dependency and business risk:\n\n## Phase 0 \u2014 Establish reality\n\n- inspect repository\n- inspect architecture\n- inspect migrations\n- inspect routes\n- inspect workers\n- inspect integrations\n- inspect environment\n- reproduce dossier findings\n- establish current baseline\n\n## Phase 1 \u2014 Data-plane correctness\n\n- Mongo connectivity\n- PostgreSQL integrity\n- migrations\n- indexes\n- tenant isolation\n- master-data provenance\n\n## Phase 2 \u2014 Central Inventory\n\n- balances\n- events\n- reservations\n- idempotency\n- concurrency\n- reconciliation\n\n## Phase 3 \u2014 Procurement/inbound\n\n- PO\n- release\n- receipt\n- QC\n- putaway\n- Central Inventory\n\n## Phase 4 \u2014 Order lifecycle\n\n- provider ingress\n- reservation\n- allocation\n- picking\n- packing\n- dispatch\n- provider readback\n\n## Phase 5 \u2014 Returns/cancellations\n\n- cancellation\n- release\n- return\n- QC\n- restock\n- refund reconciliation\n\n## Phase 6 \u2014 Transfers/WMS\n\n- location transfer\n- bin mapping\n- LPN\n- custody\n- destination receipt\n\n## Phase 7 \u2014 Integrations\n\nOne provider at a time.\n\nNever activate ten half-built connectors.\n\n## Phase 8 \u2014 Reports\n\nBuild reports from authoritative records.\n\n## Phase 9 \u2014 Security/reliability\n\nComplete attack, failure, concurrency, recovery and observability testing.\n\n## Phase 10 \u2014 Reference parity\n\nOnly after the underlying workflow is correct.\n\n## Phase 11 \u2014 Production pilot\n\nTrace actual end-to-end events.\n\n## Phase 12 \u2014 Final release audit\n\nRe-run everything.\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R43",
+      "title": "WHAT TO DO WITH THE CURRENT 170 MODULES",
+      "source_start_line": 2339,
+      "source_end_line": 2364,
+      "source_text": "# 43. WHAT TO DO WITH THE CURRENT 170 MODULES\n\nDo not attempt to make all 170 modules green simultaneously.\n\nFor every module:\n\n1. identify its business importance;\n2. identify upstream dependencies;\n3. identify downstream consumers;\n4. determine whether it is operational or configuration-only;\n5. determine whether its current fail-closed state is correct;\n6. determine whether it can safely be implemented;\n7. implement only when its contract is known;\n8. test it;\n9. test its failure behavior;\n10. test authorization;\n11. test concurrency where relevant;\n12. test persistence;\n13. test downstream effects;\n14. test recovery;\n15. update its evidence status.\n\nIf a module cannot yet be implemented correctly, do not fake it.\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R44",
+      "title": "FINAL SOFTWARE-INTERNAL QA",
+      "source_start_line": 2365,
+      "source_end_line": 2429,
+      "source_text": "# 44. FINAL SOFTWARE-INTERNAL QA\n\nBefore finishing, run a complete internal quality sweep.\n\n### Navigation\n\nEvery visible operational menu entry must:\n\n- route correctly\n- render correctly\n- have an intentional state\n- not silently do nothing\n\n### API\n\nEvery endpoint must have:\n\n- authentication\n- authorization\n- validation\n- correct status codes\n- error handling\n- observability\n- appropriate idempotency\n\n### Database\n\nEvery critical write must have:\n\n- ownership\n- constraints\n- transaction strategy\n- concurrency strategy\n- auditability\n\n### Inventory\n\nEvery physical movement must reconcile.\n\n### Integrations\n\nEvery enabled provider must have evidence.\n\n### Reports\n\nEvery number must have provenance.\n\n### Security\n\nEvery privileged action must be server-authorized.\n\n### Reliability\n\nEvery asynchronous process must recover.\n\n### UI\n\nNo fake success.\n\n### Operations\n\nFailures must be detectable and diagnosable.\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R45",
+      "title": "FINAL ADVERSARIAL REVIEW",
+      "source_start_line": 2430,
+      "source_end_line": 2480,
+      "source_text": "# 45. FINAL ADVERSARIAL REVIEW\n\nBefore declaring completion, assume the system is still broken.\n\nSearch for:\n\n```text\nhidden mocks\nhidden fallbacks\ndead routes\nunprotected endpoints\nduplicate writers\nrace conditions\nmissing indexes\nmissing constraints\nfake metrics\nfabricated reports\nincorrect status transitions\nunhandled provider responses\nsilent worker failures\nunbounded retries\nmissing DLQ\nmissing reconciliation\ntenant leaks\nsecret leaks\nunsafe uploads\nSSRF\nCSRF\nXSS\nNoSQL injection\nSQL injection\nstale caches\nstale UI\nincorrect timezone handling\nfinancial rounding errors\norphaned records\nduplicate events\nlost events\npartial commits\nrollback failures\nmigration failures\nbackup failures\nrestore failures\ndeployment failures\n\n```\n\nDo not stop at the first discovered problem.\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R46",
+      "title": "FINAL REPORT",
+      "source_start_line": 2481,
+      "source_end_line": 2636,
+      "source_text": "# 46. FINAL REPORT\n\nAt the end, produce an evidence-backed engineering report containing:\n\n## A. Executive status\n\n```text\nCurrent system state\nProduction readiness state\nCritical blockers\nMajor risks\nVerified capabilities\nUnverified capabilities\n\n```\n\n## B. Before/after defect matrix\n\n```text\nFinding\nOriginal evidence\nRoot cause\nFix\nRegression test\nCurrent evidence\nResidual risk\n\n```\n\n## C. 170-module matrix\n\nFor every module:\n\n```text\nID\nName\nStatus\nWhat works\nWhat does not\nEvidence\nDependency\nRisk\nNext required proof\n\n```\n\n## D. Critical workflow evidence\n\nShow complete traces for:\n\n```text\nSKU \u2192 stock \u2192 listing\nPO \u2192 receipt \u2192 inventory\nprovider order \u2192 reservation \u2192 fulfillment\ncancellation\nreturn\ntransfer\nreplenishment\nmarketplace sync\nalerts\n\n```\n\n## E. Security report\n\nInclude:\n\n```text\nfinding\nseverity\nattack path\naffected component\nfix\nverification\nresidual risk\n\n```\n\nNever include secrets.\n\n## F. Reliability report\n\nInclude:\n\n```text\nfailure injected\nexpected result\nactual result\nrecovery mechanism\ndata integrity result\n\n```\n\n## G. Integration report\n\nFor every provider:\n\n```text\nconfigured\nauthorized\ncatalog verified\nwrite verified\nwebhook verified\nworker verified\nreadback verified\nrecovery verified\ncurrent state\n\n```\n\n## H. Performance report\n\nOnly measured values.\n\nNever invent p95/p99.\n\n## I. Release gates\n\nFor G0\u2013G8:\n\n```text\nPASS\nFAIL\nBLOCKED\nUNVERIFIED\n\n```\n\nwith evidence.\n\n## J. Remaining risks\n\nDo not hide them.\n\n## K. Final engineering decision\n\nUse only evidence-backed language:\n\n```text\nREADY\nREADY WITH EXPLICIT ACCEPTED RISKS\nBLOCKED\nNOT READY\n\n```\n\nDo not say:\n\n> \u201c100% bug-free.\u201d\n\nNo serious engineering process can prove that.\n\nInstead state exactly what was tested, what was not tested, what remains dependent on external systems, and what evidence is required next.\n\n---\n",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    },
+    {
+      "requirement_id": "R47",
+      "title": "MOST IMPORTANT RULE",
+      "source_start_line": 2637,
+      "source_end_line": 2693,
+      "source_text": "# 47. MOST IMPORTANT RULE\n\nAt every stage ask yourself:\n\n> **\u201cIf a real warehouse operator, finance team, customer, marketplace, or production engineer relied on this action right now, could this implementation silently create a wrong business state?\u201d**\n\nIf yes:\n\n**stop, find the real boundary, fix the underlying system, and prove it.**\n\nDo not cosmetically repair the symptom.\n\nDo not hide the failure.\n\nDo not fake the dependency.\n\nDo not downgrade the severity.\n\nDo not claim completion.\n\nBuild the system so that its behavior remains correct when:\n\n- requests are duplicated\n- requests arrive out of order\n- users race\n- workers crash\n- databases fail\n- providers timeout\n- providers change responses\n- networks disappear\n- deployments restart\n- data is malformed\n- permissions are wrong\n- external systems disagree\n- recovery happens days later\n\nThe standard is not:\n\n> \u201cIt works in my test.\u201d\n\nThe standard is:\n\n> **\u201cThe business invariant survives realistic production failure, and I can prove it.\u201d**\n\nStart with forensic discovery.\n\nThen reconstruct.\n\nThen repair.\n\nThen attack your own repair.\n\nThen verify.\n\nThen report.\n\nNever reverse that order.",
+      "completion": "UNPROVEN",
+      "evidence": [],
+      "remaining_requirement": "Full section including subordinate requirements must be verified; source capture alone is not completion."
+    }
+  ],
+  "module_matrix_structure": {
+    "rows": 170,
+    "required_columns_present": true,
+    "unknown_or_empty_fields": {
+      "module_id": 0,
+      "module_name": 0,
+      "route": 0,
+      "frontend_component": 19,
+      "backend_handler": 45,
+      "database": 164,
+      "tables": 164,
+      "business_owner": 170,
+      "actor_roles": 168,
+      "tenant_scope": 168,
+      "state_machine": 166,
+      "supported_actions": 0,
+      "unsupported_actions": 168,
+      "central_inventory_dependency": 168,
+      "external_provider_dependency": 168,
+      "idempotency_requirement": 168,
+      "concurrency_requirement": 168,
+      "audit_requirement": 168,
+      "current_status": 0,
+      "historical_status": 0,
+      "current_evidence": 0,
+      "remaining_gap": 0,
+      "risk": 165,
+      "test_command": 97,
+      "production_evidence_required": 0,
+      "release_gate": 164
+    }
+  },
+  "completion_audit": "NOT ACHIEVED"
+}

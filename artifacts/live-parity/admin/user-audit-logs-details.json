@@ -1,0 +1,101 @@
+{
+  "grids": [],
+  "events": [
+    {
+      "id": "fromLogDate",
+      "text": "",
+      "event": "focus",
+      "handlers": [
+        "function(e){var t,n,r=Y.get(this,i);if(1&e.isTrigger&&this[i]){if(r.length)(S.event.special[i]||{}).delegateType&&e.stopPropagation();else if(r=s.call(arguments),Y.set(this,i,r),t=o(this,i),this[i](),r!==(n=Y.get(this,i))||t?Y.set(this,i,!1):n={},r!==n)return e.stopImmediatePropagation(),e.preventDefault(),n.value}else r.length&&(Y.set(this,i,{value:S.event.trigger(S.extend(r[0],S.Event.prototype),r.slice(1),this)}),e.stopImmediatePropagation())}",
+        "function(){return e.apply(t||this,r.concat(s.call(arguments)))}"
+      ]
+    },
+    {
+      "id": "fromLogDate",
+      "text": "",
+      "event": "keyup",
+      "handlers": [
+        "function(){return e.apply(t||this,r.concat(s.call(arguments)))}"
+      ]
+    },
+    {
+      "id": "fromLogDate",
+      "text": "",
+      "event": "keydown",
+      "handlers": [
+        "function(){return e.apply(t||this,r.concat(s.call(arguments)))}"
+      ]
+    },
+    {
+      "id": "fromLogDate",
+      "text": "",
+      "event": "focusout",
+      "handlers": [
+        "function(){return e.apply(t||this,r.concat(s.call(arguments)))}"
+      ]
+    },
+    {
+      "id": "fromLogDate",
+      "text": "",
+      "event": "blur",
+      "handlers": [
+        "function(e){var t,n,r=Y.get(this,i);if(1&e.isTrigger&&this[i]){if(r.length)(S.event.special[i]||{}).delegateType&&e.stopPropagation();else if(r=s.call(arguments),Y.set(this,i,r),t=o(this,i),this[i](),r!==(n=Y.get(this,i))||t?Y.set(this,i,!1):n={},r!==n)return e.stopImmediatePropagation(),e.preventDefault(),n.value}else r.length&&(Y.set(this,i,{value:S.event.trigger(S.extend(r[0],S.Event.prototype),r.slice(1),this)}),e.stopImmediatePropagation())}",
+        "function(){return e.apply(t||this,r.concat(s.call(arguments)))}"
+      ]
+    },
+    {
+      "id": "toLogDate",
+      "text": "",
+      "event": "focus",
+      "handlers": [
+        "function(e){var t,n,r=Y.get(this,i);if(1&e.isTrigger&&this[i]){if(r.length)(S.event.special[i]||{}).delegateType&&e.stopPropagation();else if(r=s.call(arguments),Y.set(this,i,r),t=o(this,i),this[i](),r!==(n=Y.get(this,i))||t?Y.set(this,i,!1):n={},r!==n)return e.stopImmediatePropagation(),e.preventDefault(),n.value}else r.length&&(Y.set(this,i,{value:S.event.trigger(S.extend(r[0],S.Event.prototype),r.slice(1),this)}),e.stopImmediatePropagation())}",
+        "function(){return e.apply(t||this,r.concat(s.call(arguments)))}"
+      ]
+    },
+    {
+      "id": "toLogDate",
+      "text": "",
+      "event": "keyup",
+      "handlers": [
+        "function(){return e.apply(t||this,r.concat(s.call(arguments)))}"
+      ]
+    },
+    {
+      "id": "toLogDate",
+      "text": "",
+      "event": "keydown",
+      "handlers": [
+        "function(){return e.apply(t||this,r.concat(s.call(arguments)))}"
+      ]
+    },
+    {
+      "id": "toLogDate",
+      "text": "",
+      "event": "focusout",
+      "handlers": [
+        "function(){return e.apply(t||this,r.concat(s.call(arguments)))}"
+      ]
+    },
+    {
+      "id": "toLogDate",
+      "text": "",
+      "event": "blur",
+      "handlers": [
+        "function(e){var t,n,r=Y.get(this,i);if(1&e.isTrigger&&this[i]){if(r.length)(S.event.special[i]||{}).delegateType&&e.stopPropagation();else if(r=s.call(arguments),Y.set(this,i,r),t=o(this,i),this[i](),r!==(n=Y.get(this,i))||t?Y.set(this,i,!1):n={},r!==n)return e.stopImmediatePropagation(),e.preventDefault(),n.value}else r.length&&(Y.set(this,i,{value:S.event.trigger(S.extend(r[0],S.Event.prototype),r.slice(1),this)}),e.stopImmediatePropagation())}",
+        "function(){return e.apply(t||this,r.concat(s.call(arguments)))}"
+      ]
+    }
+  ],
+  "functions": {
+    "encryptPasswordRSAUsingPubKey": "function encryptPasswordRSAUsingPubKey(password) {\n\tconst crypt = new JSEncrypt();\n\n\tconst publicKeyRSA = `-----BEGIN PUBLIC KEY-----\n\t\tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwByF8BbfSm98Vf5IsUsW\n\t\tpgCLPYEbYm8AFKIuVnteGA7PmBTJS3Mx1sYv6E8httGIFoPCu+p87nDrKYz1eK3n\n\t\tnJPxQOkxOaigpgejWRL9QCtkzNTbwKDWWGmoLxRgUKQMfLqX6Imwp/TdqOIGZEed\n\t\t206ISr8ENXVrfeW0Roi6yfSXgsOPS+LU+7oaGgaYRWGKDUsIKysKimhiIspGBvLa\n\t\tSG5urTI5bIEQkOqspzFWL/USBgd41mUdNm7LzFQi3CH3WySOdv2+gobRofsH5I4e\n\t\t/iUBGx5JuC+WUNhjwi4+P0QgOwbfDBnCv4VC1skVjBkkxs53M01xPiCNDhcmJbND\n\t\tQQIDAQAB\n\t\t-----END PUBLIC KEY-----`;\n\n\tcrypt.setPublicKey(publicKeyRSA);\n\n\tconst encryptedData = crypt.encrypt(password);\n\n\treturn encryptedData;\n}",
+    "gtag": "function gtag(){dataLayer.push(arguments);}",
+    "alignModal": "function alignModal() {\n\t    \t $(\".modal-dialog\").css(\"margin-top\", $(parent.document).scrollTop()+20);\n\t     }",
+    "showProgressBar": "function showProgressBar() {\n\t\ttry {\n\t\t\tif (typeof blockUIStart === 'function') {\n\t\t\t\tblockUIStart();\n\t\t\t} else if (typeof window.parent.blockUIStart === 'function') {\n\t\t\t\twindow.parent.blockUIStart();\n\t\t\t} else if (typeof window.parent.parent.blockUIStart === 'function') {\n\t\t\t\twindow.parent.parent.blockUIStart();\n\t\t\t} else if (typeof window.parent.parent.parent.blockUIStart === 'function') {\n\t\t\t\twindow.parent.parent.parent.blockUIStart();\n\t\t\t}\n\t\t} catch (e) {\n\t\t  console.log(e.message);\n\t\t}\n\t}",
+    "hideProgressBar": "function hideProgressBar() {\n\t\ttry {\n\t\t\tif (typeof blockUIEnd === 'function') {\n\t\t\t\tblockUIEnd();\n\t\t\t} else if (typeof window.parent.blockUIEnd === 'function') {\n\t\t\t\twindow.parent.blockUIEnd();\n\t\t\t} else if (typeof window.parent.parent.blockUIEnd === 'function') {\n\t\t\t\twindow.parent.parent.blockUIEnd();\n\t\t\t} else if (typeof window.parent.parent.parent.blockUIEnd === 'function') {\n\t\t\t\twindow.parent.parent.parent.blockUIEnd();\n\t\t\t}\n\t\t} catch (e) {\n\t\t\tconsole.log(e.message);\n\t\t}\n\t}",
+    "getGridWidth": "function getGridWidth() {\n\t\ttry {\n\t\t\tvar w = window.parent.$(\"#screensWrapper\").width();\n\t\t\tif(w>100)\n\t\t\t\treturn window.parent.$(\"#screensWrapper\").width()-10;\n\t\t\telse\n\t\t\t\treturn $(window).width()-10;\n\t\t} catch (e) {\n\t\t\tconsole.log(e.message);\n\t\t\treturn $(window).width()-10;\n\t\t}\n\t}",
+    "shortcutKey": "function shortcutKey(){ \t\t\n    \t$(document).bind('keydown', function(e) {\n    \t\tvar keyCode = (e.keyCode) ? e.keyCode : ((e.charCode) ? e.charCode : e.which);\n    \t\tif (e.originalEvent.altKey) {\n    \t\t\t// ALT + S     Search                   \n    \t\t\tif (keyCode === 83) {\n    \t\t\t\treloadSearchGrid();\n    \t\t\t\te.preventDefault();\n    \t\t\t\treturn false;\n    \t\t\t\t\n    \t\t\t}\n    \t\t\t// ALT + N      Reset                 \n    \t\t\tif (keyCode == 78) {\n    \t\t\t\tresetAll();\n    \t\t\t\te.preventDefault();\n    \t\t\t\treturn false;\n    \t\t\t}\n    \t\t\t// ALT + F    Add New\n    \t\t\tif (keyCode == 70){\n    \t\t\t\taddnew();\n    \t\t\t\te.preventDefault();\n    \t\t\t\treturn false;\n    \t\t\t}\n    \t\t\t\n    \t\t}\n    \t});\n    }",
+    "resetAll": "function resetAll()\n{\n\tdocument.userAuditLogsForm.action = \"roleLogBS\";\n\tdocument.userAuditLogsForm.submit();\n}",
+    "doExport": "function doExport() {\n\t\tif ($(\"#fromLogDate\").val() == \"\") {\n\t\t\twindow.parent.showAlert('Please fill all mandatory fields');\n\t\t\t$(\"#fromLogDate\").focus();\n\t\t\tevent.preventDefault();\n\t\t\treturn false;\n\t\t}\n\t\tif ($(\"#toLogDate\").val() == \"\") {\n\t\t\twindow.parent.showAlert('Please fill all mandatory fields');\n\t\t\t$(\"#toLogDate\").focus();\n\t\t\tevent.preventDefault();\n\t\t\treturn false;\n\t\t}\n\t\tif ($(\"#log\").val() == \"-1\") {\n\t\t\twindow.parent.showAlert('Please fill all mandatory fields');\n\t\t\t$(\"#log\").focus();\n\t\t\tevent.preventDefault();\n\t\t\treturn false;\n\t\t}\n\t\tvar date = new Date();\n\t\tvar curr_date = date.getDate();\n\t\tvar curr_month = date.getMonth();\n\t\tcurr_month = curr_month + 1;\n\t\tvar curr_year = date.getFullYear();\n\t\tvar today_date = new Date(curr_year + '/' + curr_month + '/'\n\t\t\t\t+ curr_date);\n\t\tvar startdatevalue = $(\"#fromLogDate\").val();\n\t\tvar enddatevalue = $(\"#toLogDate\").val();\n\t\tvar log = $(\"#log\").val();\n\t\tvar inputDate = startdatevalue.split('/');\n\t\tvar startdate = new Date(inputDate[2] + '/' + inputDate[1] + '/'\n\t\t\t\t+ inputDate[0]);\n\t\tvar inputDate2 = enddatevalue.split('/');\n\t\tvar enddate = new Date(inputDate2[2] + '/' + inputDate2[1] + '/'\n\t\t\t\t+ inputDate2[0]);\n\t\tif (inputDate2[2] > inputDate[2]) {\n\t\t\tif (inputDate2[1] > inputDate[1]) {\n\t\t\t\talert(\"Date Range Should Be an Year \");\n\t\t\t\treturn false;\n\t\t\t}\n\t\t\tif (inputDate2[1] == inputDate[1])\n\t\t\t\tif (inputDate2[0] > inputDate[0]) {\n\t\t\t\t\talert(\"Date Range Should Be an Year \");\n\t\t\t\t\treturn false;\n\t\t\t\t}\n\n\t\t}\n\t\tif (startdate > enddate) {\n\t\t\twindow.parent.showAlert('From date should be greater than To date');\n\t\t\t$(\"#toLogDate\").focus();\n\t\t\treturn false;\n\t\t} else if (startdate > today_date) {\n\t\t\twindow.parent.showAlert('From date should be greater than today');\n\t\t\t$(\"#fromLogDate\").focus();\n\t\t\treturn false;\n\t\t} else if (enddate > today_date) {\n\t\t\twindow.parent.showAlert('To date should be greater than today');\n\t\t\t$(\"#toLogDate\").focus();\n\t\t\treturn false;\n\t\t}\n\t\tvar fromLogDate = $(\"#fromLogDate\").val();\n\t\tvar toLogDate = $(\"#toLogDate\").val();\n\n\t\tvar retVal = $.ajax({\n\t\t\ttype: \"POST\",\n            url: \"generateUserAuditLogExport\",\n            data : {\n            \tfromDate : fromLogDate,\n            \ttoDate : toLogDate,\n            \tlogType : log\n    \t\t},\n            success: function(data) {\n                if(data.jsonMessage == null) {\n            \t    window.parent.pendingReportSearch('?uuId='+data.reportId);\n                } else {\n            \t    window.parent.showAlert(data.jsonMessage);\n            \t    window.parent.pendingReportSearch();\n                }\n            }\n\t\t});\n\t}"
+  },
+  "dialogs": []
+}

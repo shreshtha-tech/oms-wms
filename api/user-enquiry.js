@@ -1,9 +1,10 @@
-import { cors, find } from './mongo.js';
+import { sendDatabaseUnavailable, cors, find } from './mongo.js';
 
 const statuses = [['-1', '--- Select ---'], ['1', 'Active'], ['0', 'InActive'], ['9', 'Locked']];
 const userTypes = [['-1', '--- Select ---'], ['1001', 'Admin'], ['3', 'Distributor'], ['1', 'Normal'], ['2', 'Seller'], ['1002', 'SellerAdmin'], ['4', 'Store']];
-const roles = [['-1', '--- Select ---'], ['00212', 'Admin'], ['10004', 'All Company Level Rights'], ['10005', 'All Enterprise Level Rights'], ['00028', 'Buyer Ops Reports'], ['00116', 'Dashboard'], ['00045', 'Distributor Rights'], ['00117', 'OMS'], ['00200', 'PO Maintenance'], ['00131', 'Reports'], ['00122', 'Vendor'], ['10056', 'WMSAdmin'], ['00043', 'Warehouse Manager']];
-const companies = [['-1', '--- Select ---'], ['LCPL', 'LCPL'], ['USPL', 'Vinculum Solutions Pvt Ltd.'], ['VIN', 'support'], ['XYZ', 'XYZ Private Ltd'], ['ZEPTO', 'food items']];
+const selectOnly = [['-1', '--- Select ---']];
+const roles = async () => [...selectOnly, ...(await find('admin_records', { type: 'role' })).map(row => [String(row.roleId), String(row.description)])];
+const companies = async () => [...selectOnly, ...(await find('generic_records', { module: 'company' })).map(row => [String(row.code), String(row.name)])];
 const columns = [['username', 'User Name'], ['firstName', 'First Name'], ['lastName', 'Last Name'], ['status', 'Status'], ['email', 'Email'], ['userType', 'User Type']];
 const text = (value) => String(value ?? '').trim();
 const includes = (value, query) => !text(query) || text(value).toLowerCase().includes(text(query).toLowerCase());
@@ -11,7 +12,7 @@ const includes = (value, query) => !text(query) || text(value).toLowerCase().inc
 export default async function handler(req, res) {
   if (cors(req, res)) return;
   try {
-    if (req.method === 'GET') return res.json({ statuses, userTypes, roles, companies, locations: [['-1', '--- Select ---']], columns, pageSizes: [20, 50, 100, 200], defaultUserType: '1', searchEndpoint: 'jsonUserSearch', importUrl: 'vendorImportDisplayBS?ExternalImportType=40', exportEndpoint: 'generateUserExportAction', editorUrl: 'loadUserDetailBS' });
+    if (req.method === 'GET') return res.json({ statuses, userTypes, roles: await roles(), companies: await companies(), locations: [...selectOnly, ...(await find('generic_records', { module: 'location' })).map(row => [String(row.code), String(row.name)])], columns, pageSizes: [20, 50, 100, 200], defaultUserType: '1', searchEndpoint: 'jsonUserSearch', importUrl: 'vendorImportDisplayBS?ExternalImportType=40', exportEndpoint: 'generateUserExportAction', editorUrl: 'loadUserDetailBS' });
     if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
     const body = req.body || {};
     if (body.action === 'export') {
@@ -27,7 +28,8 @@ export default async function handler(req, res) {
     const userList = rows.slice((page - 1) * size, page * size);
     return res.json({ JSON: 'success', loadonce: false, page, records, rows: size, total, userList, gridModel: userList });
   } catch (error) {
-    console.error('user enquiry error:', error);
+    if (sendDatabaseUnavailable(res, error)) return;
+    console.error('user enquiry error:', { name: error?.name, code: error?.code });
     return res.status(500).json({ error: error.message });
   }
 }

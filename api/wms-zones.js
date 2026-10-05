@@ -1,4 +1,4 @@
-import { cors, find, findOne, insert, update } from './mongo.js';
+import { sendDatabaseUnavailable, cors, find, findOne, insert, update } from './mongo.js';
 
 const text = (value) => String(value ?? '').trim();
 const has = (value, query) => !text(query) || text(query) === '-1' || text(value).toLowerCase().includes(text(query).toLowerCase());
@@ -77,7 +77,8 @@ export default async function handler(req, res) {
     }
     return res.status(405).json({ error: 'Method not allowed' });
   } catch (error) {
-    console.error('WMS Zone error:', error);
+    if (sendDatabaseUnavailable(res, error)) return;
+    console.error('WMS Zone error:', { name: error?.name, code: error?.code });
     return res.status(500).json({ error: error.message });
   }
 }

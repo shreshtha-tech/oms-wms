@@ -1,4 +1,4 @@
-import { find, cors } from './mongo.js';
+import { sendDatabaseUnavailable, find, cors } from './mongo.js';
 
 const text = (value) => String(value ?? '').trim();
 const same = (value, query) => text(value).toLowerCase() === text(query).toLowerCase();
@@ -37,7 +37,8 @@ export default async function handler(req, res) {
     }
     return res.json({ jsonMessage: null, orderMap });
   } catch (error) {
-    console.error('global header search error:', error);
+    if (sendDatabaseUnavailable(res, error)) return;
+    console.error('global header search error:', { name: error?.name, code: error?.code });
     return res.status(500).json({ jsonMessage: error.message, orderMap: null });
   }
 }

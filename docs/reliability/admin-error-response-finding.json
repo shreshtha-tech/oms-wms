@@ -1,0 +1,30 @@
+{
+  "id": "ADMIN_UNEXPECTED_EXCEPTION_DISCLOSURE",
+  "date": "2026-10-05",
+  "status": "REPAIRED_FOR_INSPECTED_UNEXPECTED_ERROR_PATHS",
+  "attackPath": "Handler exception to HTTP 500 JSON; generic handler also emitted exception name/code to console.",
+  "rootCause": "Raw exception messages were treated as safe response text; arbitrary name/code fields were treated as safe diagnostics.",
+  "impact": "Credential-like data or PII in an exception could cross the response/log boundary. Actual historical attacker access remains UNKNOWN.",
+  "affectedBoundary": [
+    "api/admin.js unexpected catch",
+    "api/admin-parity.js unexpected catch"
+  ],
+  "repair": "Fixed response and diagnostic strings; existing database 503/504 branch retained.",
+  "regression": "scripts/verify-admin-error-boundary.mjs",
+  "negativeTest": "Synthetic exceptions carry a marker in message, name and code; neither response nor captured logs may contain it.",
+  "evidence": {
+    "layer": "Controlled direct handler, explicit in-memory storage",
+    "log": "tmp/mongo-reliability/admin-error-boundary-current.log",
+    "result": "Exit 0 PASS",
+    "compatibility": [
+      "admin-key-response-boundary-current.log exit 0",
+      "admin-parity-key-boundary-current.log exit 0"
+    ]
+  },
+  "remainingLimitations": [
+    "Not all dependency classification or 503/504 serialization tested here",
+    "No real provider/deployed log/browser telemetry proof",
+    "Error diagnostics need correlation at server request layer",
+    "Other admin authorization, storage, export and PII boundaries remain incomplete"
+  ]
+}

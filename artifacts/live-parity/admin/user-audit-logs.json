@@ -1,0 +1,251 @@
+{
+  "url": "https://demo.vineretail.com/eRetailWeb/roleLogBS",
+  "title": "",
+  "text": "Download\tReset\nAdmin User Audit Logs\nAudit\nUser Access Logs\nLogs\n--- Select ---\nLogin Logs\nRole Logs\nUser Edit Logs\nUser Logs\nFrom Date\nTo Date",
+  "controls": [
+    {
+      "tag": "BUTTON",
+      "id": "",
+      "name": "",
+      "type": "button",
+      "text": "Download",
+      "value": "",
+      "disabled": false,
+      "visible": true,
+      "title": "Download",
+      "onclick": "doExport();",
+      "onchange": null,
+      "geometry": {
+        "x": 943.484375,
+        "y": 4,
+        "width": 94.515625,
+        "height": 30,
+        "font": "12px / 18px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(255, 255, 255)",
+        "background": "rgb(243, 156, 18)"
+      }
+    },
+    {
+      "tag": "BUTTON",
+      "id": "",
+      "name": "",
+      "type": "button",
+      "text": "Reset",
+      "value": "",
+      "disabled": false,
+      "visible": true,
+      "title": "Clear Search",
+      "onclick": "resetAll(); return false;",
+      "onchange": null,
+      "geometry": {
+        "x": 1048,
+        "y": 4,
+        "width": 75,
+        "height": 30,
+        "font": "12px / 18px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(68, 68, 68)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "Admin",
+      "visible": true,
+      "title": "",
+      "onclick": "return false;",
+      "onchange": null,
+      "geometry": {
+        "x": 15,
+        "y": 6,
+        "width": 50.1640625,
+        "height": 17.140625,
+        "font": "12px / 17.1429px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(68, 68, 68)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "User Audit Logs",
+      "visible": true,
+      "title": "",
+      "onclick": "return false;",
+      "onchange": null,
+      "geometry": {
+        "x": 88.84375,
+        "y": 6,
+        "width": 92.2265625,
+        "height": 17.140625,
+        "font": "12px / 17.1429px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(68, 68, 68)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "tag": "SELECT",
+      "id": "",
+      "name": "",
+      "type": "select-one",
+      "text": "",
+      "value": "-1",
+      "disabled": false,
+      "visible": true,
+      "title": "",
+      "onclick": null,
+      "onchange": null,
+      "options": [
+        {
+          "text": "User Access Logs",
+          "value": "-1"
+        }
+      ],
+      "geometry": {
+        "x": 260.1640625,
+        "y": 64,
+        "width": 209.1640625,
+        "height": 24,
+        "font": "13px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(85, 85, 85)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "SELECT",
+      "id": "log",
+      "name": "log",
+      "type": "select-one",
+      "text": "",
+      "value": "-1",
+      "disabled": false,
+      "visible": true,
+      "title": "",
+      "onclick": null,
+      "onchange": null,
+      "options": [
+        {
+          "text": "--- Select ---",
+          "value": "-1"
+        },
+        {
+          "text": "Login Logs",
+          "value": "Login"
+        },
+        {
+          "text": "Role Logs",
+          "value": "Role"
+        },
+        {
+          "text": "User Edit Logs",
+          "value": "UserLogs"
+        },
+        {
+          "text": "User Logs",
+          "value": "User"
+        }
+      ],
+      "geometry": {
+        "x": 813.1640625,
+        "y": 64,
+        "width": 209.1640625,
+        "height": 24,
+        "font": "13px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(85, 85, 85)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "INPUT",
+      "id": "fromLogDate",
+      "name": "fromLogDate",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": true,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null,
+      "geometry": {
+        "x": 260.1640625,
+        "y": 94,
+        "width": 209.1640625,
+        "height": 24,
+        "font": "14px / 20px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(85, 85, 85)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "INPUT",
+      "id": "toLogDate",
+      "name": "toLogDate",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": true,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null,
+      "geometry": {
+        "x": 813.1640625,
+        "y": 94,
+        "width": 209.1640625,
+        "height": 24,
+        "font": "14px / 20px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(85, 85, 85)",
+        "background": "rgb(255, 255, 255)"
+      }
+    }
+  ],
+  "headers": [],
+  "scripts": [
+    "https://www.googletagmanager.com/gtag/js?id=G-H8NVRVNQXJ&cx=c&gtm=4e69m0",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/SecurityJS/AesUtil.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/SecurityJS/CryptoJS.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/SecurityJS/PBKDF2.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/SecurityJS/jsencrypt.min.3.5.4.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/moment.js2.10.2/raphael-min.js",
+    "https://www.googletagmanager.com/gtag/js?id=UA-108693828-3",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/jQuery/jQuery-3.7.1.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/jQuery/jquery-migrate-3.3.0.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/jQueryUI/jquery-ui.min.js?v=1",
+    "https://demo.vineretail.com/eRetailWeb/struts/js/plugins/jquery.subscribe.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/jqGrid_JS_5.1.0/js/jquery.jqGrid.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/jqGrid_JS_5.1.0/js/i18n/grid.locale-en.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/bootstrap/js/bootstrap.min.js?v=1",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/moment.js2.10.2/moment.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/morris/morris.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/sparkline/jquery.sparkline.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/jvectormap/jquery-jvectormap-world-mill-en.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/knob/jquery.knob.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/daterangepicker/daterangepicker.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/datepicker/bootstrap-datepicker.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/timepicker/bootstrap-timepicker.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/slimScroll/jquery.slimscroll.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/fastclick/fastclick.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/dist/js/app.min.js?v=1",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/iCheck/icheck.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/daterangepicker/jquery.timepicker.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/switch/bootstrap-switch.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/select2/select2.full.min.js?v=1",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/ckeditor/ckeditor.js?v=1",
+    "https://demo.vineretail.com/eRetailWeb/js/CommonFunctions.js?v=1.33"
+  ],
+  "handlers": {
+    "doExport": "function doExport() {\n\t\tif ($(\"#fromLogDate\").val() == \"\") {\n\t\t\twindow.parent.showAlert('Please fill all mandatory fields');\n\t\t\t$(\"#fromLogDate\").focus();\n\t\t\tevent.preventDefault();\n\t\t\treturn false;\n\t\t}\n\t\tif ($(\"#toLogDate\").val() == \"\") {\n\t\t\twindow.parent.showAlert('Please fill all mandatory fields');\n\t\t\t$(\"#toLogDate\").focus();\n\t\t\tevent.preventDefault();\n\t\t\treturn false;\n\t\t}\n\t\tif ($(\"#log\").val() == \"-1\") {\n\t\t\twindow.parent.showAlert('Please fill all mandatory fields');\n\t\t\t$(\"#log\").focus();\n\t\t\tevent.preventDefault();\n\t\t\treturn false;\n\t\t}\n\t\tvar date = new Date();\n\t\tvar curr_date = date.getDate();\n\t\tvar curr_month = date.getMonth();\n\t\tcurr_month = curr_month + 1;\n\t\tvar curr_year = date.getFullYear();\n\t\tvar today_date = new Date(curr_year + '/' + curr_month + '/'\n\t\t\t\t+ curr_date);\n\t\tvar startdatevalue = $(\"#fromLogDate\").val();\n\t\tvar enddatevalue = $(\"#toLogDate\").val();\n\t\tvar log = $(\"#log\").val();\n\t\tvar inputDate = startdatevalue.split('/');\n\t\tvar startdate = new Date(inputDate[2] + '/' + inputDate[1] + '/'\n\t\t\t\t+ inputDate[0]);\n\t\tvar inputDate2 = enddatevalue.split('/');\n\t\tvar enddate = new Date(inputDate2[2] + '/' + inputDate2[1] + '/'\n\t\t\t\t+ inputDate2[0]);\n\t\tif (inputDate2[2] > inputDate[2]) {\n\t\t\tif (inputDate2[1] > inputDate[1]) {\n\t\t\t\talert(\"Date Range Should Be an Year \");\n\t\t\t\treturn false;\n\t\t\t}\n\t\t\tif (inputDate2[1] == inputDate[1])\n\t\t\t\tif (inputDate2[0] > inputDate[0]) {\n\t\t\t\t\talert(\"Date Range Should Be an Year \");\n\t\t\t\t\treturn false;\n\t\t\t\t}\n\n\t\t}\n\t\tif (startdate > enddate) {\n\t\t\twindow.parent.showAlert('From date should be greater than To date');\n\t\t\t$(\"#toLogDate\").focus();\n\t\t\treturn false;\n\t\t} else if (startdate > today_date) {\n\t\t\twindow.parent.showAlert('From date should be greater than today');\n\t\t\t$(\"#fromLogDate\").focus();\n\t\t\treturn false;\n\t\t} else if (enddate > today_date) {\n\t\t\twindow.parent.showAlert('To date should be greater than today');\n\t\t\t$(\"#toLogDate\").focus();\n\t\t\treturn false;\n\t\t}\n\t\tvar fromLogDate = $(\"#fromLogDate\").val();\n\t\tvar toLogDate = $(\"#toLogDate\").val();\n\n\t\tvar retVal = $.ajax({\n\t\t\ttype: \"POST\",\n            url: \"generateUserAuditLogExport\",\n            data : {\n            \tfromDate : fromLogDate,\n            \ttoDate : toLogDate,\n            \tlogType : log\n    \t\t},\n            success: function(data) {\n                if(data.jsonMessage == null) {\n            \t    window.parent.pendingReportSearch('?uuId='+data.reportId);\n                } else {\n            \t    window.parent.showAlert(data.jsonMessage);\n            \t    window.parent.pendingReportSearch();\n                }\n            }\n\t\t});\n\t}",
+    "resetAll": "function resetAll()\n{\n\tdocument.userAuditLogsForm.action = \"roleLogBS\";\n\tdocument.userAuditLogsForm.submit();\n}"
+  }
+}

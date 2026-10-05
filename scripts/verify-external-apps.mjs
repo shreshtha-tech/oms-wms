@@ -112,10 +112,10 @@ try {
   await page.route('**/api/testSMSConnection', async (route) => {
     const payload = Object.fromEntries(new URLSearchParams(route.request().postData() || ''));
     assert.deepEqual(payload, { extAppID: '43', extAppType: 'SME', subDomain: 'local-sfmc', clientID: 'local-client', clientSecret: 'local-secret' });
-    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ jsonMessage: null, authTokenSFMC: 'local-test-token' }) });
+    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ jsonMessage: null, connected: true }) });
   }, { times: 1 });
   await page.getByRole('button', { name: 'Test Connection', exact: true }).click();
-  await page.getByText('Connected Successfully.', { exact: true }).waitFor();
+  await page.getByText('Connection verified. Access token remains on the server and was not returned to this page.', { exact: true }).waitFor();
   for (const label of ['Subdomain *', 'Client_ID *', 'Client_Secret *']) assert.equal(await page.getByLabel(label).isDisabled(), true);
   await page.getByLabel('ExtApps Type').selectOption('TS');
   await page.getByLabel('ExtApps Name').selectOption('29');

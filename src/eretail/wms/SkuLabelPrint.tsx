@@ -1,11 +1,47 @@
 import { useState } from 'react';
-import { ChevronDown,Printer,RotateCcw } from 'lucide-react';
-import { apiSend } from '../../lib/api';
+import { Printer, RotateCcw } from 'lucide-react';
 import Shell from '../Shell';
-import { Btn,Panel,Toast } from '../parts';
-export default function SkuLabelPrint(){
- const [labelId,setLabelId]=useState('1'),[data,setData]=useState(''),[failed,setFailed]=useState(''),[menu,setMenu]=useState(false),[toast,setToast]=useState<any>(null);
- const print=async(pdf=false)=>{if(labelId==='-1'){setToast({msg:'Please select a Label Type',type:'err'});return}if(!data.trim()){setToast({msg:'Please Enter Valid Data',type:'err'});return}try{const result:any=await apiSend('/api/sku-label-print','POST',{labelId,clientId:'0',data,pdf});setFailed(result.failed.join('\n'));setToast({msg:result.message,type:'ok'});if(pdf){const content=`SKU Label Print\nRows: ${result.rows}\nLabels: ${result.printed}\n`;const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([content],{type:'application/pdf'}));a.download='label-1.pdf';a.click();URL.revokeObjectURL(a.href)}}catch(e:any){setToast({msg:e.message,type:'err'})}};
- const reset=()=>{setData('');setFailed('')};
- return <Shell active="wms" breadcrumb="WMS > Setup > SKU Label Print" openScreens={[{label:'SKU Label Print',to:'#'}]}><div className="mb-3 flex justify-end gap-2"><div className="relative flex"><Btn variant="warn" onClick={()=>void print(false)}><Printer size={15}/>Print</Btn><button aria-label="Toggle Dropdown" onClick={()=>setMenu(!menu)} className="rounded-r bg-amber-600 px-2 text-white"><ChevronDown size={14}/></button>{menu&&<button className="absolute right-0 top-full z-10 mt-1 rounded border bg-white px-5 py-2 text-sm shadow" onClick={()=>{setMenu(false);void print(true)}}>Pdf</button>}</div><Btn variant="ghost" onClick={reset}><RotateCcw size={15}/>Reset</Btn></div><Panel title="SKU Label Print"><label className="block max-w-md text-xs text-slate-600">Label Type<select aria-label="Label Type" className="inp mt-1" value={labelId} onChange={e=>setLabelId(e.target.value)}><option value="-1">--- Select ---</option><option value="1">AJIO_BUSINESS</option><option value="2">LABEL</option></select></label><div className="mt-4 grid gap-4 md:grid-cols-2"><label><span className="sr-only">Label Data</span><textarea aria-label="Label Data" className="inp min-h-60 font-mono" value={data} onChange={e=>setData(e.target.value)}/></label><label className="text-xs text-slate-600">Failed SKU<textarea aria-label="Failed SKU" className="inp mt-1 min-h-60 font-mono" value={failed} onChange={e=>setFailed(e.target.value)}/></label></div><div className="mt-4 text-xs text-slate-500"><p><b>Note:</b> Please enter data as mentioned below:</p><p>SKU,Qty,UomCode,SkuBarcode,Param1(optional),Param2(optional),Param3(optional),Param4(optional),Param5(optional) &amp;&amp; (Param1,Param2,Param3,Param4,Param5 are static)</p><p>eg: SKU1,1,uomcode,skubarcode,Param1,Param2,Param3,Param4,Param5</p><p>SKU2,2,uomcode,skubarcode,Param1,Param2,Param3,Param4,Param5</p><p><b>Note:</b> Max 100 lines are allowed at a time</p></div></Panel>{toast&&<Toast {...toast} onClose={()=>setToast(null)}/>}</Shell>
+import { Btn, Panel } from '../parts';
+
+export default function SkuLabelPrint() {
+  const [labelId, setLabelId] = useState('1');
+  const [data, setData] = useState('');
+  const reset = () => setData('');
+
+  return (
+    <Shell active="wms" breadcrumb="WMS > Setup > SKU Label Print" openScreens={[{ label: 'SKU Label Print', to: '#' }]}>
+      <div role="status" className="mb-3 rounded-md border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-950">
+        Label rendering, printer output, and PDF generation are not connected. Print and PDF stay unavailable until a real output service is configured.
+      </div>
+      <div className="mb-3 flex justify-end gap-2">
+        <Btn variant="warn" disabled><Printer size={15} />Print</Btn>
+        <Btn variant="ghost" disabled>PDF</Btn>
+        <Btn variant="ghost" onClick={reset}><RotateCcw size={15} />Reset</Btn>
+      </div>
+      <Panel title="SKU Label Print">
+        <label className="block max-w-md text-xs text-slate-600">
+          Label Type
+          <select aria-label="Label Type" className="inp mt-1" value={labelId} onChange={(event) => setLabelId(event.target.value)}>
+            <option value="-1">--- Select ---</option>
+            <option value="1">AJIO_BUSINESS</option>
+            <option value="2">LABEL</option>
+          </select>
+        </label>
+        <div className="mt-4 grid gap-4 md:grid-cols-2">
+          <label>
+            <span className="sr-only">Label Data</span>
+            <textarea aria-label="Label Data" className="inp min-h-60 font-mono" value={data} onChange={(event) => setData(event.target.value)} />
+          </label>
+          <label className="text-xs text-slate-600">
+            Failed SKU output is unavailable
+            <textarea aria-label="Failed SKU" className="inp mt-1 min-h-60 font-mono" value="" disabled readOnly />
+          </label>
+        </div>
+        <div className="mt-4 text-xs text-slate-500">
+          <p>Expected input format: SKU,Qty,UomCode,SkuBarcode,Param1(optional),Param2(optional),Param3(optional),Param4(optional),Param5(optional).</p>
+          <p>Maximum 100 lines per request. Input is not sent to a printer or converted into a label by this screen.</p>
+        </div>
+      </Panel>
+    </Shell>
+  );
 }

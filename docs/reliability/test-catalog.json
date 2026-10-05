@@ -1,0 +1,1293 @@
+[
+  {
+    "name": "test:seller-connections-ui",
+    "command": "node scripts/verify-seller-connections-ui.mjs",
+    "files": [
+      "scripts/verify-seller-connections-ui.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:unified-orders",
+    "command": "node scripts/verify-unified-orders.mjs",
+    "files": [
+      "scripts/verify-unified-orders.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:unified-orders-isolated",
+    "command": "node scripts/run-isolated-unified-orders.mjs",
+    "files": [
+      "scripts/run-isolated-unified-orders.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:seller-connections",
+    "command": "node scripts/verify-seller-connections.mjs",
+    "files": [
+      "scripts/verify-seller-connections.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:connection-readiness",
+    "command": "node scripts/verify-connection-readiness.mjs",
+    "files": [
+      "scripts/verify-connection-readiness.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:connection-authorization",
+    "command": "node scripts/verify-connection-authorization.mjs",
+    "files": [
+      "scripts/verify-connection-authorization.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:sales-programs",
+    "command": "node scripts/verify-sales-programs.mjs",
+    "files": [
+      "scripts/verify-sales-programs.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:central-inventory",
+    "command": "node scripts/verify-central-inventory.mjs",
+    "files": [
+      "scripts/verify-central-inventory.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:central-inventory-api",
+    "command": "node scripts/verify-central-inventory-api.mjs",
+    "files": [
+      "scripts/verify-central-inventory-api.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:inventory-publish-order",
+    "command": "node scripts/verify-inventory-publish-order.mjs",
+    "files": [
+      "scripts/verify-inventory-publish-order.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:vendor-master",
+    "command": "node scripts/verify-vendor-master.mjs",
+    "files": [
+      "scripts/verify-vendor-master.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:vendor-integrity",
+    "command": "node scripts/verify-vendor-integrity.mjs",
+    "files": [
+      "scripts/verify-vendor-integrity.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:isolated-browser-workflow",
+    "command": "node scripts/verify-isolated-browser-workflow.mjs",
+    "files": [
+      "scripts/verify-isolated-browser-workflow.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:tax-application-workflow",
+    "command": "node scripts/verify-tax-application-workflow.mjs",
+    "files": [
+      "scripts/verify-tax-application-workflow.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:tax-code-workflow",
+    "command": "node scripts/verify-tax-code-workflow.mjs",
+    "files": [
+      "scripts/verify-tax-code-workflow.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:customer-integrity",
+    "command": "node scripts/verify-customer-integrity.mjs",
+    "files": [
+      "scripts/verify-customer-integrity.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:transporter-integrity",
+    "command": "node scripts/verify-transporter-integrity.mjs",
+    "files": [
+      "scripts/verify-transporter-integrity.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:vendor-enquiry-parity",
+    "command": "node scripts/verify-vendor-enquiry-parity.mjs",
+    "files": [
+      "scripts/verify-vendor-enquiry-parity.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:customer-enquiry-parity",
+    "command": "node scripts/verify-customer-enquiry-parity.mjs",
+    "files": [
+      "scripts/verify-customer-enquiry-parity.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:common-import",
+    "command": "node scripts/verify-common-import.mjs",
+    "files": [
+      "scripts/verify-common-import.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:global-screen-shell",
+    "command": "node scripts/verify-global-screen-shell.mjs",
+    "files": [
+      "scripts/verify-global-screen-shell.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:global-responsive-shell",
+    "command": "node scripts/verify-global-responsive-shell.mjs",
+    "files": [
+      "scripts/verify-global-responsive-shell.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:global-feedback-shell",
+    "command": "node scripts/verify-global-feedback-shell.mjs",
+    "files": [
+      "scripts/verify-global-feedback-shell.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:global-grid-loading",
+    "command": "node scripts/verify-global-grid-loading.mjs",
+    "files": [
+      "scripts/verify-global-grid-loading.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:global-dialog-navigation",
+    "command": "node scripts/verify-global-dialog-navigation.mjs",
+    "files": [
+      "scripts/verify-global-dialog-navigation.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:global-controls-keyboard",
+    "command": "node scripts/verify-global-controls-keyboard.mjs",
+    "files": [
+      "scripts/verify-global-controls-keyboard.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:global-menu",
+    "command": "node scripts/verify-global-menu.mjs",
+    "files": [
+      "scripts/verify-global-menu.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:global-login",
+    "command": "node scripts/verify-global-login-contract.mjs",
+    "files": [
+      "scripts/verify-global-login-contract.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:global-header-search",
+    "command": "node scripts/verify-global-header-search.mjs",
+    "files": [
+      "scripts/verify-global-header-search.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:global-header-dialogs",
+    "command": "node scripts/verify-global-header-dialogs.mjs",
+    "files": [
+      "scripts/verify-global-header-dialogs.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:seller-panel-dashboard",
+    "command": "node scripts/verify-seller-panel-dashboard.mjs",
+    "files": [
+      "scripts/verify-seller-panel-dashboard.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:eretail-dashboard",
+    "command": "node scripts/verify-eretail-dashboard.mjs",
+    "files": [
+      "scripts/verify-eretail-dashboard.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:customer-master",
+    "command": "node scripts/verify-customer-master.mjs",
+    "files": [
+      "scripts/verify-customer-master.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:transporter-master",
+    "command": "node scripts/verify-transporter-master.mjs",
+    "files": [
+      "scripts/verify-transporter-master.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:transporter-enquiry-parity",
+    "command": "node scripts/verify-transporter-enquiry-parity.mjs",
+    "files": [
+      "scripts/verify-transporter-enquiry-parity.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:client-master",
+    "command": "node scripts/verify-client-master.mjs",
+    "files": [
+      "scripts/verify-client-master.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:client-master-workflow",
+    "command": "node scripts/verify-client-master-workflow.mjs",
+    "files": [
+      "scripts/verify-client-master-workflow.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:customer-group",
+    "command": "node scripts/verify-customer-group.mjs",
+    "files": [
+      "scripts/verify-customer-group.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:customer-group-workflow",
+    "command": "node scripts/verify-customer-group-workflow.mjs",
+    "files": [
+      "scripts/verify-customer-group-workflow.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:manage-coupons",
+    "command": "node scripts/verify-manage-coupons.mjs",
+    "files": [
+      "scripts/verify-manage-coupons.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:tax-group",
+    "command": "node scripts/verify-tax-group.mjs",
+    "files": [
+      "scripts/verify-tax-group.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:tax-group-workflow",
+    "command": "node scripts/verify-tax-group-workflow.mjs",
+    "files": [
+      "scripts/verify-tax-group-workflow.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:tax-category",
+    "command": "node scripts/verify-tax-category.mjs",
+    "files": [
+      "scripts/verify-tax-category.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:tax-category-workflow",
+    "command": "node scripts/verify-tax-category-workflow.mjs",
+    "files": [
+      "scripts/verify-tax-category-workflow.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:tax-application",
+    "command": "node scripts/verify-tax-application.mjs",
+    "files": [
+      "scripts/verify-tax-application.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:tax-code",
+    "command": "node scripts/verify-tax-code.mjs",
+    "files": [
+      "scripts/verify-tax-code.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:tax-zone",
+    "command": "node scripts/verify-tax-zone.mjs",
+    "files": [
+      "scripts/verify-tax-zone.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:tax-zone-workflow",
+    "command": "node scripts/verify-tax-zone-workflow.mjs",
+    "files": [
+      "scripts/verify-tax-zone-workflow.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:sku-master-workflow",
+    "command": "node scripts/verify-sku-master-workflow.mjs",
+    "files": [
+      "scripts/verify-sku-master-workflow.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:sku-master",
+    "command": "node scripts/verify-sku-master.mjs",
+    "files": [
+      "scripts/verify-sku-master.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:sku-import",
+    "command": "node scripts/verify-sku-import.mjs",
+    "files": [
+      "scripts/verify-sku-import.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:sku-company-link",
+    "command": "ISOLATED_BROWSER_FOCUS=sku-company-link node scripts/verify-isolated-browser-workflow.mjs",
+    "files": [
+      "scripts/verify-isolated-browser-workflow.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:merchandising-hierarchy",
+    "command": "node scripts/verify-merchandising-hierarchy.mjs",
+    "files": [
+      "scripts/verify-merchandising-hierarchy.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:manage-attribute",
+    "command": "node scripts/verify-manage-attribute.mjs",
+    "files": [
+      "scripts/verify-manage-attribute.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:attribute-set",
+    "command": "node scripts/verify-attribute-set.mjs",
+    "files": [
+      "scripts/verify-attribute-set.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:vendor-sku-catalog",
+    "command": "node scripts/verify-vendor-sku-catalog.mjs",
+    "files": [
+      "scripts/verify-vendor-sku-catalog.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:vendor-sku-loc-catalog",
+    "command": "node scripts/verify-vendor-sku-loc-catalog.mjs",
+    "files": [
+      "scripts/verify-vendor-sku-loc-catalog.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:generate-vouchers",
+    "command": "npm run test:voucher-guard",
+    "files": [],
+    "missing": []
+  },
+  {
+    "name": "test:organization-hierarchy",
+    "command": "node scripts/verify-organization-hierarchy.mjs",
+    "files": [
+      "scripts/verify-organization-hierarchy.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:location",
+    "command": "node scripts/verify-location.mjs",
+    "files": [
+      "scripts/verify-location.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:store-group",
+    "command": "node scripts/verify-store-group.mjs",
+    "files": [
+      "scripts/verify-store-group.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:other-masters",
+    "command": "ISOLATED_BROWSER_FOCUS=other-masters node scripts/verify-isolated-browser-workflow.mjs",
+    "files": [
+      "scripts/verify-isolated-browser-workflow.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:sales-promotion-guard",
+    "command": "ISOLATED_BROWSER_FOCUS=sales-promotion node scripts/verify-isolated-browser-workflow.mjs",
+    "files": [
+      "scripts/verify-isolated-browser-workflow.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:coupon-guard",
+    "command": "ISOLATED_BROWSER_FOCUS=coupons node scripts/verify-isolated-browser-workflow.mjs",
+    "files": [
+      "scripts/verify-isolated-browser-workflow.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:tally-configuration",
+    "command": "node scripts/verify-tally-configuration.mjs",
+    "files": [
+      "scripts/verify-tally-configuration.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:pricing-event",
+    "command": "node scripts/verify-pricing-event.mjs",
+    "files": [
+      "scripts/verify-pricing-event.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:price-zone",
+    "command": "node scripts/verify-price-zone.mjs",
+    "files": [
+      "scripts/verify-price-zone.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:external-apps",
+    "command": "node scripts/verify-external-apps.mjs",
+    "files": [
+      "scripts/verify-external-apps.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:external-apps-more-configuration",
+    "command": "node scripts/verify-external-apps-more-configuration.mjs",
+    "files": [
+      "scripts/verify-external-apps-more-configuration.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:order-refund",
+    "command": "node scripts/verify-order-refund.mjs",
+    "files": [
+      "scripts/verify-order-refund.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:oms-rules",
+    "command": "ISOLATED_BROWSER_FOCUS=oms-rules node scripts/verify-isolated-browser-workflow.mjs",
+    "files": [
+      "scripts/verify-isolated-browser-workflow.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:master-order-enquiry",
+    "command": "node scripts/verify-master-order-enquiry.mjs",
+    "files": [
+      "scripts/verify-master-order-enquiry.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:global-order-search",
+    "command": "node scripts/verify-global-order-search.mjs",
+    "files": [
+      "scripts/verify-global-order-search.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:cod-reconciliation",
+    "command": "ISOLATED_BROWSER_FOCUS=cod-reconciliation node scripts/verify-isolated-browser-workflow.mjs",
+    "files": [
+      "scripts/verify-isolated-browser-workflow.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:sku-moderation",
+    "command": "ISOLATED_BROWSER_FOCUS=sku-moderation node scripts/verify-isolated-browser-workflow.mjs",
+    "files": [
+      "scripts/verify-isolated-browser-workflow.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:wms-zone",
+    "command": "node scripts/verify-wms-zone.mjs",
+    "files": [
+      "scripts/verify-wms-zone.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:picker-zone-preference",
+    "command": "node scripts/verify-picker-zone-preference.mjs",
+    "files": [
+      "scripts/verify-picker-zone-preference.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:bin-enquiry",
+    "command": "node scripts/verify-bin-enquiry.mjs",
+    "files": [
+      "scripts/verify-bin-enquiry.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:bin-editor",
+    "command": "node scripts/verify-bin-editor.mjs",
+    "files": [
+      "scripts/verify-bin-editor.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:lottable-validation",
+    "command": "node scripts/verify-lottable-validation.mjs",
+    "files": [
+      "scripts/verify-lottable-validation.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:receipt-validation",
+    "command": "node scripts/verify-receipt-validation.mjs",
+    "files": [
+      "scripts/verify-receipt-validation.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:putaway-enquiry",
+    "command": "node scripts/verify-putaway-enquiry.mjs",
+    "files": [
+      "scripts/verify-putaway-enquiry.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:sku-label-print",
+    "command": "node scripts/verify-sku-label-print.mjs",
+    "files": [
+      "scripts/verify-sku-label-print.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:putaway-rules",
+    "command": "node scripts/verify-putaway-rules.mjs",
+    "files": [
+      "scripts/verify-putaway-rules.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:allocation-strategies",
+    "command": "node scripts/verify-allocation-strategies.mjs",
+    "files": [
+      "scripts/verify-allocation-strategies.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:cycle-count-waves",
+    "command": "node scripts/verify-cycle-count-waves.mjs",
+    "files": [
+      "scripts/verify-cycle-count-waves.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:manage-awb",
+    "command": "node scripts/verify-manage-awb.mjs",
+    "files": [
+      "scripts/verify-manage-awb.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:transporter-preferences",
+    "command": "node scripts/verify-transporter-preferences.mjs",
+    "files": [
+      "scripts/verify-transporter-preferences.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:service-pin-codes",
+    "command": "node scripts/verify-service-pin-codes.mjs",
+    "files": [
+      "scripts/verify-service-pin-codes.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:order-allocation",
+    "command": "node scripts/verify-order-allocation.mjs",
+    "files": [
+      "scripts/verify-order-allocation.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:manage-manifests",
+    "command": "node scripts/verify-manage-manifests.mjs",
+    "files": [
+      "scripts/verify-manage-manifests.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:sku-grading",
+    "command": "node scripts/verify-sku-grading.mjs",
+    "files": [
+      "scripts/verify-sku-grading.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:delivery-shipping",
+    "command": "node scripts/verify-delivery-shipping.mjs",
+    "files": [
+      "scripts/verify-delivery-shipping.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:bulk-order-update",
+    "command": "node scripts/verify-bulk-order-update.mjs",
+    "files": [
+      "scripts/verify-bulk-order-update.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:manage-picklists",
+    "command": "node scripts/verify-manage-picklists.mjs",
+    "files": [
+      "scripts/verify-manage-picklists.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:manage-picking",
+    "command": "node scripts/verify-manage-picking.mjs",
+    "files": [
+      "scripts/verify-manage-picking.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:delivery-split",
+    "command": "node scripts/verify-delivery-split.mjs",
+    "files": [
+      "scripts/verify-delivery-split.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:shipment-handover",
+    "command": "node scripts/verify-shipment-handover.mjs",
+    "files": [
+      "scripts/verify-shipment-handover.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:return-without-order",
+    "command": "node scripts/verify-return-without-order.mjs",
+    "files": [
+      "scripts/verify-return-without-order.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:order-acknowledgement",
+    "command": "node scripts/verify-order-acknowledgement.mjs",
+    "files": [
+      "scripts/verify-order-acknowledgement.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:consolidate-ewb",
+    "command": "node scripts/verify-consolidate-ewb.mjs",
+    "files": [
+      "scripts/verify-consolidate-ewb.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:sort-to-box",
+    "command": "node scripts/verify-sort-to-box.mjs",
+    "files": [
+      "scripts/verify-sort-to-box.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:inbound-gate-pass",
+    "command": "node scripts/verify-inbound-gate-pass.mjs",
+    "files": [
+      "scripts/verify-inbound-gate-pass.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:inbound-enquiry",
+    "command": "node scripts/verify-inbound-enquiry.mjs",
+    "files": [
+      "scripts/verify-inbound-enquiry.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:inbound-create-edit",
+    "command": "node scripts/verify-inbound-create-edit.mjs",
+    "files": [
+      "scripts/verify-inbound-create-edit.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:inbound-realtime",
+    "command": "node scripts/verify-inbound-realtime.mjs",
+    "files": [
+      "scripts/verify-inbound-realtime.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:inbound-qc",
+    "command": "node scripts/verify-inbound-qc.mjs",
+    "files": [
+      "scripts/verify-inbound-qc.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:inventory-view",
+    "command": "node scripts/verify-inventory-view.mjs",
+    "files": [
+      "scripts/verify-inventory-view.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:inventory-move-history",
+    "command": "node scripts/verify-inventory-move-history.mjs",
+    "files": [
+      "scripts/verify-inventory-move-history.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:inventory-move",
+    "command": "node scripts/verify-inventory-move.mjs",
+    "files": [
+      "scripts/verify-inventory-move.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:inventory-move-scan",
+    "command": "node scripts/verify-inventory-move-scan.mjs",
+    "files": [
+      "scripts/verify-inventory-move-scan.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:cycle-count",
+    "command": "node scripts/verify-cycle-count.mjs",
+    "files": [
+      "scripts/verify-cycle-count.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:legacy-stock-write-blocks",
+    "command": "node scripts/verify-legacy-stock-write-blocks.mjs",
+    "files": [
+      "scripts/verify-legacy-stock-write-blocks.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:bin-audit",
+    "command": "node scripts/verify-bin-audit.mjs",
+    "files": [
+      "scripts/verify-bin-audit.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:bulk-lottables",
+    "command": "node scripts/verify-bulk-lottables.mjs",
+    "files": [
+      "scripts/verify-bulk-lottables.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:wms-dedicated-menu-routing",
+    "command": "node scripts/verify-wms-dedicated-menu-routing.mjs",
+    "files": [
+      "scripts/verify-wms-dedicated-menu-routing.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:order-enquiry",
+    "command": "node scripts/verify-order-enquiry.mjs",
+    "files": [
+      "scripts/verify-order-enquiry.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:order-maintenance",
+    "command": "node scripts/verify-order-maintenance.mjs",
+    "files": [
+      "scripts/verify-order-maintenance.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:market-order-view",
+    "command": "node scripts/verify-market-order-view.mjs",
+    "files": [
+      "scripts/verify-market-order-view.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:kitting-order",
+    "command": "node scripts/verify-kitting-order.mjs",
+    "files": [
+      "scripts/verify-kitting-order.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:single-location",
+    "command": "node scripts/verify-single-location.mjs",
+    "files": [
+      "scripts/verify-single-location.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:po-enquiry",
+    "command": "ISOLATED_BROWSER_FOCUS=po-enquiry node scripts/verify-isolated-browser-workflow.mjs",
+    "files": [
+      "scripts/verify-isolated-browser-workflow.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:po-revision",
+    "command": "ISOLATED_BROWSER_FOCUS=po-revision node scripts/verify-isolated-browser-workflow.mjs",
+    "files": [
+      "scripts/verify-isolated-browser-workflow.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:voucher-guard",
+    "command": "ISOLATED_BROWSER_FOCUS=vouchers node scripts/verify-isolated-browser-workflow.mjs",
+    "files": [
+      "scripts/verify-isolated-browser-workflow.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:back-order-integrity",
+    "command": "node scripts/verify-back-order-integrity.mjs",
+    "files": [
+      "scripts/verify-back-order-integrity.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:po-otb-integrity",
+    "command": "node scripts/verify-po-otb-integrity.mjs",
+    "files": [
+      "scripts/verify-po-otb-integrity.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:order-enquiry-integrity",
+    "command": "node scripts/verify-order-enquiry-integrity.mjs",
+    "files": [
+      "scripts/verify-order-enquiry-integrity.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:mongo-isolated-workflows",
+    "command": "node scripts/verify-mongo-isolated-workflows.mjs",
+    "files": [
+      "scripts/verify-mongo-isolated-workflows.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:manage-asn",
+    "command": "node scripts/verify-manage-asn.mjs",
+    "files": [
+      "scripts/verify-manage-asn.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:vendor-promotions",
+    "command": "node scripts/verify-vendor-promotions.mjs",
+    "files": [
+      "scripts/verify-vendor-promotions.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:purchase-charge-masters",
+    "command": "node scripts/verify-purchase-charge-masters.mjs",
+    "files": [
+      "scripts/verify-purchase-charge-masters.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:category-buyers",
+    "command": "node scripts/verify-category-buyers.mjs",
+    "files": [
+      "scripts/verify-category-buyers.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:ars-sku-location",
+    "command": "node scripts/verify-ars-sku-location.mjs",
+    "files": [
+      "scripts/verify-ars-sku-location.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:ars-rules",
+    "command": "node scripts/verify-ars-rules.mjs",
+    "files": [
+      "scripts/verify-ars-rules.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:ars-integrity",
+    "command": "node scripts/verify-ars-integrity.mjs",
+    "files": [
+      "scripts/verify-ars-integrity.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:ars-execution-log",
+    "command": "node scripts/verify-ars-execution-log.mjs",
+    "files": [
+      "scripts/verify-ars-execution-log.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:ars-settings",
+    "command": "node scripts/verify-ars-settings.mjs",
+    "files": [
+      "scripts/verify-ars-settings.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:manage-channels",
+    "command": "node scripts/verify-manage-channels.mjs",
+    "files": [
+      "scripts/verify-manage-channels.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:sku-channel-listing",
+    "command": "ISOLATED_BROWSER_FOCUS=sku-channel-listing node scripts/verify-isolated-browser-workflow.mjs",
+    "files": [
+      "scripts/verify-isolated-browser-workflow.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:sku-barcode",
+    "command": "node scripts/verify-sku-barcode.mjs",
+    "files": [
+      "scripts/verify-sku-barcode.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:sku-group",
+    "command": "ISOLATED_BROWSER_FOCUS=sku-group node scripts/verify-isolated-browser-workflow.mjs",
+    "files": [
+      "scripts/verify-isolated-browser-workflow.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:central-inventory-files",
+    "command": "node scripts/verify-central-inventory-files.mjs",
+    "files": [
+      "scripts/verify-central-inventory-files.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:central-inventory-ui",
+    "command": "node scripts/verify-central-inventory-ui.mjs",
+    "files": [
+      "scripts/verify-central-inventory-ui.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:download-pdf",
+    "command": "node scripts/verify-download-pdf.mjs",
+    "files": [
+      "scripts/verify-download-pdf.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:download-workbook",
+    "command": "node scripts/verify-download-workbook.mjs",
+    "files": [
+      "scripts/verify-download-workbook.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:inbound-realtime-integrity",
+    "command": "node scripts/verify-inbound-realtime-integrity.mjs",
+    "files": [
+      "scripts/verify-inbound-realtime-integrity.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:mp-inventory-log",
+    "command": "node scripts/verify-mp-inventory-log.mjs",
+    "files": [
+      "scripts/verify-mp-inventory-log.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:amazon-mfn-integrity",
+    "command": "node scripts/verify-amazon-mfn-api.mjs",
+    "files": [
+      "scripts/verify-amazon-mfn-api.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:transhipment-integrity",
+    "command": "node scripts/verify-transhipment.mjs",
+    "files": [
+      "scripts/verify-transhipment.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:transhipment-old-integrity",
+    "command": "node scripts/verify-transhipment-old.mjs",
+    "files": [
+      "scripts/verify-transhipment-old.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:ajio-integrity",
+    "command": "node scripts/verify-ajio-api.mjs",
+    "files": [
+      "scripts/verify-ajio-api.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:returns-integrity",
+    "command": "node scripts/verify-returns-integrity.mjs",
+    "files": [
+      "scripts/verify-returns-integrity.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:dispatch-checkpoint",
+    "command": "node scripts/verify-dispatch-checkpoint.mjs",
+    "files": [
+      "scripts/verify-dispatch-checkpoint.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:legacy-fulfillment-write-blocks",
+    "command": "node scripts/verify-legacy-fulfillment-write-blocks.mjs",
+    "files": [
+      "scripts/verify-legacy-fulfillment-write-blocks.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:reliability",
+    "command": "node scripts/verify-mongo-reliability.mjs && node scripts/verify-postgres-reliability.mjs && node scripts/verify-provider-reliability.mjs",
+    "files": [
+      "scripts/verify-mongo-reliability.mjs",
+      "scripts/verify-postgres-reliability.mjs",
+      "scripts/verify-provider-reliability.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:reliability-mongo-isolated",
+    "command": "node scripts/run-isolated-mongo-reliability.mjs",
+    "files": [
+      "scripts/run-isolated-mongo-reliability.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:reliability-extended",
+    "command": "node scripts/run-reliability-extended-gates.mjs",
+    "files": [
+      "scripts/run-reliability-extended-gates.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:reliability-postgres-failures",
+    "command": "node scripts/verify-postgres-failure-injection.mjs",
+    "files": [
+      "scripts/verify-postgres-failure-injection.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:reliability-mongo-startup",
+    "command": "node scripts/run-isolated-mongo-reliability.mjs scripts/verify-mongo-startup-recovery.mjs",
+    "files": [
+      "scripts/run-isolated-mongo-reliability.mjs",
+      "scripts/verify-mongo-startup-recovery.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:reliability-mongo-timeout",
+    "command": "node scripts/run-isolated-mongo-reliability.mjs scripts/verify-mongo-timeout-fixture.mjs",
+    "files": [
+      "scripts/run-isolated-mongo-reliability.mjs",
+      "scripts/verify-mongo-timeout-fixture.mjs"
+    ],
+    "missing": []
+  },
+  {
+    "name": "test:reliability-purchase-orders",
+    "command": "node scripts/run-isolated-mongo-reliability.mjs scripts/verify-purchase-order-reliability.mjs",
+    "files": [
+      "scripts/run-isolated-mongo-reliability.mjs",
+      "scripts/verify-purchase-order-reliability.mjs"
+    ],
+    "missing": []
+  }
+]

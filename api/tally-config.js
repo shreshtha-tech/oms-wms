@@ -1,4 +1,4 @@
-import { find, findOne, insert, update, cors } from './mongo.js';
+import { sendDatabaseUnavailable, find, findOne, insert, update, cors } from './mongo.js';
 
 const CONFIG_MODULE = 'tally-config';
 const ALIAS_MODULE = 'tally-alias';
@@ -92,7 +92,8 @@ export default async function handler(req, res) {
     }
     return res.status(400).json({ error: 'Invalid Tally configuration action.' });
   } catch (err) {
-    console.error('tally-config error:', err);
+    if (sendDatabaseUnavailable(res, err)) return;
+    console.error('tally-config error:', { name: err?.name, code: err?.code });
     return res.status(500).json({ error: err.message });
   }
 }

@@ -1,19 +1,108 @@
-import { cors, find, insert, update } from './mongo.js';
+import { sendDatabaseUnavailable, cors, find, insert, update } from './mongo.js';
+import { currentUser } from './auth-session.js';
 
-const reasons=[["73",":;!!1edrfghj~"],["17","azsxdc"],["90","Better price available"],["84","Change my mind"],["78","Changed my mind"],["47","COD NOT READY"],["62","Completely different product from shown"],["77","Customer Cancelled"],["63","CUSTOMER OUT OF STATION"],["48","CUSTOMER REFUSE TO ACCEPT"],["85","Customer Return"],["91","Customer Return Request"],["11","customer returned"],["61","Damage"],["24","Damaged"],["88","Damaged Item"],["26","DAMAGED PACKAGE RECEIVED"],["8","Defective Product|Refund Request|Manufacturing Date is missing"],["57","dfghjkjhgf"],["75","dfsga"],["13","Didn Like The Product"],["65","Doesn fit"],["52","Duplicate order"],["23","I changed my mind"],["19","I changed my mind."],["22","Image did not match the actual product"],["54","Incorrect size ordered"],["50","Incorrect+size+ordered"],["55","mansi"],["12","no longer needed"],["68","no2222 - InActive"],["79","NON SERVICEABLE AREA"],["25","Not Same as Ordered Product"],["51","Ordered by mistake"],["87","Other"],["59","Others."],["14","Physical Damage"],["72","Prajwal Testing flow"],["60","Price Issue."],["53","Product not required anymore"],["81","Quality"],["21","Quality issues"],["15","rate issue"],["20","Received a wrong or defective product"],["76","Return By Customer"],["71","Return this order"],["45","RTO- Buyer unavailable after 4 attempts"],["43","RTO- Customer Request"],["46","RTO- LP retarded"],["44","RTO- Refused to accept"],["74","Size issues"],["56","Size or fit issues"],["18","Sizenotcorrect"],["9","Sizenotcorrect."],["86","size_is_small"],["58","SUB_RETURN_INCORRECT_SIZE_ORDERED."],["67","Taste not matched"],["7","Test"],["42","testfortest."],["70","Testing"],["69","Testing1111"],["82","This Is A Courier Return."],["89","Wrong Item"],["66","Wrong item sent"],["64","Wrong item sent."],["80","Wrong Size"],["10","Wrong Size Shipped"],["83","You can add additional info here"],["49","yteruydgf"],["16","点"],["1","DAMAGED PRODUCT"],["2","Delayed Delivery"],["3","Did not Like The Product"],["5","Incorrect Sizing/Color"],["6","Poor Quality"],["4","Wrong Product Shipped"],["DisplayLPN","1"]];
-const today=()=>new Date().toISOString().slice(0,10), retCode=()=>`CRW${Date.now().toString().slice(-10)}`;
-const totals=lines=>({returnQty:lines.reduce((n,x)=>n+Number(x.returnQty||0),0),returnAmount:lines.reduce((n,x)=>n+Number(x.lineamount||0),0)});
+const text = value => String(value ?? '').trim();
+const today = () => new Date().toISOString().slice(0, 10);
+const returnCode = () => `CRW${Date.now().toString().slice(-10)}`;
+const totals = lines => ({
+  returnQty: lines.reduce((sum, line) => sum + Number(line.returnQty || 0), 0),
+  returnAmount: lines.reduce((sum, line) => sum + Number(line.lineamount || 0), 0),
+});
+const customerFor = async code => (await find('partners', { type: 'Customer' })).find(row =>
+  [row.customer_code, row.code, row.external_code].some(value => text(value).toLowerCase() === text(code).toLowerCase()));
+const reasonsFor = async () => (await find('generic_records', { module: 'return-reason' }))
+  .filter(row => row.status !== 'Inactive' && text(row.code) && text(row.name))
+  .map(row => [text(row.code), text(row.name)]);
 
-export default async function handler(req,res){if(cors(req,res))return;try{
-  if(req.method==='GET')return res.json({reasons,defaultReason:'4',maxSkus:200,report:{orgID:'USPL',reportID:'RPT006'},columns:['SKU Code','Image','Return Qty','LPN','Attributes','unitPrice','Line Amount','Reason','Order No','Delivery No','Delete']});
-  if(req.method!=='POST')return res.status(405).json({error:'Method not allowed'});
-  const b=req.body||{};
-  if(b.action==='customer') {const code=String(b.custCode||'').trim();if(!code)return res.status(400).json({error:'Customer Code is required'});const customers=await find('partners',{type:'Customer'});const known=customers.find(x=>[x.customer_code,x.code,x.external_code].some(v=>String(v||'').toLowerCase()===code.toLowerCase()));if(!known&&code!=='999999')return res.status(400).json({error:'Invalid Customer Code.'});return res.json({map:{CustCode:code,ClientId:known?.client_id||'0-DummyClient'},reasons});}
-  if(b.action==='scan'){if(!String(b.scannedSkuCode||'').trim())return res.status(400).json({error:'SKU Code is required'});if(!b.reason)return res.status(400).json({error:'asn.msg109'});const qty=Number(b.scannQty);if(!qty)return res.status(400).json({error:'Scan Qty can not be empty or Zero.'});let skus=await find('skus',{}),sku=skus.find(x=>[x.sku_code,x.barcode,x.sku_barcode].some(v=>String(v||'').toLowerCase()===String(b.scannedSkuCode).trim().toLowerCase()));if(!sku)return res.status(400).json({error:'SKU is not associated with Picklist for Picking.'});let draft=(await find('generic_records',{module:'return-without-order'})).find(x=>x.returnCode===b.returnNo&&x.status==='Open');const reason=reasons.find(x=>x[0]===String(b.reason))?.[1]||'';const unit=Number(sku.sale_price||sku.mrp||sku.cost_price||0);const line={id:Date.now(),skuCode:sku.sku_code,displaySku:sku.sku_code,skuDesc:sku.name||'',skuImgUrlToShow:sku.image||'',returnQty:qty,lpn:b.lpn||'',attributes:[sku.size,sku.color||sku.colour].filter(Boolean).join('/'),unitPrice:unit,lineamount:unit*qty,reasonCode:String(b.reason),reason,orderNo:'',delNOs:'',uomName:sku.uom||'EA',returnUOMQty:qty,barCode:sku.barcode||''};if(draft){const lines=[...(draft.lines||[]),line];[draft]=await update('generic_records',draft.id,{lines,...totals(lines),modifiedDate:today()})}else{draft=await insert('generic_records',{module:'return-without-order',returnCode:retCode(),customerCode:String(b.custCode||'').trim(),clientId:b.clientId||'0-DummyClient',status:'Open',statusCode:'10',createDateText:today(),createdBy:'local-user',modifiedBy:'local-user',modifiedDate:today(),remarks:'',lines:[line],...totals([line])})}return res.json(draft);}
-  const rows=await find('generic_records',{module:'return-without-order'}),draft=rows.find(x=>x.returnCode===b.returnNo);if(!draft)return res.status(404).json({error:'Return not found'});
-  if(b.action==='updateLines'){const lines=Array.isArray(b.lines)?b.lines:[];const [saved]=await update('generic_records',draft.id,{lines,...totals(lines),modifiedDate:today()});return res.json(saved)}
-  if(b.action==='confirm'){if(!String(b.remarks||'').trim())return res.status(400).json({error:'Remark is Mandatory.'});const [saved]=await update('generic_records',draft.id,{remarks:String(b.remarks).trim(),status:'Confirmed',statusCode:'20',inboundNo:`INB${Date.now().toString().slice(-8)}`,modifiedDate:today()});return res.json(saved)}
-  if(b.action==='cancel'){const [saved]=await update('generic_records',draft.id,{status:'Cancelled',statusCode:'90',modifiedDate:today()});return res.json(saved)}
-  if(b.action==='print')return res.json({reportName:'Customer Return',reportID:'RPT006',orgID:'USPL',custretCode:draft.returnCode,format:'pdf'});
-  return res.status(400).json({error:'Invalid action'});
-}catch(e){console.error('return without order error:',e);res.status(500).json({error:e.message})}}
+export default async function handler(req, res) {
+  if (cors(req, res)) return;
+  try {
+    if (req.method === 'GET') return res.json({
+      reasons: await reasonsFor(), maxSkus: 200,
+      columns: ['SKU Code', 'Image', 'Return Qty', 'LPN', 'Attributes', 'Unit Price', 'Line Amount', 'Reason', 'Order No', 'Delivery No', 'Delete'],
+    });
+    if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+    const body = req.body || {};
+    const actor = currentUser(req)?.username || 'unknown';
+
+    if (body.action === 'create-reason') {
+      const name = text(body.name);
+      if (!name) return res.status(400).json({ error: 'Enter a return reason.' });
+      const existing = await find('generic_records', { module: 'return-reason' });
+      if (existing.some(row => text(row.name).toLowerCase() === name.toLowerCase())) return res.status(409).json({ error: 'Return reason already exists.' });
+      const code = `RR${Math.max(0, ...existing.map(row => Number(text(row.code).replace(/^RR/, '')) || 0)) + 1}`;
+      await insert('generic_records', { module: 'return-reason', code, name, status: 'Active', created_by: actor, created_date: today() });
+      return res.status(201).json({ code, name, reasons: await reasonsFor() });
+    }
+    if (body.action === 'customer') {
+      const code = text(body.custCode);
+      if (!code) return res.status(400).json({ error: 'Customer Code is required' });
+      const customer = await customerFor(code);
+      if (!customer) return res.status(400).json({ error: 'Invalid Customer Code.' });
+      return res.json({ map: { CustCode: code, ClientId: text(customer.client_id) }, reasons: await reasonsFor() });
+    }
+    if (body.action === 'scan') {
+      const customer = await customerFor(body.custCode);
+      if (!customer) return res.status(400).json({ error: 'Select a configured customer.' });
+      if (!text(body.scannedSkuCode)) return res.status(400).json({ error: 'SKU Code is required' });
+      const reason = (await reasonsFor()).find(([code]) => code === text(body.reason));
+      if (!reason) return res.status(400).json({ error: 'Select a configured return reason.' });
+      const qty = Number(body.scannQty);
+      if (!Number.isFinite(qty) || qty <= 0) return res.status(400).json({ error: 'Scan Qty must be greater than zero.' });
+      const sku = (await find('skus')).find(row => [row.sku_code, row.barcode, row.sku_barcode]
+        .some(value => text(value).toLowerCase() === text(body.scannedSkuCode).toLowerCase()));
+      if (!sku) return res.status(400).json({ error: 'Select a configured SKU.' });
+      const records = await find('generic_records', { module: 'return-without-order' });
+      const draft = records.find(row => row.returnCode === text(body.returnNo) && row.status === 'Open');
+      if (text(body.returnNo) && !draft) return res.status(409).json({ error: 'This return is no longer open.' });
+      if ((draft?.lines?.length || 0) >= 200) return res.status(400).json({ error: 'A return may contain at most 200 SKU lines.' });
+      if (draft && draft.customerCode !== text(body.custCode)) return res.status(400).json({ error: 'Customer does not match this return.' });
+      const unit = Number(sku.sale_price || sku.mrp || sku.cost_price || 0);
+      const line = {
+        id: Date.now(), skuCode: sku.sku_code, displaySku: sku.sku_code, skuDesc: sku.name || '',
+        skuImgUrlToShow: sku.image || '', returnQty: qty, lpn: text(body.lpn),
+        attributes: [sku.size, sku.color || sku.colour].filter(Boolean).join('/'),
+        unitPrice: unit, lineamount: unit * qty, reasonCode: reason[0], reason: reason[1],
+        orderNo: '', delNOs: '', uomName: sku.uom || '', returnUOMQty: qty, barCode: sku.barcode || '',
+      };
+      const lines = [...(draft?.lines || []), line];
+      if (draft) {
+        const [saved] = await update('generic_records', draft.id, { lines, ...totals(lines), modifiedBy: actor, modifiedDate: today() });
+        return res.json(saved);
+      }
+      return res.json(await insert('generic_records', {
+        module: 'return-without-order', returnCode: returnCode(), customerCode: text(body.custCode),
+        clientId: text(customer.client_id), status: 'Open', statusCode: '10', createDateText: today(),
+        createdBy: actor, modifiedBy: actor, modifiedDate: today(), remarks: '', lines, ...totals(lines),
+      }));
+    }
+
+    const draft = (await find('generic_records', { module: 'return-without-order' }))
+      .find(row => row.returnCode === text(body.returnNo));
+    if (!draft) return res.status(404).json({ error: 'Return not found' });
+    if (body.action === 'print') return res.status(400).json({ error: 'Use the return download control to print this record.' });
+    if (draft.status !== 'Open') return res.status(409).json({ error: 'This return is no longer open.' });
+    if (body.action === 'updateLines') {
+      const ids = new Set(Array.isArray(body.lineIds) ? body.lineIds.map(String) : []);
+      const lines = (draft.lines || []).filter(line => ids.has(String(line.id)));
+      const [saved] = await update('generic_records', draft.id, { lines, ...totals(lines), modifiedBy: actor, modifiedDate: today() });
+      return res.json(saved);
+    }
+    if (body.action === 'confirm') {
+      if (!text(body.remarks)) return res.status(400).json({ error: 'Remark is Mandatory.' });
+      if (!draft.lines?.length) return res.status(400).json({ error: 'Scan at least one SKU.' });
+      const [saved] = await update('generic_records', draft.id, { remarks: text(body.remarks), status: 'Confirmed', statusCode: '20', modifiedBy: actor, modifiedDate: today() });
+      saved.workflowNotice = 'Return record confirmed. No physical receipt, QC, or Central Inventory stock posting occurred.';
+      return res.json(saved);
+    }
+    if (body.action === 'cancel') {
+      const [saved] = await update('generic_records', draft.id, { status: 'Cancelled', statusCode: '90', modifiedBy: actor, modifiedDate: today() });
+      return res.json(saved);
+    }
+    return res.status(400).json({ error: 'Invalid action' });
+  } catch (error) {
+    if (sendDatabaseUnavailable(res, error)) return;
+    console.error('return without order error:', { name: error?.name, code: error?.code });
+    return res.status(500).json({ error: error.message });
+  }
+}

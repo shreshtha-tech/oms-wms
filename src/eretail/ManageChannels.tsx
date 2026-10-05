@@ -58,6 +58,8 @@ export default function ManageChannels() {
   const navigate = useNavigate();
   const { requestDownload } = useDownload();
   const [rows, setRows] = useState<any[]>([]);
+  const [clients, setClients] = useState<any[]>([]);
+  const [locations, setLocations] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState<number[]>([]);
   const [page, setPage] = useState(1);
@@ -70,21 +72,29 @@ export default function ManageChannels() {
   const [saving, setSaving] = useState(false);
 
   // search fields
-  const initialFilters = { channel_code: '', channel_name: '', status: 'All', channel_type: '', brand_code: '', location: '', fulfilment_status: 'All', channel_group_code: '' };
+  const initialFilters = { channel_code: '', channel_name: '', client_id: '', status: 'All', channel_type: '', brand_code: '', location: '', fulfilment_status: 'All', channel_group_code: '' };
   const [f, setF] = useState(initialFilters);
 
-  const emptyForm = { channel_code: '', channel_name: '', brand: 'custom', channel_type: 'Custom Channel', location: '', status: 'Active', fulfilment_status: 'Online', channel_configured: 'No', client_id: '0', auto_range: 'No', channel_sla: '48', process_future_order: '', customer_code: '', tax_calculation: '', pickup_slot: '', order_sync: 'No', order_sync_from_date: '', order_sync_from_order_no: '', shipping_by: 'Ship By Seller', invoice_no_by: 'Self', prepack_enabled: 'No', ready_to_ship_at: 'Manifest', each_qty_per_line: 'No', return_order_sync: 'No', return_sync_from_date: '', marketplace_invoice: 'No', marketplace_shipping_label: 'No', enable_return_push: 'No', push_item_cancel: 'No', update_invoice_on_manifest: 'Yes', transporter_wise_manifest: 'Yes', enable_otp_cnc: 'Yes', create_rto: 'Yes', restrict_unpack: 'No', inventory_sync: '', inventory_min_buffer: '', max_allowed_inventory: '', sync_method: '', inventory_percentage: '', sku_pull_push: '', sku_create_mode: '', address1: '', address2: '', address3: '', pin_code: '', phone: '', gst_tin: '', country: '', state: '', city: '' };
+  const emptyForm = { channel_code: '', channel_name: '', brand: 'custom', channel_type: 'Custom Channel', location: '', status: 'Active', fulfilment_status: 'Online', channel_configured: 'No', client_id: '', auto_range: 'No', channel_sla: '48', process_future_order: '', customer_code: '', tax_calculation: '', pickup_slot: '', order_sync: 'No', order_sync_from_date: '', order_sync_from_order_no: '', shipping_by: 'Ship By Seller', invoice_no_by: 'Self', prepack_enabled: 'No', ready_to_ship_at: 'Manifest', each_qty_per_line: 'No', return_order_sync: 'No', return_sync_from_date: '', marketplace_invoice: 'No', marketplace_shipping_label: 'No', enable_return_push: 'No', push_item_cancel: 'No', update_invoice_on_manifest: 'Yes', transporter_wise_manifest: 'Yes', enable_otp_cnc: 'Yes', create_rto: 'Yes', restrict_unpack: 'No', inventory_sync: '', inventory_min_buffer: '', max_allowed_inventory: '', sync_method: '', inventory_percentage: '', sku_pull_push: '', sku_create_mode: '', address1: '', address2: '', address3: '', pin_code: '', phone: '', gst_tin: '', country: '', state: '', city: '' };
   const [form, setForm] = useState<any>(emptyForm);
 
   const search = async (nextPage = 1, nextSize = pageSize, filters = f) => {
     setLoading(true);
     try {
-      const vnfDataString = JSON.stringify({ param3: '-1', param1: filters.channel_code, param2: filters.channel_name, param4: filters.status === 'All' ? '-1' : filters.status === 'Active' ? '1' : '0', param5: filters.channel_type, param8: filters.brand_code, param7: filters.fulfilment_status === 'All' ? '-1' : filters.fulfilment_status === 'Online' ? '1' : '0', param17: filters.channel_group_code });
+      const vnfDataString = JSON.stringify({ param3: filters.client_id || '-1', param1: filters.channel_code, param2: filters.channel_name, param4: filters.status === 'All' ? '-1' : filters.status === 'Active' ? '1' : '0', param5: filters.channel_type, param8: filters.brand_code, param7: filters.fulfilment_status === 'All' ? '-1' : filters.fulfilment_status === 'Online' ? '1' : '0', param17: filters.channel_group_code });
       const result: any = await apiSend('/api/channels', 'POST', { vnfDataString, key: 'CHANNELENQUIRYSEARCH', REQ_SEARCH_FLAG: true, rows: nextSize, page: nextPage, sidx: '', sord: 'desc', param6: filters.location, doFetchCount: false });
       setRows(result.commonSearchDTOList || result.gridModel || result.rows || []); setPage(result.page || nextPage); setPageSize(nextSize); setRecords(result.records || 0); setTotalPages(result.total || 0);
     } catch (error: any) { setRows([]); setToast({ msg: error.message || 'Failed to load channels', type: 'err' }); } finally { setLoading(false); }
   };
   useEffect(() => { void search(1, 20, initialFilters); }, []);
+  useEffect(() => {
+    void apiGet<any[]>('/api/clients').then(setClients).catch(() => {
+      setToast({ msg: 'Unable to load configured clients', type: 'err' });
+    });
+    void apiGet<{ rows: any[] }>('/api/locations').then(data => setLocations(data.rows || [])).catch(() => {
+      setToast({ msg: 'Unable to load configured locations', type: 'err' });
+    });
+  }, []);
 
   const pageRows = rows;
   const allChecked = pageRows.length > 0 && pageRows.every((r) => selected.includes(r.id));
@@ -118,9 +128,6 @@ export default function ManageChannels() {
     } catch { setToast({ msg: 'Failed to add channel', type: 'err' }); } finally { setSaving(false); }
   };
 
-  const reconcile = () => { if (!selected.length) return setToast({ msg: 'Select channel(s) to reconcile inventory', type: 'err' }); setToast({ msg: `Inventory reconcile triggered for ${selected.length} channel(s)`, type: 'ok' }); };
-  const synchronize = () => setToast({ msg: 'Inventory synchronization started (0 pending)', type: 'ok' });
-
   const abtn = 'flex items-center gap-1.5 rounded px-3 py-1.5 text-sm font-medium transition';
 
   return (
@@ -133,14 +140,18 @@ export default function ManageChannels() {
         <div className="flex flex-wrap items-center gap-1.5">
           <button onClick={doSearch} className={`${abtn} bg-[#f5a623] text-white hover:brightness-105`}><Search size={14} /> Search</button>
           <button onClick={doReset} className={`${abtn} border border-slate-300 bg-white text-slate-600 hover:bg-slate-50`}><X size={14} /> Reset</button>
-          <button onClick={reconcile} className={`${abtn} bg-[#3aa856] text-white hover:brightness-105`}><RotateCw size={14} /> Reconcile Inv</button>
-          <button onClick={synchronize} className={`${abtn} bg-[#3aa856] text-white hover:brightness-105`}><RefreshCw size={14} /> Synchronize 0 Inv</button>
+          <button disabled title="No verified provider inventory readback job is connected" className={`${abtn} cursor-not-allowed bg-slate-300 text-slate-600`}><RotateCw size={14} /> Reconcile Inv</button>
+          <button disabled title="No verified provider inventory sync job is connected" className={`${abtn} cursor-not-allowed bg-slate-300 text-slate-600`}><RefreshCw size={14} /> Synchronize 0 Inv</button>
           <button onClick={() => navigate('/app/admin/common-import')} className={`${abtn} border border-slate-300 bg-white text-slate-600 hover:bg-slate-50`}><Upload size={14} /> Import</button>
           <button onClick={() => exportData(false)} className={`${abtn} border border-slate-300 bg-white text-slate-600 hover:bg-slate-50`}><Download size={14} /> Export</button>
           <button onClick={() => exportData(true)} className={`${abtn} border border-slate-300 bg-white text-slate-600 hover:bg-slate-50`}><Download size={14} /> Detail Export</button>
           <button onClick={() => setShowMarketplace(true)} className={`${abtn} border border-slate-300 bg-white text-slate-600 hover:bg-slate-50`}><Plus size={14} /> Add New</button>
-          <button onClick={() => setToast({ msg: 'Channel Enquiry: search, reconcile, sync, import/export and add channels.', type: 'ok' })} className="rounded-full p-1 text-[#3b8fc4] hover:bg-slate-100" title="Help"><HelpCircle size={18} /></button>
+          <button onClick={() => setToast({ msg: 'Channel Enquiry searches and exports channel metadata. Live feed setup is managed in Seller Connections.', type: 'ok' })} className="rounded-full p-1 text-[#3b8fc4] hover:bg-slate-100" title="Help"><HelpCircle size={18} /></button>
         </div>
+      </div>
+      <div role="status" className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded border border-amber-300 bg-amber-50 p-3 text-sm text-amber-950">
+        <span>Channel records store ERP metadata. Live inventory sync needs verified seller access, SKU/location mappings, and provider readback.</span>
+        <button className="font-medium underline" onClick={() => navigate('/app/central-inventory?section=channels')}>Open Seller Connections</button>
       </div>
 
       {/* Search panel */}
@@ -149,9 +160,9 @@ export default function ManageChannels() {
         <div className="grid gap-x-8 gap-y-3 md:grid-cols-2 xl:grid-cols-2">
           <Field label="Channel Code"><input value={f.channel_code} onChange={(e) => setF({ ...f, channel_code: e.target.value })} className="ci" /></Field>
           <Field label="Channel Name"><input value={f.channel_name} onChange={(e) => setF({ ...f, channel_name: e.target.value })} className="ci" /></Field>
-          <Field label="Client"><select className="ci" defaultValue="-1"><option value="-1">--- Select ---</option><option value="0">0-DummyClient</option></select></Field>
+          <Field label="Client"><select aria-label="Client" className="ci" value={f.client_id} onChange={(e) => setF({ ...f, client_id: e.target.value })}><option value="">--- Select ---</option>{clients.map((client) => { const id = String(client.client_id ?? client.id ?? ''); const name = String(client.client_name ?? client.name ?? ''); return id && name ? <option key={id} value={id}>{id}-{name}</option> : null; })}</select></Field>
           <Field label="Brand Code"><input value={f.brand_code} onChange={(e) => setF({ ...f, brand_code: e.target.value })} className="ci" /></Field>
-          <Field label="Location"><select value={f.location} onChange={(e) => setF({ ...f, location: e.target.value })} className="ci"><option value="">--- Select ---</option>{['EXT-bsr','DFC-SANGHVI BEAUTY AND TECHNOLOGIES-LUCKY ENTERPRISES','STA-STAANA','A01-Delhi WH','JAY-Jaipur warehouse','PNG-PNG Warehouse Mongolia','JS1-JS1 Demo','M87-soch.saascart.com','351-Bombay','STO-StoreMore Storage Solutions Private Limited','DWH-Delhi'].map((value) => <option key={value}>{value}</option>)}</select></Field>
+          <Field label="Location"><select aria-label="Location" value={f.location} onChange={(e) => setF({ ...f, location: e.target.value })} className="ci"><option value="">--- Select ---</option>{locations.map((location) => { const name = String(location.location_name ?? location.name ?? ''); const code = String(location.location_code ?? location.code ?? ''); return code && name ? <option key={code} value={name}>{code}-{name}</option> : null; })}</select></Field>
           <Field label="Status">
             <select value={f.status} onChange={(e) => setF({ ...f, status: e.target.value })} className="ci"><option>All</option><option>Active</option><option>InActive</option></select>
           </Field>
@@ -238,17 +249,17 @@ export default function ManageChannels() {
 
       {/* Add New modal */}
       <Modal title="Channel Maintenance" open={showAdd} onClose={() => setShowAdd(false)} wide>
-        <div className="mb-4 flex gap-4 border-b text-sm font-medium text-[#2f7fb6]"><span className="border-b-2 border-[#2f7fb6] pb-2">Channel Maintenance</span><span>User Defined Field</span><button className="ml-auto pb-2" onClick={() => setToast({ msg: 'Configure Interface is available after the channel is saved.', type: 'ok' })}>Configure Interface</button></div>
+        <div className="mb-4 flex gap-4 border-b text-sm font-medium text-[#2f7fb6]"><span className="border-b-2 border-[#2f7fb6] pb-2">Channel Maintenance</span><span>User Defined Field</span><button className="ml-auto pb-2" onClick={() => setToast({ msg: 'Live API credentials and feed verification are managed in Seller Connections; this screen stores channel metadata.', type: 'ok' })}>Configure Interface</button></div>
         <div className="grid grid-cols-2 gap-3">
           <div><label className="lbl">Channel Code</label><input value={form.channel_code} onChange={(e) => setForm({ ...form, channel_code: e.target.value })} className="inp" placeholder="e.g. ABX" /></div>
           <div><label className="lbl">Channel Name</label><input value={form.channel_name} onChange={(e) => setForm({ ...form, channel_name: e.target.value })} className="inp" /></div>
           <div><label className="lbl">Brand</label><select value={form.brand} onChange={(e) => setForm({ ...form, brand: e.target.value })} className="inp">{Object.keys(BRAND_CHIP).map((b) => <option key={b} value={b}>{BRAND_CHIP[b].label}</option>)}</select></div>
           <div><label className="lbl">Channel Type</label><select value={form.channel_type} onChange={(e) => setForm({ ...form, channel_type: e.target.value })} className="inp"><option>Marketplace</option><option>Webstore</option><option>Custom Channel</option><option>POS</option></select></div>
-          <div><label className="lbl">Location</label><input value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} className="inp" /></div>
+          <div><label className="lbl">Location</label><select aria-label="Channel Location" value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} className="inp"><option value="">--- Select ---</option>{locations.map((location) => { const name = String(location.location_name ?? location.name ?? ''); const code = String(location.location_code ?? location.code ?? ''); return code && name ? <option key={code} value={name}>{code}-{name}</option> : null; })}</select></div>
           <div><label className="lbl">Fulfilment Status</label><select value={form.fulfilment_status} onChange={(e) => setForm({ ...form, fulfilment_status: e.target.value })} className="inp"><option>Online</option><option>Offline</option></select></div>
           <div><label className="lbl">Status</label><select value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value })} className="inp"><option>Active</option><option>InActive</option></select></div>
-          <div><label className="lbl">Channel Configured</label><select value={form.channel_configured} onChange={(e) => setForm({ ...form, channel_configured: e.target.value })} className="inp"><option>No</option><option>Yes</option></select></div>
-          <div><label className="lbl">Client</label><select value={form.client_id} onChange={(e) => setForm({ ...form, client_id: e.target.value })} className="inp"><option value="">--- Select ---</option><option value="0">0-DummyClient</option></select></div>
+          <div><label className="lbl">Channel Configured</label><select disabled value="No" className="inp"><option>No</option></select><small className="text-xs text-slate-500">This changes only after seller access and inventory readback are verified in Seller Connections.</small></div>
+          <div><label className="lbl">Client</label><select value={form.client_id} onChange={(e) => setForm({ ...form, client_id: e.target.value })} className="inp"><option value="">--- Select ---</option>{clients.map((client) => { const id = String(client.client_id ?? client.id ?? ''); const name = String(client.client_name ?? client.name ?? ''); return id && name ? <option key={id} value={id}>{id}-{name}</option> : null; })}</select></div>
           <div><label className="lbl">Auto Range SKU</label><select value={form.auto_range} onChange={(e) => setForm({ ...form, auto_range: e.target.value })} className="inp"><option>No</option><option>Yes</option></select></div>
           <div><label className="lbl">Channel SLA</label><input type="number" min="0" value={form.channel_sla} onChange={(e) => setForm({ ...form, channel_sla: e.target.value })} className="inp" /></div>
           <div><label className="lbl">Process Future Order</label><input type="number" min="0" value={form.process_future_order} onChange={(e) => setForm({ ...form, process_future_order: e.target.value })} className="inp" /></div>

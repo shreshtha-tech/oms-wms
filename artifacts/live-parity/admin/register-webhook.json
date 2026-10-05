@@ -1,0 +1,3228 @@
+{
+  "url": "https://demo.vineretail.com/eRetailWeb/manageApiWebhook",
+  "title": "",
+  "text": "Save\n\t\nCancel\n\t\nReset\n Admin Api Manage Api Webhook\nSource\nWMS\nSeller Panel\nJIT\nPayload Type\nFull Payload\nPartial Payload\nAPI Category\n--- Select ---\nLOADING\nINVMOVE\nSHIPMENT\nGATEPASS\nTRANSHIPMENT\nINBOUND\nORDER\nORDER RETURN\nINVENTORY\nRTV\nPRODUCTS\nVENDOR\nSVLCATALOGUE\nPO\nAPI Name\n--- Select ---\nGet Order Status\nOrder Pull\nPO Pull\nInbound Get\nVendor Detail\nRtv List\nGetGatePass\nFailed Orders\nSTO Details\nOrder Pull V2\nGet Return Details\nCreate Manifest\nGet Order StatusV3\nGet Return Details v2\nmgd orderStatus api\nget orderFetch\nInventory Update\nClient Master Create\nValidate lpn Id\ntranshipment\nVersions\nV1\nWebhook URL\nHeaders\nActive\n \nOrder Source\n\t\n \nPayload Type\n\t\n \nVendor\n\t\n \nAPI Category\n\t\n \nWebhook URL\n\t\n \nAPI Name\n\t\n \nActions\n\n\n--- Select ---\nWMS\nSeller Panel\nJIT\n\t\n--- Select ---\nFull Payload\nPartial Payload\n\t\n\t\n--- Select ---\nLOADING\nINVMOVE\nSHIPMENT\nGATEPASS\nTRANSHIPMENT\nINBOUND\nORDER\nORDER RETURN\nINVENTORY\nRTV\nPRODUCTS\nVENDOR\nSVLCATALOGUE\nPO\n\t\n\t\n\t\n\t\t\t\t\t\t\nWMS\tFull Payload\t \tORDER RETURN\thttps://dev.quickreturns.ai/webhook/vinculum/klinch\tGet Return Details\t\n\nWMS\tFull Payload\t \tINBOUND\thttps://demotestinboundjoe.requestcatcher.com/\tInbound Get\t\n\nWMS\tFull Payload\t \tTRANSHIPMENT\thttps://4757485.requestcatcher.com/test\ttranshipment\t\n\nWMS\tPartial Payload\t \tORDER\thttps://testurl.requestcatcher.com/test\t \t\n\nWMS\tPartial Payload\t \tORDER\thttps://testurl1.requestcatcher.com/test\t \t\n\nWMS\tFull Payload\t \tORDER\thttps://uat-01.apigw.test.apigee.ooredoo.qa/mcrosrvc/v1/wareone/order-status\tGet Order Status\t\n\nWMS\tFull Payload\t \tRTV\thttps://webhook.site/[REDACTED]\tRtv List\t\n\nWMS\tFull Payload\t \tORDER\thttps://cancel.requestcatcher.com/\tOrder Pull\t\n\nWMS\tFull Payload\tREL\tPO\thttps://popull.requestcatcher.com/test\tPO Pull\t\n\nWMS\tFull Payload\t \tORDER\thttps://sto.requestcatcher.com/test\tSTO Details\t\n\nWMS\tFull Payload\t \tORDER\thttps://webhook.requestcatcher.com/\tGet Order Status\t\n\t\n\t\n\t\n\tPage  of 0\t\n\t\n\t\n\t\n20\n50\n100\n200\n\tView 1 - 11 of 11",
+  "controls": [
+    {
+      "tag": "BUTTON",
+      "id": "saveConfigurationBtn",
+      "name": "",
+      "type": "button",
+      "text": "Save",
+      "value": "",
+      "disabled": false,
+      "visible": true,
+      "title": "",
+      "onclick": null,
+      "onchange": null,
+      "geometry": {
+        "x": 875.3515625,
+        "y": 4,
+        "width": 75,
+        "height": 30,
+        "font": "12px / 18px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(255, 255, 255)",
+        "background": "rgb(243, 156, 18)"
+      }
+    },
+    {
+      "tag": "BUTTON",
+      "id": "cancelConfigurationBtn",
+      "name": "",
+      "type": "button",
+      "text": "Cancel",
+      "value": "",
+      "disabled": false,
+      "visible": true,
+      "title": "",
+      "onclick": null,
+      "onchange": null,
+      "geometry": {
+        "x": 960.3515625,
+        "y": 4,
+        "width": 77.6484375,
+        "height": 30,
+        "font": "12px / 18px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(255, 255, 255)",
+        "background": "rgb(221, 75, 57)"
+      }
+    },
+    {
+      "tag": "BUTTON",
+      "id": "resetConfigurationBtn",
+      "name": "",
+      "type": "button",
+      "text": "Reset",
+      "value": "",
+      "disabled": false,
+      "visible": true,
+      "title": "",
+      "onclick": "resetWhDetails(); return false;",
+      "onchange": null,
+      "geometry": {
+        "x": 1048,
+        "y": 4,
+        "width": 75,
+        "height": 30,
+        "font": "12px / 18px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(68, 68, 68)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "Admin",
+      "visible": true,
+      "title": "",
+      "onclick": "return false;",
+      "onchange": null,
+      "geometry": {
+        "x": 15,
+        "y": 6,
+        "width": 52.8359375,
+        "height": 17.140625,
+        "font": "12px / 17.1429px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(68, 68, 68)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "Api",
+      "visible": true,
+      "title": "",
+      "onclick": "return false;",
+      "onchange": null,
+      "geometry": {
+        "x": 91.515625,
+        "y": 6,
+        "width": 17.34375,
+        "height": 17.140625,
+        "font": "12px / 17.1429px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(68, 68, 68)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "Manage Api Webhook",
+      "visible": true,
+      "title": "",
+      "onclick": "return false;",
+      "onchange": null,
+      "geometry": {
+        "x": 132.5390625,
+        "y": 6,
+        "width": 124.0078125,
+        "height": 17.140625,
+        "font": "12px / 17.1429px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(68, 68, 68)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "tag": "SELECT",
+      "id": "sourcetype",
+      "name": "sourcetype",
+      "type": "select-one",
+      "text": "",
+      "value": "1",
+      "disabled": false,
+      "visible": true,
+      "title": "",
+      "onclick": null,
+      "onchange": "changeSourceType();",
+      "options": [
+        {
+          "text": "WMS",
+          "value": "1"
+        },
+        {
+          "text": "Seller Panel",
+          "value": "2"
+        },
+        {
+          "text": "JIT",
+          "value": "3"
+        }
+      ],
+      "geometry": {
+        "x": 213.4921875,
+        "y": 51.1953125,
+        "width": 168.4921875,
+        "height": 24,
+        "font": "13px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(85, 85, 85)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "SELECT",
+      "id": "vendorid",
+      "name": "vendorid",
+      "type": "select-one",
+      "text": "",
+      "value": "-1",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": null,
+      "onchange": null,
+      "options": [
+        {
+          "text": "--- Select ---",
+          "value": "-1"
+        },
+        {
+          "text": "testingven",
+          "value": "TVD"
+        },
+        {
+          "text": "RG Textiles",
+          "value": "Venr00098811"
+        },
+        {
+          "text": "savdfe",
+          "value": "1213q"
+        },
+        {
+          "text": "SandyTestVendor03",
+          "value": "SV103"
+        },
+        {
+          "text": "SandyTestVendor05",
+          "value": "SV105"
+        },
+        {
+          "text": "Test",
+          "value": "SV106"
+        },
+        {
+          "text": "Rahul Gupta",
+          "value": "2306"
+        },
+        {
+          "text": "Vendor A",
+          "value": "A1"
+        },
+        {
+          "text": "Dubai store test",
+          "value": "TVS"
+        },
+        {
+          "text": "Abc Demo",
+          "value": "1212"
+        },
+        {
+          "text": "sirohi",
+          "value": "8090"
+        },
+        {
+          "text": "SandyTest1",
+          "value": "SV101"
+        },
+        {
+          "text": "Jay Rawat",
+          "value": "Jay12340000"
+        },
+        {
+          "text": "raj007",
+          "value": "raj"
+        },
+        {
+          "text": "Ab10",
+          "value": "10"
+        },
+        {
+          "text": "Amazon",
+          "value": "9873"
+        },
+        {
+          "text": "uyhjk",
+          "value": "9874"
+        },
+        {
+          "text": "Nike",
+          "value": "Nike05"
+        },
+        {
+          "text": "VivekTest",
+          "value": "115702"
+        },
+        {
+          "text": "Hire2737",
+          "value": "483"
+        },
+        {
+          "text": "inorbitmall",
+          "value": "inorbit"
+        },
+        {
+          "text": "Test",
+          "value": "002"
+        },
+        {
+          "text": "Example2",
+          "value": "2"
+        },
+        {
+          "text": "RG Textiles",
+          "value": "AkkK022"
+        },
+        {
+          "text": "james",
+          "value": "007"
+        },
+        {
+          "text": "sss",
+          "value": "9988"
+        },
+        {
+          "text": "AG",
+          "value": "7221"
+        },
+        {
+          "text": "SellerVendor",
+          "value": "SellerVendor"
+        },
+        {
+          "text": "shaqven",
+          "value": "shaqven"
+        },
+        {
+          "text": "Rahul Gupta",
+          "value": "0029"
+        },
+        {
+          "text": "ddd",
+          "value": "sd"
+        },
+        {
+          "text": "Mr.XYZ",
+          "value": "Z0001"
+        },
+        {
+          "text": "Rayon",
+          "value": "448833"
+        },
+        {
+          "text": "Flyknit Holdings",
+          "value": "ffdffs"
+        },
+        {
+          "text": "gsports",
+          "value": "1112"
+        },
+        {
+          "text": "Shopper Stop",
+          "value": "ssbeauty"
+        },
+        {
+          "text": "JAi Durga Kirana",
+          "value": "JDS"
+        },
+        {
+          "text": "may2021",
+          "value": "0705may"
+        },
+        {
+          "text": "Kapson",
+          "value": "9636"
+        },
+        {
+          "text": "ABCD",
+          "value": "ABCD"
+        },
+        {
+          "text": "Dharia",
+          "value": "Dharia"
+        },
+        {
+          "text": "dineshw",
+          "value": "AA12"
+        },
+        {
+          "text": "OPPO",
+          "value": "10101011"
+        },
+        {
+          "text": "Shagy",
+          "value": "SS"
+        },
+        {
+          "text": "Test",
+          "value": "002000-b"
+        },
+        {
+          "text": "Flyknit LLC",
+          "value": "A0001"
+        },
+        {
+          "text": "debasis",
+          "value": "0040"
+        },
+        {
+          "text": "parent 1",
+          "value": "380"
+        },
+        {
+          "text": "Loreal",
+          "value": "N2002"
+        },
+        {
+          "text": "RS Retailer",
+          "value": "w002"
+        },
+        {
+          "text": "WorldCup Sports",
+          "value": "1008"
+        },
+        {
+          "text": "Test",
+          "value": "TM00046"
+        },
+        {
+          "text": "Jatin Goel",
+          "value": "2212"
+        },
+        {
+          "text": "Reliance Indusries",
+          "value": "REL"
+        },
+        {
+          "text": "ANvinc",
+          "value": "AN198"
+        },
+        {
+          "text": "V1",
+          "value": "v1"
+        },
+        {
+          "text": "Electronic",
+          "value": "ELE"
+        },
+        {
+          "text": "TT",
+          "value": "TT"
+        },
+        {
+          "text": "vinculumIND",
+          "value": "vinculum"
+        },
+        {
+          "text": "Adani Enterprises",
+          "value": "ADE"
+        },
+        {
+          "text": "Seller",
+          "value": "123abc"
+        },
+        {
+          "text": "Demo12",
+          "value": "00123"
+        },
+        {
+          "text": "API Test",
+          "value": "APITest"
+        },
+        {
+          "text": "SELLER TEST",
+          "value": "ST002"
+        },
+        {
+          "text": "Vovelo Furnishings",
+          "value": "00007"
+        },
+        {
+          "text": "GUDU",
+          "value": "BK123"
+        },
+        {
+          "text": "Rammy",
+          "value": "1019"
+        },
+        {
+          "text": "shilpa",
+          "value": "1810"
+        },
+        {
+          "text": "fghjklkjh",
+          "value": "4567876"
+        },
+        {
+          "text": "TESTVENDOR",
+          "value": "TESTVENDOR"
+        },
+        {
+          "text": "FabIn",
+          "value": "V10002"
+        },
+        {
+          "text": "abc",
+          "value": "123t"
+        },
+        {
+          "text": "Test",
+          "value": "Test"
+        },
+        {
+          "text": "Rahul Gupta",
+          "value": "2904"
+        },
+        {
+          "text": "heena",
+          "value": "seller09"
+        },
+        {
+          "text": "Test Vendor 123",
+          "value": "112235"
+        },
+        {
+          "text": "Shashank",
+          "value": "Sh7653456"
+        },
+        {
+          "text": "Test",
+          "value": "vendor127"
+        },
+        {
+          "text": "Test",
+          "value": "vendor128"
+        },
+        {
+          "text": "KNEW",
+          "value": "KV001"
+        },
+        {
+          "text": "Handa",
+          "value": "Handa007"
+        },
+        {
+          "text": "nayakazzz",
+          "value": "421421"
+        },
+        {
+          "text": "AMIT TEST SELLER",
+          "value": "VENDOR001"
+        },
+        {
+          "text": "MPtest",
+          "value": "MPtest"
+        },
+        {
+          "text": "VM",
+          "value": "VM"
+        },
+        {
+          "text": "Ayush",
+          "value": "27292"
+        },
+        {
+          "text": "Test",
+          "value": "ds0179"
+        },
+        {
+          "text": "AGI Group",
+          "value": "456785"
+        },
+        {
+          "text": "TEST ABC",
+          "value": "ABC-0001"
+        },
+        {
+          "text": "suraj vishwakarma",
+          "value": "7388"
+        },
+        {
+          "text": "kapil singh",
+          "value": "110045"
+        },
+        {
+          "text": "Laxmi",
+          "value": "112343"
+        },
+        {
+          "text": "xyz",
+          "value": "99999"
+        },
+        {
+          "text": "Rishabh",
+          "value": "Rish"
+        },
+        {
+          "text": "DEEPANSHU",
+          "value": "DS10"
+        },
+        {
+          "text": "Nitika1122",
+          "value": "niti1122"
+        },
+        {
+          "text": "kundanr7",
+          "value": "1090876"
+        },
+        {
+          "text": "Arpit",
+          "value": "AS90"
+        },
+        {
+          "text": "jdkjsd",
+          "value": "abc12338"
+        },
+        {
+          "text": "Aashirvad",
+          "value": "V00001"
+        },
+        {
+          "text": "AG Group",
+          "value": "AGI"
+        },
+        {
+          "text": "Test",
+          "value": "00014"
+        },
+        {
+          "text": "mishu",
+          "value": "mnm"
+        },
+        {
+          "text": "SK Traders",
+          "value": "S2507"
+        },
+        {
+          "text": "deeptest",
+          "value": "999000"
+        },
+        {
+          "text": "DEEPANSHU",
+          "value": "DS06"
+        },
+        {
+          "text": "sahil sudera",
+          "value": "100001"
+        },
+        {
+          "text": "4 Front",
+          "value": "12345"
+        },
+        {
+          "text": "dfkjdhf",
+          "value": "747"
+        },
+        {
+          "text": "Heena",
+          "value": "HD"
+        },
+        {
+          "text": "zillious",
+          "value": "000454"
+        },
+        {
+          "text": "Flipkart",
+          "value": "12345_V"
+        },
+        {
+          "text": "Vestige private limited",
+          "value": "CIRI"
+        },
+        {
+          "text": "Fab",
+          "value": "V1011"
+        },
+        {
+          "text": "uigukgjh",
+          "value": "895678"
+        },
+        {
+          "text": "tester123",
+          "value": "tester"
+        },
+        {
+          "text": "VenFab",
+          "value": "V20001"
+        },
+        {
+          "text": "DEEPANSHU",
+          "value": "DS33"
+        },
+        {
+          "text": "venapo111",
+          "value": "ven111"
+        },
+        {
+          "text": "AGI Group of Industries",
+          "value": "Purchasing"
+        },
+        {
+          "text": "TESTIMP123",
+          "value": "TESTIMP123"
+        },
+        {
+          "text": "vname101",
+          "value": "11906"
+        },
+        {
+          "text": "manishven",
+          "value": "mam12"
+        },
+        {
+          "text": "jklmno",
+          "value": "32728"
+        },
+        {
+          "text": "NKP03",
+          "value": "NKP03"
+        },
+        {
+          "text": "NKP01",
+          "value": "NKP01"
+        },
+        {
+          "text": "ABC",
+          "value": "s1010"
+        },
+        {
+          "text": "NKP02",
+          "value": "NKP02"
+        },
+        {
+          "text": "today",
+          "value": "492018"
+        },
+        {
+          "text": "Test",
+          "value": "sop1"
+        },
+        {
+          "text": "korprimart",
+          "value": "toktok12"
+        },
+        {
+          "text": "demovendor",
+          "value": "23454"
+        },
+        {
+          "text": "ishtest",
+          "value": "is"
+        },
+        {
+          "text": "Shubham",
+          "value": "SINGH"
+        },
+        {
+          "text": "demoMAK",
+          "value": "demo01MAK"
+        },
+        {
+          "text": "STYLI",
+          "value": "STYLI"
+        },
+        {
+          "text": "rohit",
+          "value": "RohitDeCH1"
+        },
+        {
+          "text": "NAME",
+          "value": "DR02"
+        },
+        {
+          "text": "RG Textiles",
+          "value": "Venr0000977811"
+        },
+        {
+          "text": "rishabh1",
+          "value": "2711"
+        },
+        {
+          "text": "Test",
+          "value": "3008"
+        },
+        {
+          "text": "Arpit11",
+          "value": "arp11"
+        },
+        {
+          "text": "Rest",
+          "value": "DR07"
+        },
+        {
+          "text": "pratap",
+          "value": "765"
+        },
+        {
+          "text": "KAALI",
+          "value": "DR09"
+        },
+        {
+          "text": "Test",
+          "value": "RKS"
+        },
+        {
+          "text": "MyNoida3",
+          "value": "13657"
+        },
+        {
+          "text": "ShaquibVend",
+          "value": "ShaquibVen"
+        },
+        {
+          "text": "Test",
+          "value": "vendor130"
+        },
+        {
+          "text": "Test",
+          "value": "vendor131"
+        },
+        {
+          "text": "Milan",
+          "value": "VD21"
+        },
+        {
+          "text": "Garg Emporium",
+          "value": "Yat108"
+        },
+        {
+          "text": "Test",
+          "value": "vendor136"
+        },
+        {
+          "text": "XEROUAT",
+          "value": "UAT"
+        },
+        {
+          "text": "RG Textiles",
+          "value": "Ve88700977811"
+        },
+        {
+          "text": "Test",
+          "value": "vendor137"
+        },
+        {
+          "text": "Test",
+          "value": "vendor139"
+        },
+        {
+          "text": "Test",
+          "value": "vendor135"
+        },
+        {
+          "text": "MATANK",
+          "value": "FAST223344"
+        },
+        {
+          "text": "vsfdfs",
+          "value": "v30"
+        },
+        {
+          "text": "NIKE",
+          "value": "testrelease"
+        },
+        {
+          "text": "An",
+          "value": "897"
+        },
+        {
+          "text": "june11",
+          "value": "77778"
+        },
+        {
+          "text": "GZB Enterprises",
+          "value": "V001D"
+        },
+        {
+          "text": "Rahul Gupta",
+          "value": "0429"
+        },
+        {
+          "text": "MATANK",
+          "value": "FAST3344"
+        },
+        {
+          "text": "shaquibvinculumV",
+          "value": "shaquibvinculumV"
+        },
+        {
+          "text": "Sahil Vendor Test",
+          "value": "000222"
+        },
+        {
+          "text": "Test",
+          "value": "vendor140"
+        },
+        {
+          "text": "xxx",
+          "value": "vin123"
+        },
+        {
+          "text": "kundan",
+          "value": "5571"
+        },
+        {
+          "text": "shanuVendor",
+          "value": "1001001"
+        },
+        {
+          "text": "demoooo",
+          "value": "demooo"
+        },
+        {
+          "text": "Himanshu G",
+          "value": "V1001"
+        },
+        {
+          "text": "isha",
+          "value": "11692"
+        },
+        {
+          "text": "SH",
+          "value": "SH2025"
+        },
+        {
+          "text": "demovendor",
+          "value": "demovendor"
+        },
+        {
+          "text": "DEEPANSHU",
+          "value": "DS44"
+        },
+        {
+          "text": "PIM",
+          "value": "PIM"
+        },
+        {
+          "text": "Gurjaipal",
+          "value": "VT10"
+        },
+        {
+          "text": "vendor 1",
+          "value": "10000"
+        },
+        {
+          "text": "D vendor",
+          "value": "ash01"
+        },
+        {
+          "text": "Rohit",
+          "value": "813024"
+        },
+        {
+          "text": "dawlance CD",
+          "value": "002000-A"
+        },
+        {
+          "text": "DEEPANSHU",
+          "value": "DS099"
+        },
+        {
+          "text": "venda",
+          "value": "0203"
+        },
+        {
+          "text": "Andy",
+          "value": "432"
+        },
+        {
+          "text": "rim005",
+          "value": "51287"
+        },
+        {
+          "text": "vikas",
+          "value": "09454"
+        },
+        {
+          "text": "garg corporation",
+          "value": "garg108"
+        },
+        {
+          "text": "Suy Sing Commercial Corporation",
+          "value": "SSC01"
+        },
+        {
+          "text": "CAR SPARES",
+          "value": "RAJ01"
+        },
+        {
+          "text": "Anil Kumar",
+          "value": "Anil00550066"
+        },
+        {
+          "text": "jhjhgjhg",
+          "value": "786368"
+        },
+        {
+          "text": "DSDemo",
+          "value": "DSDemo"
+        },
+        {
+          "text": "Heena Dharia",
+          "value": "00077"
+        },
+        {
+          "text": "TESTVEN",
+          "value": "TESTVEN"
+        },
+        {
+          "text": "Tecksupport",
+          "value": "PKP"
+        },
+        {
+          "text": "MM",
+          "value": "445"
+        },
+        {
+          "text": "suraj vishwakarma",
+          "value": "8737"
+        },
+        {
+          "text": "Vendor One",
+          "value": "dummyV123"
+        },
+        {
+          "text": "ShaquibVinC",
+          "value": "ShaquibVin"
+        },
+        {
+          "text": "Vamani",
+          "value": "2517"
+        },
+        {
+          "text": "Rahul",
+          "value": "7662"
+        },
+        {
+          "text": "Ajith Vaishno",
+          "value": "VD62"
+        },
+        {
+          "text": "Aman Dhanked",
+          "value": "amn"
+        },
+        {
+          "text": "PUNJAB OPTICALS",
+          "value": "PUNJAB001"
+        },
+        {
+          "text": "MP 001",
+          "value": "MP001"
+        },
+        {
+          "text": "Test",
+          "value": "Ak03"
+        },
+        {
+          "text": "adad",
+          "value": "sfsf"
+        },
+        {
+          "text": "Magento Test Vendor",
+          "value": "121212"
+        },
+        {
+          "text": "Joseph DS 2023",
+          "value": "JOE23"
+        },
+        {
+          "text": "aftab",
+          "value": "8989"
+        },
+        {
+          "text": "xerovendornew",
+          "value": "xerovendornew"
+        },
+        {
+          "text": "Myntra01",
+          "value": "Myntra01"
+        },
+        {
+          "text": "Daniel Sports CD",
+          "value": "002-A"
+        },
+        {
+          "text": "lastvendor",
+          "value": "lastvendor"
+        },
+        {
+          "text": "Test",
+          "value": "002-B"
+        },
+        {
+          "text": "Diablo Smith",
+          "value": "404056"
+        },
+        {
+          "text": "aggarwal",
+          "value": "8765"
+        },
+        {
+          "text": "test23",
+          "value": "test23"
+        },
+        {
+          "text": "TESTV1",
+          "value": "TESTV1"
+        },
+        {
+          "text": "TestDK1",
+          "value": "DK101"
+        },
+        {
+          "text": "Seller panel vendor",
+          "value": "SPV01"
+        },
+        {
+          "text": "Vendor for Xero",
+          "value": "vendorforxero"
+        },
+        {
+          "text": "RG Textiles",
+          "value": "AK0217"
+        },
+        {
+          "text": "nitika",
+          "value": "Nitika"
+        },
+        {
+          "text": "Dropship",
+          "value": "202001"
+        },
+        {
+          "text": "Varun",
+          "value": "1200"
+        },
+        {
+          "text": "Test",
+          "value": "Jaipur1001"
+        },
+        {
+          "text": "engineer",
+          "value": "ER456"
+        },
+        {
+          "text": "spoyl test 1",
+          "value": "spoyltest1"
+        },
+        {
+          "text": "Test Seller for Demo",
+          "value": "DemoSeller"
+        },
+        {
+          "text": "Test",
+          "value": "GLB"
+        },
+        {
+          "text": "Test",
+          "value": "0000121"
+        }
+      ]
+    },
+    {
+      "tag": "SELECT",
+      "id": "jitvendorid",
+      "name": "jitvendorid",
+      "type": "select-one",
+      "text": "",
+      "value": "-1",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": null,
+      "onchange": "vendorChange();",
+      "options": [
+        {
+          "text": "--- Select ---",
+          "value": "-1"
+        },
+        {
+          "text": "Samsung watch",
+          "value": "8055"
+        },
+        {
+          "text": "RG Textiles",
+          "value": "Vendor28891"
+        },
+        {
+          "text": "Akash",
+          "value": "TV12"
+        },
+        {
+          "text": "VenFli",
+          "value": "V20003"
+        },
+        {
+          "text": "ajit567",
+          "value": "56974"
+        },
+        {
+          "text": "Test",
+          "value": "79851"
+        },
+        {
+          "text": "jkhjkl",
+          "value": "7896576"
+        },
+        {
+          "text": "himanshu",
+          "value": "him1"
+        },
+        {
+          "text": "DEEPANSHU",
+          "value": "0001"
+        },
+        {
+          "text": "Devrup",
+          "value": "0408"
+        },
+        {
+          "text": "vendor 12",
+          "value": "VEN-12"
+        },
+        {
+          "text": "DemoA1",
+          "value": "DemoA1"
+        },
+        {
+          "text": "Akash",
+          "value": "12"
+        },
+        {
+          "text": "RA stores",
+          "value": "RA112"
+        },
+        {
+          "text": "Ideal Ready Foods Ltd",
+          "value": "XYZ001"
+        },
+        {
+          "text": "EMC Corp",
+          "value": "025689"
+        },
+        {
+          "text": "Test",
+          "value": "ds072"
+        },
+        {
+          "text": "jhgjhkb",
+          "value": "58562"
+        },
+        {
+          "text": "ajitrt",
+          "value": "23456"
+        },
+        {
+          "text": "EMC Corp",
+          "value": "EMC01"
+        },
+        {
+          "text": "RG Textiles",
+          "value": "Vendor98891"
+        },
+        {
+          "text": "RG Textiles",
+          "value": "Vendor98892"
+        },
+        {
+          "text": "RG Textiles",
+          "value": "Vendor98893"
+        },
+        {
+          "text": "Sharma Trading",
+          "value": "0017"
+        },
+        {
+          "text": "DEEPANSHU",
+          "value": "1"
+        },
+        {
+          "text": "RG Textiles",
+          "value": "Vendor99388093"
+        },
+        {
+          "text": "RG Textiles",
+          "value": "AkkK020"
+        },
+        {
+          "text": "TESTAMAN",
+          "value": "TESTAMAN"
+        },
+        {
+          "text": "Test",
+          "value": "Ven_27_March"
+        },
+        {
+          "text": "Test",
+          "value": "ds0178"
+        },
+        {
+          "text": "Test",
+          "value": "ds0177"
+        },
+        {
+          "text": "nbcjhbwd",
+          "value": "ncjkejkc"
+        },
+        {
+          "text": "Test Rahul",
+          "value": "CODER"
+        },
+        {
+          "text": "WATSAN",
+          "value": "34567"
+        },
+        {
+          "text": "Test",
+          "value": "Ak02"
+        },
+        {
+          "text": "RG Textiles",
+          "value": "Vendor988093"
+        },
+        {
+          "text": "RG Textiles",
+          "value": "mayank18"
+        },
+        {
+          "text": "Palak",
+          "value": "dep99993"
+        },
+        {
+          "text": "deepanshu",
+          "value": "ytv22"
+        },
+        {
+          "text": "happy yadav",
+          "value": "happy123"
+        },
+        {
+          "text": "RG Textiles",
+          "value": "A055656"
+        },
+        {
+          "text": "RG Textiles",
+          "value": "AK0214"
+        },
+        {
+          "text": "RG Textiles",
+          "value": "A057"
+        },
+        {
+          "text": "Virender Singh",
+          "value": "VC14072023"
+        },
+        {
+          "text": "Palak",
+          "value": "dep9900993"
+        },
+        {
+          "text": "RG Textiles",
+          "value": "Vendor9388093"
+        },
+        {
+          "text": "rock",
+          "value": "466"
+        },
+        {
+          "text": "RG Textiles",
+          "value": "ncdbjvbfi"
+        },
+        {
+          "text": "TESTAM",
+          "value": "TESTAM"
+        },
+        {
+          "text": "Test",
+          "value": "4312"
+        },
+        {
+          "text": "Poly Medicure",
+          "value": "POLYMED"
+        },
+        {
+          "text": "Test",
+          "value": "1306199601"
+        }
+      ]
+    },
+    {
+      "tag": "SELECT",
+      "id": "type",
+      "name": "type",
+      "type": "select-one",
+      "text": "",
+      "value": "F_URL",
+      "disabled": false,
+      "visible": true,
+      "title": "",
+      "onclick": null,
+      "onchange": null,
+      "options": [
+        {
+          "text": "Full Payload",
+          "value": "F_URL"
+        },
+        {
+          "text": "Partial Payload",
+          "value": "URL"
+        }
+      ],
+      "geometry": {
+        "x": 768.9921875,
+        "y": 51.1953125,
+        "width": 168.4921875,
+        "height": 24,
+        "font": "13px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(85, 85, 85)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "SELECT",
+      "id": "apiCategory",
+      "name": "apiCategory",
+      "type": "select-one",
+      "text": "",
+      "value": "-1",
+      "disabled": false,
+      "visible": true,
+      "title": "",
+      "onclick": null,
+      "onchange": null,
+      "options": [
+        {
+          "text": "--- Select ---",
+          "value": "-1"
+        },
+        {
+          "text": "LOADING",
+          "value": "LOADING"
+        },
+        {
+          "text": "INVMOVE",
+          "value": "INVMOVE"
+        },
+        {
+          "text": "SHIPMENT",
+          "value": "SHIPMENT"
+        },
+        {
+          "text": "GATEPASS",
+          "value": "GATEPASS"
+        },
+        {
+          "text": "TRANSHIPMENT",
+          "value": "TRANSHIPMENT"
+        },
+        {
+          "text": "INBOUND",
+          "value": "INBOUND"
+        },
+        {
+          "text": "ORDER",
+          "value": "ORDER"
+        },
+        {
+          "text": "ORDER RETURN",
+          "value": "ORDER RETURN"
+        },
+        {
+          "text": "INVENTORY",
+          "value": "INVENTORY"
+        },
+        {
+          "text": "RTV",
+          "value": "RTV"
+        },
+        {
+          "text": "PRODUCTS",
+          "value": "PRODUCTS"
+        },
+        {
+          "text": "VENDOR",
+          "value": "VENDOR"
+        },
+        {
+          "text": "SVLCATALOGUE",
+          "value": "SVLCATALOGUE"
+        },
+        {
+          "text": "PO",
+          "value": "PO"
+        }
+      ],
+      "geometry": {
+        "x": 213.4921875,
+        "y": 81.1953125,
+        "width": 168.4921875,
+        "height": 24,
+        "font": "13px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(85, 85, 85)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "SELECT",
+      "id": "orderStatusFilter",
+      "name": "orderStatusFilter",
+      "type": "select-multiple",
+      "text": "",
+      "value": "-1",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": null,
+      "onchange": null,
+      "options": [
+        {
+          "text": "--- Select ---",
+          "value": "-1"
+        }
+      ]
+    },
+    {
+      "tag": "INPUT",
+      "id": "",
+      "name": "",
+      "type": "search",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "SELECT",
+      "id": "apiName",
+      "name": "apiName",
+      "type": "select-one",
+      "text": "",
+      "value": "-1",
+      "disabled": false,
+      "visible": true,
+      "title": "",
+      "onclick": null,
+      "onchange": null,
+      "options": [
+        {
+          "text": "--- Select ---",
+          "value": "-1"
+        },
+        {
+          "text": "Get Order Status",
+          "value": "3"
+        },
+        {
+          "text": "Order Pull",
+          "value": "4"
+        },
+        {
+          "text": "PO Pull",
+          "value": "20"
+        },
+        {
+          "text": "Inbound Get",
+          "value": "34"
+        },
+        {
+          "text": "Vendor Detail",
+          "value": "111"
+        },
+        {
+          "text": "Rtv List",
+          "value": "451"
+        },
+        {
+          "text": "GetGatePass",
+          "value": "452"
+        },
+        {
+          "text": "Failed Orders",
+          "value": "466"
+        },
+        {
+          "text": "STO Details",
+          "value": "490"
+        },
+        {
+          "text": "Order Pull V2",
+          "value": "616"
+        },
+        {
+          "text": "Get Return Details",
+          "value": "618"
+        },
+        {
+          "text": "Create Manifest",
+          "value": "170025"
+        },
+        {
+          "text": "Get Order StatusV3",
+          "value": "170036"
+        },
+        {
+          "text": "Get Return Details v2",
+          "value": "170042"
+        },
+        {
+          "text": "mgd orderStatus api",
+          "value": "170045"
+        },
+        {
+          "text": "get orderFetch",
+          "value": "170049"
+        },
+        {
+          "text": "Inventory Update",
+          "value": "170050"
+        },
+        {
+          "text": "Client Master Create",
+          "value": "170056"
+        },
+        {
+          "text": "Validate lpn Id",
+          "value": "170063"
+        },
+        {
+          "text": "transhipment",
+          "value": "170066"
+        }
+      ],
+      "geometry": {
+        "x": 768.9921875,
+        "y": 81.1953125,
+        "width": 168.4921875,
+        "height": 24,
+        "font": "13px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(85, 85, 85)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "SELECT",
+      "id": "versions",
+      "name": "versions",
+      "type": "select-one",
+      "text": "",
+      "value": "v1",
+      "disabled": false,
+      "visible": true,
+      "title": "",
+      "onclick": null,
+      "onchange": null,
+      "options": [
+        {
+          "text": "V1",
+          "value": "v1"
+        }
+      ],
+      "geometry": {
+        "x": 213.4921875,
+        "y": 111.1953125,
+        "width": 168.4921875,
+        "height": 24,
+        "font": "13px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(85, 85, 85)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "INPUT",
+      "id": "webhookUrl",
+      "name": "webhookUrl",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": true,
+      "title": "",
+      "placeholder": "Webhook URL",
+      "onclick": null,
+      "onchange": null,
+      "geometry": {
+        "x": 768.9921875,
+        "y": 111.1953125,
+        "width": 352,
+        "height": 24,
+        "font": "14px / 20px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(85, 85, 85)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "TEXTAREA",
+      "id": "headers",
+      "name": "webhookHeaders",
+      "type": "textarea",
+      "text": "",
+      "value": "",
+      "disabled": false,
+      "visible": true,
+      "title": "",
+      "placeholder": "HeaderName1:HeaderValue1|HeaderName2:HeaderValue2",
+      "onclick": null,
+      "onchange": null,
+      "geometry": {
+        "x": 213.4921875,
+        "y": 141.1953125,
+        "width": 330,
+        "height": 64,
+        "font": "12px / 17.1429px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "INPUT",
+      "id": "isActive",
+      "name": "isActive",
+      "type": "checkbox",
+      "text": "",
+      "value": "true",
+      "checked": true,
+      "disabled": false,
+      "visible": true,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null,
+      "geometry": {
+        "x": 768.9921875,
+        "y": 141.1953125,
+        "width": 13,
+        "height": 24,
+        "font": "12px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "",
+      "visible": false,
+      "title": "Toggle Expand Collapse Grid",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "SELECT",
+      "id": "gs_clientId",
+      "name": "clientId",
+      "type": "select-one",
+      "text": "",
+      "value": "-1",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": null,
+      "onchange": null,
+      "options": [
+        {
+          "text": "--- Select ---",
+          "value": "-1"
+        },
+        {
+          "text": "0-DummyClient",
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "x",
+      "visible": false,
+      "title": "Reset Search Value",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "gs_clientId",
+      "name": "hdnClientId",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "x",
+      "visible": false,
+      "title": "Reset Search Value",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "gs_source",
+      "name": "source",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "x",
+      "visible": false,
+      "title": "Reset Search Value",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "SELECT",
+      "id": "gs_sourceLabel",
+      "name": "sourceLabel",
+      "type": "select-one",
+      "text": "",
+      "value": "-1",
+      "disabled": false,
+      "visible": true,
+      "title": "",
+      "onclick": null,
+      "onchange": null,
+      "options": [
+        {
+          "text": "--- Select ---",
+          "value": "-1"
+        },
+        {
+          "text": "WMS",
+          "value": "1"
+        },
+        {
+          "text": "Seller Panel",
+          "value": "2"
+        },
+        {
+          "text": "JIT",
+          "value": "3"
+        }
+      ],
+      "geometry": {
+        "x": 11,
+        "y": 253.1953125,
+        "width": 81.5,
+        "height": 23,
+        "font": "12px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(85, 85, 85)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "x",
+      "visible": false,
+      "title": "Reset Search Value",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "SELECT",
+      "id": "gs_type",
+      "name": "type",
+      "type": "select-one",
+      "text": "",
+      "value": "-1",
+      "disabled": false,
+      "visible": true,
+      "title": "",
+      "onclick": null,
+      "onchange": null,
+      "options": [
+        {
+          "text": "--- Select ---",
+          "value": "-1"
+        },
+        {
+          "text": "Full Payload",
+          "value": "F_URL"
+        },
+        {
+          "text": "Partial Payload",
+          "value": "URL"
+        }
+      ],
+      "geometry": {
+        "x": 99.5,
+        "y": 253.1953125,
+        "width": 119,
+        "height": 23,
+        "font": "12px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(85, 85, 85)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "x",
+      "visible": false,
+      "title": "Reset Search Value",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "gs_vendorCode",
+      "name": "vendorCode",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": true,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null,
+      "geometry": {
+        "x": 225.5,
+        "y": 253.1953125,
+        "width": 182,
+        "height": 23,
+        "font": "12px / 17.1428px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(85, 85, 85)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "x",
+      "visible": false,
+      "title": "Reset Search Value",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "SELECT",
+      "id": "gs_key",
+      "name": "apiCategory",
+      "type": "select-one",
+      "text": "",
+      "value": "-1",
+      "disabled": false,
+      "visible": true,
+      "title": "",
+      "onclick": null,
+      "onchange": null,
+      "options": [
+        {
+          "text": "--- Select ---",
+          "value": "-1"
+        },
+        {
+          "text": "LOADING",
+          "value": "LOADING"
+        },
+        {
+          "text": "INVMOVE",
+          "value": "INVMOVE"
+        },
+        {
+          "text": "SHIPMENT",
+          "value": "SHIPMENT"
+        },
+        {
+          "text": "GATEPASS",
+          "value": "GATEPASS"
+        },
+        {
+          "text": "TRANSHIPMENT",
+          "value": "TRANSHIPMENT"
+        },
+        {
+          "text": "INBOUND",
+          "value": "INBOUND"
+        },
+        {
+          "text": "ORDER",
+          "value": "ORDER"
+        },
+        {
+          "text": "ORDER RETURN",
+          "value": "ORDER RETURN"
+        },
+        {
+          "text": "INVENTORY",
+          "value": "INVENTORY"
+        },
+        {
+          "text": "RTV",
+          "value": "RTV"
+        },
+        {
+          "text": "PRODUCTS",
+          "value": "PRODUCTS"
+        },
+        {
+          "text": "VENDOR",
+          "value": "VENDOR"
+        },
+        {
+          "text": "SVLCATALOGUE",
+          "value": "SVLCATALOGUE"
+        },
+        {
+          "text": "PO",
+          "value": "PO"
+        }
+      ],
+      "geometry": {
+        "x": 414.5,
+        "y": 253.1953125,
+        "width": 119,
+        "height": 23,
+        "font": "12px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(85, 85, 85)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "x",
+      "visible": false,
+      "title": "Reset Search Value",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "gs_value",
+      "name": "webhookUrl",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": true,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null,
+      "geometry": {
+        "x": 540.5,
+        "y": 253.1953125,
+        "width": 308,
+        "height": 23,
+        "font": "12px / 17.1428px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(85, 85, 85)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "x",
+      "visible": false,
+      "title": "Reset Search Value",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "gs_apiDisplayName",
+      "name": "apiDisplayName",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": true,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null,
+      "geometry": {
+        "x": 855.5,
+        "y": 253.1953125,
+        "width": 182,
+        "height": 23,
+        "font": "12px / 17.1428px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(85, 85, 85)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "x",
+      "visible": false,
+      "title": "Reset Search Value",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "A",
+      "id": "delBtn79",
+      "name": "",
+      "type": "",
+      "text": "",
+      "visible": true,
+      "title": "",
+      "onclick": "javascript:deleteApiNameWH(event, 618, undefined, 79);",
+      "onchange": null,
+      "geometry": {
+        "x": 1081.53125,
+        "y": 281.875,
+        "width": 19.4296875,
+        "height": 19.5,
+        "font": "12px / 17.1429px Arial, sans-serif",
+        "color": "rgb(243, 156, 18)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "delBtn81",
+      "name": "",
+      "type": "",
+      "text": "",
+      "visible": true,
+      "title": "",
+      "onclick": "javascript:deleteApiNameWH(event, 34, undefined, 81);",
+      "onchange": null,
+      "geometry": {
+        "x": 1081.53125,
+        "y": 308.125,
+        "width": 19.4296875,
+        "height": 19.5,
+        "font": "12px / 17.1429px Arial, sans-serif",
+        "color": "rgb(243, 156, 18)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "delBtn82",
+      "name": "",
+      "type": "",
+      "text": "",
+      "visible": true,
+      "title": "",
+      "onclick": "javascript:deleteApiNameWH(event, 170066, undefined, 82);",
+      "onchange": null,
+      "geometry": {
+        "x": 1081.53125,
+        "y": 334.125,
+        "width": 19.4296875,
+        "height": 19.5,
+        "font": "12px / 17.1429px Arial, sans-serif",
+        "color": "rgb(243, 156, 18)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "delBtn83",
+      "name": "",
+      "type": "",
+      "text": "",
+      "visible": true,
+      "title": "",
+      "onclick": "javascript:deleteApiNameWH(event, null, undefined, 83);",
+      "onchange": null,
+      "geometry": {
+        "x": 1081.53125,
+        "y": 360.125,
+        "width": 19.4296875,
+        "height": 19.5,
+        "font": "12px / 17.1429px Arial, sans-serif",
+        "color": "rgb(243, 156, 18)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "delBtn84",
+      "name": "",
+      "type": "",
+      "text": "",
+      "visible": true,
+      "title": "",
+      "onclick": "javascript:deleteApiNameWH(event, null, undefined, 84);",
+      "onchange": null,
+      "geometry": {
+        "x": 1081.53125,
+        "y": 386.125,
+        "width": 19.4296875,
+        "height": 19.5,
+        "font": "12px / 17.1429px Arial, sans-serif",
+        "color": "rgb(243, 156, 18)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "delBtn85",
+      "name": "",
+      "type": "",
+      "text": "",
+      "visible": true,
+      "title": "",
+      "onclick": "javascript:deleteApiNameWH(event, 3, undefined, 85);",
+      "onchange": null,
+      "geometry": {
+        "x": 1081.53125,
+        "y": 412.125,
+        "width": 19.4296875,
+        "height": 19.5,
+        "font": "12px / 17.1429px Arial, sans-serif",
+        "color": "rgb(243, 156, 18)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "delBtn90",
+      "name": "",
+      "type": "",
+      "text": "",
+      "visible": true,
+      "title": "",
+      "onclick": "javascript:deleteApiNameWH(event, 451, undefined, 90);",
+      "onchange": null,
+      "geometry": {
+        "x": 1081.53125,
+        "y": 438.125,
+        "width": 19.4296875,
+        "height": 19.5,
+        "font": "12px / 17.1429px Arial, sans-serif",
+        "color": "rgb(243, 156, 18)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "delBtn93",
+      "name": "",
+      "type": "",
+      "text": "",
+      "visible": true,
+      "title": "",
+      "onclick": "javascript:deleteApiNameWH(event, 4, undefined, 93);",
+      "onchange": null,
+      "geometry": {
+        "x": 1081.53125,
+        "y": 464.125,
+        "width": 19.4296875,
+        "height": 19.5,
+        "font": "12px / 17.1429px Arial, sans-serif",
+        "color": "rgb(243, 156, 18)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "delBtn94",
+      "name": "",
+      "type": "",
+      "text": "",
+      "visible": true,
+      "title": "",
+      "onclick": "javascript:deleteApiNameWH(event, 20, undefined, 94);",
+      "onchange": null,
+      "geometry": {
+        "x": 1081.53125,
+        "y": 490.125,
+        "width": 19.4296875,
+        "height": 19.5,
+        "font": "12px / 17.1429px Arial, sans-serif",
+        "color": "rgb(243, 156, 18)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "delBtn95",
+      "name": "",
+      "type": "",
+      "text": "",
+      "visible": true,
+      "title": "",
+      "onclick": "javascript:deleteApiNameWH(event, 490, undefined, 95);",
+      "onchange": null,
+      "geometry": {
+        "x": 1081.53125,
+        "y": 516.125,
+        "width": 19.4296875,
+        "height": 19.5,
+        "font": "12px / 17.1429px Arial, sans-serif",
+        "color": "rgb(243, 156, 18)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "delBtn96",
+      "name": "",
+      "type": "",
+      "text": "",
+      "visible": true,
+      "title": "",
+      "onclick": "javascript:deleteApiNameWH(event, 3, undefined, 96);",
+      "onchange": null,
+      "geometry": {
+        "x": 1081.53125,
+        "y": 542.125,
+        "width": 19.4296875,
+        "height": 19.5,
+        "font": "12px / 17.1429px Arial, sans-serif",
+        "color": "rgb(243, 156, 18)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "INPUT",
+      "id": "",
+      "name": "",
+      "type": "text",
+      "text": "",
+      "value": "1",
+      "checked": false,
+      "disabled": false,
+      "visible": true,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null,
+      "geometry": {
+        "x": 535.796875,
+        "y": 593.4453125,
+        "width": 26.5,
+        "height": 18,
+        "font": "10.8px / 15.4286px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(0, 0, 0)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "SELECT",
+      "id": "",
+      "name": "",
+      "type": "select-one",
+      "text": "",
+      "value": "20",
+      "disabled": false,
+      "visible": true,
+      "title": "Records per Page",
+      "onclick": null,
+      "onchange": null,
+      "options": [
+        {
+          "text": "20",
+          "value": "20"
+        },
+        {
+          "text": "50",
+          "value": "50"
+        },
+        {
+          "text": "100",
+          "value": "100"
+        },
+        {
+          "text": "200",
+          "value": "200"
+        }
+      ],
+      "geometry": {
+        "x": 664.09375,
+        "y": 593.3203125,
+        "width": 50,
+        "height": 18,
+        "font": "10.8px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(0, 0, 0)",
+        "background": "rgb(255, 255, 255)"
+      }
+    }
+  ],
+  "headers": [
+    {
+      "text": "Client",
+      "id": "apiWebhookTable_clientId",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Client",
+      "id": "apiWebhookTable_clientId",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Order Source",
+      "id": "apiWebhookTable_source",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Order Source",
+      "id": "apiWebhookTable_sourceLabel",
+      "geometry": {
+        "x": 8,
+        "y": 228.1953125,
+        "width": 88,
+        "height": 22.5,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Payload Type",
+      "id": "apiWebhookTable_type",
+      "geometry": {
+        "x": 96,
+        "y": 228.1953125,
+        "width": 126,
+        "height": 22.5,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Vendor",
+      "id": "apiWebhookTable_vendorCode",
+      "geometry": {
+        "x": 222,
+        "y": 228.1953125,
+        "width": 189,
+        "height": 22.5,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "API Category",
+      "id": "apiWebhookTable_key",
+      "geometry": {
+        "x": 411,
+        "y": 228.1953125,
+        "width": 126,
+        "height": 22.5,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Webhook URL",
+      "id": "apiWebhookTable_value",
+      "geometry": {
+        "x": 537,
+        "y": 228.1953125,
+        "width": 315,
+        "height": 22.5,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "API Name",
+      "id": "apiWebhookTable_apiDisplayName",
+      "geometry": {
+        "x": 852,
+        "y": 228.1953125,
+        "width": 189,
+        "height": 22.5,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "API Name",
+      "id": "apiWebhookTable_hdnType",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "API Name",
+      "id": "apiWebhookTable_hdnKey",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "API Name",
+      "id": "apiWebhookTable_apiId",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "API Name",
+      "id": "apiWebhookTable_version",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "API Name",
+      "id": "apiWebhookTable_versions",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "API Name",
+      "id": "apiWebhookTable_latestVersion",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "API Name",
+      "id": "apiWebhookTable_isActive",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "API Name",
+      "id": "apiWebhookTable_seqKey",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Actions",
+      "id": "apiWebhookTable_apiName",
+      "geometry": {
+        "x": 1041,
+        "y": 228.1953125,
+        "width": 101,
+        "height": 22.5,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Headers",
+      "id": "apiWebhookTable_headers",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Events",
+      "id": "apiWebhookTable_events",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "--- Select ---0-DummyClientx",
+      "id": "gsh_apiWebhookTable_clientId",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "x",
+      "id": "gsh_apiWebhookTable_clientId",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "x",
+      "id": "gsh_apiWebhookTable_source",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "--- Select ---WMSSeller PanelJITx",
+      "id": "gsh_apiWebhookTable_sourceLabel",
+      "geometry": {
+        "x": 8,
+        "y": 250.6953125,
+        "width": 88,
+        "height": 28,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "--- Select ---Full PayloadPartial Payloadx",
+      "id": "gsh_apiWebhookTable_type",
+      "geometry": {
+        "x": 96,
+        "y": 250.6953125,
+        "width": 126,
+        "height": 28,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "x",
+      "id": "gsh_apiWebhookTable_vendorCode",
+      "geometry": {
+        "x": 222,
+        "y": 250.6953125,
+        "width": 189,
+        "height": 28,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "--- Select ---LOADINGINVMOVESHIPMENTGATEPASSTRANSHIPMENTINBOUNDORDERORDER RETURNINVENTORYRTVPRODUCTSVENDORSVLCATALOGUEPOx",
+      "id": "gsh_apiWebhookTable_key",
+      "geometry": {
+        "x": 411,
+        "y": 250.6953125,
+        "width": 126,
+        "height": 28,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "x",
+      "id": "gsh_apiWebhookTable_value",
+      "geometry": {
+        "x": 537,
+        "y": 250.6953125,
+        "width": 315,
+        "height": 28,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "x",
+      "id": "gsh_apiWebhookTable_apiDisplayName",
+      "geometry": {
+        "x": 852,
+        "y": 250.6953125,
+        "width": 189,
+        "height": 28,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "",
+      "id": "gsh_apiWebhookTable_hdnType",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "",
+      "id": "gsh_apiWebhookTable_hdnKey",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "",
+      "id": "gsh_apiWebhookTable_apiId",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "",
+      "id": "gsh_apiWebhookTable_version",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "",
+      "id": "gsh_apiWebhookTable_versions",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "",
+      "id": "gsh_apiWebhookTable_latestVersion",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "",
+      "id": "gsh_apiWebhookTable_isActive",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "",
+      "id": "gsh_apiWebhookTable_seqKey",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "",
+      "id": "gsh_apiWebhookTable_apiName",
+      "geometry": {
+        "x": 1041,
+        "y": 250.6953125,
+        "width": 101,
+        "height": 28,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "",
+      "id": "gsh_apiWebhookTable_headers",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "",
+      "id": "gsh_apiWebhookTable_events",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    }
+  ],
+  "scripts": [
+    "https://www.googletagmanager.com/gtag/js?id=G-H8NVRVNQXJ&cx=c&gtm=4e69m0",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/SecurityJS/AesUtil.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/SecurityJS/CryptoJS.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/SecurityJS/PBKDF2.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/SecurityJS/jsencrypt.min.3.5.4.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/moment.js2.10.2/raphael-min.js",
+    "https://www.googletagmanager.com/gtag/js?id=UA-108693828-3",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/jQuery/jQuery-3.7.1.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/jQuery/jquery-migrate-3.3.0.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/jQueryUI/jquery-ui.min.js?v=1",
+    "https://demo.vineretail.com/eRetailWeb/struts/js/plugins/jquery.subscribe.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/jqGrid_JS_5.1.0/js/jquery.jqGrid.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/jqGrid_JS_5.1.0/js/i18n/grid.locale-en.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/bootstrap/js/bootstrap.min.js?v=1",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/moment.js2.10.2/moment.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/morris/morris.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/sparkline/jquery.sparkline.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/jvectormap/jquery-jvectormap-world-mill-en.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/knob/jquery.knob.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/daterangepicker/daterangepicker.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/datepicker/bootstrap-datepicker.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/timepicker/bootstrap-timepicker.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/slimScroll/jquery.slimscroll.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/fastclick/fastclick.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/dist/js/app.min.js?v=1",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/iCheck/icheck.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/daterangepicker/jquery.timepicker.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/switch/bootstrap-switch.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/select2/select2.full.min.js?v=1",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/ckeditor/ckeditor.js?v=1",
+    "https://demo.vineretail.com/eRetailWeb/js/CommonFunctions.js?v=1.33"
+  ],
+  "grids": [
+    {
+      "id": "apiWebhookTable",
+      "url": "jsonGetWhApiDetails",
+      "columns": [
+        {
+          "key": "clientId",
+          "label": "Client",
+          "width": 125,
+          "hidden": true,
+          "filter": "select"
+        },
+        {
+          "key": "clientId",
+          "label": "Client",
+          "width": 150,
+          "hidden": true,
+          "filter": "text"
+        },
+        {
+          "key": "source",
+          "label": "Order Source",
+          "width": 150,
+          "hidden": true,
+          "filter": "text"
+        },
+        {
+          "key": "sourceLabel",
+          "label": "Order Source",
+          "width": 88,
+          "hidden": false,
+          "filter": "select"
+        },
+        {
+          "key": "type",
+          "label": "Payload Type",
+          "width": 126,
+          "hidden": false,
+          "filter": "select"
+        },
+        {
+          "key": "vendorCode",
+          "label": "Vendor",
+          "width": 189,
+          "hidden": false,
+          "filter": "text"
+        },
+        {
+          "key": "key",
+          "label": "API Category",
+          "width": 126,
+          "hidden": false,
+          "filter": "select"
+        },
+        {
+          "key": "value",
+          "label": "Webhook URL",
+          "width": 315,
+          "hidden": false,
+          "filter": "text"
+        },
+        {
+          "key": "apiDisplayName",
+          "label": "API Name",
+          "width": 189,
+          "hidden": false,
+          "filter": "text"
+        },
+        {
+          "key": "hdnType",
+          "label": "API Name",
+          "width": 150,
+          "hidden": true
+        },
+        {
+          "key": "hdnKey",
+          "label": "API Name",
+          "width": 150,
+          "hidden": true
+        },
+        {
+          "key": "apiId",
+          "label": "API Name",
+          "width": 150,
+          "hidden": true
+        },
+        {
+          "key": "version",
+          "label": "API Name",
+          "width": 150,
+          "hidden": true
+        },
+        {
+          "key": "versions",
+          "label": "API Name",
+          "width": 150,
+          "hidden": true
+        },
+        {
+          "key": "latestVersion",
+          "label": "API Name",
+          "width": 150,
+          "hidden": true
+        },
+        {
+          "key": "isActive",
+          "label": "API Name",
+          "width": 150,
+          "hidden": true
+        },
+        {
+          "key": "seqKey",
+          "label": "API Name",
+          "width": 150,
+          "hidden": true
+        },
+        {
+          "key": "apiName",
+          "label": "Actions",
+          "width": 101,
+          "hidden": false
+        },
+        {
+          "key": "headers",
+          "label": "Headers",
+          "width": 200,
+          "hidden": true
+        },
+        {
+          "key": "events",
+          "label": "Events",
+          "width": 150,
+          "hidden": true
+        }
+      ]
+    }
+  ],
+  "functions": {
+    "encryptPasswordRSAUsingPubKey": "function encryptPasswordRSAUsingPubKey(password) {\n\tconst crypt = new JSEncrypt();\n\n\tconst publicKeyRSA = `-----BEGIN PUBLIC KEY-----\n\t\tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwByF8BbfSm98Vf5IsUsW\n\t\tpgCLPYEbYm8AFKIuVnteGA7PmBTJS3Mx1sYv6E8httGIFoPCu+p87nDrKYz1eK3n\n\t\tnJPxQOkxOaigpgejWRL9QCtkzNTbwKDWWGmoLxRgUKQMfLqX6Imwp/TdqOIGZEed\n\t\t206ISr8ENXVrfeW0Roi6yfSXgsOPS+LU+7oaGgaYRWGKDUsIKysKimhiIspGBvLa\n\t\tSG5urTI5bIEQkOqspzFWL/USBgd41mUdNm7LzFQi3CH3WySOdv2+gobRofsH5I4e\n\t\t/iUBGx5JuC+WUNhjwi4+P0QgOwbfDBnCv4VC1skVjBkkxs53M01xPiCNDhcmJbND\n\t\tQQIDAQAB\n\t\t-----END PUBLIC KEY-----`;\n\n\tcrypt.setPublicKey(publicKeyRSA);\n\n\tconst encryptedData = crypt.encrypt(password);\n\n\treturn encryptedData;\n}",
+    "gtag": "function gtag(){dataLayer.push(arguments);}",
+    "alignModal": "function alignModal() {\n\t    \t $(\".modal-dialog\").css(\"margin-top\", $(parent.document).scrollTop()+20);\n\t     }",
+    "showProgressBar": "function showProgressBar() {\n\t\ttry {\n\t\t\tif (typeof blockUIStart === 'function') {\n\t\t\t\tblockUIStart();\n\t\t\t} else if (typeof window.parent.blockUIStart === 'function') {\n\t\t\t\twindow.parent.blockUIStart();\n\t\t\t} else if (typeof window.parent.parent.blockUIStart === 'function') {\n\t\t\t\twindow.parent.parent.blockUIStart();\n\t\t\t} else if (typeof window.parent.parent.parent.blockUIStart === 'function') {\n\t\t\t\twindow.parent.parent.parent.blockUIStart();\n\t\t\t}\n\t\t} catch (e) {\n\t\t  console.log(e.message);\n\t\t}\n\t}",
+    "hideProgressBar": "function hideProgressBar() {\n\t\ttry {\n\t\t\tif (typeof blockUIEnd === 'function') {\n\t\t\t\tblockUIEnd();\n\t\t\t} else if (typeof window.parent.blockUIEnd === 'function') {\n\t\t\t\twindow.parent.blockUIEnd();\n\t\t\t} else if (typeof window.parent.parent.blockUIEnd === 'function') {\n\t\t\t\twindow.parent.parent.blockUIEnd();\n\t\t\t} else if (typeof window.parent.parent.parent.blockUIEnd === 'function') {\n\t\t\t\twindow.parent.parent.parent.blockUIEnd();\n\t\t\t}\n\t\t} catch (e) {\n\t\t\tconsole.log(e.message);\n\t\t}\n\t}",
+    "getGridWidth": "function getGridWidth() {\n\t\ttry {\n\t\t\tvar w = window.parent.$(\"#screensWrapper\").width();\n\t\t\tif(w>100)\n\t\t\t\treturn window.parent.$(\"#screensWrapper\").width()-10;\n\t\t\telse\n\t\t\t\treturn $(window).width()-10;\n\t\t} catch (e) {\n\t\t\tconsole.log(e.message);\n\t\t\treturn $(window).width()-10;\n\t\t}\n\t}",
+    "shortcutKey": "function shortcutKey(){ \t\t\n    \t$(document).bind('keydown', function(e) {\n    \t\tvar keyCode = (e.keyCode) ? e.keyCode : ((e.charCode) ? e.charCode : e.which);\n    \t\tif (e.originalEvent.altKey) {\n    \t\t\t// ALT + S     Search                   \n    \t\t\tif (keyCode === 83) {\n    \t\t\t\treloadSearchGrid();\n    \t\t\t\te.preventDefault();\n    \t\t\t\treturn false;\n    \t\t\t\t\n    \t\t\t}\n    \t\t\t// ALT + N      Reset                 \n    \t\t\tif (keyCode == 78) {\n    \t\t\t\tresetAll();\n    \t\t\t\te.preventDefault();\n    \t\t\t\treturn false;\n    \t\t\t}\n    \t\t\t// ALT + F    Add New\n    \t\t\tif (keyCode == 70){\n    \t\t\t\taddnew();\n    \t\t\t\te.preventDefault();\n    \t\t\t\treturn false;\n    \t\t\t}\n    \t\t\t\n    \t\t}\n    \t});\n    }",
+    "resetWhDetails": "function resetWhDetails(){\n\t\t\t$(\"#seqKey\").val(\"\");\n\t\t\t$(\"#clientId\").val(\"-1\");\n\t\t\t$(\"#type\").val(\"F_URL\").change();\n\t\t\t$(\"#apiCategory\").val(\"-1\").change();\n\t\t\t$(\"#apiName\").val(\"-1\");\n\t\t\t$(\"#versions\").val(\"v1\");\n\t\t\t$(\"#webhookUrl\").val(\"\");\n\t\t\t$(\"#isActive\").prop(\"checked\", true);\n\t\t\t//VE-13949 \n\t\t\t$(\"#headers\").val(\"\");\n\t\t\t$(\"#vendorid\").val(\"-1\").select2({width: '100%'});//VE-17446 SE\n\t\t\t$(\"#jitvendorid\").val(\"-1\").select2({width: '100%'});//VE-17446 SE\n\t\t}",
+    "deleteApiNameWH": "function deleteApiNameWH(event, apiId, seqId, seqKey){\n\t\t\n\t\t\tvar rowCount = $(\"#apiWebhookTable\").getGridParam(\"reccount\");\n\t\t\tif(rowCount == 1){\n\t\t\t\twindow.parent.showAlert(\"Unable to delele Last Api Name\");\n\t\t\t\treturn false;\n\t\t\t}\n\t\t\t\n\t\t\tif (confirm(\"Do You Want To Delete this API Name?\")) {\n\t\t\t\n\t\t\t\tvar retVal = $.ajax({\n\t\t\t\t\turl : \"deleteApiNameWH\",\n\t\t\t\t\t\n\t\t\t\t\ttype : \"POST\",\n\t\t\t\t\tdata : {\n\t\t\t\t\t\tapiId\t\t: apiId,\n\t\t\t\t\t\tseqId\t\t: seqKey\n\t\t\t\t\t},\n\t\t\t\t\tdataType : \"json\",\n\t\t\t\t\tasync : false\n\t\t\t\t}).responseText;\n\t\t\t\tretVal = jQuery.parseJSON(retVal);\n\t\t\t\tif(retVal.jsonMessage != null)\n\t\t\t\t\twindow.parent.showAlert(retVal.jsonMessage);\n\t\t\t\t\n\t\t\t\treloadSearchGrid();\n\t\t\t\tresetWhDetails();\n\t\t\t}\n\t\t\treturn false;\n\t\t}",
+    "resetWhConfig": "function resetWhConfig(clearAll){\n\t\t\tif(clearAll)\n\t\t\t\t$(\"#webhookUrl\").val(\"\");\n\t\t\tif($(\"#sourcetype\").val()==\"2\")\n\t\t\t\t$(\"#versions\").val(\"v2\");\n\t\t\telse\n\t\t\t\t$(\"#versions\").val(\"v1\");\n\t\t\t$(\"#apiName\").val(\"-1\");\n\t\t}",
+    "formatDeleteApiNameWH": "function formatDeleteApiNameWH(cellvalue, options, rowObject) {\n\t\t\tvar html = \"<div class='col-xs-6' data-toggle='tooltip' data-placement='left' title='Delete' style='text-align:center;width:100%;'><a href='javascript:void(0);' id='delBtn\"+rowObject.seqKey+\"' onclick='javascript:deleteApiNameWH(event, \"\n\t\t\t\t+ rowObject.apiId\t+ \", \" + rowObject.apiKeysId + \", \"+rowObject.seqKey+\");' class='gridIcon gridEditIcon'><i class='fa fa-trash';'></i></a></div>\";\n\t\t\treturn html;\n\t\t}",
+    "formatTypeStr": "function formatTypeStr(cellvalue, options, rowObject) {\n\t\t\tvar type =  (rowObject.type != undefined && rowObject.type != \"\") ? $(\"#type option[value='\"+rowObject.type+\"']\").html() : \"\";\n\t\t\treturn type;\n\t\t}",
+    "formatsource": "function formatsource(cellvalue, options, rowObject) {\n\t\t\tdebugger\t\n\t\t\tvar type =  (rowObject.source != undefined && rowObject.source != \"\") ? $(\"#sourcetype option[value='\"+rowObject.source+\"']\").html() : \"\";\n\t\t\treturn type;\n\t\t}",
+    "formatCategoryStr": "function formatCategoryStr(cellvalue, options, rowObject) {\n\t\t\tvar category =  (rowObject.key != undefined && rowObject.key != \"\") ? $(\"#apiCategory option[value='\"+rowObject.key+\"']\").html() : \"\";\n\t\t\treturn category;\n\t\t}",
+    "formatClient": "function formatClient(cellvalue, options, rowObject) {\n\t\t\tvar clientStr = \"\";\n\t\t\tif($(\"#clientId\").length > 0)\n\t\t\t\tvar clientStr =  $(\"#clientId option[value='\"+rowObject.clientId+\"']\").html();\n\t\t\treturn clientStr;\n\t\t}",
+    "renderGrid": "function renderGrid(){\n\n               var colModelGridArray = [\n            \t{label:\"Client\",name:\"clientId\",index:\"clientId\", align:'center', sortable:false, width:125,search: true, stype: \"select\", \n            \t\tsearchoptions: { value: \":\"}, formatter:formatClient, hidden:true},\n            \t{label:\"Client\",name:\"clientId\",index:\"hdnClientId\", hidden: true},\n            \t{label:\"Order Source\",name:\"source\",index:\"source\", hidden: true},\n            \t {label: \"Order Source\", name:\"sourceLabel\",index:\"\", sortable: false, width: 70, stype: \"select\", search:true,formatter:formatsource,searchoptions: {\n                 \t   value: \"-1:--- Select ---;1:WMS;2:Seller Panel;3:JIT\" // 29180 SE\n                    }},\n            \t{label: \"Payload Type\", name:\"type\",index:\"type\", search:true, stype: \"select\", searchoptions: { value: \":\"}, align:'center', sortable:false, width:100, formatter:formatTypeStr},\n            \t{label: \"Vendor\", name:\"vendorCode\",index:\"vendorCode\"},\n            \t{label: \"API Category\", name:\"key\",index:\"apiCategory\", search:true, stype: \"select\", searchoptions: { value: \":\"}, align:'center', sortable:false, width:100},\n            \t{label: \"Webhook URL\", name:\"value\",index:\"webhookUrl\", align:'center', search:true, sortable:false, width:250},\n               \t{label: \"API Name\", name:\"apiDisplayName\",index:\"apiDisplayName\", align:'center', search:true,  sortable:false, width:150},\n               \t{label: \"API Name\", name:\"hdnType\",index:\"hdnType\", align:'center', search:false,  sortable:false, hidden:true, width:150},\n               \t{label: \"API Name\", name:\"hdnKey\",index:\"hdnKey\", align:'center', search:false,  sortable:false, hidden:true, width:150},\n               \t{label: \"API Name\", name:\"apiId\",index:\"apiId\", align:'center', search:false,  sortable:false, hidden:true, width:150},\n               \t{label: \"API Name\", name:\"version\",index:\"version\", align:'center', search:false,  sortable:false, hidden:true, width:150},\n               \t{label: \"API Name\", name:\"versions\",index:\"versions\", align:'center', search:false,  sortable:false, hidden:true, width:150},\n               \t{label: \"API Name\", name:\"latestVersion\",index:\"latestVersion\", align:'center', search:false,  sortable:false, hidden:true, width:150},\n               \t{label: \"API Name\", name:\"isActive\",index:\"isActive\", align:'center', search:false,  sortable:false, hidden:true, width:150},\n               \t{label: \"API Name\", name:\"seqKey\",index:\"seqKey\", align:'center', search:false,  sortable:false, hidden:true, width:150},\n               \t{label: \"Actions\", name:\"apiName\",index:\"apiName\",  sortable:false, width:80, search:false, align:'center', formatter:formatDeleteApiNameWH},\n               \t{label: \"Headers\",name:\"headers\",index:\"headers\", align:'left', search:false,sortable:false, hidden:true,width:200 }, \n               \t{label: \"Events\", name:\"events\",index:\"events\", align:'left', search:false, sortable:false,hidden:true, width:150},\n                   ];\n\n       \t\tjQuery(\"#apiWebhookTable\").jqGrid ({\n       \t\t\turl: \"jsonGetWhApiDetails\",\n       \t\t\tmtype: 'POST',\n       \t\t\tdatatype: \"json\",\n       \t\t\tcontentType: \"application/json\",\n       \t        autoencode: true,\n       \t        styleUI : 'Bootstrap',\n       \t        jsonReader: {\t\t            \t        \t\n       \t            root: \"whConfigList\",\n       \t            repeatitems: false\n       \t        },\n       \t        width: 1200,\n       \t\t\theight: 'auto',\n       \t\t\tcolModel: colModelGridArray,\n       \t\t\tautowidth:false,\n       \t\t\tshrinkToFit:$(window).width()<992 ? false : true,\n       \t\t\tloadonce: false,\n       \t\t\taltRows:true,\n       \t\t\tfooterrow: false,\n       \t\t\taltclass:\"alternetRow\",\n       \t\t\t\n       \t\t\tpager: jQuery('#apiWebhookPager'),\n       \t\t    rowNum:20,\n       \t\t    rowList:[20,50,100,200],\n       \t\t    sortname : 'crtDate',\n       \t\t    sortorder: \"desc\",\n       \t\t   \tviewrecords: true,\n       \t\t    gridComplete : function(data) {\n       \t\t    \tgenricSearchGridResized();\n       \t\t    },\n\t       \t\tonSelectRow: function(rowId) {\n\t       \t\t  \tvar rowData = jQuery('#apiWebhookTable').jqGrid ('getRowData', rowId);\n\t       \t\t  \t$(\"#sourcetype\").val(rowData.source);\n\t       \t\t  \t\n\t       \t\t\t changeSourceType();\n\t       \t\t\t if(null!=rowData.vendorCode){\n\t       \t\t\t\t\t$(\"#vendorid\").val(rowData.vendorCode).select2({width: '100%'});\n\t       \t\t\t } else\n\t       \t\t\t\t$(\"#vendorid\").select2({width: '100%'});\n\t       \t\t\t\n\t       \t\t\t\t\n\t       \t\t\t \n\t       \t\t\t\n\t       \t\t \tif($(\"#delBtn\"+rowData.seqKey).is(\":focus\"))\n\t    \t\t\t\treturn false;\n\t       \t\t  \t$(\"#clientId\").val(rowData.clientId);\n\t       \t\t  \t$(\"#type\").val(rowData.hdnType);\n\t       \t\t \t$(\"#apiCategory\").val(rowData.hdnKey).change();//VE-17446 SE\n\t       \t\t \t\t       \t\t \t\n\t       \t\t \tif(rowData.apiId != null && rowData.apiId != \"\")\n\t       \t\t \t\t$(\"#apiName\").val(rowData.apiId);\n\t       \t\t \t\n\t       \t\t \t$(\"#apiName, #versions\").attr(\"disabled\", (rowData.hdnType == \"URL\"));\n\t       \t\t \t\n\t       \t\t \t$(\"#webhookUrl\").val(rowData.value);\n\t       \t\t \tif(rowData.versions != null && rowData.versions != \"\"){\t       \t\t \t\t\n\t       \t\t \t\n\t\t       \t\t \tvar versions = rowData.versions.split(\",\");\n\t\t       \t\t \t$(\"#versions\").html(\"\");\n\t\t       \t\t \t$.each(versions, function(index, value){\n\t\t       \t\t \t\t$(\"#versions\").append(\"<option value='\"+value+\"'>\"+value+\"</option>\");\n\t\t       \t\t \t});\n\t\t       \t\t \t\n\t\t       \t\t \tif(rowData.version != null && rowData.version != \"\"){\n\t\t\t\t\t\t\tif($(\"#versions option[value='\"+rowData.version+\"']\").length > 0)\t\t       \t\t \t\t\n\t\t       \t\t \t\t\t$(\"#versions\").val(rowData.version);\n\t\t\t\t\t\t\telse\n\t\t\t\t\t\t\t\t$(\"#versions\").val(rowData.version.toUpperCase());\n\t\t       \t\t \t}\n\t       \t\t \t}\n\t       \t\t \t\n\t       \t\t \t$(\"#seqKey\").val(rowData.seqKey);\n\t       \t\t \tif(rowData.isActive != null && rowData.isActive == \"1\")\n\t       \t\t \t\t$(\"#isActive\").prop(\"checked\", true);\n\t\t\t\t\telse\n\t\t\t\t\t\t$(\"#isActive\").prop(\"checked\", false);\n\t       \t\t\t//VE-13949 S\n\t       \t\t\t\t//Call to populate the Events dropdown according to this column value\n\t       \t\t\t\tvar retVal = $.ajax({\n\t       \t\t\t\t\turl : \"jsonGetWhApiName\",\n\t       \t\t\t\t\tglobal : false,\n\t       \t\t\t\t\ttype : \"POST\",\n\t       \t\t\t\t\tdata : {\t\t\t\t\t\n\t       \t\t\t\t\t\tclientId\t: $(\"#clientId\").val(),\n\t       \t\t\t\t\t\ttype\t \t: $(\"#apiType\").val(),\n\t       \t\t\t\t\t\tapiCategory : $(\"#apiCategory\").val(),\n\t       \t\t\t\t\t\tsource:$(\"#sourcetype\").val()\n\t       \t\t\t\t\t},\n\t       \t\t\t\t\tdataType : \"json\",\n\t       \t\t\t\t\tasync : false\n\t       \t\t\t\t}).responseText;\n\t       \t\t\t\tretVal = jQuery.parseJSON(retVal);\n\t       \t\t\t\t\n\t       \t\t\t\t//Check \n\t\t       \t\t\tif(retVal.eventsMapSize!= null ){\n\t\t       \t\t\n\t       \t\t\t\t//Show the 'Events' Field\n\t       \t\t\t\t$(\"#orderStatus\").show();\n\t       \t\t\t\t//Make it empty\n\t       \t\t\t\t$(\"#orderStatusFilter\").html(null);\n\t       \t\t\t\t//Populate the Dropdown\n\t       \t\t\t\t$.each(retVal.eventsMap, function(index, value){\n\t\t\t\t\t\t//Add\n\t\t\t\t\t\t$(\"#orderStatusFilter\").append(\"<option value='\"+index+\"'>\"+value+\"</option>\");\n\t\t\t\t\t});\n\t       \t\t\t\t//Get the Events from the Grid\n\t\t       \t\t \tvar events = rowData.events.split(\",\");\n\t       \t\t\t\t//Fill all These Events in the Select2\n\t\t       \t\t \t$(\"#orderStatusFilter\").select2('val', events);\n\t       \t\t\t\t//Open and Close\n\t\t       \t\t $('#orderStatusFilter').select2('open');\n\t\t       \t\t $('#orderStatusFilter').select2('close');\n\t\t       \t\t \n\t\t       \t\tif($(\"#sourcetype\").val()==\"2\"){\n\t\t       \t\t\tvar apiname = new Array;\n\t\t\t\t\t\tvar counter = 0;\n\t\t\t\t\t\tvar categoryVls4Cmb = new Array;\n\t\t\t\t\t\tvar counter = 0;\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct(\"-1\", '--- Select ---');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('3', 'Get Order Status');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('4', 'Order Pull');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('20', 'PO Pull');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('34', 'Inbound Get');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('111', 'Vendor Detail');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('451', 'Rtv List');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('452', 'GetGatePass');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('466', 'Failed Orders');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('490', 'STO Details');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('616', 'Order Pull V2');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('618', 'Get Return Details');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('170025', 'Create Manifest');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('170036', 'Get Order StatusV3');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('170042', 'Get Return Details v2');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('170045', 'mgd orderStatus api');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('170049', 'get orderFetch');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('170050', 'Inventory Update');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('170056', 'Client Master Create');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('170063', 'Validate lpn Id');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('170066', 'transhipment');\n\t\t\t\t\t\t\n\t\t\t\t\t\tfillCombo('apiname', categoryVls4Cmb); \n\t\t\t\t\t\t$(\"#apiname\").val(rowData.apiId);\n\t\t       \t\t}\n\t\t       \t\telse{\n\t\t       \t\t\t\n\t\t\t\t\t\tvar categoryVls4Cmb = new Array;\n\t\t\t\t\t\tvar counter = 0;\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct(\"-1\", '--- Select ---');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('3', 'Get Order Status');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('4', 'Order Pull');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('20', 'PO Pull');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('34', 'Inbound Get');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('111', 'Vendor Detail');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('451', 'Rtv List');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('452', 'GetGatePass');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('466', 'Failed Orders');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('490', 'STO Details');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('616', 'Order Pull V2');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('618', 'Get Return Details');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('170025', 'Create Manifest');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('170036', 'Get Order StatusV3');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('170042', 'Get Return Details v2');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('170045', 'mgd orderStatus api');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('170049', 'get orderFetch');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('170050', 'Inventory Update');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('170056', 'Client Master Create');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('170063', 'Validate lpn Id');\n\t\t\t\t\t\t\n\t\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('170066', 'transhipment');\n\t\t\t\t\t\t\n\t\t\t\t\t\tfillCombo('apiname', categoryVls4Cmb); \n\t\t\t\t\t\t$(\"#apiname\").val(rowData.apiId);\n\t\t       \t\t}\t\t\n\t\t\t\t\t\n\t       \t\t\t} else {\n\t       \t\t\t\t//Hide\n\t       \t\t\t\t$(\"#orderStatus\").hide();\n\t       \t\t\t\n\t            }\n\t       \t\t \t//Check Headers\n\t       \t\t\tif(rowData.headers != null && rowData.headers != \"\"){\n\t       \t\t\t\t//Assign\n\t       \t\t \t\t$(\"#headers\").val(rowData.headers);\n\t       \t\t\t}\n\t       \t\t\t\n\t            }\n       \t\t});\n      \t\t\n       \t\tjQuery(\"#apiWebhookTable\").jqGrid(\n       \t\t\t'filterToolbar', {\n      \t\t\t\tstringResult : true,\n      \t\t\t\tsearchOnEnter : true,\n      \t\t\t\tenableClear : false,\n      \t\t\t\tbeforeSearch: function() {\n      \t\t\t\t\treloadSearchGrid();\n      \t\t\t\t\treturn false;\n      \t\t\t\t}\n       \t\t});       \t\n\t\t}",
+    "reloadSearchGrid": "function reloadSearchGrid(event) {\n\t\t\tdebugger\n\t\t\tvar resp = $(\"#apiWebhookTable\").jqGrid('setGridParam', {\n\t\t\t\tdatatype : 'json',\n\t\t\t\tpage : 1,\n\t\t\t\tpostData : {\n\t\t\t\t\tclientId\t\t: $(\"#gs_clientId\").val(),\n\t\t\t\t\tapiDisplayName\t: $(\"#gs_apiDisplayName\").val(),\n\t\t\t\t\ttype\t\t\t: $(\"#gs_type\").val(),\n\t\t\t\t\tapiCategory\t\t: $(\"#gs_key\").val(),\n\t\t\t\t\twebhookUrl\t\t: $(\"#gs_value\").val(),\n\t\t\t\t\tsource\t\t\t: $(\"#gs_sourceLabel\").val(),\t\n\t\t\t\t\tREQ_SEARCH_FLAG : true\n\t\t\t\t},\n\t\t\t\turl : \"jsonGetWhApiDetails\",\n\t\t\t\tsearch : true\t\t\t\t\n\t\t\t}).trigger('reloadGrid');\n\t\t}",
+    "pageHeight": "function pageHeight() {\n\t\t\treturn $(\"#mainBody\").height();\n\t\t}",
+    "genricSearchGridResized": "function genricSearchGridResized() {\n\t\t\tvar gridObj = $(\"#apiWebhookTable\");\n\t\t\t\n\t\t\tif(true)\n\t\t\t\tvar gridHeight = window.parent.getParentHeight()-245;\n\t\t\telse\n\t\t\t\tvar gridHeight = window.parent.getParentHeight()-276;\n\n\t\t\tvar gridWidth = $(window).width()-15;\n\t\t\tif(gridWidth<270)\n\t\t\t\tgridWidth=270;\n\t\t\t\n\t\t\tgridObj.jqGrid('setGridWidth',gridWidth);\t\t\n\t\t\t\n\t\t\t$(\"#gbox_\"+gridObj[0].id+\" .ui-jqgrid-bdiv\").css(\"height\",gridHeight+\"px\").css('overflow-x',($(window).width()<992 ?'auto':'hidden'));\n\t\t\toldWidth=gridWidth;\n\t\t}",
+    "changeSourceType": "function changeSourceType(){\n\n\t\t\tif(null!=$(\"#sourcetype\").val() && $(\"#sourcetype\").val()==2){\n\t\t\t\tif($(\"#dsApiCategoryMap\").val()!=null){\n\t\t\t\t\t\n\t\t\t\t\tvar categoryVls4Cmb = new Array;\n\t\t\t\t\tvar counter = 0;\n\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct(\"-1\", '--- Select ---');\n\t\t\t\t\t\n\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('ORDER', 'ORDER');\n\t\t\t\t\t\n\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('ORDER RETURN', 'ORDER RETURN');\n\t\t\t\t\t\n\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('SELLER INVENTORY', 'SELLER INVENTORY');\n\t\t\t\t\t\n\t\t\t\t\tfillCombo('apiCategory', categoryVls4Cmb);\n\t\t\t\t\t\n\t\t\t\t}\n\t\t\t\tvar versions = new Array;\n\t\t\t\tvar counter = 0;\n\t\t\t\tversions[0] = new CodeValueStruct(\"v2\", 'V2');\n\t\t\t\tversions[1] = new CodeValueStruct(\"v3\", 'V3');\n\t\t\t\tfillCombo('versions', versions);\n\t\t\t\t$(\"#versions\").val('v2');\n\t\t\t\t$(\"#vendorDiv\").show();\n\t\t\t\t$(\"#jitvendorDiv\").hide();\n\t\t\t\t$(\"#vendorDiv>.select2\").css(\"width\", \"100%\");\n\t\t\t\t\n\t\t\t\t/* var apiname = new Array;\n\t\t\t\tvar counter = 0;\n\t\t\t\tapiname[0] = new CodeValueStruct(\"1\", 'orderCreate');\n\t\t\t\tfillCombo('apiName', apiname);\n\t\t\t\t$(\"#apiname\").val('1'); */\n\t\t\t\t\n\t\t\t}\n\t\t\telse if(null!=$(\"#sourcetype\").val() && $(\"#sourcetype\").val()==3){\n\t\t\t\tdebugger;\n\t\t\t\tif($(\"#jitApiCategoryMap\").val()!=null){\n\t\t\t\t\t\n\t\t\t\t\tvar categoryVls4Cmb = new Array;\n\t\t\t\t\tvar counter = 0;\n\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct(\"-1\", '--- Select ---');\n\t\t\t\t\t\n\t\t\t\t\tfillCombo('apiCategory', categoryVls4Cmb);\n\t\t\t\t\t\n\t\t\t\t}\n\t\t\t\tvar versions = new Array;\n\t\t\t\tvar counter = 0;\n\t\t\t\tversions[0] = new CodeValueStruct(\"v1\", 'V1');\n\t\t\t\tfillCombo('versions', versions);\n\t\t\t\t$(\"#versions\").val('v1');\n\t\t\t\t$(\"#vendorDiv\").hide();\n\t\t\t\t$(\"#jitvendorDiv\").show();\n\t\t\t\t\n\t\t\t}\n\t\t\telse{\n\t\t\t\t$(\"#vendorDiv\").hide();\n\t\t\t\t$(\"#jitvendorDiv\").hide();\n\t\t\t\tvar categoryVls4Cmb = new Array;\n\t\t\t\tvar counter = 0;\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct(\"-1\", '--- Select ---');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('LOADING', 'LOADING');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('INVMOVE', 'INVMOVE');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('SHIPMENT', 'SHIPMENT');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('GATEPASS', 'GATEPASS');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('TRANSHIPMENT', 'TRANSHIPMENT');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('INBOUND', 'INBOUND');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('ORDER', 'ORDER');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('ORDER RETURN', 'ORDER RETURN');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('INVENTORY', 'INVENTORY');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('RTV', 'RTV');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('PRODUCTS', 'PRODUCTS');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('VENDOR', 'VENDOR');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('SVLCATALOGUE', 'SVLCATALOGUE');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('PO', 'PO');\n\t\t\t\t\n\t\t\t\tfillCombo('apiCategory', categoryVls4Cmb);\n\t\t\t\t\n\t\t\t\t/* var categoryVls4Cmb = new Array;\n\t\t\t\tvar counter = 0;\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct(\"-1\", '--- Select ---');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('3', 'Get Order Status');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('4', 'Order Pull');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('20', 'PO Pull');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('34', 'Inbound Get');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('111', 'Vendor Detail');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('451', 'Rtv List');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('452', 'GetGatePass');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('466', 'Failed Orders');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('490', 'STO Details');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('616', 'Order Pull V2');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('618', 'Get Return Details');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('170025', 'Create Manifest');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('170036', 'Get Order StatusV3');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('170042', 'Get Return Details v2');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('170045', 'mgd orderStatus api');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('170049', 'get orderFetch');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('170050', 'Inventory Update');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('170056', 'Client Master Create');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('170063', 'Validate lpn Id');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('170066', 'transhipment');\n\t\t\t\t\n\t\t\t\tfillCombo('apiname', categoryVls4Cmb); */\n\t\t\t\t\n\t\t\t\tvar versions = new Array;\n\t\t\t\tvar counter = 0;\n\t\t\t\tversions[0] = new CodeValueStruct(\"v1\", 'V1');\n\t\t\t\tfillCombo('versions', versions);\n\t\t\t\t$(\"#versions\").val('v1');\n\t\t\t}\n\t\t}"
+  },
+  "events": [
+    {
+      "event": "click",
+      "selector": "[data-dismiss=\"alert\"]",
+      "handler": "function(b){function c(){g.detach().trigger(\"closed.bs.alert\").remove()}var e=a(this),f=e.attr(\"data-target\");f||(f=e.attr(\"href\"),f=f&&f.replace(/.*(?=#[^\\s]*$)/,\"\"));var g=a(f);b&&b.preventDefault(),g.length||(g=e.closest(\".alert\")),g.trigger(b=a.Event(\"close.bs.alert\")),b.isDefaultPrevented()||(g.removeClass(\"in\"),a.support.transition&&g.hasClass(\"fade\")?g.one(\"bsTransitionEnd\",c).emulateTransitionEnd(d.TRANSITION_DURATION):c())}"
+    },
+    {
+      "event": "click",
+      "selector": "[data-toggle^=\"button\"]",
+      "handler": "function(c){var d=a(c.target);d.hasClass(\"btn\")||(d=d.closest(\".btn\")),b.call(d,\"toggle\"),c.preventDefault()}"
+    },
+    {
+      "event": "click",
+      "selector": "[data-slide]",
+      "handler": "function(c){var d,e=a(this),f=a(e.attr(\"data-target\")||(d=e.attr(\"href\"))&&d.replace(/.*(?=#[^\\s]+$)/,\"\"));if(f.hasClass(\"carousel\")){var g=a.extend({},f.data(),e.data()),h=e.attr(\"data-slide-to\");h&&(g.interval=!1),b.call(f,g),h&&f.data(\"bs.carousel\").to(h),c.preventDefault()}}"
+    },
+    {
+      "event": "click",
+      "selector": "[data-slide-to]",
+      "handler": "function(c){var d,e=a(this),f=a(e.attr(\"data-target\")||(d=e.attr(\"href\"))&&d.replace(/.*(?=#[^\\s]+$)/,\"\"));if(f.hasClass(\"carousel\")){var g=a.extend({},f.data(),e.data()),h=e.attr(\"data-slide-to\");h&&(g.interval=!1),b.call(f,g),h&&f.data(\"bs.carousel\").to(h),c.preventDefault()}}"
+    },
+    {
+      "event": "click",
+      "selector": "[data-toggle=\"collapse\"]",
+      "handler": "function(d){var e=a(this);e.attr(\"data-target\")||d.preventDefault();var f=b(e),g=f.data(\"bs.collapse\"),h=g?\"toggle\":e.data();c.call(f,h)}"
+    },
+    {
+      "event": "click",
+      "selector": "[data-toggle=\"dropdown\"]",
+      "handler": "function(d){var e=a(this);if(!e.is(\".disabled, :disabled\")){var f=c(e),g=f.hasClass(\"open\");if(b(),!g){\"ontouchstart\"in document.documentElement&&!f.closest(\".navbar-nav\").length&&a('<div class=\"dropdown-backdrop\"/>').insertAfter(a(this)).on(\"click\",b);var h={relatedTarget:this};if(f.trigger(d=a.Event(\"show.bs.dropdown\",h)),d.isDefaultPrevented())return;e.trigger(\"focus\").attr(\"aria-expanded\",\"true\"),f.toggleClass(\"open\").trigger(\"shown.bs.dropdown\",h)}return!1}}"
+    },
+    {
+      "event": "click",
+      "selector": "[data-toggle=\"modal\"]",
+      "handler": "function(c){var d=a(this),e=d.attr(\"href\"),f=a(d.attr(\"data-target\")||e&&e.replace(/.*(?=#[^\\s]+$)/,\"\")),g=f.data(\"bs.modal\")?\"toggle\":a.extend({remote:!/#/.test(e)&&e},f.data(),d.data());d.is(\"a\")&&c.preventDefault(),f.one(\"show.bs.modal\",function(a){a.isDefaultPrevented()||f.one(\"hidden.bs.modal\",function(){d.is(\":visible\")&&d.trigger(\"focus\")})}),b.call(f,g,this)}"
+    },
+    {
+      "event": "click",
+      "selector": "[data-provide=\"datepicker\"]",
+      "handler": "function(e){\n\t\t\tvar $this = $(this);\n\t\t\tif ($this.data('datepicker'))\n\t\t\t\treturn;\n\t\t\te.preventDefault();\n\t\t\t// component click requires us to explicitly show it\n\t\t\t$this.datepicker('show');\n\t\t}"
+    },
+    {
+      "event": "click",
+      "selector": "[data-toggle='offcanvas']",
+      "handler": "function(a){a.preventDefault(),$(window).width()>b.sm-1?$(\"body\").hasClass(\"sidebar-collapse\")?$(\"body\").removeClass(\"sidebar-collapse\").trigger(\"expanded.pushMenu\"):$(\"body\").addClass(\"sidebar-collapse\").trigger(\"collapsed.pushMenu\"):$(\"body\").hasClass(\"sidebar-open\")?$(\"body\").removeClass(\"sidebar-open\").removeClass(\"sidebar-collapse\").trigger(\"collapsed.pushMenu\"):$(\"body\").addClass(\"sidebar-open\").trigger(\"expanded.pushMenu\")}"
+    },
+    {
+      "event": "click",
+      "selector": "[data-widget=\"chat-pane-toggle\"]",
+      "handler": "function(){var a=$(this).parents(\".direct-chat\").first();a.toggleClass(\"direct-chat-contacts-open\")}"
+    },
+    {
+      "event": "click",
+      "handler": "function b(b){b&&3===b.which||(a(e).remove(),a(f).each(function(){var d=a(this),e=c(d),f={relatedTarget:this};e.hasClass(\"open\")&&(e.trigger(b=a.Event(\"hide.bs.dropdown\",f)),b.isDefaultPrevented()||(d.attr(\"aria-expanded\",\"false\"),e.removeClass(\"open\").trigger(\"hidden.bs.dropdown\",f)))}))}"
+    },
+    {
+      "event": "focusout",
+      "selector": "[data-toggle^=\"button\"]",
+      "handler": "function(b){a(b.target).closest(\".btn\").toggleClass(\"focus\",/^focus(in)?$/.test(b.type))}"
+    },
+    {
+      "event": "focusin",
+      "selector": "[data-toggle^=\"button\"]",
+      "handler": "function(b){a(b.target).closest(\".btn\").toggleClass(\"focus\",/^focus(in)?$/.test(b.type))}"
+    },
+    {
+      "event": "focusin",
+      "selector": "[data-provide=\"datepicker\"]",
+      "handler": "function(e){\n\t\t\tvar $this = $(this);\n\t\t\tif ($this.data('datepicker'))\n\t\t\t\treturn;\n\t\t\te.preventDefault();\n\t\t\t// component click requires us to explicitly show it\n\t\t\t$this.datepicker('show');\n\t\t}"
+    },
+    {
+      "event": "keydown",
+      "selector": "[data-toggle=\"dropdown\"]",
+      "handler": "function(b){if(/(38|40|27|32)/.test(b.which)&&!/input|textarea/i.test(b.target.tagName)){var d=a(this);if(b.preventDefault(),b.stopPropagation(),!d.is(\".disabled, :disabled\")){var e=c(d),g=e.hasClass(\"open\");if(!g&&27!=b.which||g&&27==b.which)return 27==b.which&&e.find(f).trigger(\"focus\"),d.trigger(\"click\");var h=\" li:not(.disabled):visible a\",i=e.find('[role=\"menu\"]'+h+', [role=\"listbox\"]'+h);if(i.length){var j=i.index(b.target);38==b.which&&j>0&&j--,40==b.which&&j<i.length-1&&j++,~j||(j=0),i.eq(j).trigger(\"focus\")}}}}"
+    },
+    {
+      "event": "keydown",
+      "selector": "[role=\"menu\"]",
+      "handler": "function(b){if(/(38|40|27|32)/.test(b.which)&&!/input|textarea/i.test(b.target.tagName)){var d=a(this);if(b.preventDefault(),b.stopPropagation(),!d.is(\".disabled, :disabled\")){var e=c(d),g=e.hasClass(\"open\");if(!g&&27!=b.which||g&&27==b.which)return 27==b.which&&e.find(f).trigger(\"focus\"),d.trigger(\"click\");var h=\" li:not(.disabled):visible a\",i=e.find('[role=\"menu\"]'+h+', [role=\"listbox\"]'+h);if(i.length){var j=i.index(b.target);38==b.which&&j>0&&j--,40==b.which&&j<i.length-1&&j++,~j||(j=0),i.eq(j).trigger(\"focus\")}}}}"
+    },
+    {
+      "event": "keydown",
+      "selector": "[role=\"listbox\"]",
+      "handler": "function(b){if(/(38|40|27|32)/.test(b.which)&&!/input|textarea/i.test(b.target.tagName)){var d=a(this);if(b.preventDefault(),b.stopPropagation(),!d.is(\".disabled, :disabled\")){var e=c(d),g=e.hasClass(\"open\");if(!g&&27!=b.which||g&&27==b.which)return 27==b.which&&e.find(f).trigger(\"focus\"),d.trigger(\"click\");var h=\" li:not(.disabled):visible a\",i=e.find('[role=\"menu\"]'+h+', [role=\"listbox\"]'+h);if(i.length){var j=i.index(b.target);38==b.which&&j>0&&j--,40==b.which&&j<i.length-1&&j++,~j||(j=0),i.eq(j).trigger(\"focus\")}}}}"
+    },
+    {
+      "event": "ajaxComplete",
+      "handler": "function( event, request, settings ) {\r\n\t\t\r\n\t    if(request && request.responseJSON && request.responseJSON.jsonMessage\r\n\t    \t\t&& request.responseJSON.jsonMessage===\"Invalid Session. Please logout and login again.\"){\t\t\r\n\t\t\t\twindow.parent.location.href = \"login.jsp\";\t\t\r\n\t\t}\r\n\t    else if(request && request.status===403){\r\n\t\t\t\twindow.parent.location.href = \"login.jsp\";\t\t\t\t\r\n\t\t}\r\n\t\t //console.log(request);\t \r\n\t}"
+    },
+    {
+      "id": "vendorid",
+      "event": "change",
+      "handler": "function(){b.dataAdapter.current(function(a){b.trigger(\"selection:update\",{data:a})})}"
+    },
+    {
+      "id": "jitvendorid",
+      "event": "change",
+      "handler": "function(){b.dataAdapter.current(function(a){b.trigger(\"selection:update\",{data:a})})}"
+    },
+    {
+      "id": "orderStatusFilter",
+      "event": "select2:close",
+      "handler": "function() {\n\t\t\t  let select = $(this)\n\t\t\t  $(this).next('span.select2').find('ul').html(function() {\n\t\t\t    let count = select.select2('data').length\n\t\t\t    return \"<li>\" + count + \" options selected</li>\"\n\t\t\t  })\n\t\t}"
+    },
+    {
+      "id": "orderStatusFilter",
+      "event": "change",
+      "handler": "function(){b.dataAdapter.current(function(a){b.trigger(\"selection:update\",{data:a})})}"
+    },
+    {
+      "id": "",
+      "event": "change",
+      "handler": "function(){return u(\"records\",this)?(d.p.page=Math.round(d.p.rowNum*(d.p.page-1)/this.value-.5)+1,d.p.rowNum=this.value,d.p.pager&&$(\".ui-pg-selbox\",d.p.pager).val(this.value),d.p.toppager&&$(\".ui-pg-selbox\",d.p.toppager).val(this.value),S(),!1):!1}"
+    }
+  ],
+  "handlers": {
+    "resetWhDetails": "function resetWhDetails(){\n\t\t\t$(\"#seqKey\").val(\"\");\n\t\t\t$(\"#clientId\").val(\"-1\");\n\t\t\t$(\"#type\").val(\"F_URL\").change();\n\t\t\t$(\"#apiCategory\").val(\"-1\").change();\n\t\t\t$(\"#apiName\").val(\"-1\");\n\t\t\t$(\"#versions\").val(\"v1\");\n\t\t\t$(\"#webhookUrl\").val(\"\");\n\t\t\t$(\"#isActive\").prop(\"checked\", true);\n\t\t\t//VE-13949 \n\t\t\t$(\"#headers\").val(\"\");\n\t\t\t$(\"#vendorid\").val(\"-1\").select2({width: '100%'});//VE-17446 SE\n\t\t\t$(\"#jitvendorid\").val(\"-1\").select2({width: '100%'});//VE-17446 SE\n\t\t}",
+    "changeSourceType": "function changeSourceType(){\n\n\t\t\tif(null!=$(\"#sourcetype\").val() && $(\"#sourcetype\").val()==2){\n\t\t\t\tif($(\"#dsApiCategoryMap\").val()!=null){\n\t\t\t\t\t\n\t\t\t\t\tvar categoryVls4Cmb = new Array;\n\t\t\t\t\tvar counter = 0;\n\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct(\"-1\", '--- Select ---');\n\t\t\t\t\t\n\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('ORDER', 'ORDER');\n\t\t\t\t\t\n\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('ORDER RETURN', 'ORDER RETURN');\n\t\t\t\t\t\n\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('SELLER INVENTORY', 'SELLER INVENTORY');\n\t\t\t\t\t\n\t\t\t\t\tfillCombo('apiCategory', categoryVls4Cmb);\n\t\t\t\t\t\n\t\t\t\t}\n\t\t\t\tvar versions = new Array;\n\t\t\t\tvar counter = 0;\n\t\t\t\tversions[0] = new CodeValueStruct(\"v2\", 'V2');\n\t\t\t\tversions[1] = new CodeValueStruct(\"v3\", 'V3');\n\t\t\t\tfillCombo('versions', versions);\n\t\t\t\t$(\"#versions\").val('v2');\n\t\t\t\t$(\"#vendorDiv\").show();\n\t\t\t\t$(\"#jitvendorDiv\").hide();\n\t\t\t\t$(\"#vendorDiv>.select2\").css(\"width\", \"100%\");\n\t\t\t\t\n\t\t\t\t/* var apiname = new Array;\n\t\t\t\tvar counter = 0;\n\t\t\t\tapiname[0] = new CodeValueStruct(\"1\", 'orderCreate');\n\t\t\t\tfillCombo('apiName', apiname);\n\t\t\t\t$(\"#apiname\").val('1'); */\n\t\t\t\t\n\t\t\t}\n\t\t\telse if(null!=$(\"#sourcetype\").val() && $(\"#sourcetype\").val()==3){\n\t\t\t\tdebugger;\n\t\t\t\tif($(\"#jitApiCategoryMap\").val()!=null){\n\t\t\t\t\t\n\t\t\t\t\tvar categoryVls4Cmb = new Array;\n\t\t\t\t\tvar counter = 0;\n\t\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct(\"-1\", '--- Select ---');\n\t\t\t\t\t\n\t\t\t\t\tfillCombo('apiCategory', categoryVls4Cmb);\n\t\t\t\t\t\n\t\t\t\t}\n\t\t\t\tvar versions = new Array;\n\t\t\t\tvar counter = 0;\n\t\t\t\tversions[0] = new CodeValueStruct(\"v1\", 'V1');\n\t\t\t\tfillCombo('versions', versions);\n\t\t\t\t$(\"#versions\").val('v1');\n\t\t\t\t$(\"#vendorDiv\").hide();\n\t\t\t\t$(\"#jitvendorDiv\").show();\n\t\t\t\t\n\t\t\t}\n\t\t\telse{\n\t\t\t\t$(\"#vendorDiv\").hide();\n\t\t\t\t$(\"#jitvendorDiv\").hide();\n\t\t\t\tvar categoryVls4Cmb = new Array;\n\t\t\t\tvar counter = 0;\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct(\"-1\", '--- Select ---');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('LOADING', 'LOADING');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('INVMOVE', 'INVMOVE');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('SHIPMENT', 'SHIPMENT');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('GATEPASS', 'GATEPASS');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('TRANSHIPMENT', 'TRANSHIPMENT');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('INBOUND', 'INBOUND');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('ORDER', 'ORDER');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('ORDER RETURN', 'ORDER RETURN');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('INVENTORY', 'INVENTORY');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('RTV', 'RTV');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('PRODUCTS', 'PRODUCTS');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('VENDOR', 'VENDOR');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('SVLCATALOGUE', 'SVLCATALOGUE');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('PO', 'PO');\n\t\t\t\t\n\t\t\t\tfillCombo('apiCategory', categoryVls4Cmb);\n\t\t\t\t\n\t\t\t\t/* var categoryVls4Cmb = new Array;\n\t\t\t\tvar counter = 0;\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct(\"-1\", '--- Select ---');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('3', 'Get Order Status');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('4', 'Order Pull');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('20', 'PO Pull');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('34', 'Inbound Get');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('111', 'Vendor Detail');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('451', 'Rtv List');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('452', 'GetGatePass');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('466', 'Failed Orders');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('490', 'STO Details');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('616', 'Order Pull V2');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('618', 'Get Return Details');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('170025', 'Create Manifest');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('170036', 'Get Order StatusV3');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('170042', 'Get Return Details v2');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('170045', 'mgd orderStatus api');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('170049', 'get orderFetch');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('170050', 'Inventory Update');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('170056', 'Client Master Create');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('170063', 'Validate lpn Id');\n\t\t\t\t\n\t\t\t\tcategoryVls4Cmb[counter++] = new CodeValueStruct('170066', 'transhipment');\n\t\t\t\t\n\t\t\t\tfillCombo('apiname', categoryVls4Cmb); */\n\t\t\t\t\n\t\t\t\tvar versions = new Array;\n\t\t\t\tvar counter = 0;\n\t\t\t\tversions[0] = new CodeValueStruct(\"v1\", 'V1');\n\t\t\t\tfillCombo('versions', versions);\n\t\t\t\t$(\"#versions\").val('v1');\n\t\t\t}\n\t\t}",
+    "deleteApiNameWH": "function deleteApiNameWH(event, apiId, seqId, seqKey){\n\t\t\n\t\t\tvar rowCount = $(\"#apiWebhookTable\").getGridParam(\"reccount\");\n\t\t\tif(rowCount == 1){\n\t\t\t\twindow.parent.showAlert(\"Unable to delele Last Api Name\");\n\t\t\t\treturn false;\n\t\t\t}\n\t\t\t\n\t\t\tif (confirm(\"Do You Want To Delete this API Name?\")) {\n\t\t\t\n\t\t\t\tvar retVal = $.ajax({\n\t\t\t\t\turl : \"deleteApiNameWH\",\n\t\t\t\t\t\n\t\t\t\t\ttype : \"POST\",\n\t\t\t\t\tdata : {\n\t\t\t\t\t\tapiId\t\t: apiId,\n\t\t\t\t\t\tseqId\t\t: seqKey\n\t\t\t\t\t},\n\t\t\t\t\tdataType : \"json\",\n\t\t\t\t\tasync : false\n\t\t\t\t}).responseText;\n\t\t\t\tretVal = jQuery.parseJSON(retVal);\n\t\t\t\tif(retVal.jsonMessage != null)\n\t\t\t\t\twindow.parent.showAlert(retVal.jsonMessage);\n\t\t\t\t\n\t\t\t\treloadSearchGrid();\n\t\t\t\tresetWhDetails();\n\t\t\t}\n\t\t\treturn false;\n\t\t}"
+  },
+  "children": []
+}

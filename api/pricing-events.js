@@ -1,4 +1,4 @@
-import { find, findOne, insert, update, cors } from './mongo.js';
+import { sendDatabaseUnavailable, find, findOne, insert, update, cors } from './mongo.js';
 const MODULE = 'pricing-event', text = (v) => String(v ?? '').trim(), has = (v, q) => !text(q) || text(q) === '-1' || text(v).toLowerCase().includes(text(q).toLowerCase());
 export default async function handler(req, res) {
   if (cors(req, res)) return;
@@ -14,5 +14,6 @@ export default async function handler(req, res) {
       if (req.method === 'POST') return res.status(201).json(await insert('generic_records', doc)); if (!current || current.module !== MODULE) return res.status(404).json({ error: 'Pricing Event not found' }); return res.status(200).json((await update('generic_records', current.id, doc))[0]);
     }
     return res.status(405).json({ error: 'Method not allowed' });
-  } catch (error) { console.error('pricing events error:', error); return res.status(500).json({ error: error.message }); }
+  } catch (error) {
+    if (sendDatabaseUnavailable(res, error)) return; console.error('pricing events error:', { name: error?.name, code: error?.code }); return res.status(500).json({ error: error.message }); }
 }

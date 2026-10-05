@@ -1,0 +1,18 @@
+[
+  {
+    "name": "verify-vendor-integrity",
+    "code": 0
+  },
+  {
+    "name": "verify-customer-integrity",
+    "code": 0
+  },
+  {
+    "name": "verify-transporter-integrity",
+    "code": 0
+  },
+  {
+    "name": "verify-mongo-isolated-workflows",
+    "code": 0
+  }
+]

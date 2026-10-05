@@ -1,0 +1,102 @@
+{
+  "language": [
+    {
+      "text": "English",
+      "value": "1"
+    },
+    {
+      "text": "Thai/ไทย",
+      "value": "2"
+    },
+    {
+      "text": "Bahasa",
+      "value": "3"
+    },
+    {
+      "text": "Simple Chinese/简单的中文",
+      "value": "4"
+    },
+    {
+      "text": "Vietnamese/Tiếng Việt",
+      "value": "5"
+    },
+    {
+      "text": "Hindi/हिंदी",
+      "value": "6"
+    },
+    {
+      "text": "Arabic (Saudi Arabia)",
+      "value": "8"
+    }
+  ],
+  "propertyType": [
+    {
+      "text": "--- Select ---",
+      "value": "-1"
+    },
+    {
+      "text": "User Master UDF",
+      "value": "15"
+    },
+    {
+      "text": "Customer UDF",
+      "value": "10"
+    },
+    {
+      "text": "Inbound Charges",
+      "value": "14"
+    },
+    {
+      "text": "Inbound UDF",
+      "value": "7"
+    },
+    {
+      "text": "Location UDF",
+      "value": "6"
+    },
+    {
+      "text": "Lottable Validation Lottables",
+      "value": "3"
+    },
+    {
+      "text": "Manage SKU Lot Transfer Lottables",
+      "value": "13"
+    },
+    {
+      "text": "Normal",
+      "value": "0"
+    },
+    {
+      "text": "Order UDF",
+      "value": "4"
+    },
+    {
+      "text": "PO UDF",
+      "value": "5"
+    },
+    {
+      "text": "SKU Lot Transfer By Scan Lottables",
+      "value": "12"
+    },
+    {
+      "text": "SKU UDF",
+      "value": "1"
+    },
+    {
+      "text": "Stock Adjustment Lottables",
+      "value": "9"
+    },
+    {
+      "text": "Transhipment UDF",
+      "value": "16"
+    },
+    {
+      "text": "Vendor UDF",
+      "value": "11"
+    },
+    {
+      "text": "VendorReturn UDF",
+      "value": "8"
+    }
+  ]
+}

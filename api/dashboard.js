@@ -1,4 +1,6 @@
-import { DASH_ORDERS } from './genOrders.js';
+import { sendDatabaseUnavailable, find } from './mongo.js';
+import { listCentralWmsStock } from '../inventory/wms-operations.js';
+import { summarizeCentralInventory, toLegacyInventoryRows } from '../inventory/legacy-stock-view.js';
 
 function cors(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -15,7 +17,7 @@ function cors(req, res) {
 // - platform: comma list or "All"
 // - location: single or "All"
 // - drill: when present, returns { orders: [...] } filtered to the contributing records
-export default function handler(req, res) {
+export default async function handler(req, res) {
   if (cors(req, res)) return;
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
 
@@ -40,9 +42,32 @@ export default function handler(req, res) {
 
     // De-duplicate marketplace imports: unique by order_no (guard against dup imports)
     const seen = new Set();
-    let orders = DASH_ORDERS.filter((o) => {
+    let orders = (await find('sale_orders')).map(row => {
+      const lines = Array.isArray(row.lines) ? row.lines : Array.isArray(row.line_items) ? row.line_items : [];
+      const status = String(row.status || '');
+      const orderDate = row.order_date || row.created_at || '';
+      const quantity = Number(row.qty || lines.reduce((sum, line) => sum + Number(line.qty || 0), 0));
+      return {
+        ...row,
+        order_no: row.order_no || String(row.id),
+        external_order_no: row.external_order_no || row.ext_order_no || '',
+        platform: row.platform || row.channel || '',
+        location: row.location || row.warehouse || row.fulfillment_location || '',
+        order_date: orderDate, date_key: String(orderDate).slice(0, 10),
+        status, fulfilment_status: row.fulfilment_status || '', payment_mode: row.payment_mode || '',
+        lines: lines.map(line => ({ sku: line.sku || line.sku_code || '', qty: Number(line.qty || 0) })),
+        lines_count: lines.length, qty: quantity, amount: Number(row.amount || 0),
+        discount: Number(row.discount || 0), pending_stock_qty: Number(row.pending_stock_qty || 0),
+        unfulfillable_lines: Number(row.unfulfillable_lines || 0),
+        valid: !['Failed', 'Cancelled'].includes(status),
+        pending: ['Pending', 'Confirmed'].includes(status),
+        failed: status === 'Failed', sla_breached: Boolean(row.sla_breached),
+        unfulfillable: Boolean(row.unfulfillable),
+      };
+    }).filter((o) => {
       if (seen.has(o.order_no)) return false; seen.add(o.order_no);
       const d = new Date(o.order_date);
+      if (Number.isNaN(d.getTime())) return false;
       if (d < from || d > to) return false;
       if (platforms && !platforms.includes(o.platform)) return false;
       if (location && o.location !== location) return false;
@@ -72,6 +97,13 @@ export default function handler(req, res) {
         lines: o.lines_count, qty: o.qty, amount: o.amount, discount: o.discount,
       }));
       return res.status(200).json({ orders: rows, count: recs.length });
+    }
+
+    if (q.inventory === 'true') {
+      const [stock, policies] = await Promise.all([listCentralWmsStock(), find('inventory_policies')]);
+      const summary = summarizeCentralInventory(toLegacyInventoryRows(stock), policies);
+      const lowStock = summary.filter((row) => row.low_stock);
+      return res.status(200).json({ inventory: { summary, low_stock: lowStock, alert_count: lowStock.length }, meta: { generated_at: new Date().toISOString() } });
     }
 
     // ---- KPI calculations ----
@@ -147,7 +179,8 @@ export default function handler(req, res) {
       },
     });
   } catch (err) {
-    console.error('dashboard error:', err);
-    res.status(500).json({ error: err.message });
+    if (sendDatabaseUnavailable(res, err)) return;
+    console.error('dashboard error:', { name: err?.name, code: err?.code });
+    res.status(err.statusCode || err.status || (err.code || /database|connection/i.test(err.message || '') ? 503 : 500)).json({ error: err.message || 'Dashboard data unavailable.' });
   }
 }

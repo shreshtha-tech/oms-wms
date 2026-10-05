@@ -35,7 +35,17 @@ type Buyer = ReturnType<typeof blank> & {
   displayIsActive?: string;
   linkToCategory?: string;
 };
-const fromLiveRow = (row: any): Buyer => ({
+type BuyerRow = Partial<Buyer> & {
+  buyerCode?: string | number; buyerName?: string; buyerDesc?: string;
+  altPhone?: string; isActive?: boolean; linkToCategory?: string;
+  udf1?: string; udf2?: string; udf3?: string; udf4?: string; udf5?: string;
+  locationCode?: string; createdBy?: string; createDate?: string;
+  modifiedBy?: string; modifiedDate?: string;
+};
+type BuyerSearchResult = { gridModel?: BuyerRow[]; categoryBuyerDTOs?: BuyerRow[]; page: number; total: number; records: number };
+type CatalogRow = { code: string; name: string };
+type LocationRow = { location_code: string; location_name: string };
+const fromLiveRow = (row: BuyerRow): Buyer => ({
   ...blank(),
   buyer_code: String(row.buyerCode ?? row.buyer_code ?? ""),
   buyer_name: row.buyerName ?? row.buyer_name ?? "",
@@ -69,13 +79,17 @@ export default function CategoryBuyers() {
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState<Buyer>(blank());
   const [categories, setCategories] = useState<{ code: string; name: string }[]>([]);
+  const [locations, setLocations] = useState<{ code: string; name: string }[]>([]);
   const [editorTab, setEditorTab] = useState<"edit" | "udf">("edit");
   const [audit, setAudit] = useState<Buyer | null>(null);
   const [saving, setSaving] = useState(false);
   useEffect(() => {
-    apiGet<any>("/api/merch-hierarchy")
-      .then((data) => setCategories((data.rows || []).map((row: any) => ({ code: row.code, name: row.name }))))
+    apiGet<{ rows: CatalogRow[] }>("/api/merch-hierarchy")
+      .then((data) => setCategories((data.rows || []).map((row) => ({ code: row.code, name: row.name }))))
       .catch(() => setCategories([]));
+    apiGet<{ rows: LocationRow[] }>("/api/locations")
+      .then((data) => setLocations((data.rows || []).map((row) => ({ code: row.location_code, name: row.location_name })).filter((row) => row.code && row.name)))
+      .catch((error: Error) => setNotice(error.message));
   }, []);
   const set = (key: keyof typeof emptyFilters, value: string | string[]) =>
     setFilters((current) => ({ ...current, [key]: value }));
@@ -83,7 +97,7 @@ export default function CategoryBuyers() {
     setLoading(true);
     setNotice("");
     try {
-      const result = await apiSend<any>("/api/categoryBuyerSearch", "POST", {
+      const result = await apiSend<BuyerSearchResult>("/api/categoryBuyerSearch", "POST", {
         _search: true,
         rows: nextSize,
         page: nextPage,
@@ -109,15 +123,15 @@ export default function CategoryBuyers() {
       setRecords(result.records);
       setSize(nextSize);
       setSearched(true);
-    } catch (error: any) {
+    } catch (error) {
       setRows([]);
-      setNotice(error.message);
+      setNotice(error instanceof Error ? error.message : "Unable to search category buyers.");
     } finally {
       setLoading(false);
     }
   };
   useEffect(() => {
-    void search(1, 20, emptyFilters);
+    void Promise.resolve().then(() => search(1, 20, emptyFilters));
     // LIVE loads the first page when the enquiry opens.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -152,8 +166,8 @@ export default function CategoryBuyers() {
       setForm(saved);
       setOpen(false);
       await search(1);
-    } catch (error: any) {
-      setNotice(error.message);
+    } catch (error) {
+      setNotice(error instanceof Error ? error.message : "Unable to save category buyer.");
     } finally {
       setSaving(false);
     }
@@ -466,6 +480,13 @@ export default function CategoryBuyers() {
                 setForm({ ...form, alternate_phone: e.target.value })
               }
             />
+          </label>
+          <label className="text-xs">
+            Location
+            <select id="buyerLocation" className="ci mt-1 w-full" value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })}>
+              <option value="">No location selected</option>
+              {locations.map((location) => <option key={location.code} value={location.code}>{location.code} - {location.name}</option>)}
+            </select>
           </label>
           <label className="flex items-center gap-2 text-xs">
             <input

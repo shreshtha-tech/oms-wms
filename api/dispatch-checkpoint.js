@@ -1,17 +1,103 @@
-import{cors,find,insert,update}from'./mongo.js';import{COD_TRANSPORTERS}from'./cod-reconciliation-transporters.js';
-const text=v=>String(v??'').trim(),has=(v,q)=>!text(q)||text(v).toLowerCase().includes(text(q).toLowerCase()),parse=v=>{const s=text(v).slice(0,10),m=s.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);return m?new Date(`${m[3]}-${m[2]}-${m[1]}T00:00:00Z`):/^\d{4}-\d{2}-\d{2}$/.test(s)?new Date(s+'T00:00:00Z'):null},trName=code=>(COD_TRANSPORTERS.find(x=>x.value===text(code))?.label||text(code)).replace(/\s*-\s*[^-]+$/,'').trim();
-const norm=r=>({...r,loadId:r.loadId||r.load_id||r.code,createdDateString:r.createdDateString||r.created_date||'',closedDateString:r.closedDateString||r.updated_date||'',vehicleNo:r.vehicleNo||r.vehicle_no||'',transporter:r.transporter_name||r.transporter||'',transporterCode:r.transporterCode||r.transporter_code||'',status:r.status||'In Process',statusCode:r.statusCode||({Closed:'15','Approval Pending':'1','In Process':'5'}[r.status]||'5'),scanedLPN:String(r.scanedLPN??r.scanned_box??(r.shipments||[]).length),totalLPN:String(r.totalLPN??r.total_box??(r.shipments||[]).length),isB2bCode:String(r.isB2bCode??r.flow_code??'0'),isB2b:r.isB2b||r.flow||((r.isB2bCode??r.flow_code)==='1'?'B2B Flow':'B2C Flow'),shipments:r.shipments||[],invoices:r.invoices||[]});
-const next=rows=>`UWH${Math.max(0,...rows.map(r=>Number(text(r.loadId).replace(/\D/g,''))))+1}`,findRows=async()=>{const xs=(await find('generic_records',{module:'dispatch-checkpoint'})).map(norm);return xs.filter(r=>/^UWH\d+$/.test(r.loadId))};
-export default async function handler(req,res){if(cors(req,res))return;try{if(req.method==='GET'){const rows=await findRows(),id=text(req.query?.loadId);return res.json(id?{row:rows.find(r=>r.loadId===id)||null}:{transporters:COD_TRANSPORTERS,statuses:[['-1','--- Select ---'],['1','Approval Pending'],['15','Closed'],['5','In Process']],flows:[['-1','--- Select ---'],['0','B2C Flow'],['1','B2B Flow']],pageSizes:[20,50,100,200]})}if(req.method!=='POST')return res.status(405).json({error:'Method not allowed'});const b=req.body||{},rows=await findRows();
-if(b.action==='export'){if(!Number(b.gridDataLen))return res.status(400).json({error:'No data in grid to export'});const reportId=`DCE-${Date.now()}`;await insert('generic_records',{module:'pending-report',code:reportId,name:'Dispatch Checkpoint Export',status:'Pending',created_date:new Date().toISOString()});return res.json({jsonMessage:null,reportId})}
-if(b.action==='vehicle-scan'){if(text(b.flow)==='0'&&(!text(b.transporter)||text(b.transporter)==='-1'))return res.status(400).json({error:'Please Scan Transporter'});if(!text(b.vehicleNo))return res.status(400).json({error:'Please Scan Vehicle no.'});const loadId=next(rows),now=new Date().toISOString(),flow=text(b.flow)==='1'?'1':'0',transporterCode=flow==='0'?text(b.transporter):'',row=await insert('generic_records',{module:'dispatch-checkpoint',code:loadId,loadId,vehicleNo:text(b.vehicleNo),vehicle_no:text(b.vehicleNo),transporterCode,transporter_code:transporterCode,transporter_name:trName(transporterCode),status:'In Process',statusCode:'5',isB2bCode:flow,flow_code:flow,isB2b:flow==='1'?'B2B Flow':'B2C Flow',created_date:now,shipments:[],invoices:[]});return res.status(201).json({row:norm(row)})}
-const row=rows.find(r=>r.loadId===text(b.loadId));if(['tracking-scan','invoice-scan','lpn-scan','complete','remove-shipment','close-invoice','approve'].includes(b.action)&&!row)return res.status(400).json({error:'Please Scan Vehicle no.'});
-if(b.action==='tracking-scan'){if(!text(b.transporter)||text(b.transporter)==='-1')return res.status(400).json({error:'Please Select Transporter.'});if(!text(b.trackingNo))return res.status(400).json({error:'Please Scan Tracking No'});if(row.shipments.some(x=>x.scanTrackingNo===text(b.trackingNo)))return res.status(400).json({error:'Tracking No already scanned'});const order=(await find('sale_orders',{})).find(x=>text(x.tracking_no||x.awb_no).toLowerCase()===text(b.trackingNo).toLowerCase()),item={id:Date.now(),scanTrackingNo:text(b.trackingNo),dilveryNo:order?.delivery_no||order?.shipment_no||`DEL-${Date.now()}`,orderNo:order?.order_no||order?.ext_order_no||'',orderDate:order?.order_date||'',reasonVal:'-1'};const shipments=[...row.shipments,item];await update('generic_records',row.id,{shipments,scanedLPN:String(shipments.length),totalLPN:String(shipments.length)});return res.json({row:{...row,shipments,scanedLPN:String(shipments.length),totalLPN:String(shipments.length)},item})}
-if(b.action==='remove-shipment'){if(!text(b.reason)||text(b.reason)==='-1')return res.status(400).json({error:'Please select Reason'});const shipments=row.shipments.filter(x=>String(x.id)!==String(b.id));await update('generic_records',row.id,{shipments,scanedLPN:String(shipments.length)});return res.json({jsonMessage:'Row Deleted Successfully',row:{...row,shipments}})}
-if(b.action==='invoice-scan'){if(!text(b.invoiceNo))return res.status(400).json({error:'Please scan invoice'});let invoice=row.invoices.find(x=>x.invoiceNo===text(b.invoiceNo));if(!invoice){invoice={id:Date.now(),invoiceNo:text(b.invoiceNo),lpnList:[],pod:text(b.pod),status:'In Process',hiddenStatus:'5'};row.invoices.push(invoice)}await update('generic_records',row.id,{invoices:row.invoices});return res.json({row,invoice})}
-if(b.action==='lpn-scan'){if(!text(b.invoiceNo))return res.status(400).json({error:'Please scan invoice'});if(!text(b.lpn))return res.status(400).json({error:'Please Scan LPN'});const invoice=row.invoices.find(x=>x.invoiceNo===text(b.invoiceNo));if(!invoice)return res.status(400).json({error:'Please scan invoice'});if(!invoice.lpnList.includes(text(b.lpn)))invoice.lpnList.push(text(b.lpn));await update('generic_records',row.id,{invoices:row.invoices});return res.json({row,invoice})}
-if(b.action==='close-invoice'){const invoice=row.invoices.find(x=>x.invoiceNo===text(b.invoiceNo));if(!invoice)return res.status(400).json({error:'Please scan invoice'});invoice.status='Closed';invoice.hiddenStatus='15';await update('generic_records',row.id,{invoices:row.invoices});return res.json({jsonMessage:'Invoice Closed',row})}
-if(b.action==='approve'){const ids=Array.isArray(b.ids)?b.ids.map(String):[];if(!ids.length)return res.status(400).json({error:'Please Select Some Invoice To Close'});row.invoices.forEach(x=>{if(ids.includes(String(x.id))){x.status='Closed';x.hiddenStatus='15'}});await update('generic_records',row.id,{invoices:row.invoices});return res.json({jsonMessage:'Invoice Closed',row})}
-if(b.action==='complete'){const now=new Date().toISOString();await update('generic_records',row.id,{status:'Closed',statusCode:'15',closedDateString:now,updated_date:now,driverName:text(b.driverName),driverPhone:text(b.driverPhone),remarks:text(b.remarks)});return res.json({jsonMessage:'Load Id Closed Successfully',row:{...row,status:'Closed',statusCode:'15',closedDateString:now}})}
-if(!b.REQ_SEARCH_FLAG)return res.status(400).json({error:'REQ_SEARCH_FLAG is required'});const noField=!text(b.loadId)&&!text(b.fromCreatedDate)&&(!text(b.status)||text(b.status)==='-1')&&(!text(b.transporter)||text(b.transporter)==='-1')&&!text(b.vehicleNo)&&(!text(b.isB2b)||text(b.isB2b)==='-1')&&!text(b.fromCloseDate);if(noField)return res.status(400).json({error:' Select at least one field'});const from=parse(b.fromCreatedDate),to=parse(b.toCreatedDate),cf=parse(b.fromCloseDate),ct=parse(b.toCloseDate);if(from&&to&&(to-from)/86400000>90||cf&&ct&&(ct-cf)/86400000>90)return res.status(400).json({error:'Date range cannot be greater than 90 days'});let filtered=rows.filter(r=>has(r.loadId,b.loadId)&&has(r.vehicleNo,b.vehicleNo)&&(!text(b.status)||text(b.status)==='-1'||r.statusCode===text(b.status))&&(!text(b.transporter)||text(b.transporter)==='-1'||r.transporterCode===text(b.transporter))&&(!text(b.isB2b)||text(b.isB2b)==='-1'||r.isB2bCode===text(b.isB2b)));if(from&&to)filtered=filtered.filter(r=>{const d=parse(r.createdDateString);return d&&d>=from&&d<=to});filtered.sort((a,z)=>text(z.createdDateString).localeCompare(text(a.createdDateString)));const size=[20,50,100,200].includes(+b.rows)?+b.rows:20,page=Math.max(1,+b.page||1),records=filtered.length,total=Math.ceil(records/size),gridModel=filtered.slice((page-1)*size,page*size);return res.json({gridModel,rows:size,page,records,total});
-}catch(e){console.error('dispatch checkpoint error:',e);return res.status(500).json({error:e.message})}}
+import { sendDatabaseUnavailable, cors, find } from './mongo.js';
+import { COD_TRANSPORTERS } from './cod-reconciliation-transporters.js';
+
+const text = value => String(value ?? '').trim();
+const has = (value, query) => !text(query) || text(query) === '-1' || text(value).toLowerCase().includes(text(query).toLowerCase());
+
+function parseDate(value) {
+  const input = text(value).slice(0, 10);
+  const dmy = input.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  if (dmy) return new Date(`${dmy[3]}-${dmy[2]}-${dmy[1]}T00:00:00Z`);
+  return /^\d{4}-\d{2}-\d{2}$/.test(input) ? new Date(`${input}T00:00:00Z`) : null;
+}
+
+function normalize(row) {
+  const shipments = Array.isArray(row.shipments) ? row.shipments : [];
+  const invoices = Array.isArray(row.invoices) ? row.invoices : [];
+  const flowCode = String(row.isB2bCode ?? row.flow_code ?? '');
+  return {
+    id: row.id,
+    loadId: row.loadId || row.load_id || row.code || '',
+    createdDateString: row.createdDateString || row.created_date || '',
+    closedDateString: row.closedDateString || row.closed_date || '',
+    vehicleNo: row.vehicleNo || row.vehicle_no || '',
+    transporter: row.transporter_name || row.transporter || '',
+    transporterCode: row.transporterCode || row.transporter_code || '',
+    status: row.status || '',
+    statusCode: row.statusCode || '',
+    scannedLpn: String(row.scanedLPN ?? row.scanned_box ?? (shipments.length || '')),
+    totalLpn: String(row.totalLPN ?? row.total_box ?? ''),
+    flowCode,
+    flow: row.isB2b || (flowCode === '1' ? 'B2B Flow' : flowCode === '0' ? 'B2C Flow' : ''),
+    shipments,
+    invoices,
+    trust: 'legacy-unverified',
+  };
+}
+
+async function getRows() {
+  return (await find('generic_records', { module: 'dispatch-checkpoint' }))
+    .map(normalize)
+    .filter(row => /^UWH\d+$/.test(row.loadId));
+}
+
+export default async function handler(req, res) {
+  if (cors(req, res)) return;
+  try {
+    if (req.method === 'GET') {
+      const rows = await getRows();
+      const loadId = text(req.query?.loadId);
+      if (loadId) return res.json({ row: rows.find(row => row.loadId === loadId) || null, trust: 'legacy-unverified' });
+      return res.json({
+        available: false,
+        dataTrust: 'legacy-unverified',
+        reason: 'Vehicle, carrier, invoice, and LPN dispatch events require verified sources and a Central Inventory dispatch transaction.',
+        transporters: COD_TRANSPORTERS,
+        statuses: [['-1', '--- Select ---'], ['1', 'Approval Pending'], ['15', 'Closed'], ['5', 'In Process']],
+        flows: [['-1', '--- Select ---'], ['0', 'B2C Flow'], ['1', 'B2B Flow']],
+        pageSizes: [20, 50, 100, 200],
+      });
+    }
+
+    if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+    const body = req.body || {};
+    if (body.action || body.REQ_SEARCH_FLAG !== true) {
+      return res.status(501).json({ error: 'Dispatch Checkpoint is read-only until vehicle, carrier, proof-of-delivery, and Central Inventory event sources are connected.' });
+    }
+
+    if (!text(body.loadId) && !text(body.fromCreatedDate) && (!text(body.status) || text(body.status) === '-1') &&
+      (!text(body.transporter) || text(body.transporter) === '-1') && !text(body.vehicleNo) &&
+      (!text(body.isB2b) || text(body.isB2b) === '-1') && !text(body.fromCloseDate)) {
+      return res.status(400).json({ error: 'Select at least one search field.' });
+    }
+
+    const from = parseDate(body.fromCreatedDate);
+    const to = parseDate(body.toCreatedDate);
+    const closeFrom = parseDate(body.fromCloseDate);
+    const closeTo = parseDate(body.toCloseDate);
+    if ((from && to && (to - from) / 86400000 > 90) || (closeFrom && closeTo && (closeTo - closeFrom) / 86400000 > 90)) {
+      return res.status(400).json({ error: 'Date range cannot be greater than 90 days.' });
+    }
+
+    let rows = (await getRows()).filter(row =>
+      has(row.loadId, body.loadId) && has(row.vehicleNo, body.vehicleNo) &&
+      (!text(body.status) || text(body.status) === '-1' || row.statusCode === text(body.status)) &&
+      (!text(body.transporter) || text(body.transporter) === '-1' || row.transporterCode === text(body.transporter)) &&
+      (!text(body.isB2b) || text(body.isB2b) === '-1' || row.flowCode === text(body.isB2b)));
+    if (from && to) rows = rows.filter(row => { const date = parseDate(row.createdDateString); return date && date >= from && date <= to; });
+    if (closeFrom && closeTo) rows = rows.filter(row => { const date = parseDate(row.closedDateString); return date && date >= closeFrom && date <= closeTo; });
+    rows.sort((left, right) => text(right.createdDateString).localeCompare(text(left.createdDateString)));
+
+    const size = [20, 50, 100, 200].includes(+body.rows) ? +body.rows : 20;
+    const page = Math.max(1, +body.page || 1);
+    const records = rows.length;
+    return res.json({
+      gridModel: rows.slice((page - 1) * size, page * size), rows: size, page,
+      records, total: Math.ceil(records / size), trust: 'legacy-unverified',
+    });
+  } catch (error) {
+    if (sendDatabaseUnavailable(res, error)) return;
+    console.error('Dispatch Checkpoint error:', { name: error?.name, code: error?.code });
+    return res.status(500).json({ error: error.message });
+  }
+}

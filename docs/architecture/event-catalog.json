@@ -1,0 +1,1244 @@
+{
+  "status": "PROPOSED owner approval required; current implementation facts are source-only",
+  "date": "2026-10-05",
+  "envelope_schema": "event-schemas.json",
+  "ordering_policy_document": "ADR-002-event-contracts.md",
+  "retry_policy_document": "ADR-002-event-contracts.md",
+  "events": [
+    {
+      "name": "catalog.sku.changed.v1",
+      "schema_version": 1,
+      "aggregate": "sku",
+      "aggregate_key": "[tenant_id, source_store, source_id]",
+      "idempotency_key": "[tenant_id, source_store, source_id, source_revision]",
+      "payload_schema": "event-schemas.json#/$defs/sku",
+      "producers": [
+        "api/skus.js"
+      ],
+      "consumers": [
+        "PROPOSED projector in inventory/workers.js -> approved central identity/cache; Mongo UI refresh"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "Mongo mutation exists; general cross-store outbox/projection ABSENT",
+      "existing_native_contract": "skus mutation; no versioned domain event",
+      "decision": "D01",
+      "routes": []
+    },
+    {
+      "name": "catalog.vendor.changed.v1",
+      "schema_version": 1,
+      "aggregate": "party",
+      "aggregate_key": "[tenant_id, source_store, source_id]",
+      "idempotency_key": "[tenant_id, source_store, source_id, source_revision]",
+      "payload_schema": "event-schemas.json#/$defs/party",
+      "producers": [
+        "api/vendors.js",
+        "api/mongo.js insertVendor/updateVendorWithAudit"
+      ],
+      "consumers": [
+        "PROPOSED projector in inventory/workers.js -> approved central identity/cache; Mongo UI refresh"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "Mongo mutation exists; general cross-store outbox/projection ABSENT",
+      "existing_native_contract": "vendors mutation; no versioned domain event",
+      "decision": "D02",
+      "routes": []
+    },
+    {
+      "name": "catalog.customer.changed.v1",
+      "schema_version": 1,
+      "aggregate": "party",
+      "aggregate_key": "[tenant_id, source_store, source_id]",
+      "idempotency_key": "[tenant_id, source_store, source_id, source_revision]",
+      "payload_schema": "event-schemas.json#/$defs/party",
+      "producers": [
+        "api/customers.js"
+      ],
+      "consumers": [
+        "PROPOSED projector in inventory/workers.js -> approved central identity/cache; Mongo UI refresh"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "Mongo mutation exists; general cross-store outbox/projection ABSENT",
+      "existing_native_contract": "partners[Customer] mutation; no versioned domain event",
+      "decision": "D02",
+      "routes": []
+    },
+    {
+      "name": "catalog.transporter.changed.v1",
+      "schema_version": 1,
+      "aggregate": "party",
+      "aggregate_key": "[tenant_id, source_store, source_id]",
+      "idempotency_key": "[tenant_id, source_store, source_id, source_revision]",
+      "payload_schema": "event-schemas.json#/$defs/party",
+      "producers": [
+        "api/transporters.js"
+      ],
+      "consumers": [
+        "PROPOSED projector in inventory/workers.js -> approved central identity/cache; Mongo UI refresh"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "Mongo mutation exists; general cross-store outbox/projection ABSENT",
+      "existing_native_contract": "partners[Transporter] mutation; no versioned domain event",
+      "decision": "D02",
+      "routes": []
+    },
+    {
+      "name": "catalog.client.changed.v1",
+      "schema_version": 1,
+      "aggregate": "party",
+      "aggregate_key": "[tenant_id, source_store, source_id]",
+      "idempotency_key": "[tenant_id, source_store, source_id, source_revision]",
+      "payload_schema": "event-schemas.json#/$defs/party",
+      "producers": [
+        "api/clients.js"
+      ],
+      "consumers": [
+        "PROPOSED projector in inventory/workers.js -> approved central identity/cache; Mongo UI refresh"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "Mongo mutation exists; general cross-store outbox/projection ABSENT",
+      "existing_native_contract": "partners[Client] mutation; no versioned domain event",
+      "decision": "D02",
+      "routes": []
+    },
+    {
+      "name": "catalog.partner.changed.v1",
+      "schema_version": 1,
+      "aggregate": "party",
+      "aggregate_key": "[tenant_id, source_store, source_id]",
+      "idempotency_key": "[tenant_id, source_store, source_id, source_revision]",
+      "payload_schema": "event-schemas.json#/$defs/party",
+      "producers": [
+        "api/partners.js"
+      ],
+      "consumers": [
+        "PROPOSED projector in inventory/workers.js -> approved central identity/cache; Mongo UI refresh"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "Mongo mutation exists; general cross-store outbox/projection ABSENT",
+      "existing_native_contract": "partners[other types] mutation; no versioned domain event",
+      "decision": "D02",
+      "routes": []
+    },
+    {
+      "name": "catalog.channel.changed.v1",
+      "schema_version": 1,
+      "aggregate": "channel",
+      "aggregate_key": "[tenant_id, source_store, source_id]",
+      "idempotency_key": "[tenant_id, source_store, source_id, source_revision]",
+      "payload_schema": "event-schemas.json#/$defs/channel",
+      "producers": [
+        "api/channels.js"
+      ],
+      "consumers": [
+        "PROPOSED projector in inventory/workers.js -> approved central identity/cache; Mongo UI refresh"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "Mongo mutation exists; general cross-store outbox/projection ABSENT",
+      "existing_native_contract": "channels mutation; no versioned domain event",
+      "decision": "D03",
+      "routes": []
+    },
+    {
+      "name": "catalog.location.changed.v1",
+      "schema_version": 1,
+      "aggregate": "location",
+      "aggregate_key": "[tenant_id, source_store, source_id]",
+      "idempotency_key": "[tenant_id, source_store, source_id, source_revision]",
+      "payload_schema": "event-schemas.json#/$defs/location",
+      "producers": [
+        "api/locations.js"
+      ],
+      "consumers": [
+        "PROPOSED projector in inventory/workers.js -> approved central identity/cache; Mongo UI refresh"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "Mongo mutation exists; general cross-store outbox/projection ABSENT",
+      "existing_native_contract": "generic_records[location] mutation; no versioned domain event",
+      "decision": "D04",
+      "routes": []
+    },
+    {
+      "name": "commercial.price.changed.v1",
+      "schema_version": 1,
+      "aggregate": "metadata",
+      "aggregate_key": "[tenant_id, source_store, module-or-kind, source_id]",
+      "idempotency_key": "[aggregate_key, source_revision]",
+      "payload_schema": "event-schemas.json#/$defs/commercial",
+      "producers": [
+        "api/skus.js",
+        "api/pricing-events.js",
+        "api/price-zones.js"
+      ],
+      "consumers": [
+        "PROPOSED allowed read-model projectors; no physical ledger consumer"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "Metadata calls exist; cross-store domain propagation ABSENT",
+      "existing_native_contract": "Literal/dynamic Mongo CRUD; no domain envelope",
+      "decision": "D05,D12",
+      "routes": []
+    },
+    {
+      "name": "commercial.tax.changed.v1",
+      "schema_version": 1,
+      "aggregate": "metadata",
+      "aggregate_key": "[tenant_id, source_store, module-or-kind, source_id]",
+      "idempotency_key": "[aggregate_key, source_revision]",
+      "payload_schema": "event-schemas.json#/$defs/commercial",
+      "producers": [
+        "api/taxcodes.js",
+        "api/tax-categories.js",
+        "api/tax-groups.js",
+        "api/tax-zones.js",
+        "api/taxapp.js"
+      ],
+      "consumers": [
+        "PROPOSED allowed read-model projectors; no physical ledger consumer"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "Metadata calls exist; cross-store domain propagation ABSENT",
+      "existing_native_contract": "Literal/dynamic Mongo CRUD; no domain envelope",
+      "decision": "D05,D12",
+      "routes": []
+    },
+    {
+      "name": "procurement.budget.changed.v1",
+      "schema_version": 1,
+      "aggregate": "metadata",
+      "aggregate_key": "[tenant_id, source_store, module-or-kind, source_id]",
+      "idempotency_key": "[aggregate_key, source_revision]",
+      "payload_schema": "event-schemas.json#/$defs/metadata",
+      "producers": [
+        "api/procurement.js"
+      ],
+      "consumers": [
+        "PROPOSED allowed read-model projectors; no physical ledger consumer"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "Metadata calls exist; cross-store domain propagation ABSENT",
+      "existing_native_contract": "Literal/dynamic Mongo CRUD; no domain envelope",
+      "decision": "D04,D12",
+      "routes": []
+    },
+    {
+      "name": "catalog.metadata.changed.v1",
+      "schema_version": 1,
+      "aggregate": "metadata",
+      "aggregate_key": "[tenant_id, source_store, module-or-kind, source_id]",
+      "idempotency_key": "[aggregate_key, source_revision]",
+      "payload_schema": "event-schemas.json#/$defs/metadata",
+      "producers": [
+        "api/skubarcode.js",
+        "api/sku-company-links.js",
+        "api/sku-groups.js",
+        "api/merch-hierarchy.js",
+        "api/vendor-sku-catalog.js",
+        "api/vendor-sku-loc-catalog.js",
+        "api/manage-attributes.js",
+        "api/attribute-sets.js"
+      ],
+      "consumers": [
+        "PROPOSED allowed read-model projectors; no physical ledger consumer"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "Metadata calls exist; cross-store domain propagation ABSENT",
+      "existing_native_contract": "Literal/dynamic Mongo CRUD; no domain envelope",
+      "decision": "D04,D12",
+      "routes": []
+    },
+    {
+      "name": "wms.metadata.changed.v1",
+      "schema_version": 1,
+      "aggregate": "metadata",
+      "aggregate_key": "[tenant_id, source_store, module-or-kind, source_id]",
+      "idempotency_key": "[aggregate_key, source_revision]",
+      "payload_schema": "event-schemas.json#/$defs/metadata",
+      "producers": [
+        "api/bin-editor.js",
+        "api/wms-zones.js",
+        "api/putaway-enquiry.js"
+      ],
+      "consumers": [
+        "PROPOSED allowed read-model projectors; no physical ledger consumer"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "Metadata calls exist; cross-store domain propagation ABSENT",
+      "existing_native_contract": "Literal/dynamic Mongo CRUD; no domain envelope",
+      "decision": "D04,D12",
+      "routes": []
+    },
+    {
+      "name": "legacy.metadata.changed.v1",
+      "schema_version": 1,
+      "aggregate": "metadata",
+      "aggregate_key": "[tenant_id, source_store, module-or-kind, source_id]",
+      "idempotency_key": "[aggregate_key, source_revision]",
+      "payload_schema": "event-schemas.json#/$defs/metadata",
+      "producers": [
+        "api/generic.js",
+        "api/admin.js",
+        "api/admin-parity.js",
+        "api/settings.js",
+        "api/ajio.js",
+        "api/amazon-mfn.js",
+        "api/vin-lister.js",
+        "api/inventory-ops.js"
+      ],
+      "consumers": [
+        "PROPOSED allowed read-model projectors; no physical ledger consumer"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "Metadata calls exist; cross-store domain propagation ABSENT",
+      "existing_native_contract": "Literal/dynamic Mongo CRUD; no domain envelope",
+      "decision": "D04,D12",
+      "routes": []
+    },
+    {
+      "name": "procurement.purchase-order.changed.v1",
+      "schema_version": 1,
+      "aggregate": "purchase_order",
+      "aggregate_key": "[tenant_id, po_id]",
+      "idempotency_key": "[tenant_id, po_id, source_revision]",
+      "payload_schema": "event-schemas.json#/$defs/purchase",
+      "producers": [
+        "api/purchase-orders.js",
+        "api/purchase-order-comments.js",
+        "api/purchase-order-tags.js"
+      ],
+      "consumers": [
+        "PROPOSED approved PO validation projection for receipt consumer; procurement UI"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "PO metadata writes exist; no transactional cross-store projection",
+      "existing_native_contract": "purchase_orders; OTB-backed confirmation guarded",
+      "decision": "D05,D08",
+      "routes": [
+        "/api/purchase-orders"
+      ]
+    },
+    {
+      "name": "inbound.asn.changed.v1",
+      "schema_version": 1,
+      "aggregate": "asn",
+      "aggregate_key": "[tenant_id, grn_id]",
+      "idempotency_key": "[tenant_id, grn_id, draft_revision]",
+      "payload_schema": "event-schemas.json#/$defs/asn",
+      "producers": [
+        "api/manage-asn.js",
+        "api/inbound-create-edit.js",
+        "api/inbound-realtime.js"
+      ],
+      "consumers": [
+        "PROPOSED ASN read projection; receipt command validation"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "Draft CAS exists; outbox ABSENT",
+      "existing_native_contract": "grn draft_revision / transitionGrnDraft",
+      "decision": "D08",
+      "routes": [
+        "/api/manage-asn"
+      ]
+    },
+    {
+      "name": "inbound.receipt.requested.v1",
+      "schema_version": 1,
+      "aggregate": "grn",
+      "aggregate_key": "[tenant_id, grn_id]",
+      "idempotency_key": "[tenant_id, request_id, payload_digest]",
+      "payload_schema": "event-schemas.json#/$defs/receipt",
+      "producers": [
+        "api/inbound-create-edit.js",
+        "api/inbound-realtime.js"
+      ],
+      "consumers": [
+        "PROPOSED durable Mongo-outbox consumer calling inventory/wms-operations.js receiveCentralInboundStock"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "Current synchronous Mongo staging then PG commit; NOT a durable event",
+      "existing_native_contract": "central_request_id/fingerprint; wms-inbound:{requestId}:{masterSkuId}",
+      "decision": "D08",
+      "routes": [
+        "/api/inbound-create-edit",
+        "/api/inbound-realtime"
+      ]
+    },
+    {
+      "name": "inbound.receipt.result.v1",
+      "schema_version": 1,
+      "aggregate": "grn",
+      "aggregate_key": "[tenant_id, grn_id]",
+      "idempotency_key": "[tenant_id, request_id, payload_digest, result]",
+      "payload_schema": "event-schemas.json#/$defs/receiptResult",
+      "producers": [
+        "PROPOSED consumer in inventory/workers.js using inventory/wms-operations.js"
+      ],
+      "consumers": [
+        "PROPOSED Mongo GRN projector using api/inbound-receipt-guard.js; inbound UI"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "PG receipt result exists; Mongo finalize called after PG transaction; outbox result ABSENT",
+      "existing_native_contract": "central_receipt_status / central_receipt_event_ids",
+      "decision": "D08",
+      "routes": []
+    },
+    {
+      "name": "provider.shopify.order.observed.v1",
+      "schema_version": 1,
+      "aggregate": "provider_order",
+      "aggregate_key": "[tenant_id, account_id, external_order_id]",
+      "idempotency_key": "[tenant_id, platform, account_id, delivery_id] plus digest conflict check",
+      "payload_schema": "event-schemas.json#/$defs/order",
+      "producers": [
+        "inventory/ingress.js acceptShopifyWebhook"
+      ],
+      "consumers": [
+        "inventory/unified-orders.js recordIncomingOrder; inventory/workers.js approved physical-order processor (PROPOSED normalized dispatch)"
+      ],
+      "ordering_policy": "O_PROVIDER",
+      "retry_policy": "R_EXTERNAL",
+      "current_implementation": "Signed ingress + receipt/order/alert + conditional task in PG transaction",
+      "existing_native_contract": "shopify_ingress payload {topic,messageId,event}; orders/updated records snapshot without stock task",
+      "decision": "D09,D10",
+      "routes": [
+        "/api/inventory-sync/shopify/webhook"
+      ]
+    },
+    {
+      "name": "provider.woocommerce.order.observed.v1",
+      "schema_version": 1,
+      "aggregate": "provider_order",
+      "aggregate_key": "[tenant_id, account_id, external_order_id]",
+      "idempotency_key": "[tenant_id, platform, account_id, delivery_id] plus digest conflict check",
+      "payload_schema": "event-schemas.json#/$defs/order",
+      "producers": [
+        "inventory/http.js Woo webhook"
+      ],
+      "consumers": [
+        "inventory/unified-orders.js recordIncomingOrder; inventory/workers.js approved physical-order processor (PROPOSED normalized dispatch)"
+      ],
+      "ordering_policy": "O_PROVIDER",
+      "retry_policy": "R_EXTERNAL",
+      "current_implementation": "Signed ingress transaction; product.updated task is currently no-op",
+      "existing_native_contract": "woocommerce_ingress payload {topic,event}",
+      "decision": "D09,D10",
+      "routes": [
+        "/api/inventory-sync/woocommerce/:accountId/webhook"
+      ]
+    },
+    {
+      "name": "provider.amazon.order.observed.v1",
+      "schema_version": 1,
+      "aggregate": "provider_order",
+      "aggregate_key": "[tenant_id, account_id, external_order_id]",
+      "idempotency_key": "[tenant_id, platform, account_id, delivery_id] plus digest conflict check",
+      "payload_schema": "event-schemas.json#/$defs/order",
+      "producers": [
+        "inventory/sqs-worker.js pollAmazonSqs",
+        "inventory/ingress.js acceptAmazonNotification"
+      ],
+      "consumers": [
+        "inventory/unified-orders.js recordIncomingOrder; inventory/workers.js approved physical-order processor (PROPOSED normalized dispatch)"
+      ],
+      "ordering_policy": "O_PROVIDER",
+      "retry_policy": "R_EXTERNAL",
+      "current_implementation": "SQS receipt + order + task; delete after accept; no batch poison isolation proven",
+      "existing_native_contract": "amazon_ingress full notification ORDER_CHANGE",
+      "decision": "D09,D10",
+      "routes": []
+    },
+    {
+      "name": "provider.shopify.order.recovered.v1",
+      "schema_version": 1,
+      "aggregate": "provider_order",
+      "aggregate_key": "[tenant_id, account_id, external_order_id]",
+      "idempotency_key": "[tenant_id, platform, account_id, delivery_id] plus digest conflict check",
+      "payload_schema": "event-schemas.json#/$defs/order",
+      "producers": [
+        "inventory/shopify-orders.js pollShopifyOrderObservations"
+      ],
+      "consumers": [
+        "inventory/unified-orders.js recordIncomingOrder; inventory/workers.js approved physical-order processor (PROPOSED normalized dispatch)"
+      ],
+      "ordering_policy": "O_PROVIDER",
+      "retry_policy": "R_EXTERNAL",
+      "current_implementation": "60-second scheduled poll; no reservation/cancellation task emitted from this path",
+      "existing_native_contract": "poll_observed; ci_sync_cursor shopify_order_observation",
+      "decision": "D09,D10",
+      "routes": [
+        "/api/inventory-sync/connections/:id/orders/observe"
+      ]
+    },
+    {
+      "name": "provider.flipkart.order.observed.v1",
+      "schema_version": 1,
+      "aggregate": "provider_order",
+      "aggregate_key": "[tenant_id, account_id, external_order_id]",
+      "idempotency_key": "[tenant_id, platform, account_id, delivery_id] plus digest conflict check",
+      "payload_schema": "event-schemas.json#/$defs/order",
+      "producers": [
+        "PROPOSED intake adapter; scripts/flipkart-probe-orders.mjs is probe ONLY"
+      ],
+      "consumers": [
+        "inventory/unified-orders.js recordIncomingOrder; inventory/workers.js approved physical-order processor (PROPOSED normalized dispatch)"
+      ],
+      "ordering_policy": "O_PROVIDER",
+      "retry_policy": "R_EXTERNAL",
+      "current_implementation": "BLOCKED: sanitized provider fields/permissions/notification and revision contracts required",
+      "existing_native_contract": "No implemented intake task/consumer",
+      "decision": "D09,D10",
+      "routes": []
+    },
+    {
+      "name": "report.meesho.order.observed.v1",
+      "schema_version": 1,
+      "aggregate": "provider_order",
+      "aggregate_key": "[tenant_id, account_id, external_order_id]",
+      "idempotency_key": "[tenant_id, platform, account_id, delivery_id] plus digest conflict check",
+      "payload_schema": "event-schemas.json#/$defs/order",
+      "producers": [
+        "inventory/meesho-orders.js importMeeshoOrders"
+      ],
+      "consumers": [
+        "inventory/unified-orders.js recordIncomingOrder; inventory/workers.js approved physical-order processor (PROPOSED normalized dispatch)"
+      ],
+      "ordering_policy": "O_PROVIDER",
+      "retry_policy": "R_EXTERNAL",
+      "current_implementation": "Read-only import in PG transaction; no stock task",
+      "existing_native_contract": "ci_ingress meesho-report:{account}; report_observed with notify:false",
+      "decision": "D09,D10",
+      "routes": [
+        "/api/inventory-sync/connections/:id/meesho/orders/import"
+      ]
+    },
+    {
+      "name": "order.offline.intake.requested.v1",
+      "schema_version": 1,
+      "aggregate": "provider_order",
+      "aggregate_key": "[tenant_id, account_id, external_order_id]",
+      "idempotency_key": "[tenant_id, platform, account_id, delivery_id] plus digest conflict check",
+      "payload_schema": "event-schemas.json#/$defs/order",
+      "producers": [
+        "PROPOSED approved adapter replacing blocked api/order-import.js/api/common-import.js"
+      ],
+      "consumers": [
+        "inventory/unified-orders.js recordIncomingOrder; inventory/workers.js approved physical-order processor (PROPOSED normalized dispatch)"
+      ],
+      "ordering_policy": "O_PROVIDER",
+      "retry_policy": "R_EXTERNAL",
+      "current_implementation": "ABSENT: no offline business import processor",
+      "existing_native_contract": "Existing import routes return 501",
+      "decision": "D09,D10",
+      "routes": [
+        "/api/order-import",
+        "/api/common-import"
+      ]
+    },
+    {
+      "name": "order.intake.recorded.v1",
+      "schema_version": 1,
+      "aggregate": "order",
+      "aggregate_key": "[tenant_id, order_id]",
+      "idempotency_key": "[tenant_id, order_id, order_revision]",
+      "payload_schema": "event-schemas.json#/$defs/intake",
+      "producers": [
+        "inventory/unified-orders.js recordIncomingOrder"
+      ],
+      "consumers": [
+        "inventory/order-alert-routing.js initial alert policy; inventory/workers.js reservation policy; UI projection"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "Current in-transaction local calls; no versioned domain event",
+      "existing_native_contract": "received / observed / provider_updated timeline; ci_order_alert_source",
+      "decision": "D06,D07,D09",
+      "routes": []
+    },
+    {
+      "name": "order.intake.reconciliation-required.v1",
+      "schema_version": 1,
+      "aggregate": "order",
+      "aggregate_key": "[tenant_id, order_id]",
+      "idempotency_key": "[tenant_id, order_id, order_revision, reason]",
+      "payload_schema": "event-schemas.json#/$defs/intake",
+      "producers": [
+        "inventory/unified-orders.js",
+        "inventory/workers.js"
+      ],
+      "consumers": [
+        "Operator review; future reconciliation consumer"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R_HELD",
+      "current_implementation": "Timeline review entries exist; general review queue ABSENT",
+      "existing_native_contract": "line_change_requires_review / fulfillment_reconciliation_required / intake_error",
+      "decision": "D06,D09,D10",
+      "routes": []
+    },
+    {
+      "name": "order.reservation.created.v1",
+      "schema_version": 1,
+      "aggregate": "order_line",
+      "aggregate_key": "[tenant_id, order_id, external_line_id]",
+      "idempotency_key": "[tenant_id, ledger_event_id]",
+      "payload_schema": "event-schemas.json#/$defs/reservation",
+      "producers": [
+        "inventory/workers.js through inventory/ledger.js applyInventoryEventInTransaction"
+      ],
+      "consumers": [
+        "order timeline/WMS/alert authorization projection; channel targets via balance event"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "Ledger + reservation local transaction exists; named versioned event ABSENT",
+      "existing_native_contract": "ci_reservation reserve; reserve/cancel/dispatch event keys",
+      "decision": "D06,D07,D09",
+      "routes": []
+    },
+    {
+      "name": "order.reservation.released.v1",
+      "schema_version": 1,
+      "aggregate": "order_line",
+      "aggregate_key": "[tenant_id, order_id, external_line_id]",
+      "idempotency_key": "[tenant_id, ledger_event_id]",
+      "payload_schema": "event-schemas.json#/$defs/reservation",
+      "producers": [
+        "inventory/workers.js through inventory/ledger.js applyInventoryEventInTransaction"
+      ],
+      "consumers": [
+        "order timeline/WMS/alert authorization projection; channel targets via balance event"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "Ledger + reservation local transaction exists; named versioned event ABSENT",
+      "existing_native_contract": "ci_reservation release; reserve/cancel/dispatch event keys",
+      "decision": "D06,D07,D09",
+      "routes": []
+    },
+    {
+      "name": "order.reservation.consumed.v1",
+      "schema_version": 1,
+      "aggregate": "order_line",
+      "aggregate_key": "[tenant_id, order_id, external_line_id]",
+      "idempotency_key": "[tenant_id, ledger_event_id]",
+      "payload_schema": "event-schemas.json#/$defs/reservation",
+      "producers": [
+        "inventory/workers.js through inventory/ledger.js applyInventoryEventInTransaction"
+      ],
+      "consumers": [
+        "order timeline/WMS/alert authorization projection; channel targets via balance event"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "Ledger + reservation local transaction exists; named versioned event ABSENT",
+      "existing_native_contract": "ci_reservation consume; reserve/cancel/dispatch event keys",
+      "decision": "D06,D07,D09",
+      "routes": []
+    },
+    {
+      "name": "ledger.balance.changed.v1",
+      "schema_version": 1,
+      "aggregate": "balance",
+      "aggregate_key": "[tenant_id, master_sku_id, location_id]",
+      "idempotency_key": "[tenant_id, ledger_event_id]",
+      "payload_schema": "event-schemas.json#/$defs/balance",
+      "producers": [
+        "inventory/ledger.js called by inventory/workers.js, inventory/wms-operations.js, inventory/central-api.js, inventory/workbook.js, inventory/return-service.js"
+      ],
+      "consumers": [
+        "inventory/workers.js publishStockTask; inventory/alerts.js; PG UI refresh; PROPOSED Mongo projections"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "Ledger transaction queues publish_stock with eventId; no versioned envelope",
+      "existing_native_contract": "ci_inventory_event.event_type includes reserve/cancel/dispatch/physical_count/manual_adjustment/wms_adjustment/inbound_receipt/wms_transfer_out/wms_transfer_in/return_qc_approved",
+      "decision": "D08,D10",
+      "routes": []
+    },
+    {
+      "name": "channel.mapping.changed.v1",
+      "schema_version": 1,
+      "aggregate": "mapping",
+      "aggregate_key": "[tenant_id, mapping_id]",
+      "idempotency_key": "[tenant_id, mapping_id, mapping_revision]",
+      "payload_schema": "event-schemas.json#/$defs/mapping",
+      "producers": [
+        "inventory/connection-setup.js discover/activate",
+        "inventory/connections.js location/report setup"
+      ],
+      "consumers": [
+        "PROPOSED Mongo reference projection; publisher mapping eligibility"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "Mapping mutation exists; activation queues initial publish task",
+      "existing_native_contract": "ci_channel_mapping active/approved_at; no durable mapping_revision",
+      "decision": "D03,D10",
+      "routes": []
+    },
+    {
+      "name": "channel.connection.changed.v1",
+      "schema_version": 1,
+      "aggregate": "connection",
+      "aggregate_key": "[tenant_id, account_id]",
+      "idempotency_key": "[tenant_id, account_id, account_revision]",
+      "payload_schema": "event-schemas.json#/$defs/connection",
+      "producers": [
+        "inventory/connections.js",
+        "inventory/connection-setup.js",
+        "inventory/connection-observation.js"
+      ],
+      "consumers": [
+        "Connection UI; worker eligibility; PROPOSED Mongo channel reference projector"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "Account writes exist; general event ABSENT",
+      "existing_native_contract": "ci_channel_account settings/status/verification; no tokens in event",
+      "decision": "D03,D11",
+      "routes": []
+    },
+    {
+      "name": "channel.stock.publish.requested.v1",
+      "schema_version": 1,
+      "aggregate": "mapping",
+      "aggregate_key": "[tenant_id, mapping_id]",
+      "idempotency_key": "[tenant_id, mapping_id, balance_version, mapping_revision, target_quantity]",
+      "payload_schema": "event-schemas.json#/$defs/publish",
+      "producers": [
+        "inventory/ledger.js",
+        "inventory/connection-setup.js activateConnection",
+        "inventory/workers.js reconcileShopifyStock"
+      ],
+      "consumers": [
+        "inventory/workers.js publishStockTask"
+      ],
+      "ordering_policy": "O_LATEST",
+      "retry_policy": "R_PROVIDER",
+      "current_implementation": "Existing publish_stock task is unversioned; recalculates newest balance under advisory lock",
+      "existing_native_contract": "ci_outbox publish_stock payload eventId OR source/at OR source/balanceVersion/observedAt",
+      "decision": "D03,D10",
+      "routes": []
+    },
+    {
+      "name": "channel.stock.publish.result.v1",
+      "schema_version": 1,
+      "aggregate": "mapping",
+      "aggregate_key": "[tenant_id, mapping_id]",
+      "idempotency_key": "[tenant_id, mapping_id, balance_version, provider_request_ref-or-attempt]",
+      "payload_schema": "event-schemas.json#/$defs/publishResult",
+      "producers": [
+        "inventory/workers.js publishStockTask"
+      ],
+      "consumers": [
+        "ci_channel_stock state; connection health; reconciliation; PROPOSED domain outbox result"
+      ],
+      "ordering_policy": "O_LATEST",
+      "retry_policy": "R_PROVIDER",
+      "current_implementation": "Local submitted state and sync attempts exist; no versioned result",
+      "existing_native_contract": "ci_channel_stock publish_state submitted; Woo readback; Shopify compare/set; Amazon submission",
+      "decision": "D03,D10",
+      "routes": []
+    },
+    {
+      "name": "channel.stock.observed.v1",
+      "schema_version": 1,
+      "aggregate": "mapping",
+      "aggregate_key": "[tenant_id, mapping_id]",
+      "idempotency_key": "[tenant_id, mapping_id, provider_revision, snapshot_digest]",
+      "payload_schema": "event-schemas.json#/$defs/observation",
+      "producers": [
+        "inventory/stock-observations.js",
+        "inventory/shopify-snapshot.js",
+        "inventory/workers.js reconcileShopifyStock",
+        "inventory/connections.js snapshot (ordering redesign required)"
+      ],
+      "consumers": [
+        "ci_channel_stock / ci_stock_observation; drift/reconciliation; no physical ledger writer"
+      ],
+      "ordering_policy": "O_PROVIDER",
+      "retry_policy": "R_EXTERNAL",
+      "current_implementation": "Several observation paths exist with differing ordering guards",
+      "existing_native_contract": "Shopify inventory_levels/update; Amazon LISTINGS_ITEM_MFN_QUANTITY_CHANGE; snapshots/readback/report",
+      "decision": "D10",
+      "routes": []
+    },
+    {
+      "name": "provider.woocommerce.product.observed.v1",
+      "schema_version": 1,
+      "aggregate": "mapping",
+      "aggregate_key": "[tenant_id, mapping_id]",
+      "idempotency_key": "[tenant_id, mapping_id, provider_revision, snapshot_digest]",
+      "payload_schema": "event-schemas.json#/$defs/observation",
+      "producers": [
+        "inventory/http.js product.updated webhook"
+      ],
+      "consumers": [
+        "PROPOSED approved provider observation adapter -> ci_channel_stock; never ledger"
+      ],
+      "ordering_policy": "O_PROVIDER",
+      "retry_policy": "R_EXTERNAL",
+      "current_implementation": "Current worker returns without processing product.updated; timestamp/mapping normalization incomplete",
+      "existing_native_contract": "woocommerce_ingress topic product.updated {id,sku,stock_quantity}",
+      "decision": "D03,D09,D10",
+      "routes": []
+    },
+    {
+      "name": "stock.policy.changed.v1",
+      "schema_version": 1,
+      "aggregate": "stock_policy",
+      "aggregate_key": "[tenant_id, master_sku_id]",
+      "idempotency_key": "[tenant_id, master_sku_id, rule_revision]",
+      "payload_schema": "event-schemas.json#/$defs/policy",
+      "producers": [
+        "inventory/central-api.js alert-rules; api/inventory.js Mongo policy until D07 resolved"
+      ],
+      "consumers": [
+        "inventory/alerts.js evaluation; PROPOSED Mongo planning projection"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "PG alert rule and independent Mongo planning edits exist",
+      "existing_native_contract": "ci_alert_rule and inventory_policies separate",
+      "decision": "D07",
+      "routes": []
+    },
+    {
+      "name": "stock.alert.changed.v1",
+      "schema_version": 1,
+      "aggregate": "stock_alert",
+      "aggregate_key": "[tenant_id, master_sku_id]",
+      "idempotency_key": "[tenant_id, alert_id, rule_revision, status, balance event]",
+      "payload_schema": "event-schemas.json#/$defs/stockAlert",
+      "producers": [
+        "inventory/alerts.js within ledger transaction"
+      ],
+      "consumers": [
+        "inventory/read-model.js alert view; future notification policy"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "Local alert rows exist; no external notification domain event",
+      "existing_native_contract": "ci_stock_alert open/resolved",
+      "decision": "D07",
+      "routes": []
+    },
+    {
+      "name": "order.alert.queued.v1",
+      "schema_version": 1,
+      "aggregate": "alert",
+      "aggregate_key": "[tenant_id, order_id, recipient_id]",
+      "idempotency_key": "[tenant_id, order_id, recipient_id, initial_actionable-or-informational]",
+      "payload_schema": "event-schemas.json#/$defs/alert",
+      "producers": [
+        "inventory/order-alert-routing.js"
+      ],
+      "consumers": [
+        "inventory/whatsapp.js runWhatsAppBatch; in-app alert view"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R_ALERT",
+      "current_implementation": "Local transactional queue exists; existing dedupe differs by team/legacy path",
+      "existing_native_contract": "ci_order_alert new_order/packing_ready/order_observed",
+      "decision": "D07",
+      "routes": []
+    },
+    {
+      "name": "order.alert.send-result.v1",
+      "schema_version": 1,
+      "aggregate": "alert",
+      "aggregate_key": "[tenant_id, alert_id]",
+      "idempotency_key": "[tenant_id, alert_id, attempt_id, status]",
+      "payload_schema": "event-schemas.json#/$defs/alertResult",
+      "producers": [
+        "inventory/whatsapp.js",
+        "inventory/alert-admin.js reviewed/requeue control"
+      ],
+      "consumers": [
+        "ci_order_alert/ci_order_timeline; operator uncertainty review"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R_ALERT",
+      "current_implementation": "accepted/failed/uncertain recorded; no versioned event; remote acceptance not exactly-once",
+      "existing_native_contract": "runWhatsAppBatch accepted/sending/uncertain; manual requeue audited",
+      "decision": "D07,D11",
+      "routes": []
+    },
+    {
+      "name": "order.alert.delivery-observed.v1",
+      "schema_version": 1,
+      "aggregate": "alert",
+      "aggregate_key": "[tenant_id, alert_id]",
+      "idempotency_key": "[tenant_id, provider_message_id, status]",
+      "payload_schema": "event-schemas.json#/$defs/alertResult",
+      "producers": [
+        "inventory/whatsapp.js signed webhook"
+      ],
+      "consumers": [
+        "ci_order_alert and timeline status projection"
+      ],
+      "ordering_policy": "O_DELIVERY",
+      "retry_policy": "R_EXTERNAL",
+      "current_implementation": "Tenant-scoped provider-ID callback and monotonic status guards exist",
+      "existing_native_contract": "whatsapp_sent/delivered/read/failed timeline events",
+      "decision": "D07",
+      "routes": [
+        "/api/inventory-sync/whatsapp/webhook"
+      ]
+    },
+    {
+      "name": "alert.recipient-policy.changed.v1",
+      "schema_version": 1,
+      "aggregate": "recipient",
+      "aggregate_key": "[tenant_id, recipient_id]",
+      "idempotency_key": "[tenant_id, recipient_id, policy_revision]",
+      "payload_schema": "event-schemas.json#/$defs/recipient",
+      "producers": [
+        "inventory/alert-admin.js",
+        "inventory/recipient-otp.js"
+      ],
+      "consumers": [
+        "orderAlertPolicy/routeIncomingOrderAlerts/runWhatsAppBatch"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "Local consent/OTP/team checks exist; generic change event ABSENT",
+      "existing_native_contract": "No phone number/OTP/token in proposed payload",
+      "decision": "D07,D11",
+      "routes": []
+    },
+    {
+      "name": "fulfilment.allocation.changed.v1",
+      "schema_version": 1,
+      "aggregate": "workflow",
+      "aggregate_key": "[tenant_id, workflow_id]",
+      "idempotency_key": "[tenant_id, request_id, revision]",
+      "payload_schema": "event-schemas.json#/$defs/workflow",
+      "producers": [
+        "api/order-allocation.js",
+        "PROPOSED approved PG WMS domain"
+      ],
+      "consumers": [
+        "PROPOSED PG order/ledger transition; Mongo read projection; UI"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "INCOMPLETE / PROPOSED; no event may authorize stock before evidence",
+      "existing_native_contract": "Legacy allocation returns 501",
+      "decision": "D06,D08",
+      "routes": []
+    },
+    {
+      "name": "wms.picklist.changed.v1",
+      "schema_version": 1,
+      "aggregate": "workflow",
+      "aggregate_key": "[tenant_id, workflow_id]",
+      "idempotency_key": "[tenant_id, request_id, revision]",
+      "payload_schema": "event-schemas.json#/$defs/workflow",
+      "producers": [
+        "api/picklists.js",
+        "api/manage-picklists.js",
+        "api/manage-picking.js",
+        "PROPOSED approved PG WMS domain"
+      ],
+      "consumers": [
+        "PROPOSED PG order/ledger transition; Mongo read projection; UI"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "INCOMPLETE / PROPOSED; no event may authorize stock before evidence",
+      "existing_native_contract": "Legacy writes paused",
+      "decision": "D06,D08",
+      "routes": []
+    },
+    {
+      "name": "wms.packing.completed.v1",
+      "schema_version": 1,
+      "aggregate": "workflow",
+      "aggregate_key": "[tenant_id, workflow_id]",
+      "idempotency_key": "[tenant_id, request_id, revision]",
+      "payload_schema": "event-schemas.json#/$defs/workflow",
+      "producers": [
+        "inventory/unified-orders.js orders/:id/status",
+        "PROPOSED approved PG WMS domain"
+      ],
+      "consumers": [
+        "PROPOSED PG order/ledger transition; Mongo read projection; UI"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "INCOMPLETE / PROPOSED; no event may authorize stock before evidence",
+      "existing_native_contract": "Staff status endpoint refuses provider/offline changes",
+      "decision": "D06,D08",
+      "routes": []
+    },
+    {
+      "name": "shipment.dispatch.confirmed.v1",
+      "schema_version": 1,
+      "aggregate": "workflow",
+      "aggregate_key": "[tenant_id, workflow_id]",
+      "idempotency_key": "[tenant_id, request_id, revision]",
+      "payload_schema": "event-schemas.json#/$defs/workflow",
+      "producers": [
+        "inventory/workers.js",
+        "api/shipments.js",
+        "api/manage-manifests.js",
+        "PROPOSED approved PG WMS domain"
+      ],
+      "consumers": [
+        "PROPOSED PG order/ledger transition; Mongo read projection; UI"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "INCOMPLETE / PROPOSED; no event may authorize stock before evidence",
+      "existing_native_contract": "Woo completed/Amazon MFN full Shipped affect ledger; carrier handover missing",
+      "decision": "D06,D08",
+      "routes": []
+    },
+    {
+      "name": "shipment.manifest.changed.v1",
+      "schema_version": 1,
+      "aggregate": "workflow",
+      "aggregate_key": "[tenant_id, workflow_id]",
+      "idempotency_key": "[tenant_id, request_id, revision]",
+      "payload_schema": "event-schemas.json#/$defs/workflow",
+      "producers": [
+        "api/manage-manifests.js",
+        "PROPOSED approved PG WMS domain"
+      ],
+      "consumers": [
+        "PROPOSED PG order/ledger transition; Mongo read projection; UI"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "INCOMPLETE / PROPOSED; no event may authorize stock before evidence",
+      "existing_native_contract": "Legacy manifest state changes guarded",
+      "decision": "D06,D08",
+      "routes": []
+    },
+    {
+      "name": "wms.placement.changed.v1",
+      "schema_version": 1,
+      "aggregate": "workflow",
+      "aggregate_key": "[tenant_id, workflow_id]",
+      "idempotency_key": "[tenant_id, request_id, revision]",
+      "payload_schema": "event-schemas.json#/$defs/workflow",
+      "producers": [
+        "api/putaway-enquiry.js",
+        "api/inbound-qc.js",
+        "PROPOSED approved PG WMS domain"
+      ],
+      "consumers": [
+        "PROPOSED PG order/ledger transition; Mongo read projection; UI"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "INCOMPLETE / PROPOSED; no event may authorize stock before evidence",
+      "existing_native_contract": "Bin/lot stock schema absent; putaway task metadata only",
+      "decision": "D06,D08",
+      "routes": []
+    },
+    {
+      "name": "stock.transfer.changed.v1",
+      "schema_version": 1,
+      "aggregate": "transfer",
+      "aggregate_key": "[tenant_id, transfer_ref]",
+      "idempotency_key": "[tenant_id, request_id, mode]",
+      "payload_schema": "event-schemas.json#/$defs/transfer",
+      "producers": [
+        "inventory/wms-operations.js transferCentralWmsStock; proposed STO custody domain"
+      ],
+      "consumers": [
+        "Ledger balances and channel targets; PROPOSED Mongo stock_transfers projection"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "Immediate paired transfer atomic in PG; in-transit lifecycle ABSENT",
+      "existing_native_contract": "wms-transfer:{requestId}:out/in; STO confirm/ship blocked",
+      "decision": "D06,D08",
+      "routes": []
+    },
+    {
+      "name": "return.case.observed.v1",
+      "schema_version": 1,
+      "aggregate": "return",
+      "aggregate_key": "[tenant_id, account_id, external_return_id]",
+      "idempotency_key": "[tenant_id, account_id, external_return_id, provider_revision]",
+      "payload_schema": "event-schemas.json#/$defs/return",
+      "producers": [
+        "inventory/ingress.js refunds/create",
+        "inventory/http.js Woo refunded",
+        "inventory/unified-orders.js recordReturn"
+      ],
+      "consumers": [
+        "ci_return_case; physical receipt/QC review; PROPOSED Mongo return projection"
+      ],
+      "ordering_policy": "O_PROVIDER",
+      "retry_policy": "R_EXTERNAL",
+      "current_implementation": "Provider refund status recorded; not physical receipt",
+      "existing_native_contract": "ci_return_case provider_status; no automatic restock",
+      "decision": "D06,D08,D09",
+      "routes": []
+    },
+    {
+      "name": "return.receipt.approved.v1",
+      "schema_version": 1,
+      "aggregate": "return",
+      "aggregate_key": "[tenant_id, return_id]",
+      "idempotency_key": "[tenant_id, request_id] plus content fingerprint",
+      "payload_schema": "event-schemas.json#/$defs/returnReceipt",
+      "producers": [
+        "inventory/return-service.js approveReturnReceipt"
+      ],
+      "consumers": [
+        "Ledger stock/publish; timeline; PROPOSED Mongo return projection"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "PG receipt + event + case + timeline in transaction; no cross-store event",
+      "existing_native_contract": "return:{returnId}:{requestId}; return_qc_approved",
+      "decision": "D06,D08",
+      "routes": []
+    },
+    {
+      "name": "programme.order-associated.v1",
+      "schema_version": 1,
+      "aggregate": "programme",
+      "aggregate_key": "[tenant_id, account_id, program_key]",
+      "idempotency_key": "[tenant_id, account_id, program_key, source_revision, report_digest]",
+      "payload_schema": "event-schemas.json#/$defs/programme",
+      "producers": [
+        "inventory/sales-programs.js",
+        "inventory/order-alert-policy.js assignIncomingProgramme"
+      ],
+      "consumers": [
+        "Unified programme UI; alert policy; no new parent order fabricated"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "PG association references existing parent orders",
+      "existing_native_contract": "ci_program_order; programme_report_observed timeline; program-report ingress",
+      "decision": "D09,D10",
+      "routes": []
+    },
+    {
+      "name": "programme.stock-observed.v1",
+      "schema_version": 1,
+      "aggregate": "programme_stock",
+      "aggregate_key": "[tenant_id, account_id, program_key, external_sku, external_location_id]",
+      "idempotency_key": "[aggregate_key, observed_at, report_digest]",
+      "payload_schema": "event-schemas.json#/$defs/programmeStock",
+      "producers": [
+        "inventory/sales-programs.js stock report"
+      ],
+      "consumers": [
+        "ci_program_stock UI; custody drift only"
+      ],
+      "ordering_policy": "O_PROVIDER",
+      "retry_policy": "R_EXTERNAL",
+      "current_implementation": "Monotonic observed_at and same-time conflict checks; not ledger delta",
+      "existing_native_contract": "ci_program_stock observations",
+      "decision": "D09,D10",
+      "routes": []
+    },
+    {
+      "name": "catalog.import.committed.v1",
+      "schema_version": 1,
+      "aggregate": "import",
+      "aggregate_key": "[tenant_id, batch_id]",
+      "idempotency_key": "[tenant_id, batch_id]",
+      "payload_schema": "event-schemas.json#/$defs/import",
+      "producers": [
+        "inventory/workbook.js commitWorkbook"
+      ],
+      "consumers": [
+        "central catalog/stock UI; PROPOSED commercial identity reconciliation"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "PG batch+catalog rows+physical_count transaction exists",
+      "existing_native_contract": "ci_import_batch committed; ci_catalog_source_row; workbook event keys",
+      "decision": "D01,D08",
+      "routes": []
+    },
+    {
+      "name": "accounting.voucher.held.v1",
+      "schema_version": 1,
+      "aggregate": "accounting_evidence",
+      "aggregate_key": "[tenant_id, account_id, source_digest]",
+      "idempotency_key": "[tenant_id, account_id, source_digest]",
+      "payload_schema": "event-schemas.json#/$defs/held",
+      "producers": [
+        "inventory/tally-bridge.js"
+      ],
+      "consumers": [
+        "Operator-approved mapping/review only; inventory worker does not process held tasks"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R_HELD",
+      "current_implementation": "Held encrypted evidence exists; approved consumer ABSENT",
+      "existing_native_contract": "ci_outbox tally_voucher_review status held; no stock/order posting",
+      "decision": "D09,D12",
+      "routes": []
+    },
+    {
+      "name": "sync.checkpoint.changed.v1",
+      "schema_version": 1,
+      "aggregate": "stream",
+      "aggregate_key": "[tenant_id, account_id, stream]",
+      "idempotency_key": "[tenant_id, account_id, stream, checkpoint_revision]",
+      "payload_schema": "event-schemas.json#/$defs/cursor",
+      "producers": [
+        "inventory/shopify-orders.js",
+        "inventory/shopify-snapshot.js"
+      ],
+      "consumers": [
+        "Connection health; future replay/reconciliation coordinator"
+      ],
+      "ordering_policy": "O1",
+      "retry_policy": "R1",
+      "current_implementation": "Checkpoints exist; event envelope/sequence ABSENT",
+      "existing_native_contract": "ci_sync_cursor; Shopify poll 5-minute overlap; no durable Mongo resume token",
+      "decision": "D10",
+      "routes": []
+    },
+    {
+      "name": "projection.visible.v1",
+      "schema_version": 1,
+      "aggregate": "projection",
+      "aggregate_key": "[tenant_id, entity_kind, entity_id]",
+      "idempotency_key": "[tenant_id, entity_kind, entity_id, visible_revision]",
+      "payload_schema": "event-schemas.json#/$defs/refresh",
+      "producers": [
+        "PROPOSED Mongo/PG projectors; current db/migrations/011_live_inventory_updates.sql notify trigger"
+      ],
+      "consumers": [
+        "inventory/unified-orders.js SSE; src/hooks/useInventoryLiveUpdates.tsx; affected UI GETs"
+      ],
+      "ordering_policy": "O_LATEST",
+      "retry_policy": "R_REFRESH",
+      "current_implementation": "Current pg_notify/SSE are lossy refresh hints without event IDs/replay",
+      "existing_native_contract": "ci_inventory_changes -> changed {at}; fallback 60 seconds",
+      "decision": "D10,D11",
+      "routes": []
+    }
+  ]
+}

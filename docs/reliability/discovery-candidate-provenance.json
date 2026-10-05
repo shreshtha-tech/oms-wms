@@ -1,0 +1,46 @@
+{
+  "at": "2026-10-05",
+  "method": "Exact source line equality with previously consumer-reviewed origin; values/snippets withheld",
+  "verifiedLinks": [
+    {
+      "candidateId": "C021",
+      "originCandidateId": "C079",
+      "classification": "EXAMPLE"
+    },
+    {
+      "candidateId": "C022",
+      "originCandidateId": "C080",
+      "classification": "EXAMPLE"
+    },
+    {
+      "candidateId": "C023",
+      "originCandidateId": "C037",
+      "classification": "TEST_ONLY"
+    },
+    {
+      "candidateId": "C024",
+      "originCandidateId": "C038",
+      "classification": "TEST_ONLY"
+    },
+    {
+      "candidateId": "C027",
+      "originCandidateId": "C062",
+      "classification": "TEST_ONLY"
+    },
+    {
+      "candidateId": "C028",
+      "originCandidateId": "C049",
+      "classification": "TEST_ONLY"
+    },
+    {
+      "candidateId": "C029",
+      "originCandidateId": "C003",
+      "classification": "NON_SECRET_CONFIGURATION"
+    }
+  ],
+  "runtimeExecuted": false,
+  "limitations": [
+    "No whole artifact credential absence or execution certification",
+    "Historical/rotated real credential authenticity remains unresolved"
+  ]
+}

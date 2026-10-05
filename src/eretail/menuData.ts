@@ -20,14 +20,14 @@ const g = (slug: string) => `/app/m/${slug}`;
 // ============================================================================
 //  Menu labels are captured from the authorized demo. Every menu item is
 //  Evidence-backed screens route to their dedicated module. A captured label
-//  without an observed LOCAL workflow remains visible but deliberately does
-//  not navigate until its LIVE contract has been audited.
+//  without an observed LOCAL workflow remains visible and disabled with an
+//  unavailable hint until its LIVE contract has been audited.
 // ============================================================================
 export const RAIL: RailEntry[] = [
   {
     key: 'dashboard', icon: Gauge, title: 'Dashboard', single: '/app/dashboard',
     columns: [{ groups: [{ title: '', items: [
-      { label: 'eRetail Dashboard', to: '/app/dashboard' },
+      { label: 'D-Mills Dashboard', to: '/app/dashboard' },
       { label: 'Seller Panel Dashboard', to: '/app/seller-panel-dashboard' },
     ] }] }],
   },
@@ -76,10 +76,10 @@ export const RAIL: RailEntry[] = [
           { label: 'Manage SKU Group', to: g('sku-group') },
           { label: 'Merchandising Hierarchy', to: g('merch-hierarchy') },
           { label: 'Manage Attribute', to: g('manage-attribute') },
-          { label: 'Attribute Set' },
-          { label: 'Vendor SKU Catalog' },
-          { label: 'Vendor SKU Loc Catalog' },
-          { label: 'ARS SKU-Location Link' },
+          { label: 'Attribute Set', to: g('attribute-set') },
+          { label: 'Vendor SKU Catalog', to: g('vendor-sku-catalog') },
+          { label: 'Vendor SKU Loc Catalog', to: g('vendor-sku-loc-catalog') },
+          { label: 'ARS SKU-Location Link', to: '/app/procurement/ars/sku-location' },
         ]},
         { title: 'Miscellaneous', items: [
           { label: 'Other Masters', to: g('other-masters') },
@@ -88,7 +88,7 @@ export const RAIL: RailEntry[] = [
           { label: 'Price Zone Master', to: g('price-zone') },
           { label: 'External Apps', to: g('external-apps') },
           { label: 'Order Refund', to: g('order-refund') },
-          { label: 'Sales Representative', to: g('sales-rep') },
+          { label: 'Sales Representative' },
         ]},
       ]},
     ],
@@ -205,6 +205,7 @@ export const RAIL: RailEntry[] = [
       ]},
       { groups: [
         { title: 'Inventory', items: [
+          { label: 'Central Inventory', to: '/app/central-inventory' },
           { label: 'Inventory View', to: '/app/inventory' },
           { label: 'Inventory Move History', to: '/app/r/inv-move-history' },
           { label: 'Inventory Move', to: '/app/r/inv-move' },
@@ -213,7 +214,7 @@ export const RAIL: RailEntry[] = [
           { label: 'BIN Audit', to: '/app/r/bin-audit' },
           { label: 'Bulk update Lottables', to: '/app/r/bulk-lottables' },
           { label: 'Inventory Hold' },
-          { label: 'Manage Stock Adjustment' },
+          { label: 'Manage Stock Adjustment', to: '/app/m/stock-adjustment' },
           { label: 'OutBound GatePass' },
           { label: 'Manage Outbound Memo' },
           { label: 'SKU Transaction History' },
@@ -275,13 +276,13 @@ export const RAIL: RailEntry[] = [
           { label: 'Role Create/Edit', to: '/app/admin/role-create-edit' },
         ]},
         { title: 'Logs', items: [
-          { label: 'User Audit Logs' },
-          { label: 'Accounting Log' },
-          { label: 'Tax Integration Log' },
-          { label: 'Device Tracking Log' },
-          { label: 'External Apps Logs' },
-          { label: 'POS Integration Log' },
-          { label: 'Repush Log' },
+          { label: 'User Audit Logs', to: '/app/admin/user-audit-logs' },
+          { label: 'Accounting Log', to: '/app/admin/accounting-log' },
+          { label: 'Tax Integration Log', to: '/app/admin/tax-integration-log' },
+          { label: 'Device Tracking Log', to: '/app/admin/device-tracking-log' },
+          { label: 'External Apps Logs', to: '/app/admin/external-apps-logs' },
+          { label: 'POS Integration Log', to: '/app/admin/pos-integration-log' },
+          { label: 'Repush Log', to: '/app/admin/repush-log' },
         ]},
       ]},
       { groups: [
@@ -297,7 +298,7 @@ export const RAIL: RailEntry[] = [
           { label: 'Settings', to: '/app/admin/settings' },
           { label: 'Manage Api', to: '/app/admin/manage-api' },
           { label: 'API Dashboard', to: '/app/admin/api-dashboard' },
-          { label: 'Language Setting' },
+          { label: 'Language Setting', to: '/app/admin/language-setting' },
         ]},
       ]},
     ],

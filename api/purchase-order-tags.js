@@ -1,4 +1,4 @@
-import { findOne, update, cors } from './mongo.js';
+import { sendDatabaseUnavailable, findOne, update, cors } from './mongo.js';
 
 // Purchase-order tag masters are reference choices; assigned rows remain PO data.
 const tagOptions = [
@@ -53,7 +53,8 @@ export default async function handler(req, res) {
     await update('purchase_orders', po.id, { tags: rows });
     return res.status(200).json({ jsonMessage: null, poTagMaintDto: { poTagRowDTOList: rows, poTagRowDTOListJSON: JSON.stringify(rows) } });
   } catch (error) {
-    console.error('API error:', error);
+    if (sendDatabaseUnavailable(res, error)) return;
+    console.error('API error:', { name: error?.name, code: error?.code });
     return res.status(500).json({ error: error.message });
   }
 }

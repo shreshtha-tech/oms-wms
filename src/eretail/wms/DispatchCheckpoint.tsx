@@ -1,14 +1,147 @@
-import{useEffect,useState}from'react';import{useNavigate,useSearchParams}from'react-router-dom';import Shell from'../Shell';import{Btn,Toast}from'../parts';import{apiGet,apiSend}from'../../lib/api';
-const cls='h-7 w-full min-w-24 rounded border border-slate-300 bg-white px-1 text-xs',heads=['Load Id','created_date','Updated Date','Vehicle No','Transporter','Status','Scanned Box','Total Box','Process Flow'];
-export default function DispatchCheckpoint(){const[q]=useSearchParams(),mode=q.get('mode'),id=q.get('loadId');return <Shell active="wms" breadcrumb="WMS > Dispatch Checkpoint Enquiry" openScreens={[{label:id?`Dispatch Check Point Create/Edit - ${id}`:'Dispatch Checkpoint Enquiry',to:'#'}]}>{mode?<Editor mode={mode as 'b2c'|'b2b'} id={id||''}/>:<Enquiry/>}</Shell>}
-function Enquiry(){const nav=useNavigate(),[meta,setMeta]=useState<any>({}),[f,setF]=useState<any>({loadId:'',createdDate:'',closedDate:'',vehicleNo:'',transporter:'-1',status:'-1',isB2b:'-1'}),[rows,setRows]=useState<any[]>([]),[p,setP]=useState({page:1,total:0,records:0,size:20}),[modal,setModal]=useState(false),[flow,setFlow]=useState('0'),[toast,setToast]=useState<any>(null);useEffect(()=>{void apiGet('/api/dispatch-checkpoint').then(setMeta)},[]);
-const search=async(page=1,size=p.size)=>{const[a='',z='']=f.createdDate.split(' - '),[ca='',cz='']=f.closedDate.split(' - ');if(!f.loadId&&!a&&f.status==='-1'&&f.transporter==='-1'&&!f.vehicleNo&&f.isB2b==='-1'&&!ca)return setToast({msg:' Select at least one field',type:'err'});try{const x:any=await apiSend('/api/dispatch-checkpoint','POST',{loadId:f.loadId.trim(),fromCreatedDate:a,toCreatedDate:z,status:f.status,transporter:f.transporter,vehicleNo:f.vehicleNo.trim(),isB2b:f.isB2b,fromCloseDate:ca,toCloseDate:cz,rows:size,page,sidx:'d.CRTDate',sord:'desc',REQ_SEARCH_FLAG:true});setRows(x.gridModel);setP({page:x.page,total:x.total,records:x.records,size})}catch(e:any){setToast({msg:e.message,type:'err'})}};
-const exp=async()=>{if(!rows.length)return setToast({msg:'No data in grid to export',type:'err'});try{const x:any=await apiSend('/api/dispatch-checkpoint','POST',{action:'export',gridDataLen:rows.length,filters:f});setToast({msg:`Pending Report created: ${x.reportId}`,type:'ok'})}catch(e:any){setToast({msg:e.message,type:'err'})}},reset=()=>{setF({loadId:'',createdDate:'',closedDate:'',vehicleNo:'',transporter:'-1',status:'-1',isB2b:'-1'});setRows([]);setP({page:1,total:0,records:0,size:20})};
-const filt=(h:string)=>h==='Load Id'?<input aria-label="Load Id" className={cls} value={f.loadId} onChange={e=>setF({...f,loadId:e.target.value})}/>:h==='created_date'?<input aria-label="created_date" className={cls} value={f.createdDate} onChange={e=>setF({...f,createdDate:e.target.value})}/>:h==='Updated Date'?<input aria-label="Updated Date" className={cls} value={f.closedDate} onChange={e=>setF({...f,closedDate:e.target.value})}/>:h==='Vehicle No'?<input aria-label="Vehicle No" className={cls} value={f.vehicleNo} onChange={e=>setF({...f,vehicleNo:e.target.value})}/>:h==='Transporter'?<select aria-label="Transporter" className={cls} value={f.transporter} onChange={e=>setF({...f,transporter:e.target.value})}><option value="-1">- Select -</option>{(meta.transporters||[]).map((x:any)=><option key={x.value} value={x.value}>{x.label}</option>)}</select>:h==='Status'?<select aria-label="Status" className={cls} value={f.status} onChange={e=>setF({...f,status:e.target.value})}>{(meta.statuses||[]).map((x:any)=><option key={x[0]} value={x[0]}>{x[1]}</option>)}</select>:h==='Process Flow'?<select aria-label="Process Flow" className={cls} value={f.isB2b} onChange={e=>setF({...f,isB2b:e.target.value})}>{(meta.flows||[]).map((x:any)=><option key={x[0]} value={x[0]}>{x[1]}</option>)}</select>:null;
-return <div className="border bg-white"><div className="flex justify-between border-b p-3"><h2 className="font-semibold">WMS Dispatch Checkpoint Enquiry</h2><div className="flex gap-2"><Btn variant="warn" onClick={()=>void search()}>Search</Btn><Btn variant="ghost" onClick={reset}>Reset</Btn><Btn onClick={()=>setModal(true)}>Add New</Btn><Btn variant="ghost" onClick={()=>void exp()}>Export</Btn></div></div><div className="overflow-x-auto"><table className="min-w-[1200px] w-full text-xs"><thead className="bg-slate-100"><tr>{heads.map(h=><th className="border p-2 text-left" key={h}>{h}</th>)}</tr><tr>{heads.map(h=><th className="border p-1" key={h}>{filt(h)}</th>)}</tr></thead><tbody>{rows.map(r=><tr key={r.id}>{[<button className="font-bold text-sky-700" onClick={()=>nav(`/app/r/dispatch-checkpoint?mode=${r.isB2bCode==='0'?'b2b':'b2c'}&loadId=${r.loadId}`)}>{r.loadId}</button>,r.createdDateString,r.closedDateString,r.vehicleNo,r.transporter,<span className={`px-2 py-1 text-white ${r.statusCode==='15'?'bg-violet-600':r.statusCode==='1'?'bg-fuchsia-600':'bg-amber-500'}`}>{r.status}</span>,r.scanedLPN,r.totalLPN,r.isB2b].map((v,i)=><td className="border p-2" key={i}>{v}</td>)}</tr>)}</tbody></table>{!rows.length&&<div className="h-52 p-8 text-center text-sm text-slate-400">No records to view</div>}</div><div className="flex justify-end gap-2 border-t p-2 text-xs"><button disabled={p.page<=1} onClick={()=>void search(p.page-1)}>‹</button><span>Page {p.records?p.page:''} of {p.total}</span><button disabled={p.page>=p.total} onClick={()=>void search(p.page+1)}>›</button><select aria-label="Page size" value={p.size} onChange={e=>void search(1,+e.target.value)}>{[20,50,100,200].map(x=><option key={x}>{x}</option>)}</select><span>{p.records?`View ${(p.page-1)*p.size+1} - ${Math.min(p.page*p.size,p.records)} of ${p.records}`:'No records to view'}</span></div>{modal&&<div className="fixed inset-0 z-50 grid place-items-center bg-black/40"><div role="dialog" aria-label="Select Business Type" className="w-80 rounded bg-white"><h3 className="border-b p-3 font-semibold">Select Business Type</h3><div className="p-4"><label><input type="radio" name="business" checked={flow==='0'} onChange={()=>setFlow('0')}/> B2C</label><label className="ml-12"><input type="radio" name="business" checked={flow==='1'} onChange={()=>setFlow('1')}/> B2B</label></div><div className="flex justify-end gap-2 border-t p-3"><Btn onClick={()=>nav(`/app/r/dispatch-checkpoint?mode=${flow==='0'?'b2c':'b2b'}`)}>OK</Btn><Btn variant="ghost" onClick={()=>setModal(false)}>Close</Btn></div></div></div>}{toast&&<Toast {...toast} onClose={()=>setToast(null)}/>}</div>}
-function Editor({mode,id}:{mode:'b2c'|'b2b';id:string}){const nav=useNavigate(),[meta,setMeta]=useState<any>({}),[row,setRow]=useState<any>(null),[vehicle,setVehicle]=useState(''),[transporter,setTransporter]=useState('-1'),[tracking,setTracking]=useState(''),[invoice,setInvoice]=useState(''),[lpn,setLpn]=useState(''),[driver,setDriver]=useState(''),[phone,setPhone]=useState(''),[remarks,setRemarks]=useState(''),[selected,setSelected]=useState<number[]>([]),[pending,setPending]=useState(false),[toast,setToast]=useState<any>(null);useEffect(()=>{void apiGet<any>('/api/dispatch-checkpoint').then(setMeta);if(id)void apiGet<any>(`/api/dispatch-checkpoint?loadId=${id}`).then(x=>{setRow(x.row);setVehicle(x.row?.vehicleNo||'');setTransporter(x.row?.transporterCode||'-1')})},[id]);
-const send=async(action:string,extra:any={})=>{try{const x:any=await apiSend('/api/dispatch-checkpoint','POST',{action,loadId:row?.loadId||'',...extra});if(x.row)setRow(x.row);if(action==='vehicle-scan')nav(`/app/r/dispatch-checkpoint?mode=${mode}&loadId=${x.row.loadId}`);if(x.jsonMessage)setToast({msg:x.jsonMessage,type:'ok'})}catch(e:any){setToast({msg:e.message,type:'err'})}};
-const scanVehicle=()=>{if(mode==='b2c'&&transporter==='-1')return setToast({msg:'Please Scan Transporter',type:'err'});if(!vehicle.trim())return setToast({msg:'Please Scan Vehicle no.',type:'err'});void send('vehicle-scan',{flow:mode==='b2b'?'1':'0',vehicleNo:vehicle,transporter})},scanTracking=()=>{if(!row)return setToast({msg:'Please Scan Vehicle no.',type:'err'});if(transporter==='-1')return setToast({msg:'Please Select Transporter.',type:'err'});if(!tracking.trim())return setToast({msg:'Please Scan Tracking No',type:'err'});void send('tracking-scan',{trackingNo:tracking,transporter})},scanInvoice=()=>{if(!row)return setToast({msg:'Please Scan Vehicle no.',type:'err'});if(!invoice.trim())return setToast({msg:'Please scan invoice',type:'err'});void send('invoice-scan',{invoiceNo:invoice})},scanLpn=()=>{if(!row)return setToast({msg:'Please Scan Vehicle no.',type:'err'});if(!invoice.trim())return setToast({msg:'Please scan invoice',type:'err'});if(!lpn.trim())return setToast({msg:'Please Scan LPN',type:'err'});void send('lpn-scan',{invoiceNo:invoice,lpn})},complete=()=>{if(!row)return setToast({msg:mode==='b2c'?'LoadId Not Generated':'Please Scan Vehicle no.',type:'err'});void send('complete',{driverName:driver,driverPhone:phone,remarks})};
-return <div className="border bg-white"><div className="flex justify-end gap-2 border-b p-3">{mode==='b2c'?<><Btn variant="ghost" onClick={()=>nav('/app/r/dispatch-checkpoint?mode=b2c')}>Add New</Btn><Btn variant="ghost" onClick={()=>setToast({msg:'Dispatch copy prepared',type:'ok'})}>Print</Btn><Btn onClick={complete}>Complete Loading</Btn></>:<><Btn variant="ghost" onClick={()=>nav('/app/r/dispatch-checkpoint?mode=b2b')}>Add New</Btn><Btn variant="ghost" onClick={()=>{setInvoice('');setLpn('')}}>Reset</Btn><Btn variant="ghost" onClick={()=>{if(!row)return setToast({msg:'Please Scan Vehicle no.',type:'err'});if(!invoice)return setToast({msg:'Please scan invoice',type:'err'});void send('close-invoice',{invoiceNo:invoice})}}>Close Invoice</Btn><Btn variant="ghost" onClick={()=>{if(!row)return setToast({msg:'Please Scan Vehicle no.',type:'err'});if(!selected.length)return setToast({msg:'Please Select Some Invoice To Close',type:'err'});void send('approve',{ids:selected})}}>Approve</Btn><Btn onClick={complete}>Complete Loading</Btn></>}</div><div className="p-4"><h2 className="mb-4 font-semibold">WMS Dispatch Checkpoint · Manage Dispatch {mode.toUpperCase()}</h2>{mode==='b2c'?<><div className="grid grid-cols-4 gap-3">{[['Load Id',row?.loadId||'',true],['Vehicle No',vehicle,false],['Tracking No',tracking,false],['Driver Name',driver,false],['Driver Phone No',phone,false],['Remarks',remarks,false],['Status',row?.status||'',true]].map(([l,v,d]:any)=><label className="text-xs" key={l}>{l}<input aria-label={l} disabled={d} className="inp mt-1" value={v} onChange={e=>{if(l==='Vehicle No')setVehicle(e.target.value);if(l==='Tracking No')setTracking(e.target.value);if(l==='Driver Name')setDriver(e.target.value);if(l==='Driver Phone No')setPhone(e.target.value);if(l==='Remarks')setRemarks(e.target.value)}} onKeyDown={e=>{if(e.key==='Enter'&&l==='Vehicle No')scanVehicle();if(e.key==='Enter'&&l==='Tracking No')scanTracking()}}/></label>)}<label className="text-xs">Transporter<select aria-label="Transporter" disabled={!!row?.shipments?.length} className="inp mt-1" value={transporter} onChange={e=>setTransporter(e.target.value)}><option value="-1">--- Select ---</option>{(meta.transporters||[]).map((x:any)=><option key={x.value} value={x.value}>{x.label}</option>)}</select></label></div><div className="mt-3 flex gap-3 text-sm"><span>Scanned Boxes <b>{row?.shipments?.length||0}</b></span><span>Total No Of Boxes <b>{row?.totalLPN||0}</b></span><button className="text-sky-700 underline" onClick={()=>setPending(true)}>View Pending Shipment</button></div><GridB2C row={row} remove={(x:any)=>{if(x.reasonVal==='-1')return setToast({msg:'Please select Reason',type:'err'});void send('remove-shipment',{id:x.id,reason:x.reasonVal})}} setRow={setRow}/>{pending&&<Pending onClose={()=>setPending(false)}/>}</>:<><div className="grid grid-cols-4 gap-3">{[['Load Id',row?.loadId||'',true],['Vehicle No',vehicle,false],['Invoice No',invoice,false],['Scan LPN',lpn,false],['POD* (Delivery Location)',row?.pod||'',true],['Total Scan LPN :',row?.invoices?.find((x:any)=>x.invoiceNo===invoice)?.lpnList?.length||0,true]].map(([l,v,d]:any)=><label className="text-xs" key={l}>{l}<input aria-label={l} disabled={d} className="inp mt-1" value={v} onChange={e=>{if(l==='Vehicle No')setVehicle(e.target.value);if(l==='Invoice No')setInvoice(e.target.value);if(l==='Scan LPN')setLpn(e.target.value)}} onKeyDown={e=>{if(e.key==='Enter'&&l==='Vehicle No')scanVehicle();if(e.key==='Enter'&&l==='Invoice No')scanInvoice();if(e.key==='Enter'&&l==='Scan LPN')scanLpn()}}/></label>)}</div><table className="mt-4 w-full text-xs"><thead><tr><th/><th>Invoice No</th><th>Scanned LPNs</th><th>POD</th><th>Status</th></tr></thead><tbody>{(row?.invoices||[]).map((x:any)=><tr key={x.id} className="border-t"><td><input aria-label={`Select ${x.invoiceNo}`} type="checkbox" checked={selected.includes(x.id)} onChange={e=>setSelected(e.target.checked?[...selected,x.id]:selected.filter(y=>y!==x.id))}/></td><td>{x.invoiceNo}</td><td>{x.lpnList.join(', ')}</td><td>{x.pod}</td><td>{x.status}</td></tr>)}</tbody></table></>}</div>{toast&&<Toast {...toast} onClose={()=>setToast(null)}/>}</div>}
-function GridB2C({row,remove,setRow}:{row:any;remove:(x:any)=>void;setRow:(x:any)=>void}){return <table className="mt-4 w-full text-xs"><thead><tr>{['Tracking No','Delivery No','Order No','Order Date','Reason','Remove'].map(x=><th className="border p-2" key={x}>{x}</th>)}</tr></thead><tbody>{(row?.shipments||[]).map((x:any)=><tr key={x.id}><td className="border p-2">{x.scanTrackingNo}</td><td className="border p-2">{x.dilveryNo}</td><td className="border p-2">{x.orderNo}</td><td className="border p-2">{x.orderDate}</td><td className="border p-2"><select aria-label={`Reason ${x.scanTrackingNo}`} value={x.reasonVal} onChange={e=>setRow({...row,shipments:row.shipments.map((s:any)=>s.id===x.id?{...s,reasonVal:e.target.value}:s)})}><option value="-1">--- Select ---</option><option value="1">Wrong Shipment</option><option value="2">Damaged</option></select></td><td className="border p-2"><button onClick={()=>remove(x)}>Remove</button></td></tr>)}</tbody></table>}
-function Pending({onClose}:{onClose:()=>void}){return <div className="fixed inset-0 z-50 grid place-items-center bg-black/40"><div role="dialog" aria-label="View Pending Shipment" className="w-[650px] bg-white p-4"><h3 className="font-semibold">View Pending Shipment</h3><table className="mt-3 w-full text-xs"><thead><tr>{['Tracking No','Delivery No','Order No','Order Date'].map(x=><th key={x}>{x}</th>)}</tr></thead></table><div className="mt-4 text-right"><Btn variant="ghost" onClick={onClose}>Close</Btn></div></div></div>}
+import { useEffect, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import Shell from '../Shell';
+import OrderGrid, { GCol } from '../OrderGrid';
+import { Btn, Panel, Toast } from '../parts';
+import { apiGet, apiSend } from '../../lib/api';
+
+const EMPTY_FILTERS = {
+  loadId: '', vehicleNo: '', transporter: '-1', status: '-1', isB2b: '-1',
+  fromCreatedDate: '', toCreatedDate: '', fromCloseDate: '', toCloseDate: '',
+};
+
+function saveCsv(rows: any[]) {
+  const columns = [
+    ['Load Id', 'loadId'], ['Created Date', 'createdDateString'], ['Closed Date', 'closedDateString'],
+    ['Vehicle No', 'vehicleNo'], ['Transporter', 'transporter'], ['Status', 'status'],
+    ['Scanned LPN', 'scannedLpn'], ['Total LPN', 'totalLpn'], ['Flow', 'flow'], ['Record Trust', 'trust'],
+  ];
+  const csv = [columns.map(([label]) => label), ...rows.map(row => columns.map(([, key]) => row[key] ?? ''))]
+    .map(values => values.map(value => {
+      const raw = String(value);
+      const safe = /^\s*[=+\-@]/.test(raw) ? `'${raw}` : raw;
+      return `"${safe.replaceAll('"', '""')}"`;
+    }).join(',')).join('\r\n') + '\r\n';
+  const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'dispatch-checkpoint-legacy-unverified.csv';
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
+export default function DispatchCheckpoint() {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const loadId = searchParams.get('loadId') || '';
+  const [meta, setMeta] = useState<any>({ transporters: [], statuses: [], flows: [], pageSizes: [20, 50, 100, 200] });
+  const [filters, setFilters] = useState<any>({ ...EMPTY_FILTERS });
+  const [rows, setRows] = useState<any[]>([]);
+  const [detail, setDetail] = useState<any>(null);
+  const [pager, setPager] = useState({ page: 1, total: 0, records: 0, size: 20 });
+  const [loading, setLoading] = useState(false);
+  const [toast, setToast] = useState<any>(null);
+
+  useEffect(() => {
+    apiGet('/api/dispatch-checkpoint')
+      .then(setMeta)
+      .catch((error: Error) => setToast({ msg: error.message || 'Unable to load Dispatch Checkpoint', type: 'err' }));
+  }, []);
+
+  useEffect(() => {
+    if (!loadId) { setDetail(null); return; }
+    const query = new URLSearchParams({ loadId });
+    apiGet(`/api/dispatch-checkpoint?${query.toString()}`)
+      .then((result: any) => setDetail(result.row))
+      .catch((error: Error) => setToast({ msg: error.message || 'Unable to load the dispatch record', type: 'err' }));
+  }, [loadId]);
+
+  async function search(page = 1, size = pager.size) {
+    setLoading(true);
+    try {
+      const result: any = await apiSend('/api/dispatch-checkpoint', 'POST', {
+        ...filters, rows: size, page, REQ_SEARCH_FLAG: true,
+      });
+      setRows(result.gridModel);
+      setPager({ page: result.page, total: result.total, records: result.records, size });
+    } catch (error: any) {
+      setRows([]);
+      setToast({ msg: error.message, type: 'err' });
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function reset() {
+    setFilters({ ...EMPTY_FILTERS });
+    setRows([]);
+    setPager({ page: 1, total: 0, records: 0, size: 20 });
+    setToast(null);
+  }
+
+  const columns: GCol[] = [
+    { key: 'loadId', label: 'Load Id', render: row => <button className="font-semibold text-sky-700 underline" onClick={() => navigate(`/app/r/dispatch-checkpoint?loadId=${encodeURIComponent(row.loadId)}`)}>{row.loadId}</button> },
+    { key: 'createdDateString', label: 'Created Date' }, { key: 'closedDateString', label: 'Closed Date' },
+    { key: 'vehicleNo', label: 'Vehicle No' }, { key: 'transporter', label: 'Transporter' },
+    { key: 'status', label: 'Status' }, { key: 'scannedLpn', label: 'Scanned LPN' },
+    { key: 'totalLpn', label: 'Total LPN' }, { key: 'flow', label: 'Flow' }, { key: 'trust', label: 'Record Trust' },
+  ];
+  const shipmentColumns: GCol[] = [
+    { key: 'scanTrackingNo', label: 'Tracking No' }, { key: 'dilveryNo', label: 'Delivery No' },
+    { key: 'orderNo', label: 'Order No' }, { key: 'orderDate', label: 'Order Date' },
+  ];
+  const invoiceColumns: GCol[] = [
+    { key: 'invoiceNo', label: 'Invoice No' }, { key: 'lpnList', label: 'LPNs', render: row => Array.isArray(row.lpnList) ? row.lpnList.join(', ') : '' },
+    { key: 'pod', label: 'POD' }, { key: 'status', label: 'Status' },
+  ];
+
+  return (
+    <Shell active="wms" breadcrumb="WMS > Dispatch Checkpoint" openScreens={[{ label: 'Dispatch Checkpoint', to: '/app/r/dispatch-checkpoint' }]}>
+      <div role="status" className="mb-3 rounded border border-amber-300 bg-amber-50 p-3 text-sm text-amber-950">
+        Dispatch Checkpoint is read-only. Stored vehicle, carrier, invoice, tracking, LPN, and completion rows are legacy and unverified; adding or closing a load requires verified carrier events and a Central Inventory dispatch transaction.
+      </div>
+      {loadId ? (
+        <Panel title={`Dispatch Checkpoint · ${loadId}`}>
+          <div className="mb-4 flex justify-end"><Btn variant="ghost" onClick={() => navigate('/app/r/dispatch-checkpoint')}>Back to enquiry</Btn></div>
+          {!detail ? <p className="text-sm text-slate-500">No legacy record found for this Load Id.</p> : <>
+            <div className="mb-4 grid gap-3 rounded border bg-slate-50 p-3 text-sm md:grid-cols-4">
+              {[['Load Id', detail.loadId], ['Created', detail.createdDateString], ['Closed', detail.closedDateString], ['Vehicle', detail.vehicleNo], ['Carrier', detail.transporter], ['Status', detail.status], ['Scanned LPN', detail.scannedLpn], ['Total LPN', detail.totalLpn], ['Flow', detail.flow], ['Record Trust', detail.trust]].map(([label, value]) => <span key={label}>{label}<br /><b>{value || '—'}</b></span>)}
+            </div>
+            <h3 className="mb-2 text-sm font-semibold">Stored Tracking Rows <span className="font-normal text-amber-800">(unverified)</span></h3>
+            <OrderGrid cols={shipmentColumns} rows={detail.shipments || []} empty="No stored tracking rows" />
+            <h3 className="mb-2 mt-5 text-sm font-semibold">Stored Invoice and LPN Rows <span className="font-normal text-amber-800">(unverified)</span></h3>
+            <OrderGrid cols={invoiceColumns} rows={detail.invoices || []} empty="No stored invoice rows" />
+          </>}
+        </Panel>
+      ) : (
+        <Panel title="WMS Dispatch Checkpoint Enquiry">
+          <div className="grid gap-3 md:grid-cols-4">
+            <label className="text-xs text-slate-600">Load Id<input aria-label="Load Id" className="inp mt-1" value={filters.loadId} onChange={event => setFilters({ ...filters, loadId: event.target.value })} /></label>
+            <label className="text-xs text-slate-600">Vehicle No<input aria-label="Vehicle No" className="inp mt-1" value={filters.vehicleNo} onChange={event => setFilters({ ...filters, vehicleNo: event.target.value })} /></label>
+            <label className="text-xs text-slate-600">Transporter<select aria-label="Transporter" className="inp mt-1" value={filters.transporter} onChange={event => setFilters({ ...filters, transporter: event.target.value })}><option value="-1">--- Select ---</option>{(meta.transporters || []).map((row: any) => <option key={row.value} value={row.value}>{row.label}</option>)}</select></label>
+            <label className="text-xs text-slate-600">Status<select aria-label="Status" className="inp mt-1" value={filters.status} onChange={event => setFilters({ ...filters, status: event.target.value })}>{(meta.statuses || []).map((row: string[]) => <option key={row[0]} value={row[0]}>{row[1]}</option>)}</select></label>
+            <label className="text-xs text-slate-600">Flow<select aria-label="Flow" className="inp mt-1" value={filters.isB2b} onChange={event => setFilters({ ...filters, isB2b: event.target.value })}>{(meta.flows || []).map((row: string[]) => <option key={row[0]} value={row[0]}>{row[1]}</option>)}</select></label>
+            <label className="text-xs text-slate-600">Created From<input aria-label="Created From" type="date" className="inp mt-1" value={filters.fromCreatedDate} onChange={event => setFilters({ ...filters, fromCreatedDate: event.target.value })} /></label>
+            <label className="text-xs text-slate-600">Created To<input aria-label="Created To" type="date" className="inp mt-1" value={filters.toCreatedDate} onChange={event => setFilters({ ...filters, toCreatedDate: event.target.value })} /></label>
+            <label className="text-xs text-slate-600">Closed From<input aria-label="Closed From" type="date" className="inp mt-1" value={filters.fromCloseDate} onChange={event => setFilters({ ...filters, fromCloseDate: event.target.value })} /></label>
+            <label className="text-xs text-slate-600">Closed To<input aria-label="Closed To" type="date" className="inp mt-1" value={filters.toCloseDate} onChange={event => setFilters({ ...filters, toCloseDate: event.target.value })} /></label>
+          </div>
+          <div className="my-3 flex flex-wrap gap-2">
+            <Btn onClick={() => void search()}>Search</Btn>
+            <Btn variant="ghost" onClick={reset}>Reset</Btn>
+            <Btn variant="ghost" onClick={() => rows.length ? saveCsv(rows) : setToast({ msg: 'No data in grid to export', type: 'err' })}>Export CSV</Btn>
+          </div>
+          <OrderGrid cols={columns} rows={rows} loading={loading} empty="No records to view" />
+          <div className="mt-3 flex flex-wrap items-center justify-end gap-2 text-xs text-slate-600">
+            <button disabled={pager.page <= 1} onClick={() => void search(pager.page - 1)}>‹</button>
+            <span>Page {pager.records ? pager.page : ''} of {pager.total}</span>
+            <button disabled={pager.page >= pager.total} onClick={() => void search(pager.page + 1)}>›</button>
+            <select aria-label="Page size" value={pager.size} onChange={event => void search(1, +event.target.value)}>{[20, 50, 100, 200].map(size => <option key={size}>{size}</option>)}</select>
+            <span>{pager.records ? `View ${(pager.page - 1) * pager.size + 1} - ${Math.min(pager.page * pager.size, pager.records)} of ${pager.records}` : 'No records to view'}</span>
+          </div>
+        </Panel>
+      )}
+      {toast && <Toast {...toast} onClose={() => setToast(null)} />}
+    </Shell>
+  );
+}

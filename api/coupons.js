@@ -1,4 +1,11 @@
-import { find, insert, update, remove, cors } from './mongo.js';
+import { sendDatabaseUnavailable, find, cors } from './mongo.js';
+
+const unavailable = 'Coupon changes are unavailable until issuance, eligibility, redemption, audit, and permissions are verified.';
+const matchesDate = (value, from, to) => {
+  if (!from && !to) return true;
+  const date = String(value || '').slice(0, 10);
+  return /^\d{4}-\d{2}-\d{2}$/.test(date) && (!from || date >= from) && (!to || date <= to);
+};
 
 // Manage Coupons (Master > Coupon Management > Coupon Enquiry)
 export default async function handler(req, res) {
@@ -11,30 +18,14 @@ export default async function handler(req, res) {
       const b = req.body;
       if (String(b.REQ_SEARCH_FLAG) === 'true') {
         const has=(v,q)=>!String(q??'').trim()||String(q)==='-1'||String(v??'').toLowerCase().includes(String(q).trim().toLowerCase()),types={'1':'Line','2':'Bill'},statuses={'7':'Cancelled','4':'Confirmed','1':'Pending Confirmation'};
-        const all=await find('coupons_master',{}, {sort:{id:-1}}),filtered=all.filter(r=>has(r.coupon_key,b.couponKey)&&has(r.description,b.desc)&&has(r.coupon_code,b.couponCode)&&has(r.coupon_type,types[String(b.couponType)]||'')&&has(r.status,statuses[String(b.couponStatus)]||''));
+        const all=await find('coupons_master',{}, {sort:{id:-1}}),filtered=all.filter(r=>has(r.coupon_key,b.couponKey)&&has(r.description,b.desc)&&has(r.coupon_code,b.couponCode)&&has(r.coupon_type,types[String(b.couponType)]||'')&&has(r.status,statuses[String(b.couponStatus)]||'')&&matchesDate(r.start_date,b.fromOrderDate,b.toOrderDate)&&matchesDate(r.active_date,b.fromActiveDate,b.toActiveDate));
         const size=[20,50,100,200].includes(Number(b.rows))?Number(b.rows):20,page=Math.max(1,Number(b.page)||1),records=filtered.length,total=Math.ceil(records/size),gridModel=filtered.slice((page-1)*size,page*size);
         return res.status(200).json({gridModel:gridModel.length?gridModel:null,page,records,total});
       }
-      const doc = await insert('coupons_master', {
-        coupon_key: b.coupon_key, description: b.description || '',
-        coupon_type: b.coupon_type || 'Percentage', status: b.status || 'Active',
-        coupon_code: b.coupon_code, start_date: b.start_date || '',
-        end_date: b.end_date || '', active_date: b.active_date || '',
-        created_by: b.created_by || 'demo-admin',
-        discount_value: Number(b.discount_value) || 0, min_order: Number(b.min_order) || 0,
-        usage_limit: Number(b.usage_limit) || 0,
-      });
-      return res.status(201).json(doc);
+      return res.status(501).json({ error: unavailable });
     }
-    if (req.method === 'PUT') {
-      const { id, ...fields } = req.body;
-      const rows = await update('coupons_master', id, fields);
-      return res.status(200).json(rows[0]);
-    }
-    if (req.method === 'DELETE') {
-      const { id } = req.body;
-      return res.status(200).json(await remove('coupons_master', id));
-    }
+    if (req.method === 'PUT' || req.method === 'DELETE') return res.status(501).json({ error: unavailable });
     res.status(405).json({ error: 'Method not allowed' });
-  } catch (err) { console.error('coupons error:', err); res.status(500).json({ error: err.message }); }
+  } catch (err) {
+    if (sendDatabaseUnavailable(res, err)) return; console.error('coupons error:', { name: err?.name, code: err?.code }); res.status(500).json({ error: err.message }); }
 }

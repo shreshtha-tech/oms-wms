@@ -33,7 +33,7 @@ export default function OrderProcessing() {
     try {
       await apiSend('/api/fulfillment', 'PUT', { ids: targets.map((t) => t.id), status: 'Allocated' });
       setToast({ msg: `${targets.length} order(s) allocated successfully`, type: 'ok' }); setSel([]); load();
-    } catch { setToast({ msg: 'Allocation failed', type: 'err' }); } finally { setBusy(false); }
+    } catch (error: any) { setToast({ msg: error.message || 'Allocation is unavailable until Central Inventory reservations are connected', type: 'err' }); } finally { setBusy(false); }
   };
 
   const cancel = async () => {
@@ -42,7 +42,7 @@ export default function OrderProcessing() {
     try {
       await apiSend('/api/fulfillment', 'PUT', { ids: sel, status: 'Pending', picklist_no: null });
       setToast({ msg: `${sel.length} order(s) reset to Pending`, type: 'ok' }); setSel([]); load();
-    } catch { setToast({ msg: 'Operation failed', type: 'err' }); } finally { setBusy(false); }
+    } catch (error: any) { setToast({ msg: error.message || 'Unallocation is unavailable until Central Inventory reservations are connected', type: 'err' }); } finally { setBusy(false); }
   };
 
   const exportCsv = () => requestDownload({
@@ -66,6 +66,9 @@ export default function OrderProcessing() {
   return (
     <Shell active="wms" breadcrumb="WMS > Order Processing" openScreens={[{ label: 'Order Processing', to: '/app/fulfillment/order-processing' }]}>
       <Panel title="Order Processing">
+        <div role="status" className="mb-3 rounded border border-amber-300 bg-amber-50 p-3 text-sm text-amber-950">
+          These rows are legacy fulfillment records. Allocation and reset are disabled until Central Inventory reservation transactions are connected; this screen cannot change stock or fulfillment status.
+        </div>
         <div className="mb-3 flex flex-wrap gap-1 border-b border-slate-200 pb-2">
           {SUBTABS.map((s) => (
             <button key={s} onClick={() => { setTab(s); setSel([]); }} className={`rounded px-3 py-1.5 text-xs font-medium ${tab === s ? 'bg-[#2f9e9e] text-white' : 'text-slate-600 hover:bg-slate-100'}`}>
@@ -74,8 +77,8 @@ export default function OrderProcessing() {
           ))}
         </div>
         <ToolBar>
-          <Btn onClick={allocate} disabled={busy || sel.length === 0}><PackageCheck size={15} /> Allocate</Btn>
-          <Btn variant="danger" onClick={cancel} disabled={busy || sel.length === 0}><XCircle size={15} /> Unallocate / Reset</Btn>
+          <Btn onClick={allocate} disabled title="Central Inventory reservations are not connected"><PackageCheck size={15} /> Allocate</Btn>
+          <Btn variant="danger" onClick={cancel} disabled title="Central Inventory reservations are not connected"><XCircle size={15} /> Unallocate / Reset</Btn>
           <Btn variant="ghost" onClick={exportCsv}><Download size={15} /> Export</Btn>
           <span className="ml-auto flex items-center gap-1 text-xs text-slate-400"><Filter size={13} /> {sel.length} selected</span>
         </ToolBar>

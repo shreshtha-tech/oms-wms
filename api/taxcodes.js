@@ -1,16 +1,21 @@
-import { find, findOne, insert, update, cors } from './mongo.js';
+import { sendDatabaseUnavailable, find, findOne, insert, update, cors } from './mongo.js';
 
 const TYPES = ['GST', 'CESS', 'VAT', 'OTHERS'];
+const NATURES = ['Central Cess', 'State Cess'];
 function validate(body) {
   const tax_code = String(body.tax_code || '').trim();
   if (!tax_code) return 'Please Enter Tax Code';
   if (!/^[a-z0-9]+$/i.test(tax_code)) return 'Please Enter Only AlphaNumerics';
   if (tax_code.length > 50) return 'Tax Code cannot exceed 50 characters';
   if (!TYPES.includes(body.tax_code_type)) return 'Please Select Tax Code Type';
-  if (!String(body.tax_nature || '').trim()) return 'Tax Nature is mandatory';
-  if (!body.start_date) return 'Please Select Start Date';
-  const percentage = Number(body.percentage);
+  if (!NATURES.includes(body.tax_nature)) return 'Please Select Tax Nature';
+  const date = String(body.start_date || '');
+  const parsedDate = /^\d{4}-\d{2}-\d{2}$/.test(date) ? new Date(`${date}T00:00:00.000Z`) : null;
+  if (!parsedDate || Number.isNaN(parsedDate.getTime()) || parsedDate.toISOString().slice(0, 10) !== date) return 'Please Select a valid Start Date';
+  if (String(body.description || '').length > 500) return 'Description cannot exceed 500 characters';
   if (body.percentage === '' || body.percentage === undefined || body.percentage === null) return 'Please Enter Percentage';
+  if (!['number', 'string'].includes(typeof body.percentage) || String(body.percentage).trim() === '') return 'Please Enter Valid Percentage';
+  const percentage = Number(body.percentage);
   if (!Number.isFinite(percentage) || percentage < 0 || percentage > 100) return 'Please Enter Valid Percentage';
   if (!['Active', 'Inactive'].includes(body.is_active)) return 'Invalid status';
   return null;
@@ -36,24 +41,26 @@ export default async function handler(req, res) {
       const doc = await insert('tax_codes', {
         tax_code: String(b.tax_code).trim(), tax_code_type: b.tax_code_type,
         start_date: b.start_date,
-        percentage: Number(b.percentage) || 0, description: b.description || '',
+        percentage: Number(b.percentage), description: String(b.description || '').trim(),
         is_active: b.is_active === undefined ? 'Active' : b.is_active, tax_nature: b.tax_nature,
       });
       return res.status(201).json(doc);
     }
     if (req.method === 'PUT') {
-      const { id, ...fields } = req.body;
+      const { id, _id: ignoredMongoId, ...fields } = req.body;
+      if (Array.isArray(id) || !Number.isSafeInteger(Number(id)) || Number(id) <= 0) return res.status(400).json({ error: 'A valid Tax Code ID is required' });
       const current = await findOne('tax_codes', { id: Number(id) }); if (!current) return res.status(404).json({ error: 'Tax Code not found' });
       if (['VINCCNA', 'VINSCNA'].includes(String(current.tax_code).toUpperCase())) return res.status(403).json({ error: 'VINCCNA/VINSCNA are system defined taxes. You have no rights to change it.' });
       const next = { ...current, ...fields, tax_code: String(fields.tax_code || '').trim() };
       const error = validate(next); if (error) return res.status(400).json({ error });
       if ((await find('tax_codes', {})).some((row) => row.id !== current.id && row.tax_code?.toLowerCase() === next.tax_code.toLowerCase())) return res.status(409).json({ error: 'Tax Code already exists' });
-      const rows = await update('tax_codes', id, { ...fields, tax_code: next.tax_code, percentage: Number(next.percentage) });
+      const rows = await update('tax_codes', current.id, { ...fields, tax_code: next.tax_code, percentage: Number(next.percentage) });
       return res.status(200).json(rows[0]);
     }
     if (req.method === 'DELETE') {
       return res.status(409).json({ error: 'Tax Codes are maintained by status; deletion is not available.' });
     }
     res.status(405).json({ error: 'Method not allowed' });
-  } catch (err) { console.error('taxcodes error:', err); res.status(500).json({ error: err.message }); }
+  } catch (err) {
+    if (sendDatabaseUnavailable(res, err)) return; console.error('taxcodes error:', { name: err?.name, code: err?.code }); res.status(500).json({ error: err.message }); }
 }

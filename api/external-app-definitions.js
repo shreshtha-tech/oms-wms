@@ -1,4 +1,4 @@
-import { cors, find, findOne, insert, remove, update } from './mongo.js';
+import { sendDatabaseUnavailable, cors, find, findOne, insert, remove, update } from './mongo.js';
 
 const COLLECTION='external_app_definitions';
 const text=(value)=>String(value??'').trim();
@@ -34,5 +34,6 @@ export default async function handler(req,res){
       return res.status(200).json({jsonMessage:null,row:saved});
     }
     return res.status(405).json({jsonMessage:'Method not allowed'});
-  }catch(error){console.error('external app definitions error:',error);return res.status(500).json({jsonMessage:error.message})}
+  }catch(error){
+    if (sendDatabaseUnavailable(res, error)) return;console.error('external app definitions error:',{ name: error?.name, code: error?.code });return res.status(500).json({jsonMessage:error.message})}
 }

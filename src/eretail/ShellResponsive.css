@@ -1,0 +1,16 @@
+.eretail-shell>header>[data-open-screen-strip]{min-width:0;max-width:550px;width:auto;flex:1 1 550px}
+.eretail-shell>header>div:first-child{flex-shrink:0}
+.eretail-shell>header>div:last-child{flex-shrink:0}
+.eretail-shell [data-open-screen-strip]>div{max-width:100%;min-width:0}
+.eretail-shell [data-open-screen-strip]>div>button:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.eretail-shell [data-open-screen-strip]>div>button:last-child{flex-shrink:0}
+.eretail-shell [data-menu-flyout][data-menu-kind=wms] [data-menu-group]{overflow-x:hidden;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#8999ac #26313f}
+.eretail-shell [data-menu-flyout][data-menu-kind=wms],.eretail-shell [data-menu-flyout][data-menu-kind=wms] [data-menu-flyout-body]{width:780px}
+.eretail-shell [data-menu-flyout][data-menu-kind=wms] [data-menu-flyout-body]{grid-template-columns:repeat(3,250px)}
+.eretail-shell [data-menu-flyout][data-menu-kind=wms] [data-menu-group]{width:250px}
+.eretail-shell [data-menu-flyout][data-menu-kind=wms] [data-menu-group]>div:first-child{position:sticky;top:0;z-index:1;background:#26313f}
+.eretail-shell [data-menu-flyout][data-menu-kind=wms] [data-menu-group] li button{max-width:calc(100% - 24px);overflow:hidden;text-overflow:ellipsis}
+.eretail-shell [data-menu-flyout-body]{max-height:calc(100vh - 120px)}
+.eretail-shell [role=dialog]>div{max-width:calc(100vw - 24px);max-height:calc(100vh - 40px);overflow:auto}
+@media(max-width:1050px){.eretail-shell [data-global-search]{display:none}.eretail-shell [data-menu-flyout]{position:fixed;left:50px;top:70px;width:min(780px,calc(100vw - 58px))}.eretail-shell [data-menu-flyout-body]{width:100%;max-height:calc(100vh - 140px);overflow:auto;grid-template-columns:repeat(3,minmax(0,1fr))}.eretail-shell [data-menu-flyout][data-menu-kind=wms],.eretail-shell [data-menu-flyout][data-menu-kind=wms] [data-menu-flyout-body]{width:min(780px,calc(100vw - 58px))}.eretail-shell [data-menu-flyout][data-menu-kind=wms] [data-menu-flyout-body]{grid-template-columns:repeat(3,minmax(0,1fr))}.eretail-shell [data-menu-flyout][data-menu-kind=wms] [data-menu-group]{width:100%}}
+@media(max-width:640px){.eretail-shell>header button[title="Toggle Full-Screen"],.eretail-shell>header button[title="Export Report Status"]{display:none}.eretail-shell>footer{height:auto;min-height:24px;flex-wrap:wrap;gap:4px;font-size:9px}.eretail-shell>footer>span{display:none}.eretail-shell main{padding:10px}.eretail-shell [data-menu-flyout-body]{display:flex;flex-direction:column;gap:10px;height:auto}.eretail-shell [data-menu-group]{width:100%;transform:none!important;max-height:190px!important}.eretail-shell [role=dialog] .grid{grid-template-columns:minmax(0,1fr)}.eretail-shell [role=dialog] input,.eretail-shell [role=dialog] select{max-width:100%;min-width:0}.eretail-shell [role=dialog]>div{height:auto}}

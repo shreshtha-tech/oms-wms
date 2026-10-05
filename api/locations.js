@@ -1,4 +1,4 @@
-import { find, findOne, insert, update, cors } from './mongo.js';
+import { sendDatabaseUnavailable, find, findOne, insert, update, cors } from './mongo.js';
 const MODULE = 'location';
 const text = (value) => String(value ?? '').trim();
 const has = (value, query) => !text(query) || text(query) === '-1' || text(value).toLowerCase().includes(text(query).toLowerCase());
@@ -26,5 +26,6 @@ export default async function handler(req, res) {
     }
     if (req.method === 'DELETE') return res.status(409).json({ error: 'Locations are maintained by status; deletion is not available.' });
     return res.status(405).json({ error: 'Method not allowed' });
-  } catch (error) { console.error('locations error:', error); return res.status(500).json({ error: error.message }); }
+  } catch (error) {
+    if (sendDatabaseUnavailable(res, error)) return; console.error('locations error:', { name: error?.name, code: error?.code }); return res.status(500).json({ error: error.message }); }
 }

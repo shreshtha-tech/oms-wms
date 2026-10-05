@@ -1,0 +1,25 @@
+--- a/scripts/verify-alert-admin.mjs
++++ b/scripts/verify-alert-admin.mjs
+@@ -6,6 +6,7 @@
+ import { issueSession,authenticateSession } from '../api/auth-session.js';
+ import { alertAdminApi } from '../inventory/alert-admin.js';
+ import { unifiedOrdersApi,recordIncomingOrder } from '../inventory/unified-orders.js';
++import { inventoryPrivate } from '../inventory/http.js';
+ import { readFile } from 'node:fs/promises';
+ if(!/test|contract/.test(process.env.INVENTORY_DATABASE_URL||''))throw Error('Disposable database required');
+ await migrateInventory();const db=inventoryPool(),tenant=`admin-${randomUUID()}`,foreign=`foreign-${randomUUID()}`;
+@@ -17,12 +18,13 @@
+  await q(await readFile(new URL('../db/migrations/018_alert_admin_actions.sql',import.meta.url),'utf8'));
+  await issueSession({setHeader:(_key,value)=>{cookie=value.split(';')[0];}},'fixture-admin');
+  const app=express();app.use(express.json());app.use(async(req,res,next)=>{req.user=await authenticateSession(req);req.inventoryTenantId=tenant;if(req.body.tenantId&&req.body.tenantId!==tenant)return res.sendStatus(403);next();});
+- app.use('/admin',alertAdminApi({fetcher:fake}));app.use('/unified',unifiedOrdersApi);server=app.listen(0,'127.0.0.1');await new Promise(resolve=>server.once('listening',resolve));const base=`http://127.0.0.1:${server.address().port}`;
++ app.use('/admin',alertAdminApi({fetcher:fake}));app.use('/unified',unifiedOrdersApi);app.use('/api/inventory-sync',inventoryPrivate);server=app.listen(0,'127.0.0.1');await new Promise(resolve=>server.once('listening',resolve));const base=`http://127.0.0.1:${server.address().port}`;
+  const call=async(path,body,method=body?'POST':'GET',auth=cookie)=>{const response=await fetch(base+path,{method,headers:{'content-type':'application/json',...(auth?{cookie:auth}:{})},...(body?{body:JSON.stringify(body)}:{})});const data=await response.json().catch(()=>null);return {status:response.status,data};};
+  const ok=async(path,body,method)=>{const r=await call(path,body,method);assert.ok(r.status>=200&&r.status<300,JSON.stringify(r));return r.data;};
+  assert.equal((await call('/admin/teams',null,'GET','')).status,401);assert.equal((await call('/unified/team',null,'GET','')).status,401);
+  assert.equal((await call('/admin/teams',{tenantId:foreign})).status,403);
+  let wrongCookie;await issueSession({setHeader:(_key,value)=>{wrongCookie=value.split(';')[0];}},'non-admin');assert.equal((await call('/admin/teams',null,'GET',wrongCookie)).status,401,'Existing auth rejects non-admin sessions');
++ assert.deepEqual(await ok('/api/inventory-sync/unified/alert-admin/teams'),[],'Production router exposes the exact frontend URL');const mountedCatalog=await ok('/api/inventory-sync/unified/alert-admin/catalog');assert.equal(mountedCatalog.platforms.length+mountedCatalog.programmes.length,26);
+  const catalog=await ok('/admin/catalog');assert.equal(catalog.platforms.length,20);assert.equal(catalog.programmes.length,6);
+  const member=await ok('/unified/team',{name:'Fixture member',role:'packer',mobile:'+919876543210',platforms:[],eventTypes:['new_order','order_observed'],consent:true});assert.equal(member.mobile_e164,'***3210');assert.equal((await ok('/unified/team'))[0].mobile_e164,'***3210');
+  await q('UPDATE ci_alert_recipient SET active=true,verified_at=now() WHERE tenant_id=$1 AND id=$2',[tenant,member.id]);

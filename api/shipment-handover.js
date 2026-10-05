@@ -1,8 +1,84 @@
-import{cors,find,findOne,insert,update}from'./mongo.js';const t=v=>String(v??'').trim(),now=()=>new Date().toISOString(),del=x=>t(x.delivery_no||x.ob_del_no||x.order_no),eligible=x=>t(x.awb||x.tracking_no)||['Ready to Ship','Manifested','Handed Over','Shipped','Delivered','Returned'].includes(x.status);
-const norm=x=>({id:x.id,clientId:'0-DummyClient',orderNo:x.order_no,externOrderNo:x.ext_order_no||x.order_no,orderDate:x.order_date||'',deliveryNo:del(x),delDate:x.ship_date||x.order_date||'',trackingNo:x.awb||x.tracking_no||'',custName:x.customer||x.customer_name||'',custDetail:[x.customer||x.customer_name,x.city].filter(Boolean).join(' - '),status:x.handover_status||'Pending To Receive',receivedBy:x.received_by||'',receivedDate:x.received_date||'',deliveredBy:x.delivered_by||'',deliveredDate:x.delivered_date||'',returnedBy:x.returned_by||'',returnedDate:x.returned_date||'',expiredDate:x.expired_date||'',remarks:x.handover_remarks||'',statusCode:x.handover_status_code||'16',createdBy:x.created_by||'',createDate:x.created_date||x.order_date||'',modifiedBy:x.modified_by||'',modifiedDate:x.modified_date||'',action:'',customerSign:x.customer_sign||''});
-const match=(v,q)=>!t(q)||t(v).toLowerCase().includes(t(q).toLowerCase());const page=(rows,b)=>{const size=[50,100,200].includes(+b.rows)?+b.rows:50,p=Math.max(1,+b.page||1),records=rows.length,total=Math.ceil(records/size),slice=rows.slice((p-1)*size,p*size);return{gridModel:slice,rowDTOListFromUpdate:slice,rows:slice,page:p,total,records}};
-export default async function handler(req,res){if(cors(req,res))return;try{const b=req.body||{},orders=(await find('fulfillment_orders')).filter(eligible),rows=orders.map(norm);if(req.method==='GET'){const counts={pending:rows.filter(x=>x.statusCode==='16').length,qcFailed:rows.filter(x=>['205','210'].includes(x.statusCode)).length,received:rows.filter(x=>x.statusCode==='201').length,all:rows.length};return res.json({counts,qcStatuses:[['201','QC Passed'],['205','QC Failed']],statuses:[['16','Pending To Receive'],['201','Received With QC Pass'],['205','Received With QC Fail'],['210','Expired'],['215','Delivered'],['220','Returned']],pageSizes:[50,100,200]})}if(req.method!=='POST')return res.status(405).json({error:'Method not allowed'});
-if(b.action==='search'||b.REQ_SEARCH_FLAG){let out=rows.filter(x=>match(x.orderNo,b.orderNo)&&match(x.deliveryNo,b.deliveryNo)&&match(x.trackingNo,b.trackingNo)&&(!t(b.fromOrderDate)||x.orderDate>=b.fromOrderDate)&&(!t(b.toOrderDate)||x.orderDate<=b.toOrderDate)&&(!t(b.fromDelDate)||x.delDate>=b.fromDelDate)&&(!t(b.toDelDate)||x.delDate<=b.toDelDate));const status=t(b.status);if(status&&status!=='-1')out=out.filter(x=>status.split(',').includes(x.statusCode));out.sort((a,z)=>t(a.orderDate).localeCompare(t(z.orderDate))*(t(b.sord)==='asc'?1:-1));return res.json(page(out,b))}
-if(b.action==='receive'){if(!t(b.deliveryNo))return res.status(400).json({error:'Please enter Delivery No/Tracking No.'});const row=orders.find(x=>[del(x),x.order_no,x.awb,x.tracking_no].some(v=>t(v).toLowerCase()===t(b.deliveryNo).toLowerCase()));if(!row)return res.status(404).json({error:'Invalid Order No/Delivery No/Tracking No entered.'});const code=t(b.status)==='205'?'205':'201',status=code==='205'?'Received With QC Fail':'Received With QC Pass';await update('fulfillment_orders',row.id,{handover_status:status,handover_status_code:code,received_by:'Local User',received_date:now(),modified_by:'Local User',modified_date:now()});await insert('generic_records',{module:'shipment-handover-audit',code:`SHA${Date.now()}`,delivery_no:del(row),order_no:row.order_no,action:status,user:'Local User',action_date:now()});return res.json({jsonMessage:'Shipment received successfully.',row:norm({...row,handover_status:status,handover_status_code:code,received_by:'Local User',received_date:now()})})}
-if(['return','deliver'].includes(b.action)){const row=await findOne('fulfillment_orders',{id:+b.id});if(!row)return res.status(404).json({error:'Shipment was not found.'});const returned=b.action==='return',fields=returned?{handover_status:'Returned',handover_status_code:'220',returned_by:'Local User',returned_date:now()}:{handover_status:'Delivered',handover_status_code:'215',delivered_by:'Local User',delivered_date:now()};await update('fulfillment_orders',row.id,{...fields,modified_by:'Local User',modified_date:now()});await insert('generic_records',{module:'shipment-handover-audit',code:`SHA${Date.now()}`,delivery_no:del(row),order_no:row.order_no,action:returned?'Returned':'Delivered',user:'Local User',action_date:now()});return res.json({jsonMessage:returned?'Shipment returned successfully.':'Shipment delivered successfully.'})}
-if(b.action==='audit'){const all=await find('generic_records',{module:'shipment-handover-audit'});return res.json({rows:all.filter(x=>!t(b.deliveryNo)||x.delivery_no===b.deliveryNo)})}return res.status(400).json({error:'Invalid action'})}catch(e){console.error('Shipment Handover error:',e);res.status(500).json({error:e.message})}}
+import { sendDatabaseUnavailable, cors, find } from './mongo.js';
+
+const text = value => String(value ?? '').trim();
+const delivery = row => text(row.delivery_no || row.ob_del_no || row.order_no);
+const eligible = row => Boolean(text(row.awb || row.tracking_no)) || ['Ready to Ship', 'Manifested', 'Handed Over', 'Shipped', 'Delivered', 'Returned'].includes(row.status);
+
+function normalize(row) {
+  return {
+    id: row.id,
+    clientId: row.client_id || '',
+    orderNo: row.order_no || '',
+    externOrderNo: row.ext_order_no || row.order_no || '',
+    orderDate: row.order_date || '',
+    deliveryNo: delivery(row),
+    delDate: row.ship_date || row.order_date || '',
+    trackingNo: row.awb || row.tracking_no || '',
+    custName: row.customer || row.customer_name || '',
+    custDetail: [row.customer || row.customer_name, row.city].filter(Boolean).join(' - '),
+    status: row.handover_status || '',
+    receivedBy: row.received_by || '', receivedDate: row.received_date || '',
+    deliveredBy: row.delivered_by || '', deliveredDate: row.delivered_date || '',
+    returnedBy: row.returned_by || '', returnedDate: row.returned_date || '',
+    expiredDate: row.expired_date || '', remarks: row.handover_remarks || '',
+    statusCode: row.handover_status_code || '',
+    createdBy: row.created_by || '', createDate: row.created_date || row.order_date || '',
+    modifiedBy: row.modified_by || '', modifiedDate: row.modified_date || '',
+    customerSign: row.customer_sign || '', trust: 'legacy-unverified',
+  };
+}
+
+function page(rows, body) {
+  const size = [50, 100, 200].includes(+body.rows) ? +body.rows : 50;
+  const current = Math.max(1, +body.page || 1);
+  const records = rows.length;
+  const slice = rows.slice((current - 1) * size, current * size);
+  return { gridModel: slice, rowDTOListFromUpdate: slice, rows: slice, page: current, total: Math.ceil(records / size), records, trust: 'legacy-unverified' };
+}
+
+const match = (value, query) => !text(query) || text(value).toLowerCase().includes(text(query).toLowerCase());
+
+export default async function handler(req, res) {
+  if (cors(req, res)) return;
+  try {
+    const body = req.body || {};
+    const rows = (await find('fulfillment_orders')).filter(eligible).map(normalize);
+    if (req.method === 'GET') {
+      const counts = {
+        pending: rows.filter(row => row.statusCode === '16').length,
+        qcFailed: rows.filter(row => ['205', '210'].includes(row.statusCode)).length,
+        received: rows.filter(row => row.statusCode === '201').length,
+        all: rows.length,
+      };
+      return res.json({
+        available: false, dataTrust: 'legacy-unverified', counts,
+        qcStatuses: [['201', 'QC Passed'], ['205', 'QC Failed']],
+        statuses: [['16', 'Pending To Receive'], ['201', 'Received With QC Pass'], ['205', 'Received With QC Fail'], ['210', 'Expired'], ['215', 'Delivered'], ['220', 'Returned']],
+        pageSizes: [50, 100, 200],
+        notice: 'Receipt, return, and delivery statuses require verified carrier events and Central Inventory transactions.',
+      });
+    }
+    if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+    if (body.action === 'search' || body.REQ_SEARCH_FLAG) {
+      let result = rows.filter(row => match(row.orderNo, body.orderNo) && match(row.deliveryNo, body.deliveryNo) &&
+        match(row.trackingNo, body.trackingNo) && (!text(body.fromOrderDate) || row.orderDate >= body.fromOrderDate) &&
+        (!text(body.toOrderDate) || row.orderDate <= body.toOrderDate) &&
+        (!text(body.fromDelDate) || row.delDate >= body.fromDelDate) && (!text(body.toDelDate) || row.delDate <= body.toDelDate));
+      const status = text(body.status);
+      if (status && status !== '-1') result = result.filter(row => status.split(',').includes(row.statusCode));
+      result.sort((left, right) => text(left.orderDate).localeCompare(text(right.orderDate)) * (text(body.sord) === 'asc' ? 1 : -1));
+      return res.json(page(result, body));
+    }
+
+    if (body.action === 'audit') {
+      const auditRows = await find('generic_records', { module: 'shipment-handover-audit' });
+      return res.json({ rows: auditRows.filter(row => !text(body.deliveryNo) || row.delivery_no === body.deliveryNo).map(row => ({ ...row, trust: 'legacy-unverified' })), trust: 'legacy-unverified' });
+    }
+    return res.status(501).json({ error: 'Shipment receipt, delivery, and return actions require verified carrier events and Central Inventory transactions.' });
+  } catch (error) {
+    if (sendDatabaseUnavailable(res, error)) return;
+    console.error('Shipment Handover error:', { name: error?.name, code: error?.code });
+    return res.status(500).json({ error: error.message });
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "id": "ADMIN_VERSION_CHECK_WRITE_RACE",
+  "date": "2026-10-05",
+  "status": "REPAIRED_CONTROLLED_MEMORY_AND_REAL_LOCAL_MONGO_RACES",
+  "attackPath": "Concurrent generic PUT/parity api-save requests observe the same version then independently overwrite admin key/permission metadata.",
+  "rootCause": "Handler version checks preceded unconditional writes; parity updates did not reject a supplied stale version.",
+  "impact": "Lost credential/permission edits and stale state replacement. No actual historical attacker access asserted.",
+  "affectedBoundary": [
+    "api/admin.js PUT",
+    "api/admin-parity.js api-save",
+    "api/mongo.js admin write"
+  ],
+  "repair": "A dedicated atomic findOneAndUpdate compares id and observed version in the Mongo write; memory equivalent checks/mutates without yielding. Both handlers return 409 for a failed compare. Parity also rejects a supplied stale version.",
+  "regression": "scripts/verify-admin-version-race.mjs",
+  "negativeTests": [
+    "20-way generic race",
+    "20-way parity race",
+    "20-way mixed handler race",
+    "Stale editor version",
+    "Missing legacy version transitions once"
+  ],
+  "evidence": {
+    "layer": "Controlled direct handler with explicitly unconfigured in-memory Mongo",
+    "log": "tmp/mongo-reliability/admin-version-race-current.log",
+    "result": "Exit 0; each race one HTTP 200 and nineteen 409 responses; winner retained and key unchanged",
+    "compatibility": "Three admin response/error regressions rerun and exit 0",
+    "mongo": {
+      "layer": "Actual temporary loopback-only single-member Mongo replica set, synthetic direct handler requests and persisted database readback",
+      "log": "tmp/mongo-reliability/admin-version-race-mongo-current.log",
+      "result": "Exit 0 PASS; generic/parity/mixed each one success and nineteen conflicts; stored key retained; stale supplied editor version rejected; missing-version legacy transition succeeds once; daemon/files removed"
+    }
+  },
+  "remainingLimitations": [
+    "No configured Atlas, browser, hosted or role authorization proof",
+    "Metadata update and separate generic audit insert are not crash atomic",
+    "Absent client version cannot prove a stale editor snapshot; server compare still prevents competing observed-version writes",
+    "Credential activation, provider rotation and job drain not established",
+    "Single local replica member does not prove multi-node failover, load/soak, hosted proxy or configured Atlas behavior"
+  ]
+}

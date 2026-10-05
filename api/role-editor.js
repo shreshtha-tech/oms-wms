@@ -1,4 +1,4 @@
-import { cors, find, insert, update } from './mongo.js';
+import { sendDatabaseUnavailable, cors, find, insert, update } from './mongo.js';
 const types=[['-1','--- Select ---'],['S','Seller Panel'],['C','Company'],['E','Enterprise']];
 const columns=[['roleId','Role Id'],['roleTypeText','Role Type'],['description','Description'],['isActiveText','Is Active']];
 const processes=[
@@ -29,4 +29,5 @@ export default async function handler(req,res){if(cors(req,res))return;try{
  if(b.action==='move'){if(!b.changeData?.length)return res.status(400).json({error:b.changeFlag==='Remove'?'Nothing to Remove.':'Nothing to add.'});const ids=b.changeData.flatMap(id=>{const p=processes.find(x=>x.id===id);return p?[p.id,...p.children.map(c=>c.id)]:[id]});const assigned=b.changeFlag==='Add'?[...new Set([...(b.assigned||[]),...ids])]:(b.assigned||[]).filter(id=>!ids.includes(id));return res.json({assigned,availableNodes:prune(processes,flat(processes).filter(id=>!assigned.includes(id))),assignedNodes:prune(processes,assigned)});}
  if(b.action==='save'){if(!b.roleType||b.roleType==='-1')return res.status(400).json({error:'Role Type is mandatory.'});if(!b.description)return res.status(400).json({error:'Description is mandatory.'});const existing=stored.find(r=>r.roleId===b.roleId);const nextId=b.roleId||String(Math.max(10075,...all.map(r=>+r.roleId||0))+1).padStart(5,'0'),payload={type:'role',roleId:nextId,roleType:b.roleType,roleTypeText:types.find(x=>x[0]===b.roleType)?.[1],description:b.description,isActive:!!b.isActive,isActiveText:b.isActive?'Yes':'No',assigned:b.assigned||[],modifiedBy:'demo-admin',modifiedDate:new Date().toLocaleDateString('en-GB')};if(existing){const [row]=await update('admin_records',existing.id,payload);return res.json({roleDTO:row,message:'Role updated successfully'});}const row=await insert('admin_records',{...payload,createdBy:'demo-admin',createDate:new Date().toLocaleDateString('en-GB')});return res.status(201).json({roleDTO:row,message:'Role saved successfully'});}
  return res.status(400).json({error:'Unsupported Role action'});
-}catch(e){console.error('role editor error:',e);return res.status(500).json({error:e.message})}}
+}catch(e){
+    if (sendDatabaseUnavailable(res, e)) return;console.error('role editor error:',{ name: e?.name, code: e?.code });return res.status(500).json({error:e.message})}}

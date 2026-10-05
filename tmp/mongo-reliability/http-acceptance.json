@@ -1,0 +1,693 @@
+{
+  "endpoints": 159,
+  "counts": {
+    "200": 137,
+    "400": 8,
+    "401": 10,
+    "403": 2,
+    "404": 13,
+    "405": 10,
+    "422": 1,
+    "429": 1,
+    "503": 17
+  },
+  "outcomes": [
+    {
+      "route": "/api/skus",
+      "status": 200
+    },
+    {
+      "route": "/api/partners",
+      "status": 200
+    },
+    {
+      "route": "/api/sale-orders",
+      "status": 200
+    },
+    {
+      "route": "/api/back-orders",
+      "status": 200
+    },
+    {
+      "route": "/api/jsonOrderExits",
+      "status": 405,
+      "error": "Method not allowed"
+    },
+    {
+      "route": "/api/seller-panel-dashboard",
+      "status": 405,
+      "error": "Method not allowed"
+    },
+    {
+      "route": "/api/purchase-orders",
+      "status": 200
+    },
+    {
+      "route": "/api/po-revision",
+      "status": 405,
+      "error": "Method not allowed"
+    },
+    {
+      "route": "/api/purchase-order-comments",
+      "status": 405,
+      "error": "Method not allowed"
+    },
+    {
+      "route": "/api/purchase-order-tags",
+      "status": 404,
+      "error": "Purchase Order not found"
+    },
+    {
+      "route": "/api/purchase-order-inbound",
+      "status": 400,
+      "error": "PO Code is required."
+    },
+    {
+      "route": "/api/purchase-order-asn",
+      "status": 400,
+      "error": "PO Code is required."
+    },
+    {
+      "route": "/api/grn",
+      "status": 200
+    },
+    {
+      "route": "/api/asn-enquiry",
+      "status": 200
+    },
+    {
+      "route": "/api/manage-asn",
+      "status": 404,
+      "error": "ASN not found."
+    },
+    {
+      "route": "/api/vendor-promotions",
+      "status": 404,
+      "error": "Vendor promotion not found."
+    },
+    {
+      "route": "/api/purchase-charge-masters",
+      "status": 404,
+      "error": "Purchase charge master not found."
+    },
+    {
+      "route": "/api/chargeMasterSearch",
+      "status": 404,
+      "error": "Purchase charge master not found."
+    },
+    {
+      "route": "/api/jsonPOChargeDetailGrid",
+      "status": 404,
+      "error": "Purchase charge master not found."
+    },
+    {
+      "route": "/api/saveUpdatePOCharges",
+      "status": 404,
+      "error": "Purchase charge master not found."
+    },
+    {
+      "route": "/api/delUpdatePOCharges",
+      "status": 404,
+      "error": "Purchase charge master not found."
+    },
+    {
+      "route": "/api/category-buyers",
+      "status": 404,
+      "error": "Category Buyer not found."
+    },
+    {
+      "route": "/api/categoryBuyerSearch",
+      "status": 404,
+      "error": "Category Buyer not found."
+    },
+    {
+      "route": "/api/catBuyerSaveBS",
+      "status": 404,
+      "error": "Category Buyer not found."
+    },
+    {
+      "route": "/api/inventory",
+      "status": 200
+    },
+    {
+      "route": "/api/inventory-ops",
+      "status": 200
+    },
+    {
+      "route": "/api/transfers",
+      "status": 200
+    },
+    {
+      "route": "/api/sto-enquiry",
+      "status": 200
+    },
+    {
+      "route": "/api/sto-editor",
+      "status": 200
+    },
+    {
+      "route": "/api/user-enquiry",
+      "status": 200
+    },
+    {
+      "route": "/api/user-editor",
+      "status": 200
+    },
+    {
+      "route": "/api/role-editor",
+      "status": 200
+    },
+    {
+      "route": "/api/order-import",
+      "status": 200
+    },
+    {
+      "route": "/api/common-import",
+      "status": 200
+    },
+    {
+      "route": "/api/exports",
+      "status": 200
+    },
+    {
+      "route": "/api/settings",
+      "status": 200
+    },
+    {
+      "route": "/api/returns",
+      "status": 200
+    },
+    {
+      "route": "/api/fulfillment",
+      "status": 200
+    },
+    {
+      "route": "/api/picklists",
+      "status": 200
+    },
+    {
+      "route": "/api/shipments",
+      "status": 200
+    },
+    {
+      "route": "/api/generic",
+      "status": 200
+    },
+    {
+      "route": "/api/reports",
+      "status": 400,
+      "error": "Unknown report type: "
+    },
+    {
+      "route": "/api/downloads",
+      "status": 200
+    },
+    {
+      "route": "/api/channels",
+      "status": 200
+    },
+    {
+      "route": "/api/sku-channel-links",
+      "status": 200
+    },
+    {
+      "route": "/api/dashboard",
+      "status": 200
+    },
+    {
+      "route": "/api/platforms",
+      "status": 200
+    },
+    {
+      "route": "/api/vendors",
+      "status": 200
+    },
+    {
+      "route": "/api/jsonVendorEnquirySearch",
+      "status": 200
+    },
+    {
+      "route": "/api/taxcodes",
+      "status": 200
+    },
+    {
+      "route": "/api/coupons",
+      "status": 200
+    },
+    {
+      "route": "/api/fetchCouponEnquiryData",
+      "status": 200
+    },
+    {
+      "route": "/api/taxapp",
+      "status": 200
+    },
+    {
+      "route": "/api/skubarcode",
+      "status": 200
+    },
+    {
+      "route": "/api/customers",
+      "status": 200
+    },
+    {
+      "route": "/api/jsonCustEnqSearch",
+      "status": 200
+    },
+    {
+      "route": "/api/transporters",
+      "status": 200
+    },
+    {
+      "route": "/api/jsonTransporterEnquirySearch",
+      "status": 200
+    },
+    {
+      "route": "/api/clients",
+      "status": 200
+    },
+    {
+      "route": "/api/jsonClientMasterEnquirySearch",
+      "status": 200
+    },
+    {
+      "route": "/api/customer-groups",
+      "status": 200
+    },
+    {
+      "route": "/api/jsonCustGroupSearch",
+      "status": 200
+    },
+    {
+      "route": "/api/tax-categories",
+      "status": 200
+    },
+    {
+      "route": "/api/tax-groups",
+      "status": 200
+    },
+    {
+      "route": "/api/tax-zones",
+      "status": 200
+    },
+    {
+      "route": "/api/org-hierarchy",
+      "status": 200
+    },
+    {
+      "route": "/api/locations",
+      "status": 200
+    },
+    {
+      "route": "/api/store-groups",
+      "status": 200
+    },
+    {
+      "route": "/api/sku-imports",
+      "status": 200
+    },
+    {
+      "route": "/api/sku-company-links",
+      "status": 200
+    },
+    {
+      "route": "/api/sku-groups",
+      "status": 200
+    },
+    {
+      "route": "/api/merch-hierarchy",
+      "status": 200
+    },
+    {
+      "route": "/api/attribute-sets",
+      "status": 200
+    },
+    {
+      "route": "/api/vendor-sku-catalog",
+      "status": 200
+    },
+    {
+      "route": "/api/vendor-sku-loc-catalog",
+      "status": 200
+    },
+    {
+      "route": "/api/manage-attributes",
+      "status": 200
+    },
+    {
+      "route": "/api/pricing-events",
+      "status": 200
+    },
+    {
+      "route": "/api/price-zones",
+      "status": 200
+    },
+    {
+      "route": "/api/external-apps",
+      "status": 200
+    },
+    {
+      "route": "/api/external-app-definitions",
+      "status": 200
+    },
+    {
+      "route": "/api/saveDefinition",
+      "status": 200
+    },
+    {
+      "route": "/api/testSMSConnection",
+      "status": 405
+    },
+    {
+      "route": "/api/jsonExternalAppsSearch",
+      "status": 200
+    },
+    {
+      "route": "/api/getRewardMasterDataForExtAppId",
+      "status": 200
+    },
+    {
+      "route": "/api/checkTaxIntConfigured",
+      "status": 200
+    },
+    {
+      "route": "/api/saveExternalAppsData",
+      "status": 200
+    },
+    {
+      "route": "/api/order-refunds",
+      "status": 200
+    },
+    {
+      "route": "/api/oms-rules",
+      "status": 200
+    },
+    {
+      "route": "/api/master-orders",
+      "status": 200
+    },
+    {
+      "route": "/api/order-enquiry",
+      "status": 200
+    },
+    {
+      "route": "/api/order-maintenance",
+      "status": 404,
+      "error": "Order not found"
+    },
+    {
+      "route": "/api/kitting-orders",
+      "status": 200
+    },
+    {
+      "route": "/api/global-order-search",
+      "status": 200
+    },
+    {
+      "route": "/api/cod-reconciliation",
+      "status": 200
+    },
+    {
+      "route": "/api/sku-moderation",
+      "status": 200
+    },
+    {
+      "route": "/api/wms-zones",
+      "status": 200
+    },
+    {
+      "route": "/api/picker-zone-preferences",
+      "status": 405,
+      "error": "Method not allowed"
+    },
+    {
+      "route": "/api/bin-enquiry",
+      "status": 405,
+      "error": "Method not allowed"
+    },
+    {
+      "route": "/api/bin-editor",
+      "status": 200
+    },
+    {
+      "route": "/api/lottable-validations",
+      "status": 405,
+      "error": "Method not allowed"
+    },
+    {
+      "route": "/api/receipt-validations",
+      "status": 405,
+      "error": "Method not allowed"
+    },
+    {
+      "route": "/api/sku-label-print",
+      "status": 405,
+      "error": "Method not allowed"
+    },
+    {
+      "route": "/api/putaway-rules",
+      "status": 200
+    },
+    {
+      "route": "/api/putaway-enquiry",
+      "status": 200
+    },
+    {
+      "route": "/api/dispatch-checkpoint",
+      "status": 200
+    },
+    {
+      "route": "/api/sku-grading",
+      "status": 200
+    },
+    {
+      "route": "/api/discrepancy-enquiry",
+      "status": 200
+    },
+    {
+      "route": "/api/bulk-upload",
+      "status": 200
+    },
+    {
+      "route": "/api/mp-inventory-log",
+      "status": 200
+    },
+    {
+      "route": "/api/lpn-enquiry",
+      "status": 200
+    },
+    {
+      "route": "/api/transhipment",
+      "status": 200
+    },
+    {
+      "route": "/api/transhipment-old",
+      "status": 200
+    },
+    {
+      "route": "/api/qc-params-mapping",
+      "status": 200
+    },
+    {
+      "route": "/api/rtv-enquiry",
+      "status": 200
+    },
+    {
+      "route": "/api/vendor-return-editor",
+      "status": 200
+    },
+    {
+      "route": "/api/customer-return-enquiry",
+      "status": 200
+    },
+    {
+      "route": "/api/customer-return-editor",
+      "status": 200
+    },
+    {
+      "route": "/api/return-otc",
+      "status": 200
+    },
+    {
+      "route": "/api/global-returns-search",
+      "status": 200
+    },
+    {
+      "route": "/api/return-without-order",
+      "status": 200
+    },
+    {
+      "route": "/api/allocation-strategies",
+      "status": 200
+    },
+    {
+      "route": "/api/cycle-count-waves",
+      "status": 200
+    },
+    {
+      "route": "/api/manage-awb",
+      "status": 200
+    },
+    {
+      "route": "/api/transporter-preferences",
+      "status": 200
+    },
+    {
+      "route": "/api/service-pin-codes",
+      "status": 200
+    },
+    {
+      "route": "/api/order-allocation",
+      "status": 200
+    },
+    {
+      "route": "/api/manage-manifests",
+      "status": 200
+    },
+    {
+      "route": "/api/delivery-shipping",
+      "status": 200
+    },
+    {
+      "route": "/api/bulk-order-update",
+      "status": 200
+    },
+    {
+      "route": "/api/manage-picklists",
+      "status": 200
+    },
+    {
+      "route": "/api/manage-picking",
+      "status": 200
+    },
+    {
+      "route": "/api/delivery-split",
+      "status": 200
+    },
+    {
+      "route": "/api/shipment-handover",
+      "status": 200
+    },
+    {
+      "route": "/api/order-acknowledgement",
+      "status": 200
+    },
+    {
+      "route": "/api/consolidate-ewb",
+      "status": 200
+    },
+    {
+      "route": "/api/sort-to-box",
+      "status": 200
+    },
+    {
+      "route": "/api/inbound-gate-pass",
+      "status": 200
+    },
+    {
+      "route": "/api/inbound-enquiry",
+      "status": 200
+    },
+    {
+      "route": "/api/inbound-create-edit",
+      "status": 200
+    },
+    {
+      "route": "/api/inbound-realtime",
+      "status": 200
+    },
+    {
+      "route": "/api/inbound-qc",
+      "status": 200
+    },
+    {
+      "route": "/api/inventory-move-history",
+      "status": 200
+    },
+    {
+      "route": "/api/inventory-move",
+      "status": 200
+    },
+    {
+      "route": "/api/inventory-move-scan",
+      "status": 200
+    },
+    {
+      "route": "/api/cycle-count",
+      "status": 200
+    },
+    {
+      "route": "/api/bin-audit",
+      "status": 200
+    },
+    {
+      "route": "/api/bulk-lottables",
+      "status": 200
+    },
+    {
+      "route": "/api/admin",
+      "status": 422,
+      "error": "Record type is required"
+    },
+    {
+      "route": "/api/admin-parity",
+      "status": 400,
+      "error": "Unknown Admin request"
+    },
+    {
+      "route": "/api/tally-config",
+      "status": 200
+    },
+    {
+      "route": "/api/procurement",
+      "status": 400,
+      "error": "Unknown procurement entity."
+    },
+    {
+      "route": "/api/ars",
+      "status": 400,
+      "error": "Unknown ARS entity."
+    },
+    {
+      "route": "/api/fetchArsAttributes",
+      "status": 200
+    },
+    {
+      "route": "/api/addAndUpdateArsAttributes",
+      "status": 200
+    },
+    {
+      "route": "/api/bulkUpdateArsAttributes",
+      "status": 200
+    },
+    {
+      "route": "/api/downloadArsAttribute",
+      "status": 200
+    },
+    {
+      "route": "/api/ajio",
+      "status": 400,
+      "error": "Unknown AJIO entity."
+    },
+    {
+      "route": "/api/amazon-mfn",
+      "status": 400,
+      "error": "Unknown Amazon MFN entity."
+    },
+    {
+      "route": "/api/vin-lister",
+      "status": 200
+    }
+  ],
+  "scenarios": [
+    "authentication",
+    "origin denial",
+    "tenant denial",
+    "mounted GET routes",
+    "real Mongo process suspension",
+    "readiness degradation",
+    "independent PostgreSQL",
+    "Mongo recovery",
+    "failed-login throttling"
+  ]
+}

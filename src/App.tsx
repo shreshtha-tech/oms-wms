@@ -1,157 +1,156 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { AuthProvider } from "./context/AuthContext";
 import { DownloadProvider } from "./context/DownloadContext";
 import { GlobalScreenOverlayHost, ScreenFrameProvider, ScreenProvider, useScreens } from "./eretail/ScreenContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Shell from "./eretail/Shell";
 import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
-import SaleOrders from "./pages/SaleOrders";
-import PurchaseOrders from "./pages/PurchaseOrders";
-import GRN from "./pages/GRN";
-import Inventory from "./pages/Inventory";
-import InventoryOperations from "./pages/InventoryOperations";
-import Transfers from "./pages/Transfers";
-import StoEditor from "./eretail/transfers/StoEditor";
-import Skus from "./pages/Skus";
-import Partners from "./pages/Partners";
-import ReturnsModule from "./eretail/returns/ReturnsModule";
-import RtvEnquiry from "./eretail/returns/RtvEnquiry";
-import VendorReturnEditor from "./eretail/returns/VendorReturnEditor";
-import CustomerReturnEnquiry from "./eretail/returns/CustomerReturnEnquiry";
-import CustomerReturnEditor from "./eretail/returns/CustomerReturnEditor";
-import ReturnOtc from "./eretail/returns/ReturnOtc";
-import GlobalReturnsSearch from "./eretail/returns/GlobalReturnsSearch";
-import ReturnWithoutOrder from "./eretail/returns/ReturnWithoutOrder";
-import Reports from "./pages/Reports";
+const PurchaseOrders = lazy(() => import("./pages/PurchaseOrders"));
+const GRN = lazy(() => import("./pages/GRN"));
+const Inventory = lazy(() => import("./pages/Inventory"));
+const InventoryOperations = lazy(() => import("./pages/InventoryOperations"));
+const Transfers = lazy(() => import("./pages/Transfers"));
+const StoEditor = lazy(() => import("./eretail/transfers/StoEditor"));
+const Skus = lazy(() => import("./pages/Skus"));
+const Partners = lazy(() => import("./pages/Partners"));
+const RtvEnquiry = lazy(() => import("./eretail/returns/RtvEnquiry"));
+const VendorReturnEditor = lazy(() => import("./eretail/returns/VendorReturnEditor"));
+const CustomerReturnEnquiry = lazy(() => import("./eretail/returns/CustomerReturnEnquiry"));
+const CustomerReturnEditor = lazy(() => import("./eretail/returns/CustomerReturnEditor"));
+const ReturnOtc = lazy(() => import("./eretail/returns/ReturnOtc"));
+const GlobalReturnsSearch = lazy(() => import("./eretail/returns/GlobalReturnsSearch"));
+const ReturnWithoutOrder = lazy(() => import("./eretail/returns/ReturnWithoutOrder"));
+const Reports = lazy(() => import("./pages/Reports"));
 
 // eRetail shell
-import EDashboard from "./eretail/EDashboard";
-import VendorPromotions from "./eretail/procurement/VendorPromotions";
-import PurchaseChargeMasters from "./eretail/procurement/PurchaseChargeMasters";
-import CategoryBuyers from "./eretail/procurement/CategoryBuyers";
-import ReportRoute from "./eretail/ReportRoute";
-import ControlTower from "./eretail/ControlTower";
-import Downloads from "./eretail/Downloads";
-import ManageChannels from "./eretail/ManageChannels";
-import SkuChannelListing from "./eretail/SkuChannelListing";
-import VendorMaster from "./eretail/masters/VendorMaster";
-import CustomerMaster from "./eretail/masters/CustomerMaster";
-import TransporterMaster from "./eretail/masters/TransporterMaster";
-import ClientMaster from "./eretail/masters/ClientMaster";
-import CustomerGroupMaster from "./eretail/masters/CustomerGroupMaster";
-import TaxCode from "./eretail/masters/TaxCode";
-import ManageCoupons from "./eretail/masters/ManageCoupons";
-import TaxApplication from "./eretail/masters/TaxApplication";
-import SkuBarcode from "./eretail/masters/SkuBarcode";
-import SkuCompanyLink from "./eretail/masters/SkuCompanyLink";
-import MerchandisingHierarchy from "./eretail/masters/MerchandisingHierarchy";
-import ManageAttribute from "./eretail/masters/ManageAttribute";
-import AttributeSet from "./eretail/masters/AttributeSet";
-import GenerateVouchers from "./eretail/masters/GenerateVouchers";
-import VendorSkuCatalog from "./eretail/masters/VendorSkuCatalog";
-import VendorSkuLocCatalog from "./eretail/masters/VendorSkuLocCatalog";
-import OrganizationHierarchy from "./eretail/masters/OrganizationHierarchy";
-import LocationEnquiry from "./eretail/masters/LocationEnquiry";
-import LocationEditor from "./eretail/masters/LocationEditor";
-import StoreGroup from "./eretail/masters/StoreGroup";
-import SkuImport from "./eretail/masters/SkuImport";
-import SkuGroup from "./eretail/masters/SkuGroup";
-import OtherMasters from "./eretail/masters/OtherMasters";
-import { RecordedSkuEnquiry } from "./eretail/masters/RecordedSkuWorkflows";
-import PromotionManagement from "./eretail/masters/PromotionManagement";
-import PricingEvents from "./eretail/masters/PricingEvents";
-import PriceZoneMaster from "./eretail/masters/PriceZone";
-import ExternalApps from "./eretail/masters/ExternalApps";
-import OrderRefund from "./eretail/masters/OrderRefund";
-import OmsRules from "./eretail/sales/OmsRules";
-import MasterOrderEnquiry from "./eretail/sales/MasterOrderEnquiry";
-import OrderEnquiry from "./eretail/sales/OrderEnquiry";
-import OrderMaintenance from "./eretail/sales/OrderMaintenance";
-import MarketOrderView from "./eretail/sales/MarketOrderView";
-import KittingOrder from "./eretail/sales/KittingOrder";
-import GlobalOrderSearch from "./eretail/sales/GlobalOrderSearch";
-import CodReconciliation from "./eretail/sales/CodReconciliation";
-import SkuModeration from "./eretail/sales/SkuModeration";
-import WmsZone from "./eretail/wms/WmsZone";
-import PickerZonePreference from "./eretail/wms/PickerZonePreference";
-import BinEnquiry from "./eretail/wms/BinEnquiry";
-import BinEditor from "./eretail/wms/BinEditor";
-import LottableValidation from "./eretail/wms/LottableValidation";
-import ReceiptValidation from "./eretail/wms/ReceiptValidation";
-import SkuLabelPrint from "./eretail/wms/SkuLabelPrint";
-import PutawayRules from "./eretail/wms/PutawayRules";
-import PutawayEnquiry from "./eretail/wms/PutawayEnquiry";
-import DispatchCheckpoint from "./eretail/wms/DispatchCheckpoint";
-import SkuGrading from "./eretail/wms/SkuGrading";
-import DiscrepancyEnquiry from "./eretail/wms/DiscrepancyEnquiry";
-import BulkUpload from "./eretail/wms/BulkUpload";
-import MpInventoryLog from "./eretail/wms/MpInventoryLog";
-import LpnEnquiry from "./eretail/wms/LpnEnquiry";
-import Transhipment from "./eretail/wms/Transhipment";
-import TranshipmentOld from "./eretail/wms/TranshipmentOld";
-import QcParamsMapping from "./eretail/wms/QcParamsMapping";
-import AllocationStrategies from "./eretail/wms/AllocationStrategies";
-import CycleCountWave from "./eretail/wms/CycleCountWave";
-import ManageAwb from "./eretail/wms/ManageAwb";
-import TransporterPreference from "./eretail/wms/TransporterPreference";
-import ServicePinCodes from "./eretail/wms/ServicePinCodes";
-import TaxCategory from "./eretail/masters/TaxCategory";
-import TaxGroup from "./eretail/masters/TaxGroup";
-import TaxZone from "./eretail/masters/TaxZone";
-import TallyConfiguration from "./eretail/masters/TallyConfiguration";
-import AdminModule from "./eretail/admin/AdminModule";
-import {
-  BackOrderPO,
-  OTBManagement,
-  POEnquiry,
-  PurchaseOrderEditor,
-  VendorInvoices,
-} from "./eretail/procurement/ProcurementWorkflows";
-import {
-  ARSExecutionLog,
-  ARSRules,
-  ARSSettings,
-  ARSSkuLocation,
-} from "./eretail/procurement/ARSWorkflows";
+const EDashboard = lazy(() => import("./eretail/EDashboard"));
+const VendorPromotions = lazy(() => import("./eretail/procurement/VendorPromotions"));
+const PurchaseChargeMasters = lazy(() => import("./eretail/procurement/PurchaseChargeMasters"));
+const CategoryBuyers = lazy(() => import("./eretail/procurement/CategoryBuyers"));
+const ReportRoute = lazy(() => import("./eretail/ReportRoute"));
+const ControlTower = lazy(() => import("./eretail/ControlTower"));
+const Downloads = lazy(() => import("./eretail/Downloads"));
+const ManageChannels = lazy(() => import("./eretail/ManageChannels"));
+const SkuChannelListing = lazy(() => import("./eretail/SkuChannelListing"));
+const VendorMaster = lazy(() => import("./eretail/masters/VendorMaster"));
+const CustomerMaster = lazy(() => import("./eretail/masters/CustomerMaster"));
+const TransporterMaster = lazy(() => import("./eretail/masters/TransporterMaster"));
+const ClientMaster = lazy(() => import("./eretail/masters/ClientMaster"));
+const CustomerGroupMaster = lazy(() => import("./eretail/masters/CustomerGroupMaster"));
+const TaxCode = lazy(() => import("./eretail/masters/TaxCode"));
+const ManageCoupons = lazy(() => import("./eretail/masters/ManageCoupons"));
+const TaxApplication = lazy(() => import("./eretail/masters/TaxApplication"));
+const SkuBarcode = lazy(() => import("./eretail/masters/SkuBarcode"));
+const SkuCompanyLink = lazy(() => import("./eretail/masters/SkuCompanyLink"));
+const MerchandisingHierarchy = lazy(() => import("./eretail/masters/MerchandisingHierarchy"));
+const ManageAttribute = lazy(() => import("./eretail/masters/ManageAttribute"));
+const AttributeSet = lazy(() => import("./eretail/masters/AttributeSet"));
+const GenerateVouchers = lazy(() => import("./eretail/masters/GenerateVouchers"));
+const VendorSkuCatalog = lazy(() => import("./eretail/masters/VendorSkuCatalog"));
+const VendorSkuLocCatalog = lazy(() => import("./eretail/masters/VendorSkuLocCatalog"));
+const OrganizationHierarchy = lazy(() => import("./eretail/masters/OrganizationHierarchy"));
+const LocationEnquiry = lazy(() => import("./eretail/masters/LocationEnquiry"));
+const LocationEditor = lazy(() => import("./eretail/masters/LocationEditor"));
+const StoreGroup = lazy(() => import("./eretail/masters/StoreGroup"));
+const SkuImport = lazy(() => import("./eretail/masters/SkuImport"));
+const SkuGroup = lazy(() => import("./eretail/masters/SkuGroup"));
+const OtherMasters = lazy(() => import("./eretail/masters/OtherMasters"));
+const RecordedSkuEnquiry = lazy(() => import("./eretail/masters/RecordedSkuWorkflows").then((loaded) => ({ default: loaded.RecordedSkuEnquiry })));
+const PromotionManagement = lazy(() => import("./eretail/masters/PromotionManagement"));
+const PricingEvents = lazy(() => import("./eretail/masters/PricingEvents"));
+const PriceZoneMaster = lazy(() => import("./eretail/masters/PriceZone"));
+const ExternalApps = lazy(() => import("./eretail/masters/ExternalApps"));
+const OrderRefund = lazy(() => import("./eretail/masters/OrderRefund"));
+const OmsRules = lazy(() => import("./eretail/sales/OmsRules"));
+const OrderMaintenance = lazy(() => import("./eretail/sales/OrderMaintenance"));
+const MarketOrderView = lazy(() => import("./eretail/sales/MarketOrderView"));
+const KittingOrder = lazy(() => import("./eretail/sales/KittingOrder"));
+const CodReconciliation = lazy(() => import("./eretail/sales/CodReconciliation"));
+const SkuModeration = lazy(() => import("./eretail/sales/SkuModeration"));
+const WmsZone = lazy(() => import("./eretail/wms/WmsZone"));
+const PickerZonePreference = lazy(() => import("./eretail/wms/PickerZonePreference"));
+const BinEnquiry = lazy(() => import("./eretail/wms/BinEnquiry"));
+const BinEditor = lazy(() => import("./eretail/wms/BinEditor"));
+const LottableValidation = lazy(() => import("./eretail/wms/LottableValidation"));
+const ReceiptValidation = lazy(() => import("./eretail/wms/ReceiptValidation"));
+const SkuLabelPrint = lazy(() => import("./eretail/wms/SkuLabelPrint"));
+const PutawayRules = lazy(() => import("./eretail/wms/PutawayRules"));
+const PutawayEnquiry = lazy(() => import("./eretail/wms/PutawayEnquiry"));
+const DispatchCheckpoint = lazy(() => import("./eretail/wms/DispatchCheckpoint"));
+const SkuGrading = lazy(() => import("./eretail/wms/SkuGrading"));
+const DiscrepancyEnquiry = lazy(() => import("./eretail/wms/DiscrepancyEnquiry"));
+const BulkUpload = lazy(() => import("./eretail/wms/BulkUpload"));
+const MpInventoryLog = lazy(() => import("./eretail/wms/MpInventoryLog"));
+const LpnEnquiry = lazy(() => import("./eretail/wms/LpnEnquiry"));
+const Transhipment = lazy(() => import("./eretail/wms/Transhipment"));
+const TranshipmentOld = lazy(() => import("./eretail/wms/TranshipmentOld"));
+const QcParamsMapping = lazy(() => import("./eretail/wms/QcParamsMapping"));
+const AllocationStrategies = lazy(() => import("./eretail/wms/AllocationStrategies"));
+const CycleCountWave = lazy(() => import("./eretail/wms/CycleCountWave"));
+const ManageAwb = lazy(() => import("./eretail/wms/ManageAwb"));
+const TransporterPreference = lazy(() => import("./eretail/wms/TransporterPreference"));
+const ServicePinCodes = lazy(() => import("./eretail/wms/ServicePinCodes"));
+const TaxCategory = lazy(() => import("./eretail/masters/TaxCategory"));
+const TaxGroup = lazy(() => import("./eretail/masters/TaxGroup"));
+const TaxZone = lazy(() => import("./eretail/masters/TaxZone"));
+const TallyConfiguration = lazy(() => import("./eretail/masters/TallyConfiguration"));
+const AdminModule = lazy(() => import("./eretail/admin/AdminModule"));
+const BackOrderPO = lazy(() => import("./eretail/procurement/ProcurementWorkflows").then((loaded) => ({ default: loaded.BackOrderPO })));
+const OTBManagement = lazy(() => import("./eretail/procurement/ProcurementWorkflows").then((loaded) => ({ default: loaded.OTBManagement })));
+const POEnquiry = lazy(() => import("./eretail/procurement/ProcurementWorkflows").then((loaded) => ({ default: loaded.POEnquiry })));
+const PurchaseOrderEditor = lazy(() => import("./eretail/procurement/ProcurementWorkflows").then((loaded) => ({ default: loaded.PurchaseOrderEditor })));
+const VendorInvoices = lazy(() => import("./eretail/procurement/ProcurementWorkflows").then((loaded) => ({ default: loaded.VendorInvoices })));
+const ARSExecutionLog = lazy(() => import("./eretail/procurement/ARSWorkflows").then((loaded) => ({ default: loaded.ARSExecutionLog })));
+const ARSRules = lazy(() => import("./eretail/procurement/ARSWorkflows").then((loaded) => ({ default: loaded.ARSRules })));
+const ARSSettings = lazy(() => import("./eretail/procurement/ARSWorkflows").then((loaded) => ({ default: loaded.ARSSettings })));
+const ARSSkuLocation = lazy(() => import("./eretail/procurement/ARSWorkflows").then((loaded) => ({ default: loaded.ARSSkuLocation })));
 
 // Fulfillment modules
-import OrderProcessing from "./eretail/modules/OrderProcessing";
-import Allocate from "./eretail/modules/Allocate";
-import DeliveryShipping from "./eretail/modules/DeliveryShipping";
-import BulkUpdate from "./eretail/modules/BulkUpdate";
-import ManagePicklist from "./eretail/modules/ManagePicklist";
-import ManagePicking from "./eretail/modules/ManagePicking";
-import DeliverySplit from "./eretail/modules/DeliverySplit";
-import ShipmentReceiving from "./eretail/modules/ShipmentReceiving";
-import ShipmentHandover from "./eretail/modules/ShipmentHandover";
-import OrderAcknowledgement from "./eretail/modules/OrderAcknowledgement";
-import ConsolidateEwb from "./eretail/modules/ConsolidateEwb";
-import InboundGatePass from "./eretail/modules/InboundGatePass";
-import InboundEnquiry from "./eretail/modules/InboundEnquiry";
-import InboundCreateEdit from "./eretail/modules/InboundCreateEdit";
-import InboundRealtime from "./eretail/modules/InboundRealtime";
-import InboundQC from "./eretail/modules/InboundQC";
-import InventoryMoveHistory from "./eretail/modules/InventoryMoveHistory";
-import InventoryMove from "./eretail/modules/InventoryMove";
-import InventoryMoveScan from "./eretail/modules/InventoryMoveScan";
-import CycleCount from "./eretail/modules/CycleCount";
-import BinAudit from "./eretail/modules/BinAudit";
-import BulkLottables from "./eretail/modules/BulkLottables";
-import SortToBox from "./eretail/modules/SortToBox";
-import AJIOWorkflow from "./eretail/modules/AJIOWorkflow";
-import AmazonMFNWorkflow from "./eretail/modules/AmazonMFNWorkflow";
-import VinLister from "./eretail/VinLister";
-import Profile from "./eretail/Profile";
-import SellerPanelDashboard from "./eretail/SellerPanelDashboard";
+const OrderProcessing = lazy(() => import("./eretail/modules/OrderProcessing"));
+const Allocate = lazy(() => import("./eretail/modules/Allocate"));
+const DeliveryShipping = lazy(() => import("./eretail/modules/DeliveryShipping"));
+const BulkUpdate = lazy(() => import("./eretail/modules/BulkUpdate"));
+const ManagePicklist = lazy(() => import("./eretail/modules/ManagePicklist"));
+const ManagePicking = lazy(() => import("./eretail/modules/ManagePicking"));
+const DeliverySplit = lazy(() => import("./eretail/modules/DeliverySplit"));
+const ShipmentReceiving = lazy(() => import("./eretail/modules/ShipmentReceiving"));
+const ShipmentHandover = lazy(() => import("./eretail/modules/ShipmentHandover"));
+const OrderAcknowledgement = lazy(() => import("./eretail/modules/OrderAcknowledgement"));
+const ConsolidateEwb = lazy(() => import("./eretail/modules/ConsolidateEwb"));
+const InboundGatePass = lazy(() => import("./eretail/modules/InboundGatePass"));
+const InboundEnquiry = lazy(() => import("./eretail/modules/InboundEnquiry"));
+const InboundCreateEdit = lazy(() => import("./eretail/modules/InboundCreateEdit"));
+const InboundRealtime = lazy(() => import("./eretail/modules/InboundRealtime"));
+const InboundQC = lazy(() => import("./eretail/modules/InboundQC"));
+const InventoryMoveHistory = lazy(() => import("./eretail/modules/InventoryMoveHistory"));
+const InventoryMove = lazy(() => import("./eretail/modules/InventoryMove"));
+const InventoryMoveScan = lazy(() => import("./eretail/modules/InventoryMoveScan"));
+const CycleCount = lazy(() => import("./eretail/modules/CycleCount"));
+const BinAudit = lazy(() => import("./eretail/modules/BinAudit"));
+const BulkLottables = lazy(() => import("./eretail/modules/BulkLottables"));
+const SortToBox = lazy(() => import("./eretail/modules/SortToBox"));
+const AJIOWorkflow = lazy(() => import("./eretail/modules/AJIOWorkflow"));
+const AmazonMFNWorkflow = lazy(() => import("./eretail/modules/AmazonMFNWorkflow"));
+const VinLister = lazy(() => import("./eretail/VinLister"));
+const Profile = lazy(() => import("./eretail/Profile"));
+const SellerPanelDashboard = lazy(() => import("./eretail/SellerPanelDashboard"));
+const CentralInventory = lazy(() => import("./pages/CentralInventory"));
+const LiveOrderWorkspace = lazy(() => import("./pages/LiveOrderWorkspace"));
+const DemoOrderViews = lazy(() => import('./pages/DemoOrderViews'));
+import { LiveConnection } from "./hooks/useInventoryLiveUpdates";
 
 function P({ children }: { children: React.ReactNode }) {
   return <ProtectedRoute>{children}</ProtectedRoute>;
 }
 
+function RouteLoading() {
+  return <div className="p-4 text-sm text-slate-500" role="status" aria-live="polite">Loading screen…</div>;
+}
+
 function RouteSet({ location }: { location?: string }) {
   return (
+    <Suspense fallback={<RouteLoading />}>
           <Routes location={location}>
             <Route path="/" element={<Login />} />
 
@@ -166,6 +165,7 @@ function RouteSet({ location }: { location?: string }) {
             />
             <Route path="/app/profile" element={<P><Profile /></P>} />
             <Route path="/app/seller-panel-dashboard" element={<P><SellerPanelDashboard /></P>} />
+            <Route path="/app/central-inventory" element={<P><Shell active="wms" breadcrumb="WMS > Central Inventory" openScreens={[{label:'Central Inventory',to:'#'}]}><CentralInventory /></Shell></P>} />
             <Route
               path="/app/control-tower"
               element={
@@ -361,7 +361,7 @@ function RouteSet({ location }: { location?: string }) {
                     breadcrumb="SALES > Order Enquiry"
                     openScreens={[{ label: "Order Enquiry", to: "#" }]}
                   >
-                    <SaleOrders />
+                    <LiveOrderWorkspace title="Sale Orders" />
                   </Shell>
                 </P>
               }
@@ -398,13 +398,9 @@ function RouteSet({ location }: { location?: string }) {
               path="/app/inventory"
               element={
                 <P>
-                  <Shell
-                    active="wms"
-                    breadcrumb="WMS > Inventory View"
-                    openScreens={[{ label: "Inventory View", to: "#" }]}
-                  >
-                    <Inventory />
-                  </Shell>
+                  {/* Inventory owns the shared Shell; wrapping it here rendered
+                      a second header/sidebar above the persistent route frame. */}
+                  <Inventory />
                 </P>
               }
             />
@@ -439,12 +435,13 @@ function RouteSet({ location }: { location?: string }) {
             <Route path="/app/returns/global-search" element={<P><GlobalReturnsSearch /></P>} />
             <Route path="/app/m/return-wo-order" element={<P><ReturnWithoutOrder /></P>} />
             <Route path="/app/m/oms-rules" element={<P><OmsRules /></P>} />
-            <Route path="/app/master-order-enquiry" element={<P><MasterOrderEnquiry /></P>} />
-            <Route path="/app/order-enquiry" element={<P><OrderEnquiry /></P>} />
+            <Route path="/app/master-order-enquiry" element={<P><Shell active="sales" breadcrumb="SALES > Master Order Enquiry" openScreens={[{label:'Master Order Enquiry',to:'#'}]}><LiveOrderWorkspace title="Master Order Enquiry" /></Shell></P>} />
+            <Route path="/app/order-enquiry" element={<P><Shell active="sales" breadcrumb="SALES > Order Enquiry" openScreens={[{label:'Order Enquiry',to:'#'}]}><LiveOrderWorkspace title="Order Enquiry" /></Shell></P>} />
             <Route path="/app/order-maintenance" element={<P><OrderMaintenance /></P>} />
             <Route path="/app/market-order-view" element={<P><MarketOrderView /></P>} />
             <Route path="/app/m/kitting-order" element={<P><KittingOrder /></P>} />
-            <Route path="/app/global-order-search" element={<P><GlobalOrderSearch /></P>} />
+            <Route path="/app/global-order-search" element={<P><Shell active="sales" breadcrumb="SALES > Global Order Search" openScreens={[{label:'Global Order Search',to:'#'}]}><LiveOrderWorkspace title="Global Order Search" /></Shell></P>} />
+            <Route path="/app/demo/orders" element={<P><Suspense fallback={<p>Loading demo workspace…</p>}><DemoOrderViews /></Suspense></P>} />
             <Route path="/app/cod-reconciliation" element={<P><CodReconciliation /></P>} />
             <Route path="/app/sku-moderation" element={<P><SkuModeration /></P>} />
             <Route path="/app/wms/zone" element={<P><WmsZone /></P>} />
@@ -508,7 +505,7 @@ function RouteSet({ location }: { location?: string }) {
               path="/app/returns"
               element={
                 <P>
-                  <ReturnsModule />
+                  <Navigate to="/app/returns/customer-enquiry" replace />
                 </P>
               }
             />
@@ -532,7 +529,7 @@ function RouteSet({ location }: { location?: string }) {
               path="/app/returns/:screen"
               element={
                 <P>
-                  <ReturnsModule />
+                  <Navigate to="/app/returns/customer-enquiry" replace />
                 </P>
               }
             />
@@ -559,7 +556,7 @@ function RouteSet({ location }: { location?: string }) {
                     breadcrumb="DASHBOARD > Classic"
                     openScreens={[{ label: "Classic Dashboard", to: "#" }]}
                   >
-                    <Dashboard />
+                    <LiveOrderWorkspace title="Classic dashboard · live orders" dashboard />
                   </Shell>
                 </P>
               }
@@ -888,6 +885,7 @@ function RouteSet({ location }: { location?: string }) {
 
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
+    </Suspense>
   );
 }
 
@@ -928,7 +926,7 @@ export default function App() {
         <BrowserRouter>
           <ScreenProvider>
             <GlobalScreenOverlayHost />
-            <PersistentRouteHost />
+            <LiveConnection><PersistentRouteHost /></LiveConnection>
           </ScreenProvider>
         </BrowserRouter>
       </DownloadProvider>

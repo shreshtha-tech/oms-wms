@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+process.env.MONGODB_URI='';process.env.NODE_ENV='test';process.env.DMILLS_REQUIRE_PERSISTENCE='false';
+const store=await import('../api/mongo.js');assert.equal(await store.waitForDataReady(),'memory');
+const handler=(await import('../api/transporters.js')).default;
+const call=async(method,body)=>{const res={statusCode:200,status(code){this.statusCode=code;return this;},json(value){this.value=value;return this;},setHeader(){}};await handler({method,body,user:{username:'fixture'}},res);return res;};
+const fields={carrier_type:'Fixture',transporter_type:'Courier'};
+const a=await call('POST',{...fields,transporter_code:'1001',transporter_name:'First'});assert.equal(a.statusCode,201);
+const b=await call('POST',{...fields,id:a.value.id,transporter_code:'1002',transporter_name:'Second'});assert.equal(b.statusCode,201);
+assert.notEqual(a.value.id,b.value.id);
+assert.equal((await store.findOne('partners',{id:a.value.id})).name,'First');
+assert.equal((await call('DELETE',{id:a.value.id})).statusCode,409);
+console.log('PASS: isolated memory transporter caller identity rejection, original record preservation and deletion guard.');
+const duplicate=await call('PUT',{id:b.value.id,transporter_name:'First'});
+assert.equal(duplicate.statusCode,409,'Update must preserve create-time transporter name uniqueness');
+assert.equal((await store.findOne('partners',{id:b.value.id})).name,'Second');

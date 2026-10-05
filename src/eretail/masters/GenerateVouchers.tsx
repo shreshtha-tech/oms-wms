@@ -1,3 +1,67 @@
-import { useEffect, useState } from 'react'; import Shell from '../Shell'; import { Toast } from '../parts'; import { apiGet, apiSend } from '../../lib/api';
-const initial={prefix:'',value:'',count:'',type:'',maxCap:'',startDate:'',endDate:'',location:''};
-export default function GenerateVouchers(){const [f,setF]=useState<any>(initial),[rows,setRows]=useState<any[]>([]),[q,setQ]=useState(''),[toast,setToast]=useState<any>(null);const load=async()=>setRows(await apiGet<any[]>('/api/generic?module=vouchers'));useEffect(()=>{void load()},[]);const set=(k:string,v:string)=>setF({...f,[k]:v});const generate=async()=>{if(f.prefix.length!==4)return setToast({msg:'Vocher Prefix Length must be of 4 Characters',type:'err'});if(!(Number(f.value)>0))return setToast({msg:'Voucher value should be greater than zero',type:'err'});if(!(Number(f.count)>0))return setToast({msg:'Voucher count should be greater than zero',type:'err'});if(!f.type)return setToast({msg:'Please select Voucher Type',type:'err'});if(!(Number(f.maxCap)>0))return setToast({msg:'Voucher Max Cap should be greater than zero',type:'err'});if(Number(f.maxCap)<Number(f.value))return setToast({msg:'Voucher Max Cap should be greater or equal to Voucher Value',type:'err'});if(!f.startDate)return setToast({msg:'Please enter start Date.',type:'err'});if(!f.endDate)return setToast({msg:'Please enter End Date.',type:'err'});for(let i=0;i<Number(f.count);i++)await apiSend('/api/generic','POST',{module:'vouchers',code:`${f.prefix}${Date.now().toString().slice(-6)}${i}`,name:f.prefix,status:'Active',description:'',extra:{voucher_value:f.value,voucher_type:f.type,max_cap:f.maxCap,start_date:f.startDate,end_date:f.endDate,location:f.location}});setToast({msg:'Vouchers generated successfully',type:'ok'});setF(initial);await load()};const shown=rows.filter(r=>r.code.toLowerCase().includes(q.toLowerCase()));return <Shell active="master" breadcrumb="MASTER > POS Setup > Generate Vouchers" openScreens={[{label:'Generate Vouchers',to:'#'}]}><div className="space-y-4"><section className="rounded border bg-white p-4"><div className="grid gap-3 md:grid-cols-4"><F l="Voucher Prefix"><input aria-label="Voucher Prefix" value={f.prefix} onChange={e=>set('prefix',e.target.value)} className="inp"/></F><F l="Voucher Value"><input aria-label="Voucher Value" value={f.value} onChange={e=>set('value',e.target.value)} className="inp"/></F><F l="Voucher Count"><input aria-label="Voucher Count" value={f.count} onChange={e=>set('count',e.target.value)} className="inp"/></F><F l="Voucher Type"><select aria-label="Voucher Type" value={f.type} onChange={e=>set('type',e.target.value)} className="inp"><option value="">--- Select ---</option><option>Absolute</option><option>Percentage</option></select></F><F l="Max Cap"><input aria-label="Max Cap" value={f.maxCap} onChange={e=>set('maxCap',e.target.value)} className="inp"/></F><F l="StartDate"><input aria-label="StartDate" type="date" value={f.startDate} onChange={e=>set('startDate',e.target.value)} className="inp"/></F><F l="End Date"><input aria-label="End Date" type="date" value={f.endDate} onChange={e=>set('endDate',e.target.value)} className="inp"/></F><F l="Location"><input aria-label="Location" value={f.location} onChange={e=>set('location',e.target.value)} className="inp"/></F></div><div className="mt-4 flex gap-2"><button onClick={()=>setQ('')} className="rounded border px-4 py-2 text-sm">Reset</button><button onClick={generate} className="rounded bg-[#2f9e9e] px-4 py-2 text-sm text-white">Generate Vouchers</button></div></section><section className="rounded border bg-white p-4"><input aria-label="Search" placeholder="Voucher Code" className="inp mb-3" value={q} onChange={e=>setQ(e.target.value)}/><table className="w-full text-sm"><thead><tr><th>Voucher Code</th><th>Voucher Value</th><th>Voucher Type</th><th>Max Cap</th><th>StartDate</th><th>End Date</th><th>Location</th></tr></thead><tbody>{shown.map(r=><tr key={r.id}><td>{r.code}</td><td>{r.extra?.voucher_value}</td><td>{r.extra?.voucher_type}</td><td>{r.extra?.max_cap}</td><td>{r.extra?.start_date}</td><td>{r.extra?.end_date}</td><td>{r.extra?.location}</td></tr>)}</tbody></table></section></div>{toast&&<Toast {...toast} onClose={()=>setToast(null)}/>}</Shell>};function F({l,children}:any){return <label className="lbl">{l}{children}</label>}
+import { useEffect, useState } from 'react';
+import Shell from '../Shell';
+import { apiGet } from '../../lib/api';
+
+type LegacyVoucher = {
+  id: number;
+  code?: string;
+  voucher_value?: string | number;
+  voucher_type?: string;
+  max_cap?: string | number;
+  start_date?: string;
+  end_date?: string;
+  location?: string;
+  extra?: Partial<LegacyVoucher>;
+};
+
+const recordedValue = (row: LegacyVoucher, key: keyof LegacyVoucher) =>
+  String(row[key] ?? row.extra?.[key] ?? '');
+
+export default function GenerateVouchers() {
+  const [rows, setRows] = useState<LegacyVoucher[]>([]);
+  const [query, setQuery] = useState('');
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    let active = true;
+    apiGet<LegacyVoucher[]>('/api/generic?module=vouchers')
+      .then((result) => { if (active) setRows(result); })
+      .catch((cause) => { if (active) setError(cause instanceof Error ? cause.message : 'Unable to load voucher records.'); });
+    return () => { active = false; };
+  }, []);
+
+  const shown = rows.filter((row) => String(row.code || '').toLowerCase().includes(query.toLowerCase()));
+
+  return <Shell active="master" breadcrumb="MASTER > POS Setup > Generate Vouchers" openScreens={[{ label: 'Generate Vouchers', to: '#' }]}>
+    <div className="space-y-4">
+      <p role="status" className="rounded border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-950">
+        Voucher generation is unavailable until issuance, eligibility, redemption, audit, and permissions are connected and verified. Existing rows below are legacy metadata; they are not verified as redeemable vouchers.
+      </p>
+      <section aria-label="Voucher generation" className="rounded border bg-white p-4">
+        <fieldset disabled className="grid gap-3 md:grid-cols-4">
+          <label className="lbl">Voucher Prefix<input className="inp" /></label>
+          <label className="lbl">Voucher Value<input className="inp" /></label>
+          <label className="lbl">Voucher Count<input className="inp" /></label>
+          <label className="lbl">Voucher Type<select className="inp" defaultValue=""><option value="">--- Select ---</option><option>Absolute</option><option>Percentage</option></select></label>
+          <label className="lbl">Max Cap<input className="inp" /></label>
+          <label className="lbl">StartDate<input type="date" className="inp" /></label>
+          <label className="lbl">End Date<input type="date" className="inp" /></label>
+          <label className="lbl">Location<input className="inp" /></label>
+          <button className="rounded bg-slate-300 px-4 py-2 text-sm text-slate-700 md:col-span-4 md:justify-self-start">Generate Vouchers</button>
+        </fieldset>
+      </section>
+      <section aria-label="Legacy voucher records" className="rounded border bg-white p-4">
+        <h2 className="mb-3 text-sm font-semibold">Legacy voucher records</h2>
+        <input aria-label="Search legacy voucher codes" className="inp mb-3" value={query} onChange={(event) => setQuery(event.target.value)} />
+        {error && <p role="alert" className="mb-3 text-sm text-red-700">{error}</p>}
+        <div className="overflow-x-auto"><table className="w-full text-sm">
+          <thead><tr>{['Voucher Code', 'Voucher Value', 'Voucher Type', 'Max Cap', 'StartDate', 'End Date', 'Location'].map((heading) => <th key={heading} className="p-2 text-left">{heading}</th>)}</tr></thead>
+          <tbody>{shown.length ? shown.map((row) => <tr key={row.id} className="border-t">
+            <td className="p-2">{row.code}</td><td>{recordedValue(row, 'voucher_value')}</td><td>{recordedValue(row, 'voucher_type')}</td>
+            <td>{recordedValue(row, 'max_cap')}</td><td>{recordedValue(row, 'start_date')}</td><td>{recordedValue(row, 'end_date')}</td><td>{recordedValue(row, 'location')}</td>
+          </tr>) : <tr><td colSpan={7} className="p-6 text-center text-slate-500">No records to view</td></tr>}</tbody>
+        </table></div>
+      </section>
+    </div>
+  </Shell>;
+}

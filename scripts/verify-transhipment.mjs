@@ -1,2 +1,66 @@
-import assert from'node:assert/strict';import{chromium}from'playwright';const base=process.env.ERETAIL_BASE_URL||'http://127.0.0.1:3011',send=async b=>{const r=await fetch(base+'/api/transhipment',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(b)});return{r,j:await r.json()}};const meta=await(await fetch(base+'/api/transhipment')).json();assert.deepEqual(meta.tabs.map(x=>x[1]),['Pending','Received','QC Passed','QC Failed','Dispatched','All']);assert.deepEqual(meta.durations.map(x=>x[1]),['1 Month','1 Year','3 Month','6 Month','ALL']);assert.deepEqual(meta.pageSizes,[15,50,100,200,500,1000]);let x=await send({action:'receive'});assert.equal(x.j.error,'LPN is Mandatory');x=await send({action:'scan-manifest',status:'1'});assert.equal(x.j.error,'ManifestNo is mandatory');x=await send({action:'scan-manifest',manifestNo:'M'});assert.equal(x.j.error,'Please select status');x=await send({action:'print',docType:'-1'});assert.equal(x.j.error,'Please fill in all required fields');x=await send({action:'ingest',lpn:'TRANS-VERIFY',docNo:'DOC-1',docNo2:'DOC-2',status:'pending',priority:'High',fragile:true,shipTogether:true,originLocation:'Origin',destLocation:'Destination',transhipmentType:'0'});const row=x.j.row;x=await send({status:'pending',lpn:'TRANS-VERIFY',REQ_SEARCH_FLAG:true,rows:15,page:1});assert.ok(x.j.gridModel.some(r=>r.id===row.id));x=await send({action:'receive',lpn:'TRANS-VERIFY',pass:true});assert.equal(x.j.message,'1 LPN Received 0 LPN Failed');x=await send({status:'received',lpn:'TRANS-VERIFY',REQ_SEARCH_FLAG:true,rows:15,page:1});assert.equal(x.j.gridModel[0].status,'received');x=await send({action:'qc',lpn:'TRANS-VERIFY',pass:false,reason:'-1'});assert.equal(x.j.error,'Please Choose QC Fail Reason');x=await send({action:'qc',lpn:'TRANS-VERIFY',pass:true,reason:'-1'});assert.equal(x.j.message,'1 LPN QC Done 0 LPN Failed');x=await send({action:'undo-qc',lpn:'TRANS-VERIFY'});assert.equal(x.j.message,'1 LPN Undo QC Done 0 LPN Failed');x=await send({action:'export',filters:{status:'pending'}});assert.match(x.j.reportId,/^TRANS-/);
-const b=await chromium.launch({headless:true}),p=await b.newPage({viewport:{width:1700,height:1050}}),errors=[];p.on('pageerror',e=>errors.push(e.message));p.on('console',m=>m.type()==='error'&&errors.push(m.text()));try{await p.goto(base);const cap=(await p.locator('.font-mono').textContent()).trim();await p.getByPlaceholder('Username').fill('transhipment');await p.getByPlaceholder('Password').fill('local');await p.getByPlaceholder('Enter captcha').fill(cap);await p.getByRole('button',{name:'Login'}).click();await p.waitForURL('**/app/dashboard');await p.goto(base+'/app/r/transhipment');for(const t of meta.tabs.map(x=>x[1]))await p.getByRole('button',{name:t,exact:true}).waitFor();for(const h of ['Actions','LPN','DocNo','DocNo2','Doc Date','Priority','Fragile','PrintStatus','Ship Together','Weight','Dimension','Exptd Rcvd Date','Exptd Ship Date','UDFs','Origin','Destination','Description','HandlingInstruction','Type'])await p.getByRole('columnheader',{name:h,exact:true}).first().waitFor();assert.deepEqual(await p.getByLabel('Records per Page').locator('option').allTextContents(),meta.pageSizes.map(String));assert.deepEqual(await p.getByLabel('Show data for duration').locator('option').allTextContents(),meta.durations.map(x=>x[1]));await p.getByRole('button',{name:'Receiving',exact:true}).click();let d=p.getByRole('dialog',{name:'Receiving'});await d.getByRole('button',{name:'Receiving'}).click();await p.getByText('LPN is Mandatory').waitFor();await d.getByLabel('LPN').fill('TRANS-VERIFY');await d.getByRole('button',{name:'Receiving'}).click();await p.getByText('1 LPN Received 0 LPN Failed').waitFor();await p.getByRole('button',{name:'Received',exact:true}).click();for(const a of ['QC','Reverse Receiving'])await p.getByRole('button',{name:a,exact:true}).waitFor();await p.getByRole('button',{name:'QC',exact:true}).click();d=p.getByRole('dialog',{name:'QC'});await d.getByLabel('LPN').fill('TRANS-VERIFY');await d.getByRole('button',{name:'QC'}).click();await p.getByText('1 LPN QC Done 0 LPN Failed').waitFor();await p.getByRole('button',{name:'Pending',exact:true}).click();await p.getByRole('button',{name:'Scan Manifest'}).click();d=p.getByRole('dialog',{name:'Scan Manifest'});await d.getByRole('button',{name:'OK'}).click();await p.getByText('ManifestNo is mandatory').waitFor();await d.getByLabel('Manifest No').fill('MAN-VERIFY');await d.getByRole('button',{name:'OK'}).click();await p.getByText('Please select status').waitFor();await d.getByLabel('Select transhipment status').selectOption('1');await d.getByRole('button',{name:'OK'}).click();await p.getByText('Tanshipment successfully created.').waitFor();assert.deepEqual(errors,[]);console.log('PASS Transhipment: exact six tabs, actions, durations, 19-column pending grid, paging, Receiving/QC/Undo/Reverse state persistence, Scan Manifest and Print validations, Pending Report export, and clean browser console.')}finally{await b.close()}
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+import handler from '../api/transhipment.js';
+import { find, getMode, insert } from '../api/mongo.js';
+
+if (process.env.MONGODB_URI) throw new Error('Run this verifier without a configured MongoDB database.');
+assert.equal(getMode(), 'memory');
+
+const call = async (method, body = {}) => {
+  const response = {
+    code: 200,
+    headers: {},
+    setHeader(key, value) { this.headers[key] = value; },
+    status(code) { this.code = code; return this; },
+    json(value) { this.body = value; return this; },
+  };
+  await handler({ method, body }, response);
+  return response;
+};
+
+const metadata = await call('GET');
+assert.equal(metadata.code, 200);
+assert.deepEqual(metadata.body.tabs.map(([id]) => id), ['pending', 'received', 'qcPass', 'qcFail', 'shipped', 'displayAll']);
+assert.deepEqual(metadata.body.pageSizes, [15, 50, 100, 200, 500, 1000]);
+
+const fixture = await insert('generic_records', {
+  module: 'transhipment', code: 'AUDIT-TRANS-LPN', docNo: 'AUDIT-TRANS-DOC', status: 'pending',
+});
+const search = await call('POST', { status: 'pending', lpn: 'AUDIT-TRANS', page: 1, rows: 15 });
+assert.equal(search.code, 200);
+assert.deepEqual(search.body.gridModel.map(row => row.id), [fixture.id]);
+
+for (const body of [
+  { action: 'ingest', lpn: 'MUST-NOT-BE-CREATED', status: 'pending' },
+  { action: 'import', fileName: 'unverified.csv', fileContent: 'lpn\\nMUST-NOT-BE-CREATED' },
+  { action: 'receive', lpn: 'AUDIT-TRANS-LPN', pass: true },
+  { action: 'qc', lpn: 'AUDIT-TRANS-LPN', pass: true },
+  { action: 'undo-qc', lpn: 'AUDIT-TRANS-LPN' },
+  { action: 'reverse-receiving', lpn: 'AUDIT-TRANS-LPN' },
+  { action: 'scan-manifest', manifestNo: 'AUDIT-MANIFEST', status: '1' },
+  { action: 'print', docType: '1', docOrLpnNo: 'AUDIT-TRANS-LPN' },
+  { action: 'export', filters: { status: 'pending' } },
+  { action: 'manifest', manifestNo: 'AUDIT-MANIFEST' },
+  { action: 'edit', id: fixture.id, lpn: 'AUDIT-TRANS-LPN' },
+]) {
+  const result = await call('POST', body);
+  assert.equal(result.code, 501, `${body.action} must stay unavailable without its stock/document service`);
+  assert.match(result.body.error, /Central Inventory|document services/i);
+}
+
+const udf = await call('POST', { action: 'udf', id: fixture.id, udf1: 'AUDIT-METADATA' });
+assert.equal(udf.code, 200, 'metadata-only UDF editing remains available');
+assert.equal(udf.body.message, 'User-defined fields saved.');
+const persisted = await find('generic_records', { module: 'transhipment' });
+assert.equal(persisted.length, 1, 'Unavailable actions must not ingest rows or jobs');
+assert.equal(persisted[0].status, 'pending', 'Unavailable lifecycle actions must not mutate status');
+assert.equal(persisted[0].udf1, 'AUDIT-METADATA');
+
+const ui = await readFile(new URL('../src/eretail/wms/Transhipment.tsx', import.meta.url), 'utf8');
+assert.match(ui, /This screen does not change stock/);
+assert.match(ui, /Import is unavailable/);
+assert.match(ui, /User Defined Fields.*?'udf'/s);
+assert.match(ui, /Transhipment order editing is unavailable/);
+assert.match(ui, /Export is unavailable/);
+assert.doesNotMatch(ui, /Pending Report created:/);
+console.log('PASS Transhipment: enquiry and metadata-only UDF edits work in isolated memory; stock, manifest, print, export, and ingest actions return 501 without fake state changes.');

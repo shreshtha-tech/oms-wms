@@ -1,2 +1,63 @@
-import assert from'node:assert/strict';import{chromium}from'playwright';const base=process.env.ERETAIL_BASE_URL||'http://127.0.0.1:3002',send=async body=>{const r=await fetch(`${base}/api/order-acknowledgement`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)});return{r,j:await r.json()}};let meta=await(await fetch(`${base}/api/order-acknowledgement`)).json();assert.deepEqual(meta.pageSizes,[20,50,100,200]);assert.deepEqual(meta.rejectionReasons,['Out of Stock']);for(const rows of[20,50,100,200]){const x=await send({action:'search',REQ_SEARCH_FLAG:true,tab:'pending',rows,page:1,sidx:'updDate',sord:'desc'});for(const k of['gridModel','rowDTOListFromUpdate','rows','page','total','records'])assert.ok(k in x.j)}let x=await send({action:'search',REQ_SEARCH_FLAG:true,tab:'pending',rows:100,page:1,extOrderNo:'WO500123'});assert.equal(x.j.records,1);const acceptId=x.j.rows[0].id;x=await send({action:'accept',ids:[]});assert.equal(x.j.error,'No order(s) selected to Acknowledge');x=await send({action:'accept',ids:[acceptId]});assert.match(x.j.jsonMessage,/acknowledged successfully/);x=await send({action:'search',REQ_SEARCH_FLAG:true,tab:'history',rows:100,page:1,orderNo:'WO500123'});assert.equal(x.j.rows[0].ackStatus,'Acknowledged');x=await send({action:'search',REQ_SEARCH_FLAG:true,tab:'pending',rows:100,page:1,orderNo:'WO500124'});const rejectId=x.j.rows[0].id;x=await send({action:'reject',ids:[rejectId],rejectionReason:'',rejectionRemarks:'No inventory'});assert.equal(x.j.error,'Rejection Reason is mandatory');x=await send({action:'reject',ids:[rejectId],rejectionReason:'Out of Stock',rejectionRemarks:''});assert.equal(x.j.error,'Rejection Remarks is mandatory');x=await send({action:'reject',ids:[rejectId],rejectionReason:'Out of Stock',rejectionRemarks:'No inventory'});assert.match(x.j.jsonMessage,/rejected successfully/);x=await send({action:'search',REQ_SEARCH_FLAG:true,tab:'history',rows:100,page:1,orderNo:'WO500124'});assert.equal(x.j.rows[0].ackStatus,'Rejected');meta=await(await fetch(`${base}/api/order-acknowledgement`)).json();assert.ok(meta.counts.history>=2);
-const b=await chromium.launch({headless:true}),p=await b.newPage({viewport:{width:1440,height:1000}}),errors=[];p.on('pageerror',e=>errors.push(e.message));p.on('console',m=>m.type()==='error'&&errors.push(m.text()));try{await p.goto(base);const cap=(await p.locator('.font-mono').textContent()).trim();await p.getByPlaceholder('Username').fill('ack');await p.getByPlaceholder('Password').fill('local');await p.getByPlaceholder('Enter captcha').fill(cap);await p.getByRole('button',{name:'Login'}).click();await p.waitForURL('**/app/dashboard');await p.goto(`${base}/app/fulfillment/order-acknowledgement`);await p.getByRole('button',{name:/^Pending Acknowledgement \(/}).waitFor();await p.getByRole('button',{name:/^Acknowledgement History \(/}).waitFor();for(const a of['Search','Reset','Accept','Reject','Export'])await p.getByRole('button',{name:a,exact:true}).waitFor();for(const size of['20','50','100','200'])await p.getByLabel('Records per Page').selectOption(size);for(const h of['Ext Order No','Order No','Channel Name','Order Type','Order Date','SKU Code','SKU Desc','Walkin Location','Fulfillment Location','Order Qty','Line No','Line Amount','Image','Customer Address','Lot','UDFs'])await p.getByRole('columnheader',{name:h,exact:true}).first().waitFor();await p.getByRole('button',{name:'Accept',exact:true}).click();await p.getByText('No order(s) selected to Acknowledge').waitFor();await p.getByRole('button',{name:'Reject',exact:true}).click();await p.getByText('No order(s) selected to Reject').waitFor();await p.getByRole('button',{name:/^Acknowledgement History \(/}).click();await p.getByRole('button',{name:'Accept',exact:true}).waitFor({state:'detached'});await p.getByRole('button',{name:'Reset',exact:true}).click();assert.equal(await p.locator('vite-error-overlay').count(),0);assert.deepEqual(errors.filter(e=>!e.includes('status of 400')),[]);console.log('PASS Order Acknowledgement: live tabs/search/actions/grid, accept/reject validation and lifecycle, export, paging, reset, and clean browser state.')}finally{await b.close()}
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+
+// Use only an isolated in-memory store; never mutate a configured tenant.
+process.env.MONGODB_URI = '';
+process.env.DMILLS_REQUIRE_PERSISTENCE = '';
+process.env.INVENTORY_DATABASE_URL = '';
+process.env.INVENTORY_ALLOWED_TENANT_ID = '';
+const { find, insert } = await import('../api/mongo.js');
+const orderAcknowledgement = (await import('../api/order-acknowledgement.js')).default;
+
+async function invoke(method, body = {}) {
+  const response = {
+    statusCode: 200,
+    status(value) { this.statusCode = value; return this; },
+    json(value) { this.payload = value; return this; },
+    setHeader() {},
+  };
+  await orderAcknowledgement({ method, body, query: {}, headers: {} }, response);
+  return response;
+}
+
+const pending = await insert('fulfillment_orders', {
+  order_no: 'SAFE-ACK-PENDING', ext_order_no: 'SAFE-EXT-PENDING',
+  channel: 'SAFE-CHANNEL', sku_code: 'SAFE-ACK-SKU', qty: 2,
+  status: 'Pending', ack_status: 'Pending Acknowledgement',
+});
+const history = await insert('fulfillment_orders', {
+  order_no: 'SAFE-ACK-HISTORY', ext_order_no: 'SAFE-EXT-HISTORY',
+  channel: 'SAFE-CHANNEL', sku_code: 'SAFE-ACK-SKU', qty: 1,
+  status: 'Pending', ack_status: 'Rejected', rejection_reason: 'Out of Stock',
+});
+const oldAudit = await insert('generic_records', {
+  module: 'order-acknowledgement-audit', order_no: history.order_no, action: 'Rejected',
+});
+
+const meta = await invoke('GET');
+assert.equal(meta.payload.available, false);
+assert.equal(meta.payload.dataTrust, 'legacy-unverified');
+const pendingSearch = await invoke('POST', { action: 'search', tab: 'pending', rows: 20, page: 1 });
+assert.equal(pendingSearch.payload.rows[0].orderNo, pending.order_no);
+assert.equal(pendingSearch.payload.rows[0].trust, 'legacy-unverified');
+const historySearch = await invoke('POST', { action: 'search', tab: 'history', rows: 20, page: 1 });
+assert.equal(historySearch.payload.rows[0].orderNo, history.order_no);
+
+for (const body of [
+  { action: 'accept', ids: [pending.id] },
+  { action: 'reject', ids: [pending.id], rejectionReason: 'Out of Stock', rejectionRemarks: 'Safe test' },
+]) {
+  const result = await invoke('POST', body);
+  assert.equal(result.statusCode, 501);
+  assert.match(result.payload.error, /authenticated channel connector/);
+}
+const audit = await invoke('POST', { action: 'audit', orderNo: history.order_no });
+assert.equal(audit.payload.trust, 'legacy-unverified');
+assert.equal(audit.payload.rows[0].trust, 'legacy-unverified');
+assert.deepEqual(await find('fulfillment_orders', { id: pending.id }), [pending]);
+assert.deepEqual(await find('generic_records', { module: 'order-acknowledgement-audit' }), [oldAudit]);
+
+const ui = await readFile(new URL('../src/eretail/modules/OrderAcknowledgement.tsx', import.meta.url), 'utf8');
+assert.match(ui, /Provider acknowledgement is unavailable until an authenticated channel connector/);
+assert.doesNotMatch(ui, /action: 'accept'|action: 'reject'|Confirm Reject/);
+console.log('PASS Order Acknowledgement: search is read-only, provider actions fail closed, and neither order status nor audit history changes.');

@@ -1,135 +1,27 @@
-# Vin eRetail — Omnichannel OMS & WMS Clone
+# D-Mills Global Private Limited
 
-A full-stack clone of the Vin eRetail (Vinculum) omnichannel retail console — built with
-**React + TypeScript + Vite + Tailwind** on the frontend and an **Express + MongoDB**
-backend. Includes the verified eRetail UI shell (blue header, dark icon rail with flyout
-mega-menus), all Fulfillment sub-modules, Master/Procurement/Sales/Inventory/CRM/Reports
-screens, and an exclusive **Fulfillment Control Tower** dashboard.
+Order and inventory management console built with React, TypeScript, Vite, Express, and MongoDB.
 
-> 🧸 **New here or non-technical?** Read [**GUIDE.md**](./GUIDE.md) — a super-simple,
-> kid-friendly walkthrough that explains every term and every section in plain English.
+## Start locally
 
----
+1. Install Node.js 20.19 or newer and run `npm install`.
+2. Copy `.env.example` to `.env`.
+3. Set `DMILLS_ADMIN_USER`. Run `node scripts/hash-admin-password.mjs` in a terminal, enter a private password, and put the generated `DMILLS_ADMIN_PASSWORD_HASH` value in `.env`.
+4. Set `MONGODB_URI` and `MONGODB_DB` for persistent storage. With no URI, local development uses an empty in-memory store and loses entered data on restart. If a configured MongoDB connection fails, legacy data requests fail instead of writing to memory. Production (`NODE_ENV=production`) requires reachable MongoDB even if `DMILLS_REQUIRE_PERSISTENCE` is omitted or false. Setting `DMILLS_REQUIRE_PERSISTENCE=true` also enforces this outside production; the Render service sets this flag explicitly.
+5. Run `npm run build`, then `npm run dev:server`. Open `http://localhost:3002` and sign in with your configured administrator account.
 
-## 1. Run locally in VS Code
+Use the `DMILLS_ADMIN_USER` value as the Login Id and the original password entered into `hash-admin-password.mjs` as the password; do not paste the hash into the login form. `.env.example` is only a template. After changing `.env`, restart the server so it loads the new settings. If login says "Invalid login credentials" and the original password is unknown, generate a new hash with the script, replace `DMILLS_ADMIN_PASSWORD_HASH` in `.env`, and restart the server.
 
-### Prerequisites
-- [Node.js 18+](https://nodejs.org) (Node 20 recommended — see `.nvmrc`)
-- A free [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) database
-  (optional — the app runs on an in-memory store if you skip this)
+The source does not seed products, warehouses, customers, vendors, orders, channels, or credentials. Use the Master menus to enter your own company, location, SKU, and trading partner records, then create or connect channels before processing orders. Some screens still contain reference-derived option catalogs or workflow placeholders; audit and replace those before production use. Marketplace actions require real connector configuration and credential testing. Do not treat a saved channel record as a working integration.
 
-### Steps
-```bash
-# 1. Install dependencies
-npm install
+## Configuration
 
-# 2. Create your env file and fill in your MongoDB URI
-cp .env.example .env
-#    then edit .env  (see "Environment variables" below)
+All secrets belong in environment variables or a secret manager, never in source control. `.env.example` contains the current server settings. Existing MongoDB collections are **not** erased automatically; inspect and clean any old database separately before connecting it to this site. Render readiness checks require MongoDB, PostgreSQL, and configured administrator authentication before the web service is marked ready.
 
-# 3. Start BOTH the frontend (Vite) and the API server (Express) together
-npm run dev
-```
-- Frontend dev server: **http://localhost:5173**
-- API server:          **http://localhost:3002** (Vite proxies `/api` → this automatically)
+Central Inventory now contains Unified orders, Returns, Mobile team, and Connection health. The real Shopify store has read-only order observation enabled; live stock publication and WhatsApp delivery still require the permissions, mappings, public HTTPS callback and Meta Cloud API setup described in [the implementation status](docs/CENTRAL_INVENTORY_IMPLEMENTATION.md).
 
-> Prefer two terminals? Run `vite` in one and `npm run dev:server` in another.
+The central inventory ledger uses PostgreSQL separately from the existing MongoDB screens. Configure `INVENTORY_DATABASE_URL`, `INVENTORY_CREDENTIAL_KEY`, and `INVENTORY_ALLOWED_TENANT_ID`, then run `npm run inventory:migrate`. Generate a 32-byte key with `openssl rand -hex 32`, store it in the deployment secret manager, and keep a protected backup; losing or changing the key prevents decryption of saved integration credentials. Use the same stable key across the web and worker services. For local development, `npm run dev` starts the web page, API, and a supervised inventory worker together; the worker restarts after a failure and a PostgreSQL lease prevents duplicate workers for the same tenant. Shopify read-only order checks run every minute while the app is running. For production, run `npm run inventory:worker` as a managed service alongside the web server. The Render blueprint declares it as a separate background worker; syncing that blueprint creates a separate compute service. See [the implementation status](docs/CENTRAL_INVENTORY_IMPLEMENTATION.md) before activating mappings. MongoDB setup and cutover of legacy order/inventory screens to the PostgreSQL ledger remain separate work.
 
-### Login
-The local replica uses mock authentication and does not include live-demo credentials.
-Enter any non-empty username and password to access the local console.
+## Checks
 
----
-
-## 2. Environment variables
-
-Copy `.env.example` → `.env` and set these:
-
-| Variable | Description |
-|---|---|
-| `MONGODB_URI` | Your MongoDB Atlas connection string. Leave blank to use the in-memory fallback. |
-| `MONGODB_DB` | Database name (default `eretail`). |
-| `PORT` | API port (default `3002`; Render sets this automatically). |
-
-> `.env` is git-ignored. Never commit real secrets.
-
-### Database collections (auto-created)
-On first connect, the app **automatically creates and seeds** these MongoDB collections:
-`skus`, `partners`, `sale_orders`, `purchase_orders`, `grn`, `inventory`,
-`stock_transfers`, `returns`, `fulfillment_orders`, `picklists`, `shipments`,
-`generic_records`. No manual schema step needed.
-
-📖 For a full walkthrough of creating the MongoDB database and accessing it as an **admin**
-(via the Atlas dashboard, MongoDB Compass, or the VS Code MongoDB extension), see
-[**db/DATABASE_SETUP.md**](./db/DATABASE_SETUP.md).
-
----
-
-## 3. Push to GitHub
-
-```bash
-git init
-git add .
-git commit -m "Initial commit: Vin eRetail clone"
-git branch -M main
-git remote add origin https://github.com/<your-username>/<your-repo>.git
-git push -u origin main
-```
-
----
-
-## 4. Deploy on Render
-
-This app runs as a **single Node web service** (Express serves both the API and the
-built React app).
-
-### Option A — Blueprint (uses `render.yaml`)
-1. Push the repo to GitHub (step 3).
-2. In Render: **New + → Blueprint** → connect your repo.
-3. Render reads `render.yaml`, runs the build, and starts the server.
-4. Add your secret env vars in the Render dashboard (they are marked `sync:false`).
-
-### Option B — Manual Web Service
-1. In Render: **New + → Web Service** → connect your repo.
-2. Settings:
-   - **Runtime:** Node
-   - **Build Command:** `npm install && npm run build`
-   - **Start Command:** `npm start`
-3. Add the environment variables from the table above.
-4. Deploy. Render gives you a public `https://<your-app>.onrender.com` URL.
-
-> The server listens on `process.env.PORT` (Render provides it), falling back to `3002`
-> locally.
-
----
-
-## Scripts
-
-| Command | Description |
-|---|---|
-| `npm run dev` | Both Vite and the Express API server (recommended) |
-| `npm run dev:server` | Express API server only |
-| `npm run dev:all` | Alias for `npm run dev` |
-| `npm run build` | Type-check + build the frontend into `dist/` |
-| `npm start` | Production: serve `dist/` + API via Express |
-| `npm run lint` | Run ESLint |
-
----
-
-## Project structure
-```
-api/            Serverless-style API handlers (also mounted by Express)
-  mongo.js      MongoDB data layer (find/insert/update/remove) + in-memory fallback
-  seed.js       Sample data used to seed MongoDB / the in-memory store
-  *.js          One file per resource (skus, sale-orders, fulfillment, …)
-src/
-  eretail/      Verified eRetail shell, menus, Fulfillment modules, Control Tower
-  pages/        Master / Procurement / Sales / Inventory / CRM / Reports screens
-  components/   Shared UI (Modal, DataTable, etc.)
-  context/      Auth context
-server.js       Express server (API + static frontend) — entry point for Render
-render.yaml     Render Blueprint
-```
-
-## Tech
-React 19 · TypeScript · Vite 7 · Tailwind CSS 4 · Express 4 · MongoDB · lucide-react
+Run `npm run typecheck`, `npm run build`, and the isolated PostgreSQL tests `npm run test:central-inventory`, `npm run test:central-inventory-api`, and `npm run test:inventory-publish-order` one at a time. Browser and real-provider workflow verification are still required before production use.

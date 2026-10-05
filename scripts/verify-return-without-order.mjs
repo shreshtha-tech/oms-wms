@@ -1,20 +1,64 @@
 import assert from 'node:assert/strict';
+import { randomBytes, scryptSync } from 'node:crypto';
 import { chromium } from 'playwright';
-const base=process.env.ERETAIL_BASE_URL||'http://127.0.0.1:3011';
-async function send(body){const r=await fetch(base+'/api/return-without-order',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)});return{r,x:await r.json()}}
-const meta=await(await fetch(base+'/api/return-without-order')).json();
-assert.equal(meta.reasons.length,77);assert.equal(meta.defaultReason,'4');assert.equal(meta.report.reportID,'RPT006');assert.equal(meta.columns.length,11);
-let z=await send({action:'customer',custCode:'NO-SUCH-CUSTOMER'});assert.equal(z.r.status,400);
-z=await send({action:'customer',custCode:'999999'});assert.equal(z.x.map.ClientId,'0-DummyClient');
-z=await send({action:'scan',custCode:'999999',scannedSkuCode:'NO-SUCH-SKU',scannQty:1,reason:'4'});assert.equal(z.x.error,'SKU is not associated with Picklist for Picking.');
-const sku=(await(await fetch(base+'/api/skus')).json())[0];z=await send({action:'scan',custCode:'999999',scannedSkuCode:sku.sku_code,scannQty:2,reason:'4'});const draft=z.x;assert.equal(draft.lines[0].reason,'Wrong Product Shipped');
-z=await send({action:'confirm',returnNo:draft.returnCode,remarks:''});assert.equal(z.x.error,'Remark is Mandatory.');z=await send({action:'confirm',returnNo:draft.returnCode,remarks:'Verified'});assert.equal(z.x.status,'Confirmed');assert.ok(z.x.inboundNo);z=await send({action:'print',returnNo:draft.returnCode});assert.equal(z.x.reportID,'RPT006');
-const b=await chromium.launch({headless:true}),p=await b.newPage({viewport:{width:1800,height:1000}}),errors=[];p.on('pageerror',e=>errors.push(e.message));p.on('console',m=>m.type()==='error'&&errors.push(m.text()));
-try{
- await p.goto(base);const cap=(await p.locator('.font-mono').textContent()).trim();await p.getByPlaceholder('Username').fill('returnwo');await p.getByPlaceholder('Password').fill('local');await p.getByPlaceholder('Enter captcha').fill(cap);await p.getByRole('button',{name:'Login'}).click();await p.waitForURL('**/app/dashboard');await p.goto(base+'/app/m/return-wo-order');
- await p.getByLabel('Customer Code').fill('999999');await p.getByLabel('Customer Code').press('Enter');await p.getByLabel('Scan SKU').waitFor();assert.equal(await p.getByLabel('Qty').inputValue(),'1');assert.equal(await p.getByLabel('Reason').inputValue(),'4');assert.equal(await p.getByLabel('Reason').locator('option').count(),77);
- await p.getByLabel('Scan SKU').fill('INVALID-SKU');await p.getByRole('button',{name:'Scan',exact:true}).click();await p.getByText('SKU is not associated with Picklist for Picking.').waitFor();errors.length=0;
- await p.getByLabel('Scan SKU').fill(sku.sku_code);await p.getByRole('button',{name:'Scan',exact:true}).click();await p.getByRole('button',{name:'Delete',exact:true}).waitFor();for(const h of meta.columns)assert.ok(await p.getByRole('columnheader',{name:h,exact:true}).count());
- await p.getByRole('button',{name:'Delete',exact:true}).click();await p.getByRole('button',{name:'Delete',exact:true}).waitFor({state:'detached'});await p.getByLabel('Scan SKU').fill(sku.sku_code);await p.getByRole('button',{name:'Scan',exact:true}).click();await p.getByRole('button',{name:'Delete',exact:true}).waitFor();
- await p.getByLabel('Remarks').fill('Browser verified');const confirmed=p.waitForResponse(r=>r.url().endsWith('/api/return-without-order')&&r.request().postData()?.includes('"action":"confirm"'));p.once('dialog',d=>d.accept());await p.getByRole('button',{name:'Confirm',exact:true}).click();const confirmResponse=await confirmed,confirmedDoc=await confirmResponse.json();assert.equal(confirmedDoc.status,'Confirmed');assert.ok(confirmedDoc.inboundNo);await p.getByRole('button',{name:'Print'}).click();await p.getByText(/Customer Return \(RPT006\) ready as PDF/).waitFor();assert.deepEqual(errors,[]);console.log('PASS Return Without Order: staged customer/SKU scan, 77 reasons, validation, 11-column grid, delete, persisted confirm/inbound, RPT006 print, clean console.');
-}finally{await b.close()}
+const testDatabase=new URL(process.env.INVENTORY_DATABASE_URL||'');if(!['localhost','127.0.0.1','[::1]'].includes(testDatabase.hostname)||!/^codexqa_test_reliable_[a-f0-9]{12}$/.test(testDatabase.pathname.slice(1)))throw new Error('Use a local isolated test/contract inventory database');
+const password = 'LocalReturnCheck123!';
+const salt = randomBytes(16).toString('hex');
+process.env.PORT = process.env.ERETAIL_TEST_PORT || '3026';
+process.env.MONGODB_URI = '';
+process.env.DMILLS_ADMIN_USER = 'returncheck';
+process.env.DMILLS_ADMIN_PASSWORD_HASH = `${salt}:${scryptSync(password, salt, 64).toString('hex')}`;
+const { migrateInventory } = await import('../inventory/db.js');await migrateInventory();const { insert } = await import('../api/mongo.js');
+await import('../server.js');
+const base = `http://127.0.0.1:${process.env.PORT}`;
+for (let attempt = 0; attempt < 30; attempt++) {
+  try { if ((await fetch(`${base}/api/auth/session`)).ok) break; }
+  catch { /* server is starting */ }
+  await new Promise(resolve => setTimeout(resolve, 200));
+}
+
+let browser;
+let failed = false;
+try {
+  browser = await chromium.launch({ headless: true, channel: 'chrome' });
+  const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+  await page.goto(`${base}/login`);
+  await page.getByRole('textbox', { name: 'Login Id' }).fill('returncheck');
+  await page.getByLabel('Password').fill(password);
+  await page.getByRole('button', { name: 'Login' }).click();
+  await page.waitForURL('**/app/dashboard');
+  const request = page.request;
+  const empty = await (await request.get(`${base}/api/return-without-order`)).json();
+  assert.deepEqual(empty.reasons, []);
+  const invalid = await request.post(`${base}/api/return-without-order`, { data: { action: 'customer', custCode: '999999' } });
+  assert.equal(invalid.status(), 400);
+  await insert('partners', { type: 'Customer', code: 'DM-CUST', name: 'D-Mills Customer', client_id: '101' });
+  await insert('skus', { sku_code: 'DM-SKU', name: 'D-Mills Product', sale_price: 25 });
+
+  await page.goto(`${base}/app/m/return-wo-order`);
+  await page.getByLabel('Customer Code').fill('DM-CUST');
+  await page.getByRole('button', { name: 'Find Customer' }).click();
+  await page.getByLabel('New return reason').fill('Damaged packaging');
+  await page.getByRole('button', { name: 'Add Reason' }).click();
+  await page.getByLabel('Reason', { exact: true }).selectOption({ label: 'Damaged packaging' });
+  await page.getByLabel('Scan SKU').fill('DM-SKU');
+  await page.getByRole('button', { name: 'Scan', exact: true }).click();
+  await page.getByText('D-Mills Product').waitFor();
+  const records = await request.get(`${base}/api/return-without-order`);
+  assert.deepEqual((await records.json()).reasons.map(row => row[1]), ['Damaged packaging']);
+  await page.getByLabel('Remarks').fill('Packaging damaged on arrival');
+  page.once('dialog', dialog => void dialog.accept());
+  await page.getByRole('button', { name: 'Confirm' }).click();
+  await page.waitForFunction(() => [...document.querySelectorAll('main')].some(element => element.textContent?.includes('StatusConfirmed')));
+  assert.equal(await page.getByText('Inbound No', { exact: true }).count(), 0);
+  await page.getByRole('button', { name: 'Print' }).click();
+  await page.getByText('Choose export format').waitFor();
+  assert.equal(await page.getByText('Customer Return (RPT006)').count(), 0);
+  console.log('PASS Return Without Order: empty reasons, configured customer/SKU/reason, persisted scan, confirmation and real PDF dialog');
+} catch (error) {
+  failed = true;
+  console.error(error);
+} finally {
+  await browser?.close();
+  process.exit(failed ? 1 : 0);
+}

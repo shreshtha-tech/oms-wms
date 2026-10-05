@@ -1,4 +1,6 @@
-import { find, findOne, insert, update, cors } from './mongo.js';
+import { sendDatabaseUnavailable, find, findOne, insert, update, cors } from './mongo.js';
+import { locationPairs } from './catalogs.js';
+import { currentUser } from './auth-session.js';
 
 const clean = (value) => String(value ?? '').trim();
 const today = () => new Date().toISOString().slice(0, 10);
@@ -38,10 +40,14 @@ export default async function handler(req, res) {
       const all = await find('procurement_buyers');
       const current = clean(body.buyer_code) ? await findOne('procurement_buyers', { buyer_code: clean(body.buyer_code) }) : null;
       if (all.some((row) => row.id !== current?.id && clean(row.buyer_name).toLowerCase() === clean(body.buyer_name).toLowerCase())) return res.status(409).json({ error: 'Buyer Name already exists.' });
-      const data = { buyer_code: current?.buyer_code || String(Math.max(0, ...all.map((row) => Number(row.buyer_code) || 0)) + 1), buyer_name: clean(body.buyer_name), description: clean(body.description), email: clean(body.email), phone: clean(body.phone), alternate_phone: clean(body.alternate_phone), active: body.active !== false, categories: Array.isArray(body.categories) ? body.categories : [], udf: Array.from({ length: 5 }, (_, index) => clean(body.udf?.[index])), location: current?.location || 'UPSL Warehouse', created_by: current?.created_by || 'Local User', created_date: current?.created_date || today(), updated_by: 'Local User', updated_date: today() };
+      const location = clean(body.location);
+      if (location && !(await locationPairs()).some(([code]) => code === location)) return res.status(400).json({ error: 'Select a configured location.' });
+      const actor = currentUser(req)?.username || 'unknown';
+      const data = { buyer_code: current?.buyer_code || String(Math.max(0, ...all.map((row) => Number(row.buyer_code) || 0)) + 1), buyer_name: clean(body.buyer_name), description: clean(body.description), email: clean(body.email), phone: clean(body.phone), alternate_phone: clean(body.alternate_phone), active: body.active !== false, categories: Array.isArray(body.categories) ? body.categories : [], udf: Array.from({ length: 5 }, (_, index) => clean(body.udf?.[index])), location, created_by: current?.created_by || actor, created_date: current?.created_date || today(), updated_by: actor, updated_date: today() };
       const saved = current ? (await update('procurement_buyers', current.id, data))[0] : await insert('procurement_buyers', data);
       return res.status(current ? 200 : 201).json(saved);
     }
     return res.status(405).json({ error: 'Method not allowed.' });
-  } catch (error) { console.error('Category Buyers API error:', error); return res.status(500).json({ error: error.message || 'Unable to process Category Buyer.' }); }
+  } catch (error) {
+    if (sendDatabaseUnavailable(res, error)) return; console.error('Category Buyers API error:', { name: error?.name, code: error?.code }); return res.status(500).json({ error: error.message || 'Unable to process Category Buyer.' }); }
 }

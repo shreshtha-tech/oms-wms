@@ -1,0 +1,15 @@
+# 002 Customer Master — current contract
+
+Current status UNVERIFIED for the full module. Evidence: source review plus selected isolated memory API checks, 2026-10-02. `/app/customers` renders CustomerMaster/shared TradingPartnerReplica; server mounts api/customers.js at /api/customers and /api/jsonCustEnqSearch behind configured-admin session authentication.
+
+Legacy partners collection stores rows with type Customer; related customer-group metadata is in generic_records. Queries are unscoped by tenant. No role-specific handler checks or owner assignment is established. GET lists customers; enquiry POST implements filtered paginated results. Create requires name/type and valid group; rejects assignment of inactive groups. Prechecks email/contact/GSTIN duplicates, inserts partner then writes generated CUS numeric-id code in a second operation. Update preserves customer code/creation metadata, validates group and duplicates, writes modified actor/date; merges a pre-read snapshot with supplied fields. DELETE is blocked 409. No direct Central Inventory/provider call is observed; historical order/return dependencies need readback.
+
+Reproduced and fixed create accepting caller numeric identity: handler now strips id/_id on POST and _id on PUT. scripts/verify-customer-boundaries.mjs passes allocated identity, distinct generated codes, original record preservation, server actor and deletion guard in memory. No configured storage/browser/LIVE proof.
+
+Open: insert/code assignment failure atomicity; concurrent contact uniqueness (read-before-write only); whole-snapshot update overwrites; inactive/customer-type transition rules; ownership/roles; legacy partner writer bypasses; historical order/return names; group operations; pagination/date semantics; configured persistence and complete browser/LIVE fidelity. Business owner unknown. G0/G5/G6/G7 remain open. No additional business rules were inferred.
+
+Current create-path follow-up: insertCustomer derives CUS code from allocated id and inserts the complete customer document once, replacing the historical two-write path. Disposable Mongo validator requires code fields on initial insert: old code failed, new code passed. Rejected insert leaves no partial row; ten concurrent distinct creates have distinct codes. Sequence gaps on failure are possible. Contact uniqueness, updates, configured persistence and full module behavior remain unverified.
+
+Primary-contact follow-up: repeated contact was incorrectly accepted because duplicate checks queried shipping phone instead of stored contact. Create/update now query contact; isolated memory and disposable Mongo sequential duplicate tests pass with separate shipping phones. Concurrent contact uniqueness and historical mixed field shapes remain open.
+
+Shared-writer follow-up: /api/partners now fails closed for this dedicated master on create/edit/delete and conversion, based on requested and stored type/partner_type. Memory regression covers guard preservation and array-id rejection. Mongo/browser/configured proof remains open.

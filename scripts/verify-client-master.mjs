@@ -32,7 +32,7 @@ try {
   await page.getByLabel('Client ID').evaluate((element) => new Promise((resolve, reject) => { const started = Date.now(); const check = () => element === document.activeElement ? resolve(true) : Date.now() - started > 1000 ? reject(new Error('Client ID did not receive focus after Reset')) : setTimeout(check, 10); check(); }));
   assert.equal(requests.length, 1, 'Reset made a request although LIVE only clears the grid');
   await module.getByRole('button', { name: 'Download', exact: true }).click();
-  await page.getByText('No data found in the grid to export.User Creation', { exact: true }).waitFor();
+  await page.getByText('No data found in the grid to export.', { exact: true }).waitFor();
   await page.getByRole('button', { name: 'Dismiss message' }).click();
   await module.getByRole('button', { name: 'Add New', exact: true }).click();
   await page.getByText('Client Create/Edit').waitFor();
@@ -40,7 +40,8 @@ try {
   for (const tab of ['Client Master','User Defined Fields','Client Location Link','User Creation','Other Settings']) await editor.getByRole('button', { name: tab, exact: true }).waitFor();
   for (const label of ['Client Name','Client ID','Client Short Name','Is Billing Required','Ext Client Code','Address1','Address2','Contact Person','Phone','Email','City','Pincode']) await editor.getByText(label, { exact: true }).waitFor();
   assert.deepEqual(await editor.locator('[data-client-field="status"] option').allTextContents(), ['--- Select ---','InActive','Active']);
-  assert.deepEqual(await editor.locator('[data-client-field="client_currency"] option').allTextContents(), ['--- Select ---']);
+  const clientCurrencies = await editor.locator('[data-client-field="client_currency"] option').allTextContents();
+  assert.ok(clientCurrencies.includes('Indian Rupee') && clientCurrencies.includes('US Dollar'), 'Client currency choices must reuse the configured partner currency catalog.');
   assert.equal(await editor.locator('[data-client-field="country"] option').count(), 281);
   assert.equal(await editor.locator('[data-client-field="state"] option').count(), 501);
   await editor.getByRole('button', { name: 'Save', exact: true }).click();
@@ -49,10 +50,15 @@ try {
   for (const label of ['Spare part','Item Details','UDF 3','UDF 4','UDF 5']) await editor.getByText(label, { exact: true }).waitFor();
   await editor.getByRole('button', { name: 'Client Location Link', exact: true }).click();
   assert.deepEqual(await editor.locator('thead tr').first().getByRole('columnheader').allTextContents(), ['Location Code - Name','Ext. Location Code','Status','Return Address1','Return Address2','Pincode']);
+  assert.equal(await editor.getByRole('button', { name: 'Add New Location', exact: true }).isDisabled(), true);
+  assert.equal(await editor.getByRole('button', { name: 'Save', exact: true }).isDisabled(), true);
   await editor.getByRole('button', { name: 'User Creation', exact: true }).click();
   assert.deepEqual(await editor.locator('thead tr').first().getByRole('columnheader').allTextContents(), ['User Id','First Name *','Last Name *','Email ID','Phone','Status']);
+  assert.equal(await editor.getByRole('button', { name: 'Add New', exact: true }).last().isDisabled(), true);
   await editor.getByRole('button', { name: 'Other Settings', exact: true }).click();
   for (const label of ['Invoice Report','Label Report','Total Shelf Life','Shelf Life on Receiving (No. of Days)','Shelf Life on Picking']) await editor.getByText(label).first().waitFor();
+  assert.equal(await editor.getByLabel('Invoice Report').isDisabled(), true);
+  assert.equal(await editor.getByLabel('Label Report').isDisabled(), true);
   const invalid = await page.request.post(`${base}/api/clients`, { data: { client_id: 'abc' } });
   assert.equal(invalid.status(), 400);
   assert.deepEqual(errors, []);

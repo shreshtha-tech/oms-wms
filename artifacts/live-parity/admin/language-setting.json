@@ -1,0 +1,652 @@
+{
+  "url": "https://demo.vineretail.com/eRetailWeb/displayVinLanguageAction",
+  "title": "",
+  "text": "Search\tReset\nAdmin Language Setting\nLanguage\nEnglish\nThai/\u0e44\u0e17\u0e22\nBahasa\nSimple Chinese/\u7b80\u5355\u7684\u4e2d\u6587\nVietnamese/Ti\u1ebfng Vi\u1ec7t\nHindi/\u0939\u093f\u0902\u0926\u0940\nArabic (Saudi Arabia)\nType\n--- Select ---\nUser Master UDF\nCustomer UDF\nInbound Charges\nInbound UDF\nLocation UDF\nLottable Validation Lottables\nManage SKU Lot Transfer Lottables\nNormal\nOrder UDF\nPO UDF\nSKU Lot Transfer By Scan Lottables\nSKU UDF\nStock Adjustment Lottables\nTranshipment UDF\nVendor UDF\nVendorReturn UDF\nProperty Key\nProperty Value\n\u00a0\nProperty Key\n\t\n\u00a0\nDefault Value\n\t\n\u00a0\nEnglish\n\t\n\u00a0\n\t\t\t\n\t\n\t\n\t\n\tPage  of 0\t\n\t\n\t\n\t\n20\n50\n100\n200\n\tNo records to view",
+  "controls": [
+    {
+      "tag": "BUTTON",
+      "id": "searchBtn",
+      "name": "",
+      "type": "button",
+      "text": "Search",
+      "value": "",
+      "disabled": false,
+      "visible": true,
+      "title": "Search",
+      "onclick": "callSearch();",
+      "onchange": null,
+      "geometry": {
+        "x": 958.828125,
+        "y": 4,
+        "width": 79.171875,
+        "height": 30,
+        "font": "12px / 18px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(255, 255, 255)",
+        "background": "rgb(243, 156, 18)"
+      }
+    },
+    {
+      "tag": "BUTTON",
+      "id": "",
+      "name": "",
+      "type": "button",
+      "text": "Reset",
+      "value": "",
+      "disabled": false,
+      "visible": true,
+      "title": "Clear Search",
+      "onclick": "resetData();",
+      "onchange": null,
+      "geometry": {
+        "x": 1048,
+        "y": 4,
+        "width": 75,
+        "height": 30,
+        "font": "12px / 18px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(68, 68, 68)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "Admin",
+      "visible": true,
+      "title": "",
+      "onclick": "return false;",
+      "onchange": null,
+      "geometry": {
+        "x": 15,
+        "y": 6,
+        "width": 50.1640625,
+        "height": 17.140625,
+        "font": "12px / 17.1429px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(68, 68, 68)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "Language Setting",
+      "visible": true,
+      "title": "",
+      "onclick": "return false;",
+      "onchange": null,
+      "geometry": {
+        "x": 88.84375,
+        "y": 6,
+        "width": 100.671875,
+        "height": 17.140625,
+        "font": "12px / 17.1429px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(68, 68, 68)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "tag": "SELECT",
+      "id": "language",
+      "name": "language",
+      "type": "select-one",
+      "text": "",
+      "value": "1",
+      "disabled": false,
+      "visible": true,
+      "title": "",
+      "onclick": null,
+      "onchange": "callSearch();",
+      "options": [
+        {
+          "text": "English",
+          "value": "1"
+        },
+        {
+          "text": "Thai/\u0e44\u0e17\u0e22",
+          "value": "2"
+        },
+        {
+          "text": "Bahasa",
+          "value": "3"
+        },
+        {
+          "text": "Simple Chinese/\u7b80\u5355\u7684\u4e2d\u6587",
+          "value": "4"
+        },
+        {
+          "text": "Vietnamese/Ti\u1ebfng Vi\u1ec7t",
+          "value": "5"
+        },
+        {
+          "text": "Hindi/\u0939\u093f\u0902\u0926\u0940",
+          "value": "6"
+        },
+        {
+          "text": "Arabic (Saudi Arabia)",
+          "value": "8"
+        }
+      ],
+      "geometry": {
+        "x": 183.609375,
+        "y": 44.1953125,
+        "width": 200.046875,
+        "height": 24,
+        "font": "13px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(85, 85, 85)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "SELECT",
+      "id": "propertyType",
+      "name": "propertyType",
+      "type": "select-one",
+      "text": "",
+      "value": "-1",
+      "disabled": false,
+      "visible": true,
+      "title": "",
+      "onclick": null,
+      "onchange": "callSearch();",
+      "options": [
+        {
+          "text": "--- Select ---",
+          "value": "-1"
+        },
+        {
+          "text": "User Master UDF",
+          "value": "15"
+        },
+        {
+          "text": "Customer UDF",
+          "value": "10"
+        },
+        {
+          "text": "Inbound Charges",
+          "value": "14"
+        },
+        {
+          "text": "Inbound UDF",
+          "value": "7"
+        },
+        {
+          "text": "Location UDF",
+          "value": "6"
+        },
+        {
+          "text": "Lottable Validation Lottables",
+          "value": "3"
+        },
+        {
+          "text": "Manage SKU Lot Transfer Lottables",
+          "value": "13"
+        },
+        {
+          "text": "Normal",
+          "value": "0"
+        },
+        {
+          "text": "Order UDF",
+          "value": "4"
+        },
+        {
+          "text": "PO UDF",
+          "value": "5"
+        },
+        {
+          "text": "SKU Lot Transfer By Scan Lottables",
+          "value": "12"
+        },
+        {
+          "text": "SKU UDF",
+          "value": "1"
+        },
+        {
+          "text": "Stock Adjustment Lottables",
+          "value": "9"
+        },
+        {
+          "text": "Transhipment UDF",
+          "value": "16"
+        },
+        {
+          "text": "Vendor UDF",
+          "value": "11"
+        },
+        {
+          "text": "VendorReturn UDF",
+          "value": "8"
+        }
+      ],
+      "geometry": {
+        "x": 557.2734375,
+        "y": 44.1953125,
+        "width": 200.046875,
+        "height": 24,
+        "font": "13px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(85, 85, 85)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "INPUT",
+      "id": "propertyKey",
+      "name": "propertyKey",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": true,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null,
+      "geometry": {
+        "x": 930.9375,
+        "y": 44.1953125,
+        "width": 200.046875,
+        "height": 24,
+        "font": "14px / 20px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(85, 85, 85)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "INPUT",
+      "id": "propertyValue",
+      "name": "propertyValue",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": true,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null,
+      "geometry": {
+        "x": 183.609375,
+        "y": 74.1953125,
+        "width": 200.046875,
+        "height": 24,
+        "font": "14px / 20px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(85, 85, 85)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "",
+      "visible": false,
+      "title": "Toggle Expand Collapse Grid",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "",
+      "name": "",
+      "type": "text",
+      "text": "",
+      "value": "1",
+      "checked": false,
+      "disabled": false,
+      "visible": true,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null,
+      "geometry": {
+        "x": 536.296875,
+        "y": 551.9453125,
+        "width": 26.5,
+        "height": 18,
+        "font": "10.8px / 15.4286px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(0, 0, 0)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "SELECT",
+      "id": "",
+      "name": "",
+      "type": "select-one",
+      "text": "",
+      "value": "20",
+      "disabled": false,
+      "visible": true,
+      "title": "Records per Page",
+      "onclick": null,
+      "onchange": null,
+      "options": [
+        {
+          "text": "20",
+          "value": "20"
+        },
+        {
+          "text": "50",
+          "value": "50"
+        },
+        {
+          "text": "100",
+          "value": "100"
+        },
+        {
+          "text": "200",
+          "value": "200"
+        }
+      ],
+      "geometry": {
+        "x": 664.59375,
+        "y": 551.8203125,
+        "width": 50,
+        "height": 18,
+        "font": "10.8px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(0, 0, 0)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "BUTTON",
+      "id": "",
+      "name": "",
+      "type": "button",
+      "text": "\u00d7",
+      "value": "",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "overrideValue",
+      "name": "",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "BUTTON",
+      "id": "saveButton",
+      "name": "",
+      "type": "button",
+      "text": "Save",
+      "value": "",
+      "disabled": false,
+      "visible": false,
+      "title": "Save(ALT+F2)",
+      "onclick": "clickSave(); return false;",
+      "onchange": null
+    },
+    {
+      "tag": "BUTTON",
+      "id": "closeButton",
+      "name": "",
+      "type": "button",
+      "text": "Close",
+      "value": "",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "BUTTON",
+      "id": "",
+      "name": "",
+      "type": "button",
+      "text": "",
+      "value": "",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": "closePickList();",
+      "onchange": null
+    },
+    {
+      "tag": "BUTTON",
+      "id": "closeBtn",
+      "name": "closeBtn",
+      "type": "button",
+      "text": "Close",
+      "value": "",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": "closePickList();",
+      "onchange": null
+    },
+    {
+      "tag": "BUTTON",
+      "id": "okButton",
+      "name": "okButton",
+      "type": "button",
+      "text": "OK",
+      "value": "",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": "okPickList();",
+      "onchange": null
+    }
+  ],
+  "headers": [
+    {
+      "text": "Property Key",
+      "id": "languageSearchGrid_propertyKey",
+      "geometry": {
+        "x": 8,
+        "y": 118.6953125,
+        "width": 246,
+        "height": 22.5,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Default Value",
+      "id": "languageSearchGrid_defaultValue",
+      "geometry": {
+        "x": 254,
+        "y": 118.6953125,
+        "width": 409,
+        "height": 22.5,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "English",
+      "id": "languageSearchGrid_langValue",
+      "geometry": {
+        "x": 663,
+        "y": 118.6953125,
+        "width": 409,
+        "height": 22.5,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "language.lbl.lang1",
+      "id": "languageSearchGrid_globalLangValue",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "language.lbl.lang1",
+      "id": "languageSearchGrid_localOverride",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "",
+      "id": "languageSearchGrid_dummy",
+      "geometry": {
+        "x": 1072,
+        "y": 118.6953125,
+        "width": 72,
+        "height": 22.5,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Created By",
+      "id": "languageSearchGrid_createdBy",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Created date",
+      "id": "languageSearchGrid_createdDate",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Modified By",
+      "id": "languageSearchGrid_updBy",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Modified Date",
+      "id": "languageSearchGrid_updDate",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "language.lbl.lang1",
+      "id": "languageSearchGrid_langId",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "isMobile",
+      "id": "languageSearchGrid_isMobile",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    }
+  ],
+  "scripts": [
+    "https://www.google-analytics.com/analytics.js",
+    "https://www.googletagmanager.com/gtag/js?id=G-H8NVRVNQXJ&cx=c&gtm=4e69m0",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/SecurityJS/AesUtil.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/SecurityJS/CryptoJS.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/SecurityJS/PBKDF2.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/SecurityJS/jsencrypt.min.3.5.4.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/moment.js2.10.2/raphael-min.js",
+    "https://www.googletagmanager.com/gtag/js?id=UA-108693828-3",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/jQuery/jQuery-3.7.1.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/jQuery/jquery-migrate-3.3.0.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/jQueryUI/jquery-ui.min.js?v=1",
+    "https://demo.vineretail.com/eRetailWeb/struts/js/plugins/jquery.subscribe.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/jqGrid_JS_5.1.0/js/jquery.jqGrid.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/jqGrid_JS_5.1.0/js/i18n/grid.locale-en.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/bootstrap/js/bootstrap.min.js?v=1",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/moment.js2.10.2/moment.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/morris/morris.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/sparkline/jquery.sparkline.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/jvectormap/jquery-jvectormap-world-mill-en.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/knob/jquery.knob.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/daterangepicker/daterangepicker.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/datepicker/bootstrap-datepicker.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/timepicker/bootstrap-timepicker.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/slimScroll/jquery.slimscroll.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/fastclick/fastclick.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/dist/js/app.min.js?v=1",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/iCheck/icheck.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/daterangepicker/jquery.timepicker.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/switch/bootstrap-switch.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/select2/select2.full.min.js?v=1",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/ckeditor/ckeditor.js?v=1",
+    "https://demo.vineretail.com/eRetailWeb/js/CommonFunctions.js?v=1.33"
+  ],
+  "handlers": {
+    "callSearch": "function callSearch() {\n\n\t\t$(\"#languageSearchGrid\").jqGrid('setGridParam', {\n\t\t\tdatatype : 'json',\n\t\t\tpage : 1\n\t\t});\n\t\t$(\"#languageSearchGrid\").jqGrid('setGridParam', {\n\t\t\tpostData : {\n\t\t\t\tlanguageId : $(\"#language\").val(),\n\t\t\t\tpropertyType : $(\"#propertyType\").val(),\n\t\t\t\tpropertyKey : $(\"#propertyKey\").val(),\n\t\t\t\tpropertyValue : $(\"#propertyValue\").val(),\n\t\t\t\tREQ_SEARCH_FLAG : true\n\t\t\t},\n\t\t\turl : \"fetchLanguageProperties\",\n\t\t\tsearch : true\n\t\t}).trigger('reloadGrid');\n\t}",
+    "resetData": "function resetData(){\n\t\t$(\"#propertyType\").val(\"-1\");\n\t\t$(\"#propertyKey\").val(\"\");\n\t\t$(\"#propertyValue\").val(\"\");\n\t\t\n\t\t$(\"#jqgh_languageSearchGrid_langValue\").html($(\"#language option:selected\").text());\n\n\t\t$(\"#languageSearchGrid\").jqGrid('clearGridData', {\n\t\t\tclearfooter : true\n\t\t});\n\t}",
+    "clickSave": "function clickSave() {\n\t\t\n\t\tif (trimString($(\"#overrideValue\").val()).toUpperCase() == trimString($(\"#defaultValue1\").html()).toUpperCase()) {\n\t\t\ttryFocusBS($(\"#overrideValue\"));\n\t\t\twindow.parent.showAlert(\"Overrided Text is should not be same as Default Text\"); \n\t\t\treturn false;\n\t\t}\n\t\t\n\t\tvar retVal = $.ajax({\n\t\t\turl: \"EditPropertyValueBS\",\n\t\t\tglobal: false,\n\t\t\ttype: \"POST\",\n\t\t\tdata: {\n\t\t\t\tpropertyKey : $(\"#propertyKey1\").html(),\n\t\t\t\toverrideValue: $(\"#overrideValue\").val(),\n\t\t\t\tlanguageId1 : $(\"#editLangId\").val(),\n\t\t\t\tisMobile : $(\"#isMobile\").val()\n\t\t\t},\n\t\t\tdataType: \"json\",\n\t\t\tasync: false\n\t\t\t}).responseText;\n\t\tretVal = jQuery.parseJSON(retVal);\n\t\t\n\t\tif(retVal!=null) {\n\t\t\tif(retVal.jsonMessage==null) {\n\t\t\t\tif(retVal.langPropertyMap!=null) {\n\t\t\t\t\tvar gridObj = $('#languageSearchGrid');\n\t\t\t\t\tvar index =gridObj.jqGrid('getInd', $(\"#editRowId\").val());\n\t\t\t\t\tvar position = 'first';\n\t\t\t\t\tvar srcRowId='';\n\t\t\t\t    if ( index == 1 ) {\n\t\t\t\t\t\tposition = 'first';\n\t\t\t\t\t} else {\n\t\t\t\t    \tposition = 'after';\n\t\t\t\t        srcRowId = gridObj.find('tr#' + $(\"#editRowId\").val()).prev()[0].id;\n\t\t\t\t    }\n\t\t\t\t\t \n\t\t\t\t    gridObj.jqGrid('delRowData', $(\"#editRowId\").val());\n\t\t\t\t    gridObj.jqGrid('addRowData', $(\"#editRowId\").val(), retVal.langPropertyMap[0], position, srcRowId);\n//\t\t\t\t\t$('#languageSearchGrid').jqGrid('setRowData', $(\"#editRowId\").val(), retVal.langPropertyMap[0]);\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\t$(\"#EditDialog\").modal('hide')\n\t\t\t\t\n\t\t\t\twindow.parent.showAlert(retVal.langDTO.createDateText); \n\t\t\t\treturn false;\n\t\t\t} else {\n\t\t\t\twindow.parent.showAlert(retVal.jsonMessage); \n\t\t\t\treturn false;\n\t\t\t}\n\t\t}\n\t\t\n\t\t\n\t}",
+    "closePickList": "function closePickList() {\n\t\t\t$(\"#pickListIFrame\").removeAttr(\"src\");\n\t\t\t$(\"#pickListDialog\").modal('hide');\n\t\t}",
+    "okPickList": "function okPickList() {\n\t\t\twindow.pickListIFrame.okClick();\n\t\t}"
+  }
+}

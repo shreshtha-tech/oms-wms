@@ -1,0 +1,28 @@
+{
+  "at": "2026-10-05",
+  "method": "Source hunk headers and exact added-line equality; values/snippets withheld",
+  "verifiedLinks": [
+    {
+      "candidateId": "C018",
+      "originCandidateId": "C049",
+      "sourcePath": "scripts/verify-whatsapp-reliability.mjs",
+      "exactAddedLineMatch": true
+    },
+    {
+      "candidateId": "C019",
+      "originCandidateId": "C050",
+      "sourcePath": "scripts/verify-whatsapp-reliability.mjs",
+      "exactAddedLineMatch": true
+    }
+  ],
+  "remainingDiffCandidates": [
+    "C005",
+    "C006",
+    "C011",
+    "C020"
+  ],
+  "limitations": [
+    "No patch execution or whole-patch security certification",
+    "Other synthetic-looking patch lines require consumer review"
+  ]
+}

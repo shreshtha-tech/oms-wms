@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+process.env.MONGODB_URI='';process.env.NODE_ENV='test';process.env.DMILLS_REQUIRE_PERSISTENCE='false';
+const store=await import('../api/mongo.js');assert.equal(await store.waitForDataReady(),'memory');
+const handler=(await import('../api/customers.js')).default;
+const call=async(method,body)=>{const res={statusCode:200,status(code){this.statusCode=code;return this;},json(value){this.value=value;return this;},setHeader(){}};await handler({method,body,user:{username:'fixture-customer'}},res);return res;};
+const first=await call('POST',{customer_name:'First',type:'1 - B2C'});assert.equal(first.statusCode,201);
+const second=await call('POST',{id:first.value.id,customer_name:'Second',type:'1 - B2C'});assert.equal(second.statusCode,201);
+assert.notEqual(first.value.id,second.value.id,'Create must not reuse caller-selected customer identity');
+assert.equal((await store.findOne('partners',{id:first.value.id})).name,'First');
+assert.notEqual(first.value.customer_code,second.value.customer_code);
+assert.equal(second.value.created_by,'fixture-customer');
+assert.equal((await call('DELETE',{id:first.value.id})).statusCode,409);
+console.log('PASS: isolated memory customer identity allocation, distinct generated codes, original record preservation, actor and deletion guard.');
+const contact=await call('POST',{customer_name:'Contact One',type:'1 - B2C',primary_contact:'fixture-primary',shipping_phone:'fixture-delivery-one'});assert.equal(contact.statusCode,201);
+assert.equal((await call('POST',{customer_name:'Contact Two',type:'1 - B2C',primary_contact:'fixture-primary',shipping_phone:'fixture-delivery-two'})).statusCode,409,'Repeated primary contact must be checked in stored contact field');
+assert.equal((await call('PUT',{id:second.value.id,primary_contact:'fixture-primary'})).statusCode,409);

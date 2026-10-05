@@ -1,11 +1,74 @@
-import{cors,find,findOne,insert,update}from'./mongo.js';const t=v=>String(v??'').trim(),now=()=>new Date().toISOString();
-const HISTORY=[['6','My Last 20 Processed Orders'],['9','Processed LPN History'],['1','Processed Orders History'],['2','Scanned SKUs History'],['3','Pending SKUs'],['7','Pack Scanned SKUs'],['15','Sort Scanned SKUs'],['8','Show PIP Orders Only'],['10','My Last 20 Processed LPN'],['4','My Last 20 Picked SKUs'],['5','My last 20 Packed SKUs'],['14','My last 20 Sorted SKUs'],['11','Sorting Completed'],['12','Sorting In-Process'],['13','Sorting Not Started']];
-const view=(pick,orders)=>({picklistNo:pick.picklist_no,picklistQty:Number(pick.total_qty)||orders.reduce((s,x)=>s+Number(x.qty||0),0),picklistStatus:pick.status,description:pick.description||'',picker:pick.picker||'Unassigned',mode:pick.pick_mode||'Orderwise',lines:orders.map(x=>({id:x.id,orderNo:x.order_no,skuCode:x.sku_code,skuName:x.sku_name,requiredQty:Number(x.qty)||0,processedQty:Number(x.picked_qty)||0,pendingQty:Math.max(0,Number(x.qty||0)-Number(x.picked_qty||0)),status:x.status,bin:x.bin||'',lpn:x.lpn_no||'',deliveryNo:x.delivery_no||''}))});
-async function load(no){const pick=(await find('picklists')).find(x=>t(x.picklist_no).toLowerCase()===t(no).toLowerCase());if(!pick)return null;const orders=(await find('fulfillment_orders')).filter(x=>x.picklist_no===pick.picklist_no);return{pick,orders}}
-export default async function handler(req,res){if(cors(req,res))return;try{const b=req.body||{};if(req.method==='GET')return res.json({scanModes:[['1','By SKU'],['2','By Order']],historyOptions:HISTORY,actions:['Short Pick / Reallocate','Pick All','Print Packing Slip','Delivery Split','Short Pack']});if(req.method!=='POST')return res.status(405).json({error:'Method not allowed'});
-if(b.action==='load'){if(!t(b.picklistNo))return res.status(400).json({error:'Please Enter PickListNo'});const data=await load(b.picklistNo);if(!data)return res.status(404).json({error:'Invalid PickListNo'});if(!data.orders.length)return res.status(409).json({error:'Pickable SKU(s) not present in this Picklist.'});if(data.pick.status==='Open')await update('picklists',data.pick.id,{status:'In Progress',start_time:now()});return res.json({dto:view({...data.pick,status:data.pick.status==='Open'?'In Progress':data.pick.status},data.orders),jsonMessage:null})}
-if(b.action==='scan'){if(!t(b.picklistNo))return res.status(400).json({error:'Please Enter PickListNo'});if(!t(b.scannedCode))return res.status(400).json({error:b.pickType==='2'?'Order is mandatory.':'Sku is mandatory.'});const data=await load(b.picklistNo);if(!data)return res.status(404).json({error:'Invalid PickListNo'});const candidates=data.orders.filter(x=>b.pickType==='2'?t(x.order_no).toLowerCase()===t(b.scannedCode).toLowerCase():[x.sku_code,x.barcode].some(v=>t(v).toLowerCase()===t(b.scannedCode).toLowerCase()));const order=candidates.find(x=>Number(x.picked_qty||0)<Number(x.qty||0));if(!order)return res.status(409).json({error:b.pickType==='2'?'Order is not pending in this Picklist.':'SKU is not pending in this Picklist.'});const add=b.pickType==='2'?Number(order.qty||0)-Number(order.picked_qty||0):Math.max(1,Number(b.bulkQty)||1),picked=Math.min(Number(order.qty||0),Number(order.picked_qty||0)+add),complete=picked>=Number(order.qty||0);await update('fulfillment_orders',order.id,{picked_qty:picked,status:complete?'Picked':'Picking',picked_date:now(),lpn_no:t(b.toIdCode)||order.lpn_no||''});await insert('generic_records',{module:'manage-picking-history',code:`PH${Date.now()}${order.id}`,picklist_no:data.pick.picklist_no,order_no:order.order_no,sku_code:order.sku_code,qty:add,scan_mode:b.pickType==='2'?'By Order':'By SKU',lpn:t(b.toIdCode),status:complete?'Picked':'Picking',created_date:now()});const refreshed=await load(b.picklistNo),done=refreshed.orders.every(x=>Number(x.picked_qty||0)>=Number(x.qty||0));if(done)await update('picklists',refreshed.pick.id,{status:'Completed',completion:100,process_qty:refreshed.orders.reduce((s,x)=>s+Number(x.qty||0),0),finished_date:now()});else await update('picklists',refreshed.pick.id,{status:'In Progress',completion:Math.round(refreshed.orders.reduce((s,x)=>s+Number(x.picked_qty||0),0)*100/refreshed.orders.reduce((s,x)=>s+Number(x.qty||0),0)),process_qty:refreshed.orders.reduce((s,x)=>s+Number(x.picked_qty||0),0)});const final=await load(b.picklistNo);return res.json({dto:view({...final.pick,status:done?'Completed':'In Progress'},final.orders),jsonMessage:null,pickingComplete:done?'Y':'N'})}
-if(b.action==='pick-all'){const data=await load(b.picklistNo);if(!data)return res.status(404).json({error:t(b.picklistNo)?'Invalid PickListNo':'Please Enter PickListNo'});if(data.orders.length>10)return res.status(400).json({error:'You can not select more than 10 rows'});for(const x of data.orders){await update('fulfillment_orders',x.id,{picked_qty:Number(x.qty)||0,status:'Picked',picked_date:now()});await insert('generic_records',{module:'manage-picking-history',code:`PH${Date.now()}${x.id}`,picklist_no:data.pick.picklist_no,order_no:x.order_no,sku_code:x.sku_code,qty:Number(x.qty)||0,scan_mode:'Pick All',status:'Picked',created_date:now()})}await update('picklists',data.pick.id,{status:'Completed',completion:100,process_qty:data.orders.reduce((s,x)=>s+Number(x.qty||0),0),finished_date:now()});return res.json({dto:view({...data.pick,status:'Completed'},data.orders.map(x=>({...x,picked_qty:x.qty,status:'Picked'}))),jsonMessage:'Pick All processed successfully'})}
-if(b.action==='short-pick'){const data=await load(b.picklistNo);if(!data)return res.status(404).json({error:'Invalid PickListNo'});for(const x of data.orders.filter(x=>Number(x.picked_qty||0)<Number(x.qty||0)))await update('fulfillment_orders',x.id,{status:'Allocated',picklist_no:'',short_pick_reason:t(b.reason)||'Short Pick / Reallocate'});await update('picklists',data.pick.id,{status:'Completed',finished_date:now()});return res.json({jsonMessage:'Short Pick / Reallocate processed successfully'})}
-if(b.action==='history'){const all=await find('generic_records',{module:'manage-picking-history'}),data=t(b.picklistNo)?all.filter(x=>x.picklist_no===b.picklistNo):all;return res.json({history:data.slice(-20).reverse(),historyType:t(b.historyType)||'6'})}
-if(['print','delivery-split','short-pack'].includes(b.action)){if(!t(b.picklistNo))return res.status(400).json({error:'Please Enter PickListNo'});const data=await load(b.picklistNo);if(!data)return res.status(404).json({error:'Invalid PickListNo'});if(b.action==='short-pack')for(const x of data.orders.filter(x=>x.status==='Picked'))await update('fulfillment_orders',x.id,{status:'Packed',pack_date:now()});return res.json({jsonMessage:b.action==='print'?'Packing slip prepared':b.action==='delivery-split'?'Delivery Split opened':'Short Pack processed successfully'})}return res.status(400).json({error:'Invalid action'})}catch(e){console.error('Manage Picking error:',e);res.status(500).json({error:e.message})}}
+import { sendDatabaseUnavailable, cors, find } from './mongo.js';
+
+const text = value => String(value ?? '').trim();
+const HISTORY = [
+  ['6', 'My Last 20 Processed Orders'], ['9', 'Processed LPN History'], ['1', 'Processed Orders History'],
+  ['2', 'Scanned SKUs History'], ['3', 'Pending SKUs'], ['7', 'Pack Scanned SKUs'], ['15', 'Sort Scanned SKUs'],
+  ['8', 'Show PIP Orders Only'], ['10', 'My Last 20 Processed LPN'], ['4', 'My Last 20 Picked SKUs'],
+  ['5', 'My last 20 Packed SKUs'], ['14', 'My last 20 Sorted SKUs'], ['11', 'Sorting Completed'],
+  ['12', 'Sorting In-Process'], ['13', 'Sorting Not Started'],
+];
+
+function view(pick, orders) {
+  return {
+    picklistNo: pick.picklist_no,
+    picklistQty: Number(pick.total_qty) || orders.reduce((sum, row) => sum + Number(row.qty || 0), 0),
+    picklistStatus: pick.status || '',
+    description: pick.description || '',
+    picker: pick.picker || '',
+    mode: pick.pick_mode || '',
+    trust: 'legacy-unverified',
+    lines: orders.map(row => ({
+      id: row.id, orderNo: row.order_no, skuCode: row.sku_code, skuName: row.sku_name,
+      requiredQty: Number(row.qty) || 0, processedQty: Number(row.picked_qty) || 0,
+      pendingQty: Math.max(0, Number(row.qty || 0) - Number(row.picked_qty || 0)),
+      status: row.status || '', bin: row.bin || '', lpn: row.lpn_no || '', deliveryNo: row.delivery_no || '',
+    })),
+  };
+}
+
+async function load(picklistNo) {
+  const pick = (await find('picklists')).find(row => text(row.picklist_no).toLowerCase() === text(picklistNo).toLowerCase());
+  if (!pick) return null;
+  const orders = (await find('fulfillment_orders')).filter(row => row.picklist_no === pick.picklist_no);
+  return { pick, orders };
+}
+
+export default async function handler(req, res) {
+  if (cors(req, res)) return;
+  try {
+    if (req.method === 'GET') {
+      return res.json({
+        scanModes: [['1', 'By SKU'], ['2', 'By Order']],
+        historyOptions: HISTORY,
+        actions: ['Short Pick / Reallocate', 'Pick All', 'Print Packing Slip', 'Delivery Split', 'Short Pack'],
+        available: false,
+        notice: 'Physical picking and packing actions are paused until Central Inventory reservation and dispatch services are connected.',
+      });
+    }
+    if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+    const body = req.body || {};
+    if (['scan', 'pick-all', 'short-pick', 'print', 'delivery-split', 'short-pack'].includes(body.action)) {
+      return res.status(501).json({ error: 'Physical picking, packing, split, and print actions are paused until Central Inventory reservations, warehouse identity, and dispatch integration are connected.' });
+    }
+    if (body.action === 'load') {
+      if (!text(body.picklistNo)) return res.status(400).json({ error: 'Please Enter PickListNo' });
+      const data = await load(body.picklistNo);
+      if (!data) return res.status(404).json({ error: 'Invalid PickListNo' });
+      if (!data.orders.length) return res.status(409).json({ error: 'Pickable SKU(s) not present in this Picklist.' });
+      return res.json({ dto: view(data.pick, data.orders), jsonMessage: null });
+    }
+    if (body.action === 'history') {
+      const all = await find('generic_records', { module: 'manage-picking-history' });
+      const rows = (text(body.picklistNo) ? all.filter(row => row.picklist_no === body.picklistNo) : all)
+        .slice(-20).reverse().map(row => ({ ...row, trust: 'legacy-unverified' }));
+      return res.json({ history: rows, historyType: text(body.historyType) || '6', trust: 'legacy-unverified' });
+    }
+    return res.status(501).json({ error: 'Manage Picking is read-only until its Central Inventory and physical event workflow is connected.' });
+  } catch (error) {
+    if (sendDatabaseUnavailable(res, error)) return;
+    console.error('Manage Picking error:', { name: error?.name, code: error?.code });
+    return res.status(500).json({ error: error.message });
+  }
+}

@@ -1,3 +1,18 @@
-import{cors,find,insert,update}from'./mongo.js';const now=()=>new Date().toISOString(),code=()=>String(Math.floor(100000+Math.random()*900000));
-async function seed(){let rows=await find('generic_records',{module:'return-otc-task'});if(!rows.length){await insert('generic_records',{module:'return-otc-task',frieghtExpert:'Flipkart Freight Expert',logisticPartner:'Ekart',lob:'Flipkart',taskId:'RET-OTC-001',status:'Pending',createdAt:now(),otc:'',otcCreatedAt:'',expiryTime:''});rows=await find('generic_records',{module:'return-otc-task'})}return rows}
-export default async function handler(req,res){if(cors(req,res))return;try{if(req.method==='GET'){const rows=await seed(),size=20,page=Math.max(1,+req.query?.page||1);return res.json({otcList:rows.slice((page-1)*size,page*size),gridModel:rows.slice((page-1)*size,page*size),page,total:Math.ceil(rows.length/size),records:rows.length,rows:size})}if(req.method!=='POST')return res.status(405).json({error:'Method not allowed'});const b=req.body||{};if(b.action==='legacy'){if(b.duplicateChannel)return res.status(409).json({error:'Duplicate channel found.'});return res.json({OTCData:{isMps:'MPS',OTC:code(),vendorGroupCode:'Flipkart'}})}const rows=await seed(),row=rows.find(x=>String(x.taskId)===String(b.taskId));if(!row)return res.status(400).json({error:'Something Went Wrong'});if(b.action==='start'){const otc=code(),created=now(),expiry=new Date(Date.now()+15*60000).toISOString();const[s]=await update('generic_records',row.id,{status:'Started',otc,otcCreatedAt:created,expiryTime:expiry});return res.json(s)}if(b.action==='end'){const[s]=await update('generic_records',row.id,{status:'Ended',otc:'',expiryTime:now()});return res.json(s)}return res.status(400).json({error:'Something Went Wrong'})}catch(e){console.error('return otc error:',e);res.status(500).json({error:e.message})}}
+import {sendDatabaseUnavailable, cors, find } from './mongo.js';
+
+const emptyPage = (page) => ({ otcList: [], gridModel: [], page, total: 0, records: 0, rows: 20 });
+
+async function handlerImpl(req, res) {
+  if (cors(req, res)) return;
+  if (req.method === 'GET') {
+    const page = Math.max(1, Number(req.query?.page) || 1);
+    // RET-OTC-001 was a local example task, not a real Flipkart job.
+    const tasks = (await find('generic_records', { module: 'return-otc-task' })).filter((row) => row.taskId !== 'RET-OTC-001');
+    const start = (page - 1) * 20;
+    return res.json({ otcList: tasks.slice(start, start + 20), gridModel: tasks.slice(start, start + 20), page, total: Math.ceil(tasks.length / 20), records: tasks.length, rows: 20 });
+  }
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+  return res.status(503).json({ error: 'Flipkart Return OTC is unavailable until a real connector is configured.' });
+}
+
+export default async function handler(req,res) { try { return await handlerImpl(req,res); } catch(error) { if(sendDatabaseUnavailable(res,error))return; throw error; } }

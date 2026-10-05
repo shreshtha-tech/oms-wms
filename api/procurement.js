@@ -1,4 +1,6 @@
-import { find, findOne, insert, update, cors } from './mongo.js';
+import { sendDatabaseUnavailable, find, findOne, insert, update, cors } from './mongo.js';
+import { activeLocations } from './catalogs.js';
+import { currentUser } from './auth-session.js';
 
 const entityMap = {
   buyers: 'procurement_buyers',
@@ -31,7 +33,7 @@ export default async function handler(req, res) {
         return res.status(201).json(await insert(collection, {
           buyer_code, buyer_name: clean(buyer_name), description: clean(description), email: clean(email), phone: clean(phone),
           alternate_phone: clean(alternate_phone), active: active !== false, categories: Array.isArray(categories) ? categories : [],
-          udf: Array.isArray(udf) ? udf.slice(0, 5) : ['', '', '', '', ''], location: 'UPSL Warehouse', created_by: 'super admin', created_date: today(),
+          udf: Array.isArray(udf) ? udf.slice(0, 5) : ['', '', '', '', ''], location: '', created_by: currentUser(req)?.username || 'unknown', created_date: today(),
         }));
       }
       if (entity === 'invoices') {
@@ -49,12 +51,13 @@ export default async function handler(req, res) {
         if (!clean(description) || !clean(location) || !start_date || !end_date || !clean(operand_type) || !clean(operand) || !(Number(total_budget) > 0)) {
           return res.status(400).json({ error: 'Description, Location, dates, Operand Type, Operand and Total Budget are required.' });
         }
+        if (!(await activeLocations()).some((item) => item.name === clean(location))) return res.status(400).json({ error: 'Select a configured active location.' });
         if (end_date < start_date) return res.status(400).json({ error: 'End Date cannot be before Start Date.' });
         const rows = await find(collection);
         return res.status(201).json(await insert(collection, {
           otb_id: String(Math.max(0, ...rows.map((r) => Number(r.otb_id) || 0)) + 1), description: clean(description), location: clean(location),
           vendor_code: clean(vendor_code), start_date, end_date, status: 'Pending', operand_type, operand, total_budget: Number(total_budget),
-          consumed: 0, open_to_buy: Number(total_budget), updated_by: 'super admin', updated_date: today(),
+          consumed: 0, open_to_buy: Number(total_budget), updated_by: currentUser(req)?.username || 'unknown', updated_date: today(),
         }));
       }
     }
@@ -77,7 +80,8 @@ export default async function handler(req, res) {
     }
     res.status(405).json({ error: 'Method not allowed.' });
   } catch (error) {
-    console.error('Procurement API error:', error);
+    if (sendDatabaseUnavailable(res, error)) return;
+    console.error('Procurement API error:', { name: error?.name, code: error?.code });
     res.status(500).json({ error: error.message || 'Procurement request failed.' });
   }
 }

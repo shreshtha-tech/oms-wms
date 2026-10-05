@@ -5,6 +5,7 @@ import { Panel, ToolBar, Btn, Toast } from './parts';
 import OrderGrid, { GCol } from './OrderGrid';
 import { apiGet, apiSend } from '../lib/api';
 import { humanSize } from '../lib/exporters';
+import { downloadBlob } from '../lib/downloadBlob';
 import { DOWNLOADS_EVENT } from '../context/DownloadContext';
 
 function StatusTag({ status }: { status: string }) {
@@ -21,6 +22,7 @@ function StatusTag({ status }: { status: string }) {
 export default function Downloads() {
   const [rows, setRows] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [downloadingId, setDownloadingId] = useState<number | null>(null);
   const [toast, setToast] = useState<{ msg: string; type: 'ok' | 'err' } | null>(null);
 
   const load = () => {
@@ -38,14 +40,21 @@ export default function Downloads() {
     return () => window.removeEventListener(DOWNLOADS_EVENT, handler);
   }, []);
 
-  const redownload = (r: any) => {
+  const redownload = async (r: any) => {
     if (r.status === 'Processing') { setToast({ msg: 'File is still processing…', type: 'err' }); return; }
-    if (!r.content) { setToast({ msg: 'File content not stored (too large to keep)', type: 'err' }); return; }
-    const blob = new Blob([r.content], { type: r.mime || 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a'); a.href = url; a.download = r.filename; a.click();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
-    setToast({ msg: 'Re-downloaded ' + r.filename, type: 'ok' });
+    setDownloadingId(r.id);
+    try {
+      const fullRecord = await apiGet(`/api/downloads?id=${encodeURIComponent(r.id)}`);
+      const blob = downloadBlob(fullRecord);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = fullRecord.filename; a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      setToast({ msg: 'Re-downloaded ' + fullRecord.filename, type: 'ok' });
+    } catch (error) {
+      setToast({ msg: error instanceof Error ? error.message : 'Stored export is invalid.', type: 'err' });
+    } finally {
+      setDownloadingId(null);
+    }
   };
 
   const del = async (id: number) => {
@@ -68,7 +77,7 @@ export default function Downloads() {
     { key: 'status', label: 'Status', render: (r) => <StatusTag status={r.status || 'Completed'} /> },
     { key: 'act', label: 'Actions', render: (r) => (
       <div className="flex gap-1">
-        <button onClick={() => redownload(r)} className="rounded p-1.5 text-emerald-600 hover:bg-emerald-50 disabled:opacity-40" title="Re-download" disabled={r.status === 'Processing'}><Download size={15} /></button>
+        <button onClick={() => redownload(r)} className="rounded p-1.5 text-emerald-600 hover:bg-emerald-50 disabled:opacity-40" title="Re-download" disabled={r.status === 'Processing' || downloadingId !== null}><Download size={15} /></button>
         <button onClick={() => del(r.id)} className="rounded p-1.5 text-rose-500 hover:bg-rose-50" title="Remove"><Trash2 size={15} /></button>
       </div>
     ) },

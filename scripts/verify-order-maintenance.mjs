@@ -1,16 +1,73 @@
-import assert from'node:assert/strict';import{chromium}from'playwright';
-const base=process.env.ERETAIL_BASE_URL||'http://127.0.0.1:3011',no='SO10004526',send=async(body)=>{const r=await fetch(`${base}/api/order-maintenance`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({orderNo:no,...body})});return{r,x:await r.json()}};
-let z=await fetch(`${base}/api/order-maintenance?orderNo=${no}`).then(r=>r.json());assert.equal(z.order.order_no,no);
-let a=await send({action:'comment',comments:''});assert.equal(a.r.status,400);assert.equal(a.x.error,'Add Order Comments is mandatory.');
-a=await send({action:'comment',comments:'Verified persisted activity'});assert.equal(a.r.status,201);
-a=await send({action:'tag',tags:[]});assert.equal(a.x.error,'Order Tags is mandatory.');
-a=await send({action:'tag',tags:['VIP'],notify:true});assert.equal(a.r.status,201);
-a=await send({action:'payment',payment_type:'UPI',doc_no:'PAY-VERIFY',amount_received:2598});assert.equal(a.r.status,201);
-a=await send({action:'gift-wrap',enabled:true,message:'Happy birthday'});assert.equal(a.r.status,200);
-a=await send({action:'save',amount:2598,store_credit:3000,lines:[{sku_code:'ORDER-SKU',qty:2}]});assert.equal(a.x.error,'Store Credit can not more than Order Amount.');
-a=await send({action:'save',amount:2598,store_credit:0,gift_voucher:0,priority:'High',lines:[{sku_code:'ORDER-SKU',qty:2,unit_price:1299}]});assert.equal(a.r.status,200);
-z=await fetch(`${base}/api/order-maintenance?orderNo=${no}`).then(r=>r.json());assert.equal(z.order.priority,'High');assert.ok(z.activities.some(x=>x.comments==='Verified persisted activity'));assert.ok(z.tags.some(x=>x.tag==='VIP'));assert.ok(z.payments.some(x=>x.doc_no==='PAY-VERIFY'));assert.equal(z.giftWrap.message,'Happy birthday');
-let pdf=await fetch(`${base}/api/order-maintenance?orderNo=${no}&download=eway-pdf`);assert.equal(pdf.status,200);assert.equal(pdf.headers.get('content-type'),'application/pdf');assert.ok((await pdf.text()).startsWith('%PDF-1.4'));
-a=await send({action:'attachment',document_type:'POD',delivery_no:'DEL-VERIFY',file_name:'verify.txt',base64:Buffer.from('verified attachment').toString('base64')});assert.equal(a.r.status,201);
-const browser=await chromium.launch({headless:true}),page=await browser.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>m.type()==='error'&&errors.push(m.text()));try{await page.goto(base);const captcha=(await page.locator('.font-mono').textContent()).trim();await page.getByPlaceholder('Username').fill('orders');await page.getByPlaceholder('Password').fill('local');await page.getByPlaceholder('Enter captcha').fill(captcha);await page.getByRole('button',{name:'Login'}).click();await page.waitForURL('**/app/dashboard');await page.goto(`${base}/app/order-maintenance?orderNo=${no}`);await page.getByText(`Order Detail · ${no}`).waitFor();for(const t of ['Order Detail','Address','UDF','Outbound Delivery','Activity & Remarks','Payment Details','Order Tags','Gift Wrap','E-way Bill','Attachment','Returns','CRM Tickets'])await page.getByRole('button',{name:t,exact:true}).waitFor();await page.getByRole('button',{name:'Address',exact:true}).click();await page.getByLabel('Shipping Address 1').waitFor();await page.getByRole('button',{name:'UDF',exact:true}).click();await page.getByLabel('UDF15').waitFor();await page.getByRole('button',{name:'Activity & Remarks'}).click();await page.getByLabel('Add Order Comments').fill('Browser persisted comment');await page.getByRole('button',{name:'Submit Comments'}).click();await page.getByText('User Activity Comments Saved Successfully.').waitFor();await page.reload();await page.getByRole('button',{name:'Activity & Remarks'}).click();await page.getByText('Browser persisted comment').first().waitFor();
-await page.getByRole('button',{name:'E-way Bill',exact:true}).click();await page.getByRole('button',{name:'Update',exact:true}).click();let ewayDialog=page.getByRole('dialog',{name:'Select Reason For Updation'});assert.deepEqual(await ewayDialog.getByLabel('E-way Reason').locator('option').allTextContents(),['Due to Breakdown','Due to Transshipment','Others']);await ewayDialog.getByRole('button',{name:'Close'}).click();await page.getByRole('button',{name:'Cancel',exact:true}).click();ewayDialog=page.getByRole('dialog',{name:'Select Reason For Cancellation'});assert.deepEqual(await ewayDialog.getByLabel('E-way Reason').locator('option').allTextContents(),['Duplicate','Order Cancelled','Data Entry mistake','Others']);await ewayDialog.getByRole('button',{name:'Close'}).click();await page.getByRole('button',{name:'Extend E-way Bill Validity'}).click();ewayDialog=page.getByRole('dialog',{name:'Select Reason For Updation'});await ewayDialog.getByLabel('Consignment Status').waitFor();await ewayDialog.getByRole('button',{name:'Close'}).click();await page.getByRole('button',{name:'Attachment',exact:true}).click();await page.getByText('Packaging Image cannot be deleted.').waitFor();const attachmentCount=await page.getByText('verify.txt').count();await page.getByRole('checkbox',{name:'Select attachment verify.txt'}).first().check();await page.getByRole('button',{name:'Download',exact:true}).first().waitFor();await page.getByRole('button',{name:'Delete',exact:true}).click();await page.getByText('deleted Successfully').waitFor();assert.equal(await page.getByText('verify.txt').count(),attachmentCount-1);assert.deepEqual(errors,[]);console.log('PASS Order Maintenance: 12 tabs, PDF transport, attachment download/delete, mutation/reload persistence, E-way nested dialogs, and clean console.')}finally{await browser.close()}
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+
+process.env.MONGODB_URI = '';
+process.env.INVENTORY_DATABASE_URL = '';
+process.env.INVENTORY_ALLOWED_TENANT_ID = '';
+const { find, insert } = await import('../api/mongo.js');
+const handler = (await import('../api/order-maintenance.js')).default;
+
+async function invoke(method, body = {}, query = {}) {
+  const response = {
+    statusCode: 200,
+    headers: {},
+    status(code) { this.statusCode = code; return this; },
+    json(payload) { this.payload = payload; return this; },
+    setHeader(name, value) { this.headers[name] = value; },
+  };
+  await handler({ method, body, query, headers: {} }, response);
+  return response;
+}
+
+const order = await insert('sale_orders', {
+  order_no: 'SAFE-ORDER-MAINTENANCE', status: 'Confirmed', amount: 200,
+  qty: 2, verification_status: 'Complete',
+  lines: [{ sku_code: 'SAFE-OM-SKU', qty: 2, open_qty: 2, status: 'Confirmed' }],
+});
+
+const view = await invoke('GET', {}, { orderNo: order.order_no });
+assert.equal(view.statusCode, 200);
+assert.equal(view.payload.order.order_no, order.order_no);
+assert.deepEqual(view.payload.order.lines, order.lines);
+
+for (const [action, body] of [
+  ['save', { lines: [{ sku_code: 'SAFE-OM-SKU', qty: 99, open_qty: 99 }] }],
+  ['close', { reason: 'Safe test' }],
+  ['seller-cancel', { cancelReason: 'Buyer request' }],
+  ['seller-close', { lines: [0], reason: 'Safe test' }],
+  ['seller-back-status', { lines: [0] }],
+  ['seller-return', { lines: [{ sku_code: 'SAFE-OM-SKU', qty: 1 }], returnType: 'Customer Return' }],
+  ['quick-ship', {}],
+  ['eway', { operation: 'generate', document_type: 'TaxInvoice', eway_bill_no: 'FAKE-EWB' }],
+  ['eway', { operation: 'save', document_type: 'TaxInvoice', eway_bill_no: 'FAKE-EWB' }],
+  ['eway', { operation: 'cancel', reason: 'Duplicate' }],
+  ['eway', { operation: 'extend', reason: '1' }],
+]) {
+  const result = await invoke('POST', { orderNo: order.order_no, action, ...body });
+  assert.equal(result.statusCode, 501, `${action} must remain unavailable without its ledger/provider transaction`);
+}
+
+const pdf = await invoke('GET', {}, { orderNo: order.order_no, download: 'eway-pdf' });
+assert.equal(pdf.statusCode, 501, 'E-way Bill print must not create a synthetic PDF');
+
+const comment = await invoke('POST', { orderNo: order.order_no, action: 'comment', comments: 'Safe activity note' });
+assert.equal(comment.statusCode, 201, 'non-stock activity metadata remains saveable');
+assert.equal((await find('generic_records', { module: 'order_eway', order_no: order.order_no })).length, 0);
+assert.equal((await find('generic_records', { module: 'order_return', order_no: order.order_no })).length, 0);
+
+const unchanged = (await find('sale_orders', { id: order.id }))[0];
+assert.equal(unchanged.status, 'Confirmed');
+assert.equal(unchanged.lines[0].qty, 2);
+assert.equal(unchanged.lines[0].open_qty, 2);
+
+const ui = await readFile(new URL('../src/eretail/sales/OrderMaintenance.tsx', import.meta.url), 'utf8');
+assert.ok(ui.includes('Order edits that change lines or quantities, close/cancel, Quick Ship, return creation and E-way Bill operations are unavailable'));
+assert.ok(ui.includes('Save Order (Unavailable)'));
+assert.ok(ui.includes('Verified GST e-way bill connector is not configured'));
+assert.ok(!ui.includes("['Close SO',()=>setCloseOpen(true)]"));
+const marketOrderUi = await readFile(new URL('../src/eretail/sales/MarketOrderView.tsx', import.meta.url), 'utf8');
+assert.ok(marketOrderUi.includes('Cancel, close, status reversal and return creation are unavailable'));
+assert.ok(marketOrderUi.includes('disabled title="Central Inventory reservation release is not connected"'));
+assert.ok(!marketOrderUi.includes("['Close SO','close']"));
+assert.ok(!marketOrderUi.includes("['Raise Return','return']"));
+console.log('PASS Order Maintenance and Market Order View: status/quantity edits, close/cancel, quick ship, return creation and simulated E-way Bill actions fail closed; controls are gated and no synthetic PDF or order mutation is produced.');

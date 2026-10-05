@@ -1,0 +1,51 @@
+{
+  "at": "2026-10-04T14:29:58.040Z",
+  "readOnly": true,
+  "results": [
+    {
+      "endpoint": 1,
+      "implementation": "system LibreSSL",
+      "sniProvided": true,
+      "verificationRequired": true,
+      "tlsVersion": "TLSv1.2",
+      "exitCode": 1,
+      "timedOut": false,
+      "clientHelloSent": true,
+      "serverHelloReceived": false,
+      "certificateReceived": false,
+      "alert80": false,
+      "internalErrorAlert": false,
+      "certificateNotPresented": true
+    },
+    {
+      "endpoint": 2,
+      "implementation": "system LibreSSL",
+      "sniProvided": true,
+      "verificationRequired": true,
+      "tlsVersion": "TLSv1.2",
+      "exitCode": 1,
+      "timedOut": false,
+      "clientHelloSent": true,
+      "serverHelloReceived": false,
+      "certificateReceived": false,
+      "alert80": false,
+      "internalErrorAlert": false,
+      "certificateNotPresented": true
+    },
+    {
+      "endpoint": 3,
+      "implementation": "system LibreSSL",
+      "sniProvided": true,
+      "verificationRequired": true,
+      "tlsVersion": "TLSv1.2",
+      "exitCode": 1,
+      "timedOut": false,
+      "clientHelloSent": true,
+      "serverHelloReceived": false,
+      "certificateReceived": false,
+      "alert80": false,
+      "internalErrorAlert": false,
+      "certificateNotPresented": true
+    }
+  ]
+}

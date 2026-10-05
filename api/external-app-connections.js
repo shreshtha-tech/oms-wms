@@ -1,4 +1,4 @@
-import { cors } from './mongo.js';
+import { sendDatabaseUnavailable, cors } from './mongo.js';
 
 const text = (value) => String(value ?? '').trim();
 
@@ -15,14 +15,16 @@ export default async function handler(req, res) {
   try {
     const response = await fetch(`https://${subDomain}.auth.marketingcloudapis.com/v2/token`, {
       method: 'POST',
+      redirect: 'error',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ grant_type: 'client_credentials', client_id: clientID, client_secret: clientSecret }),
       signal: AbortSignal.timeout(15000),
     });
     const result = await response.json().catch(() => ({}));
     if (!response.ok || !text(result.access_token)) return res.status(200).json({ jsonMessage: text(result.error_description || result.message) || 'Connection failed.' });
-    return res.status(200).json({ jsonMessage: null, authTokenSFMC: result.access_token });
+    return res.status(200).json({ jsonMessage: null, connected: true });
   } catch (error) {
+    if (sendDatabaseUnavailable(res, error)) return;
     return res.status(200).json({ jsonMessage: error.name === 'TimeoutError' ? 'Connection timed out.' : 'Connection failed.' });
   }
 }

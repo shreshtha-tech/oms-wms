@@ -1,3 +1,53 @@
-import assert from'node:assert/strict';import{chromium}from'playwright';const base=process.env.ERETAIL_BASE_URL||'http://127.0.0.1:3011',send=async b=>{const r=await fetch(base+'/api/dispatch-checkpoint',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(b)});return{r,j:await r.json()}};
-const meta=await(await fetch(base+'/api/dispatch-checkpoint')).json();assert.equal(meta.transporters.length,336);assert.deepEqual(meta.pageSizes,[20,50,100,200]);assert.deepEqual(meta.statuses.map(x=>x[1]),['--- Select ---','Approval Pending','Closed','In Process']);let x=await send({REQ_SEARCH_FLAG:true,rows:20,page:1,loadId:'',fromCreatedDate:'',status:'-1',transporter:'-1',vehicleNo:'',isB2b:'-1',fromCloseDate:''});assert.equal(x.j.error,' Select at least one field');x=await send({REQ_SEARCH_FLAG:true,rows:20,page:1,fromCreatedDate:'01/01/2026',toCreatedDate:'28/08/2026',status:'-1',transporter:'-1',isB2b:'-1'});assert.equal(x.j.error,'Date range cannot be greater than 90 days');x=await send({action:'export',gridDataLen:0});assert.equal(x.j.error,'No data in grid to export');x=await send({action:'vehicle-scan',flow:'0',transporter:'-1',vehicleNo:'HR26AB1234'});assert.equal(x.j.error,'Please Scan Transporter');x=await send({action:'vehicle-scan',flow:'0',transporter:'1107',vehicleNo:'HR26AB1234'});assert.equal(x.r.status,201);const b2c=x.j.row;x=await send({action:'tracking-scan',loadId:b2c.loadId,transporter:'1107',trackingNo:'VERIFY-AWB'});assert.equal(x.j.row.shipments.length,1);const shipment=x.j.item;x=await send({action:'remove-shipment',loadId:b2c.loadId,id:shipment.id,reason:'-1'});assert.equal(x.j.error,'Please select Reason');x=await send({action:'remove-shipment',loadId:b2c.loadId,id:shipment.id,reason:'1'});assert.equal(x.j.jsonMessage,'Row Deleted Successfully');x=await send({action:'complete',loadId:b2c.loadId});assert.equal(x.j.row.status,'Closed');x=await send({action:'vehicle-scan',flow:'1',vehicleNo:'UP17AB4321'});const b2b=x.j.row;x=await send({action:'invoice-scan',loadId:b2b.loadId,invoiceNo:'INV-VERIFY'});assert.equal(x.j.invoice.invoiceNo,'INV-VERIFY');const invoiceId=x.j.invoice.id;x=await send({action:'lpn-scan',loadId:b2b.loadId,invoiceNo:'INV-VERIFY',lpn:'LPN-VERIFY'});assert.deepEqual(x.j.invoice.lpnList,['LPN-VERIFY']);x=await send({action:'approve',loadId:b2b.loadId,ids:[]});assert.equal(x.j.error,'Please Select Some Invoice To Close');x=await send({action:'approve',loadId:b2b.loadId,ids:[invoiceId]});assert.equal(x.j.jsonMessage,'Invoice Closed');x=await send({action:'export',gridDataLen:1});assert.match(x.j.reportId,/^DCE-/);
-const b=await chromium.launch({headless:true}),p=await b.newPage({viewport:{width:1440,height:1000}}),errors=[];p.on('pageerror',e=>errors.push(e.message));p.on('console',m=>m.type()==='error'&&errors.push(m.text()));try{await p.goto(base);const c=(await p.locator('.font-mono').textContent()).trim();await p.getByPlaceholder('Username').fill('dispatch');await p.getByPlaceholder('Password').fill('local');await p.getByPlaceholder('Enter captcha').fill(c);await p.getByRole('button',{name:'Login'}).click();await p.waitForURL('**/app/dashboard');await p.goto(base+'/app/r/dispatch-checkpoint');for(const a of['Search','Reset','Add New','Export'])await p.getByRole('button',{name:a,exact:true}).waitFor();for(const h of['Load Id','created_date','Updated Date','Vehicle No','Transporter','Status','Scanned Box','Total Box','Process Flow'])await p.getByRole('columnheader',{name:h,exact:true}).first().waitFor();assert.equal(await p.getByLabel('Transporter').locator('option').count(),337);assert.deepEqual(await p.getByLabel('Page size').locator('option').allTextContents(),['20','50','100','200']);await p.getByRole('button',{name:'Search',exact:true}).click();await p.getByText(' Select at least one field').waitFor();await p.getByRole('button',{name:'Export',exact:true}).click();await p.getByText('No data in grid to export').waitFor();await p.getByRole('button',{name:'Add New',exact:true}).click();const dialog=p.getByRole('dialog',{name:'Select Business Type'});await dialog.getByText('B2C',{exact:true}).waitFor();await dialog.getByText('B2B',{exact:true}).waitFor();await dialog.getByRole('button',{name:'OK'}).click();await p.getByRole('button',{name:'Complete Loading'}).click();await p.getByText('LoadId Not Generated').waitFor();assert.equal(await p.getByLabel('Transporter').locator('option').count(),337);await p.getByLabel('Transporter').selectOption('1107');await p.getByLabel('Vehicle No').fill('HR26CD5678');await p.getByLabel('Vehicle No').press('Enter');await p.waitForURL(/loadId=/);await p.getByLabel('Tracking No').press('Enter');await p.getByText('Please Scan Tracking No').waitFor();await p.getByLabel('Tracking No').fill('UI-AWB');await p.getByLabel('Tracking No').press('Enter');await p.getByRole('columnheader',{name:'Delivery No'}).waitFor();await p.getByRole('button',{name:'View Pending Shipment'}).click();await p.getByRole('dialog',{name:'View Pending Shipment'}).getByRole('columnheader',{name:'Tracking No'}).waitFor();await p.getByRole('dialog',{name:'View Pending Shipment'}).getByRole('button',{name:'Close'}).click();await p.goto(base+'/app/r/dispatch-checkpoint');await p.getByRole('button',{name:'Add New'}).click();await p.getByRole('dialog',{name:'Select Business Type'}).getByText('B2B',{exact:true}).click();await p.getByRole('dialog',{name:'Select Business Type'}).getByRole('button',{name:'OK'}).click();await p.getByRole('button',{name:'Complete Loading'}).click();await p.getByText('Please Scan Vehicle no.').waitFor();await p.getByLabel('Vehicle No').fill('UP17CD5678');await p.getByLabel('Vehicle No').press('Enter');await p.waitForURL(/loadId=/);await p.getByRole('button',{name:'Approve'}).click();await p.getByText('Please Select Some Invoice To Close').waitFor();await p.getByLabel('Invoice No').press('Enter');await p.getByText('Please scan invoice').waitFor();await p.getByLabel('Invoice No').fill('INV-UI');await p.getByLabel('Invoice No').press('Enter');await p.getByLabel('Scan LPN',{exact:true}).fill('LPN-UI');await p.getByLabel('Scan LPN',{exact:true}).press('Enter');await p.getByText('LPN-UI').waitFor();assert.deepEqual(errors,[]);console.log('PASS Dispatch Checkpoint: exact enquiry/options/paging/validations/export, B2C/B2B selector, persisted vehicle/tracking/invoice/LPN scans, pending dialog, removal/approval/complete contracts, and clean console.')}finally{await b.close()}
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+
+// Use only an isolated in-memory store; never mutate a configured tenant.
+process.env.MONGODB_URI = '';
+process.env.DMILLS_REQUIRE_PERSISTENCE = '';
+process.env.INVENTORY_DATABASE_URL = '';
+process.env.INVENTORY_ALLOWED_TENANT_ID = '';
+const { find, insert } = await import('../api/mongo.js');
+const dispatchCheckpoint = (await import('../api/dispatch-checkpoint.js')).default;
+
+async function invoke(method, body = {}, query = {}) {
+  const response = {
+    statusCode: 200,
+    status(value) { this.statusCode = value; return this; },
+    json(value) { this.payload = value; return this; },
+    setHeader() {},
+  };
+  await dispatchCheckpoint({ method, body, query, headers: {} }, response);
+  return response;
+}
+
+const load = await insert('generic_records', {
+  module: 'dispatch-checkpoint', code: 'UWH905010', loadId: 'UWH905010',
+  vehicle_no: 'SAFE-VEHICLE', status: 'In Process', statusCode: '5', isB2bCode: '0',
+  shipments: [{ id: 1, scanTrackingNo: 'SAFE-TRACK' }], invoices: [],
+});
+const meta = await invoke('GET');
+assert.equal(meta.payload.available, false);
+assert.equal(meta.payload.dataTrust, 'legacy-unverified');
+assert.deepEqual(meta.payload.pageSizes, [20, 50, 100, 200]);
+
+const search = await invoke('POST', { REQ_SEARCH_FLAG: true, loadId: load.loadId, rows: 20, page: 1 });
+assert.equal(search.statusCode, 200);
+assert.equal(search.payload.gridModel[0].loadId, load.loadId);
+assert.equal(search.payload.gridModel[0].trust, 'legacy-unverified');
+assert.equal(search.payload.gridModel[0].totalLpn, '', 'unknown target LPN total must remain blank');
+const detail = await invoke('GET', {}, { loadId: load.loadId });
+assert.equal(detail.payload.row.loadId, load.loadId);
+assert.equal(detail.payload.row.trust, 'legacy-unverified');
+
+for (const action of ['export', 'vehicle-scan', 'tracking-scan', 'remove-shipment', 'invoice-scan', 'lpn-scan', 'close-invoice', 'approve', 'complete']) {
+  const result = await invoke('POST', { action, loadId: load.loadId, gridDataLen: 1 });
+  assert.equal(result.statusCode, 501, `${action} must fail closed`);
+}
+
+assert.deepEqual(await find('generic_records', { module: 'dispatch-checkpoint' }), [load]);
+assert.deepEqual(await find('generic_records', { module: 'pending-report' }), []);
+const ui = await readFile(new URL('../src/eretail/wms/DispatchCheckpoint.tsx', import.meta.url), 'utf8');
+assert.match(ui, /Dispatch Checkpoint is read-only/);
+assert.match(ui, /dispatch-checkpoint-legacy-unverified\.csv/);
+assert.doesNotMatch(ui, /Complete Loading|Add New|action: 'vehicle-scan'|action: 'tracking-scan'/);
+console.log('PASS Dispatch Checkpoint: legacy enquiry/detail remain read-only, all physical or provider actions fail closed, and CSV export creates no server-side job.');

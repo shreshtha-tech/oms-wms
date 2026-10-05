@@ -1,2 +1,31 @@
-import assert from'node:assert/strict';import{chromium}from'playwright';const base=process.env.ERETAIL_BASE_URL||'http://127.0.0.1:3011';const send=async x=>{const r=await fetch(base+'/api/common-import',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(x)});return{r,x:await r.json()}};const meta=await(await fetch(base+'/api/common-import')).json();assert.equal(meta.importTypes.length,47);assert.deepEqual(meta.pageSizes,[20,50,100,200]);assert.deepEqual(meta.statuses.map(x=>x[1]),['--- Select ---','Processed','UnProcessed','Failed','InProcessing']);assert.equal((await send({action:'import',importType:'-1'})).x.error,'Please Select Import Type');assert.equal((await send({action:'import',importType:'30',subtype:'0',classification:'1'})).x.error,'No file chosen to import.');assert.equal((await send({action:'search'})).x.error,'Upload Date is mendatory');const cfg=(await send({action:'config',importType:'46'})).x;assert.equal(cfg.notes[0],'**Note : 1 Asn can have maximum of rows : 1200');assert.equal((await send({action:'config',importType:'67'})).x.templateHidden,true);assert.equal((await send({action:'template',importType:'30',subtypeText:'OrderImport',classificationText:'Default'})).x.fileName,'VIN_REP_OrderImport_USPL_OrderImport_Default.xlsx');
-const b=await chromium.launch({headless:true}),p=await b.newPage({viewport:{width:1700,height:1000}}),errors=[];p.on('pageerror',e=>errors.push(e.message));p.on('console',m=>m.type()==='error'&&errors.push(m.text()));try{p.setDefaultTimeout(10000);await p.addInitScript(()=>localStorage.setItem('vin_user',JSON.stringify({username:'common-import'})));await p.goto(base+'/app/admin/common-import');const main=p.locator('[data-screen-frame][aria-hidden="false"]').locator('main');assert.deepEqual(await p.getByLabel('Import Type').locator('option').allTextContents(),meta.importTypes.map(x=>x[1]));for(const x of['Import','Download','File Detail'])await p.getByRole('button',{name:x,exact:true}).last().waitFor();await p.getByRole('button',{name:'Import',exact:true}).first().click();await p.getByRole('alert').filter({hasText:'Please Select Import Type'}).waitFor();await p.getByLabel('Import Type').selectOption('67');await p.getByLabel('Upload Template').waitFor();assert.equal(await p.getByRole('button',{name:'Download Template'}).count(),0);await p.getByLabel('Import Type').selectOption('30');await p.getByRole('button',{name:'Download Template'}).waitFor();const dl=p.waitForEvent('download');await p.getByRole('button',{name:'Download Template'}).click();assert.equal((await dl).suggestedFilename(),'VIN_REP_OrderImport_USPL_OrderImport_Default.xlsx');await p.getByLabel('Upload Template').setInputFiles({name:'common-orders.csv',mimeType:'text/csv',buffer:Buffer.from('ROW-1,ORDER-1\nROW-2,ORDER-FAIL,invalid')});await p.getByRole('button',{name:'Import',exact:true}).first().click();await p.getByRole('alert').filter({hasText:'Import submitted successfully'}).waitFor();await p.getByRole('button',{name:'Download',exact:true}).click();await main.getByRole('button',{name:'Search',exact:true}).click();await p.getByRole('cell',{name:'common-orders.csv'}).first().waitFor();for(const h of['Import Type','Request Id','File Name','Upload Date','Success Records','Failed Records','File Status','Upload By'])await p.getByRole('columnheader',{name:h,exact:true}).waitFor();await p.getByRole('cell',{name:/CIB/}).first().getByRole('button').click();await p.getByRole('button',{name:'File Detail',exact:true}).waitFor();await p.getByRole('cell',{name:'ORDER-1'}).waitFor();for(const h of['Batch Id','Import Type','Import Key','Generated Key','Error Description','Remarks'])await p.getByRole('columnheader',{name:h,exact:true}).waitFor();assert.deepEqual(await p.getByLabel('Records per Page').locator('option').allTextContents(),['20','50','100','200']);await p.reload();await p.getByRole('button',{name:'Download',exact:true}).click();await main.getByRole('button',{name:'Search',exact:true}).click();await p.getByRole('cell',{name:'common-orders.csv'}).first().waitFor();await p.getByRole('button',{name:'Reset',exact:true}).click();assert.deepEqual(errors.filter(x=>!x.includes('status of 400')),[]);console.log('PASS Common Import: exact 47-type catalog, configuration/template rules, validations, persisted upload, Download and File Detail grids, request drilldown, paging, reset, and clean browser state.')}finally{await b.close()}
+import assert from 'node:assert/strict';
+import handler from '../api/common-import.js';
+import { find } from '../api/mongo.js';
+
+if (process.env.MONGODB_URI) throw new Error('Run this verifier with an isolated, unconfigured memory store.');
+const call = async (method, body = {}, query = {}) => {
+  const response = { code: 200, headers: {}, setHeader(key, value) { this.headers[key] = value; }, status(code) { this.code = code; return this; }, json(data) { this.body = data; return this; } };
+  await handler({ method, body, query }, response);
+  return response;
+};
+
+const metadata = await call('GET');
+assert.equal(metadata.body.importTypes.length, 47);
+assert.deepEqual(metadata.body.pageSizes, [20, 50, 100, 200]);
+assert.equal((await call('POST', { action: 'import', importType: '-1' })).body.error, 'Please Select Import Type');
+assert.equal((await call('POST', { action: 'import', importType: '30', subtype: '0', classification: '1' })).body.error, 'No file chosen to import.');
+const config = await call('POST', { action: 'config', importType: '46' });
+assert.equal(config.body.notes[0], '**Note : 1 Asn can have maximum of rows : 1200');
+assert.equal((await call('POST', { action: 'config', importType: '67' })).body.templateHidden, true);
+
+const template = await call('POST', { action: 'template', importType: '30' });
+assert.equal(template.code, 501);
+assert.match(template.body.error, /storage is not connected/i);
+const attempted = await call('POST', { action: 'import', importType: '30', subtype: '0', classification: '1', fileName: 'orders.csv', content: 'ROW-1,ORDER-1\nROW-2,ORDER-FAIL,invalid' });
+assert.equal(attempted.code, 501);
+assert.match(attempted.body.error, /No business processor is connected/i);
+assert.equal((await find('admin_records', { type: 'common-import-batch' })).length, 0);
+assert.equal((await find('admin_records', { type: 'common-import-detail' })).length, 0);
+assert.equal((await call('POST', { action: 'search', fromDate: '29/09/2026', toDate: '29/09/2026' })).code, 501);
+assert.equal((await call('POST', { action: 'details', batchId: 'fake-batch' })).code, 501);
+console.log('PASS Common Import: metadata and validation remain available; template/import report unavailable service and create no false file or processed batch.');

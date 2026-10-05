@@ -19,12 +19,20 @@
 - API: `api/oms-rules.js`.
 - Persistence moved out of `generic_records` into the dedicated `oms_rules` collection.
 - Each branch now has its observed fields and condition/action builders, persistent create/update, active toggle, priority update and paging.
+- Create/update records authenticated `created_by`, `created_date`, `updated_by`, and `updated_date`. The API rejects unknown statuses, nonpositive/noninteger priorities, malformed lists, invalid PATCH types, and stale updates.
+- Repository search found no other source file consuming the `oms_rules` collection. Saved Active rules are configuration metadata and do not execute validation, routing, returns, seller-panel, shipping, or allocation behavior.
 
 ## Verification
 
 - `npm run typecheck`: passed.
 - `npm run build`: passed; existing Node/Vite version and large-bundle warnings remain.
-- `ERETAIL_BASE_URL=http://127.0.0.1:3011 npm run test:oms-rules`: passed.
-- Browser suite covered six branch editors, exact Validation failure, persistent creates, active/priority transition, reload, pagination, console and API checks.
-- Second authenticated live/local comparison passed across the launcher, all branch matrices, status controls, builders, and direct controls `applicableLocations`, `ruleType`, and `warehouseName`.
+- `npm run test:oms-rules`: passed through the isolated harness using a signed-in generated administrator and generated `codexqa_*` MongoDB/PostgreSQL databases; both were removed after the run.
+- The browser suite saved all six branch types against Location/Channel/Client reference rows and verified validation, status toggle, priority update, edit, paging, active-only filtering, actor/date persistence, MongoDB readback, invalid/stale guards, and unchanged Central Inventory events.
+- `npm run typecheck`, JavaScript syntax checks, and the full integrated signed-in browser/inventory suite passed with OMS Rules included.
+- The older second authenticated live/local comparison passed across the launcher, all branch matrices, status controls, builders, and direct controls `applicableLocations`, `ruleType`, and `warehouseName`. It does not verify that configured rules are executed by order workflows.
 
+## Remaining release gaps
+
+- No order validation/routing/allocation handler consumes these saved rows. Active configuration does not change order outcomes.
+- Configured production MongoDB reachability, other-role permissions, multi-operator concurrency and current LIVE parity remain unverified.
+- The historical authenticated live/local comparison above does not establish production execution or provider behavior.

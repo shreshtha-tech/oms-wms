@@ -90,7 +90,7 @@ Nine additional 2560×1440 recordings were reviewed frame-by-frame and by full-r
 | k7 | SKU Import Import/Download tabs; CreateUpdate, Attribute Set, template, maximum 500 rows and upload-history grid | Separate `/app/sku-import`; CSV template, validated Create/Update processing, 500-row limit, success/failure counts and persistent history |
 | k8 | SKU Create/Edit classification changed to Bundled | Classification choices preserve Normal/Bundled/Style/Variant/Prepack; selected classification controls the created SKU |
 | k9 | SKU Barcode enquiry, import tab and Add New modal | Recorded grid/modal/import structure, 1,000-row rule, row-level preview/errors, duplicate protection and Master SKU-backed selection |
-| k10 | Promotion Enquiry and Sales Promotion Create/Edit tabs | Manual enquiry plus Buy/Get, Tiers, Exclusion, Day & Time and Location tabs; Save/Confirm/Copy/Reset and persistent rule collections |
+| k10 | Promotion Enquiry and Sales Promotion Create/Edit tabs | Manual enquiry plus Buy/Get, Tiers, Exclusion, Day & Time and Location tabs. The former local Save/Confirm action wrote generic metadata without POS rule execution; current creation and confirmation are blocked, and historical metadata is read-only. |
 | k11 | Pricing Event Enquiry, Search/Reset/exports/Add New, recorded statuses | Dedicated enquiry with recorded fields, filters, result contract and Confirmed/Pending Confirmation/Canceled ribbons |
 | k12 | Pricing Event Add New: base dates/type, B2B customer picker and location | Mandatory base validation, customer picker sourced from Customer Master, location selection and Next transition |
 | k13 | Pricing Event SKU Details: SKU picker, fixed value rule, Add and Save success | SKU picker sourced from Master SKU, fixed/percentage rules, rule grid and persisted Saved Successfully state |
@@ -110,7 +110,7 @@ Nine additional 2560×1440 recordings were reviewed frame-by-frame and by full-r
 | Catalog navigation | Recordings show SKU Enquiry and SKU Import | User added Master SKU | Kept Master SKU and added both recorded routes; no replacement or rewrite |
 | Import file type | UI chooser does not reveal parser format | Local runtime has no spreadsheet parser dependency | CSV is processed and verified; XLSX is selectable but returns an explicit unsupported-validation message rather than silently succeeding |
 | k8 completion | Shows Bundled selected but does not show the post-OK editor | k6 shows the complete Normal editor | Same classification gate is used; Bundled is persisted, while shared fields follow k6/documentation |
-| Promotion line selection | k10 exposes a condition picker but does not open it | Master SKU is authoritative catalog | Promotion conditions are persisted; no unobserved picker columns were invented |
+| Promotion line selection | k10 exposes a condition picker but does not open it | Master SKU is authoritative catalog | The old generic line persistence is disabled until eligibility and POS execution are verified; no unobserved picker columns were invented |
 | Pricing calculation | Recordings store rule metadata but do not show a downstream order calculation | Existing checkout has sales-order pricing | Rules persist without claiming an unobserved retroactive order recalculation |
 
 ### Added verification
@@ -123,7 +123,7 @@ Nine additional 2560×1440 recordings were reviewed frame-by-frame and by full-r
 - [x] Missing Master SKU rejected with HTTP 400.
 - [x] Duplicate barcode rejected with HTTP 409.
 - [x] Pricing Event with SKU rule persisted and transitioned to Confirmed.
-- [x] Sales Promotion with SKU-linked line persisted as Confirmed.
+- [x] Historical check: a Sales Promotion SKU-linked line persisted with a `Confirmed` status in generic metadata. This did not prove POS discount execution or eligibility checks. The current guard test verifies such generic writes are rejected and legacy metadata remains readable.
 - [ ] Browser pixel-diff automation at 2560×1440 remains unavailable in this workspace.
 
 ## Tally Configuration: pdf3 and l1-l3

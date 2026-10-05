@@ -1,0 +1,1935 @@
+{
+  "url": "https://demo.vineretail.com/eRetailWeb/repushlogdisplay",
+  "title": "",
+  "text": "Search\tRepush\tReset\n Admin Repush Log\nWebHook\nEmailTransit\nTransmitDetail\nManifestStatus",
+  "controls": [
+    {
+      "tag": "BUTTON",
+      "id": "searchLogButton",
+      "name": "",
+      "type": "button",
+      "text": "Search",
+      "value": "",
+      "disabled": false,
+      "visible": true,
+      "title": "Search",
+      "onclick": "callSearchSTSGrid(false); return false;",
+      "onchange": null,
+      "geometry": {
+        "x": 871.6796875,
+        "y": 2,
+        "width": 79.171875,
+        "height": 30,
+        "font": "12px / 18px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(255, 255, 255)",
+        "background": "rgb(243, 156, 18)"
+      }
+    },
+    {
+      "tag": "BUTTON",
+      "id": "repushBtn",
+      "name": "",
+      "type": "button",
+      "text": "Repush",
+      "value": "",
+      "disabled": false,
+      "visible": true,
+      "title": "Repush",
+      "onclick": "repushUpdate(); return false;",
+      "onchange": null,
+      "geometry": {
+        "x": 960.8515625,
+        "y": 2,
+        "width": 83.3671875,
+        "height": 30,
+        "font": "12px / 18px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(255, 255, 255)",
+        "background": "rgb(0, 166, 90)"
+      }
+    },
+    {
+      "tag": "BUTTON",
+      "id": "",
+      "name": "",
+      "type": "button",
+      "text": "Reset",
+      "value": "",
+      "disabled": false,
+      "visible": true,
+      "title": "Reset",
+      "onclick": "resetAll(); return false;",
+      "onchange": null,
+      "geometry": {
+        "x": 1054.21875,
+        "y": 2,
+        "width": 70.78125,
+        "height": 30,
+        "font": "12px / 18px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(68, 68, 68)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "Admin",
+      "visible": true,
+      "title": "",
+      "onclick": "return false;",
+      "onchange": null,
+      "geometry": {
+        "x": 15,
+        "y": 6,
+        "width": 52.8359375,
+        "height": 17.140625,
+        "font": "12px / 17.1429px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(68, 68, 68)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "Repush Log",
+      "visible": true,
+      "title": "",
+      "onclick": "return false;",
+      "onchange": null,
+      "geometry": {
+        "x": 91.515625,
+        "y": 6,
+        "width": 69.328125,
+        "height": 17.140625,
+        "font": "12px / 17.1429px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(68, 68, 68)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "WebHook",
+      "visible": true,
+      "title": "",
+      "onclick": "displaybtn('WebHook');",
+      "onchange": null,
+      "geometry": {
+        "x": 0,
+        "y": 39,
+        "width": 77.1171875,
+        "height": 19.140625,
+        "font": "700 12px / 17.1429px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(0, 0, 0)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "EmailTransit",
+      "visible": true,
+      "title": "",
+      "onclick": "displaybtn('emailTransit');",
+      "onchange": null,
+      "geometry": {
+        "x": 83.1171875,
+        "y": 39,
+        "width": 99.3125,
+        "height": 20.5703125,
+        "font": "700 13px / 18.5714px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(0, 0, 0)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "TransmitDetail",
+      "visible": true,
+      "title": "",
+      "onclick": "displaybtn('transmitDetail');",
+      "onchange": null,
+      "geometry": {
+        "x": 188.4296875,
+        "y": 39,
+        "width": 104.6953125,
+        "height": 19.140625,
+        "font": "700 12px / 17.1429px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(0, 0, 0)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "ManifestStatus",
+      "visible": true,
+      "title": "",
+      "onclick": "displaybtn('manifestStatus');",
+      "onchange": null,
+      "geometry": {
+        "x": 299.125,
+        "y": 39,
+        "width": 107.3515625,
+        "height": 19.140625,
+        "font": "700 12px / 17.1429px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(0, 0, 0)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "",
+      "visible": false,
+      "title": "Toggle Expand Collapse Grid",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "cb_webhookList",
+      "name": "",
+      "type": "checkbox",
+      "text": "",
+      "value": "on",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "gs_docId",
+      "name": "docId",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "x",
+      "visible": false,
+      "title": "Reset Search Value",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "gs_docId",
+      "name": "hddocId",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "x",
+      "visible": false,
+      "title": "Reset Search Value",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "gs_createDate",
+      "name": "createDate",
+      "type": "text",
+      "text": "",
+      "value": "17/09/2026 - 24/09/2026",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "x",
+      "visible": false,
+      "title": "Reset Search Value",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "SELECT",
+      "id": "gs_docType",
+      "name": "docType",
+      "type": "select-one",
+      "text": "",
+      "value": "-1",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": null,
+      "onchange": null,
+      "options": [
+        {
+          "text": "--- Select ---",
+          "value": "-1"
+        },
+        {
+          "text": "INBOUND",
+          "value": "INBOUND"
+        },
+        {
+          "text": "ORDER",
+          "value": "ORDER"
+        },
+        {
+          "text": "ORDER RETURN",
+          "value": "ORDER RETURN"
+        },
+        {
+          "text": "RTV",
+          "value": "RTV"
+        },
+        {
+          "text": "TRANSHIPMENT",
+          "value": "TRANSHIPMENT"
+        },
+        {
+          "text": "PO",
+          "value": "PO"
+        }
+      ]
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "x",
+      "visible": false,
+      "title": "Reset Search Value",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "SELECT",
+      "id": "gs_docStatus",
+      "name": "docStatus",
+      "type": "select-one",
+      "text": "",
+      "value": "-1",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": null,
+      "onchange": null,
+      "options": [
+        {
+          "text": "--- Select ---",
+          "value": "-1"
+        },
+        {
+          "text": "Allocated",
+          "value": "13"
+        },
+        {
+          "text": "Cancelled",
+          "value": "7"
+        },
+        {
+          "text": "Closed",
+          "value": "37"
+        },
+        {
+          "text": "Confirmed",
+          "value": "4"
+        },
+        {
+          "text": "Delivered",
+          "value": "33"
+        },
+        {
+          "text": "Delivery created",
+          "value": "25"
+        },
+        {
+          "text": "Packed",
+          "value": "22"
+        },
+        {
+          "text": "Part Allocated",
+          "value": "10"
+        },
+        {
+          "text": "Part Picked",
+          "value": "16"
+        },
+        {
+          "text": "Partially Shipped",
+          "value": "28"
+        },
+        {
+          "text": "Pending",
+          "value": "1"
+        },
+        {
+          "text": "Pick complete",
+          "value": "19"
+        },
+        {
+          "text": "Shipped &amp; Returned",
+          "value": "35"
+        },
+        {
+          "text": "Shipped complete",
+          "value": "31"
+        }
+      ]
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "x",
+      "visible": false,
+      "title": "Reset Search Value",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "gs_responseCode",
+      "name": "responseCode",
+      "type": "text",
+      "text": "",
+      "value": "999",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "x",
+      "visible": false,
+      "title": "Reset Search Value",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "gs_rowVersion",
+      "name": "rowVersion",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "x",
+      "visible": false,
+      "title": "Reset Search Value",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "gs_sellerId",
+      "name": "sellerId",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "x",
+      "visible": false,
+      "title": "Reset Search Value",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "",
+      "name": "",
+      "type": "text",
+      "text": "",
+      "value": "0",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "SELECT",
+      "id": "",
+      "name": "",
+      "type": "select-one",
+      "text": "",
+      "value": "20",
+      "disabled": false,
+      "visible": false,
+      "title": "Records per Page",
+      "onclick": null,
+      "onchange": null,
+      "options": [
+        {
+          "text": "20",
+          "value": "20"
+        },
+        {
+          "text": "50",
+          "value": "50"
+        },
+        {
+          "text": "100",
+          "value": "100"
+        },
+        {
+          "text": "200",
+          "value": "200"
+        }
+      ]
+    },
+    {
+      "tag": "BUTTON",
+      "id": "",
+      "name": "",
+      "type": "button",
+      "text": "×",
+      "value": "",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "webhookKey",
+      "name": "webhook.webHookKey",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": true,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "hddocId",
+      "name": "webhook.doc.id",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": true,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "docType",
+      "name": "webhook.doc.type",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": true,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "docStatus",
+      "name": "webhook.doc.status",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": true,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "responseCode",
+      "name": "webhook.response.code",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "rowVersion",
+      "name": "webhook.row.version",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "BUTTON",
+      "id": "webHokkSaveBtn",
+      "name": "",
+      "type": "button",
+      "text": "Save",
+      "value": "",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "BUTTON",
+      "id": "",
+      "name": "",
+      "type": "button",
+      "text": "×",
+      "value": "",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "TEXTAREA",
+      "id": "",
+      "name": "",
+      "type": "textarea",
+      "text": "",
+      "value": "  ",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "TEXTAREA",
+      "id": "",
+      "name": "",
+      "type": "textarea",
+      "text": "",
+      "value": "  ",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "BUTTON",
+      "id": "",
+      "name": "",
+      "type": "button",
+      "text": "×",
+      "value": "",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "SELECT",
+      "id": "",
+      "name": "",
+      "type": "select-one",
+      "text": "",
+      "value": "8",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": null,
+      "onchange": null,
+      "options": [
+        {
+          "text": "Sep",
+          "value": "8"
+        },
+        {
+          "text": "Oct",
+          "value": "9"
+        },
+        {
+          "text": "Nov",
+          "value": "10"
+        },
+        {
+          "text": "Dec",
+          "value": "11"
+        }
+      ]
+    },
+    {
+      "tag": "SELECT",
+      "id": "",
+      "name": "",
+      "type": "select-one",
+      "text": "",
+      "value": "2026",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": null,
+      "onchange": null,
+      "options": [
+        {
+          "text": "2026",
+          "value": "2026"
+        },
+        {
+          "text": "2027",
+          "value": "2027"
+        },
+        {
+          "text": "2028",
+          "value": "2028"
+        },
+        {
+          "text": "2029",
+          "value": "2029"
+        },
+        {
+          "text": "2030",
+          "value": "2030"
+        },
+        {
+          "text": "2031",
+          "value": "2031"
+        }
+      ]
+    },
+    {
+      "tag": "SELECT",
+      "id": "",
+      "name": "",
+      "type": "select-one",
+      "text": "",
+      "value": "8",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": null,
+      "onchange": null,
+      "options": [
+        {
+          "text": "Jan",
+          "value": "0"
+        },
+        {
+          "text": "Feb",
+          "value": "1"
+        },
+        {
+          "text": "Mar",
+          "value": "2"
+        },
+        {
+          "text": "Apr",
+          "value": "3"
+        },
+        {
+          "text": "May",
+          "value": "4"
+        },
+        {
+          "text": "Jun",
+          "value": "5"
+        },
+        {
+          "text": "Jul",
+          "value": "6"
+        },
+        {
+          "text": "Aug",
+          "value": "7"
+        },
+        {
+          "text": "Sep",
+          "value": "8"
+        },
+        {
+          "text": "Oct",
+          "value": "9"
+        },
+        {
+          "text": "Nov",
+          "value": "10"
+        },
+        {
+          "text": "Dec",
+          "value": "11"
+        }
+      ]
+    },
+    {
+      "tag": "SELECT",
+      "id": "",
+      "name": "",
+      "type": "select-one",
+      "text": "",
+      "value": "2026",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": null,
+      "onchange": null,
+      "options": [
+        {
+          "text": "1976",
+          "value": "1976"
+        },
+        {
+          "text": "1977",
+          "value": "1977"
+        },
+        {
+          "text": "1978",
+          "value": "1978"
+        },
+        {
+          "text": "1979",
+          "value": "1979"
+        },
+        {
+          "text": "1980",
+          "value": "1980"
+        },
+        {
+          "text": "1981",
+          "value": "1981"
+        },
+        {
+          "text": "1982",
+          "value": "1982"
+        },
+        {
+          "text": "1983",
+          "value": "1983"
+        },
+        {
+          "text": "1984",
+          "value": "1984"
+        },
+        {
+          "text": "1985",
+          "value": "1985"
+        },
+        {
+          "text": "1986",
+          "value": "1986"
+        },
+        {
+          "text": "1987",
+          "value": "1987"
+        },
+        {
+          "text": "1988",
+          "value": "1988"
+        },
+        {
+          "text": "1989",
+          "value": "1989"
+        },
+        {
+          "text": "1990",
+          "value": "1990"
+        },
+        {
+          "text": "1991",
+          "value": "1991"
+        },
+        {
+          "text": "1992",
+          "value": "1992"
+        },
+        {
+          "text": "1993",
+          "value": "1993"
+        },
+        {
+          "text": "1994",
+          "value": "1994"
+        },
+        {
+          "text": "1995",
+          "value": "1995"
+        },
+        {
+          "text": "1996",
+          "value": "1996"
+        },
+        {
+          "text": "1997",
+          "value": "1997"
+        },
+        {
+          "text": "1998",
+          "value": "1998"
+        },
+        {
+          "text": "1999",
+          "value": "1999"
+        },
+        {
+          "text": "2000",
+          "value": "2000"
+        },
+        {
+          "text": "2001",
+          "value": "2001"
+        },
+        {
+          "text": "2002",
+          "value": "2002"
+        },
+        {
+          "text": "2003",
+          "value": "2003"
+        },
+        {
+          "text": "2004",
+          "value": "2004"
+        },
+        {
+          "text": "2005",
+          "value": "2005"
+        },
+        {
+          "text": "2006",
+          "value": "2006"
+        },
+        {
+          "text": "2007",
+          "value": "2007"
+        },
+        {
+          "text": "2008",
+          "value": "2008"
+        },
+        {
+          "text": "2009",
+          "value": "2009"
+        },
+        {
+          "text": "2010",
+          "value": "2010"
+        },
+        {
+          "text": "2011",
+          "value": "2011"
+        },
+        {
+          "text": "2012",
+          "value": "2012"
+        },
+        {
+          "text": "2013",
+          "value": "2013"
+        },
+        {
+          "text": "2014",
+          "value": "2014"
+        },
+        {
+          "text": "2015",
+          "value": "2015"
+        },
+        {
+          "text": "2016",
+          "value": "2016"
+        },
+        {
+          "text": "2017",
+          "value": "2017"
+        },
+        {
+          "text": "2018",
+          "value": "2018"
+        },
+        {
+          "text": "2019",
+          "value": "2019"
+        },
+        {
+          "text": "2020",
+          "value": "2020"
+        },
+        {
+          "text": "2021",
+          "value": "2021"
+        },
+        {
+          "text": "2022",
+          "value": "2022"
+        },
+        {
+          "text": "2023",
+          "value": "2023"
+        },
+        {
+          "text": "2024",
+          "value": "2024"
+        },
+        {
+          "text": "2025",
+          "value": "2025"
+        },
+        {
+          "text": "2026",
+          "value": "2026"
+        },
+        {
+          "text": "2027",
+          "value": "2027"
+        },
+        {
+          "text": "2028",
+          "value": "2028"
+        },
+        {
+          "text": "2029",
+          "value": "2029"
+        },
+        {
+          "text": "2030",
+          "value": "2030"
+        },
+        {
+          "text": "2031",
+          "value": "2031"
+        }
+      ]
+    },
+    {
+      "tag": "INPUT",
+      "id": "",
+      "name": "daterangepicker_start",
+      "type": "text",
+      "text": "",
+      "value": "24/09/2026",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "",
+      "name": "daterangepicker_end",
+      "type": "text",
+      "text": "",
+      "value": "24/09/2026",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "BUTTON",
+      "id": "",
+      "name": "",
+      "type": "submit",
+      "text": "Apply",
+      "value": "",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "BUTTON",
+      "id": "",
+      "name": "",
+      "type": "submit",
+      "text": "Cancel",
+      "value": "",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": null,
+      "onchange": null
+    }
+  ],
+  "headers": [
+    {
+      "text": "",
+      "id": "webhookList_cb",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "WebHookKey",
+      "id": "webhookList_webhookKey",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Doc Id",
+      "id": "webhookList_docId",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Doc Id",
+      "id": "webhookList_docId",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Created Date",
+      "id": "webhookList_createDate",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Doc Type",
+      "id": "webhookList_docType",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Doc Status",
+      "id": "webhookList_docStatus",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Response Code",
+      "id": "webhookList_responseCode",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Row Version",
+      "id": "webhookList_rowVersion",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Seller Id",
+      "id": "webhookList_sellerId",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "ApiRespsonse",
+      "id": "webhookList_apiResponse",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Source",
+      "id": "webhookList_source",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Source",
+      "id": "webhookList_internal_doc_id",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Response",
+      "id": "webhookList_response",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Created By",
+      "id": "webhookList_createdBy",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Modified By",
+      "id": "webhookList_modifiedBy",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Modified Date",
+      "id": "webhookList_modifiedDate",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Action",
+      "id": "webhookList_action",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "",
+      "id": "gsh_webhookList_cb",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "",
+      "id": "gsh_webhookList_webhookKey",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "x",
+      "id": "gsh_webhookList_docId",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "x",
+      "id": "gsh_webhookList_docId",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "x",
+      "id": "gsh_webhookList_createDate",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "--- Select ---INBOUNDORDERORDER RETURNRTVTRANSHIPMENTPOx",
+      "id": "gsh_webhookList_docType",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "--- Select ---AllocatedCancelledClosedConfirmedDeliveredDelivery createdPackedPart AllocatedPart PickedPartially ShippedPendingPick completeShipped &amp; ReturnedShipped completex",
+      "id": "gsh_webhookList_docStatus",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "x",
+      "id": "gsh_webhookList_responseCode",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "x",
+      "id": "gsh_webhookList_rowVersion",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "x",
+      "id": "gsh_webhookList_sellerId",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "",
+      "id": "gsh_webhookList_apiResponse",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "",
+      "id": "gsh_webhookList_source",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "",
+      "id": "gsh_webhookList_internal_doc_id",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "",
+      "id": "gsh_webhookList_response",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "",
+      "id": "gsh_webhookList_createdBy",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "",
+      "id": "gsh_webhookList_modifiedBy",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "",
+      "id": "gsh_webhookList_modifiedDate",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "",
+      "id": "gsh_webhookList_action",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "text": "SepOctNovDec202620272028202920302031",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "text": "",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "text": "Su",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "text": "Mo",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "text": "Tu",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "text": "We",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "text": "Th",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "text": "Fr",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "text": "Sa",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "text": "",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "text": "JanFebMarAprMayJunJulAugSepOctNovDec19761977197819791980198119821983198419851986198719881989199019911992199319941995199619971998199920002001200220032004200520062007200820092010201120122013201420152016201720182019202020212022202320242025202620272028202920302031",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "text": "",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "text": "Su",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "text": "Mo",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "text": "Tu",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "text": "We",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "text": "Th",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "text": "Fr",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "text": "Sa",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    }
+  ],
+  "scripts": [
+    "https://www.google-analytics.com/analytics.js",
+    "https://www.googletagmanager.com/gtag/js?id=G-H8NVRVNQXJ&cx=c&gtm=4e69m0",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/SecurityJS/AesUtil.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/SecurityJS/CryptoJS.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/SecurityJS/PBKDF2.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/SecurityJS/jsencrypt.min.3.5.4.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/moment.js2.10.2/raphael-min.js",
+    "https://www.googletagmanager.com/gtag/js?id=UA-108693828-3",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/jQuery/jQuery-3.7.1.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/jQuery/jquery-migrate-3.3.0.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/jQueryUI/jquery-ui.min.js?v=1",
+    "https://demo.vineretail.com/eRetailWeb/struts/js/plugins/jquery.subscribe.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/jqGrid_JS_5.1.0/js/jquery.jqGrid.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/jqGrid_JS_5.1.0/js/i18n/grid.locale-en.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/bootstrap/js/bootstrap.min.js?v=1",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/moment.js2.10.2/moment.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/morris/morris.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/sparkline/jquery.sparkline.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/jvectormap/jquery-jvectormap-world-mill-en.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/knob/jquery.knob.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/daterangepicker/daterangepicker.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/datepicker/bootstrap-datepicker.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/timepicker/bootstrap-timepicker.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/slimScroll/jquery.slimscroll.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/fastclick/fastclick.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/dist/js/app.min.js?v=1",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/iCheck/icheck.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/daterangepicker/jquery.timepicker.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/switch/bootstrap-switch.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/select2/select2.full.min.js?v=1",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/ckeditor/ckeditor.js?v=1",
+    "https://demo.vineretail.com/eRetailWeb/js/CommonFunctions.js?v=1.33",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/ace-builds-master/src-min-noconflict/theme-chaos.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/ace-builds-master/src-min-noconflict/mode-json.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/ace-builds-master/src-min-noconflict/ace.js"
+  ],
+  "handlers": {
+    "callSearchSTSGrid": "function callSearchSTSGrid(flag) {\t\n\tvar retVal = $(\"#webhookList\").jqGrid('setGridParam', {\n\t\tdatatype : 'json',\n\t\tpage : 1,\t\t\n\t\tpostData : {\n\t\t\t\tdocId : $(\"#gs_docId\").val(),\n\t\t\t\tdocType : $(\"#gs_docType\").val(),\n\t\t\t\tdocStatus : $(\"#gs_docStatus\").val(),\n\t\t\t\tresponseCode : $(\"#gs_responseCode\").val(),\n\t\t\t\tsellerId : $(\"#gs_sellerId\").val(),\n\t\t\t\trowVersion : $(\"#gs_rowVersion\").val(),\n\t\t\t\tfromCreateDate : $(\"#fromCreatedDate\").val(),        \n\t\t\t\ttoCreateDate : $(\"#toCreatedDate\").val(), \n\t\t\t\tREQ_SEARCH_FLAG : REQ_SEARCH_FLAG,\n\t\t\t\t doFetchCount : false\n\t\t\t},\n\t\t\turl : \"jsonWebHookSearch\",\n\t\t\tsearch : true\n\t\t}).trigger('reloadGrid');\n\t\tREQ_SEARCH_FLAG=true;\n\t}",
+    "repushUpdate": "function repushUpdate () {\n\t\tvar gridObj = jQuery(\"#webhookList\");\n\t\tvar selRowId = gridObj.jqGrid ('getGridParam', 'selarrrow');\n\t\tvar webhookKeys  = \"\";\n\t\tif(selRowId != undefined && selRowId.length > 0) {\n\t\t\t\n\t\t\tvar idsLen = selRowId.length;\n\t\n\t\t\tfor (var i = 0; i < idsLen; i++) \n\t\t\t{\n\t\t\t    var rowId = selRowId[i];\n\t\t\t    var rowData = gridObj.jqGrid('getRowData', rowId);\n\t\n\t\t\t    if(rowData.webhookKey == undefined || rowData.webhookKey == \"\" || rowData.webhookKey == null){\n\t\t\t\t\twindow.parent.showAlert(\"\");\n\t\t\t\t\treturn false;\n\t\t\t    }\n\t\t\t    else {\t\t\t\t\t    \n\t\t\t    \twebhookKeys += (webhookKeys.length > 0) ? \",\" : \"\";\n\t\t\t    \twebhookKeys += rowData.webhookKey;\n\t\t\t    }\t\t\t\t\t    \t\t\t\t\t    \n\t\t\t}\n\t\t\t\n\t\t\t\tvar retVal = $.ajax({\n\t\t\t\turl : \"repushUpdateList\",\n\t\t\t\t\n\t\t\t\ttype : \"POST\",\n\t\t\t\tdata : {\n\t\t\t\t\twebhookKeys : webhookKeys\n\t\t\t\t},\n\t\t\t\tdataType : \"json\",\n\t\t\t\tasync : false\n\t\t\t}).responseText;\n\t\t\t\n\t\t\tretVal = jQuery.parseJSON(retVal);\n\t\t\tif(retVal != null && retVal != undefined && retVal.jsonMessage == null){\n\t\t\t\tjQuery(\"#webhookList\").trigger(\"reloadGrid\");\n\t\t\t\twindow.parent.showAlert('Records Repushed Successfully');\n\t\t\t\treturn true;\n\t\t\t}\n\t\t}\n\t\t\telse{\n\t\t\t\twindow.parent.showAlert('Please Select Grid Row For Repush'); // VE-53935 S-E\n\t\t\t\treturn false;\n\t\t\t}\n\t}",
+    "resetAll": "function resetAll() {\n\t\n\t\t$(\"#webhookList\").jqGrid('clearGridData', {\n\t\t\tclearfooter : true\n\t\t});\n\t\t$(\"#gs_docId\").val('');\n\t\t$(\"#gs_docType\").val('-1');\n\t\t$(\"#gs_docStatus\").val('-1');\n\t\t$(\"#gs_responseCode\").val(\"999\");\n\t\t$(\"#gs_sellerId\").val('');\n\t\t$(\"#gs_rowVersion\").val('');\n\t\tvar dateformat='dd/mm/yy';\n\t     var oldDate = new Date(); \n\t     var currdate = new Date(); \n\t     oldDate.setDate(oldDate.getDate() - (7)); \n\t     var formattedold = $.datepicker.formatDate(dateformat,oldDate);\n\t     var formattednew = $.datepicker.formatDate(dateformat,currdate);\n\t     $(\"#fromCreatedDate\").val(formattedold);\n\t     $(\"#toCreatedDate\").val(formattednew);\n\t     $('#gs_createDate').val(formattedold+\" - \"+formattednew);\n\t\tfillGridDropDown();\n\t\n}",
+    "displaybtn": "function displaybtn(obj) {\n\t    if (obj == \"emailTransit\") {\n\t        $(\"#emailTransittab\").show();\n\t        $(\"#transmitDetailtab\").hide();\n\t        $(\"#manifestStatustab\").hide();\n\t        $(\"#webhooktab\").hide();\n\t        emailTransitGrid();\n\t    } else if (obj == \"transmitDetail\") {\n\t    \t$(\"#emailTransittab\").hide();\n\t        $(\"#transmitDetailtab\").show();\n\t        $(\"#manifestStatustab\").hide();\n\t        $(\"#webhooktab\").hide();\n\t        transmitDetailGrid();\n\t    }\n\t    else if (obj == \"manifestStatus\") {\n\t    \t$(\"#emailTransittab\").hide();\n\t        $(\"#transmitDetailtab\").hide();\n\t        $(\"#manifestStatustab\").show();\n\t        $(\"#webhooktab\").hide();\n\t        manifestStatusGrid();\n\t    }\n\t    else{\n\t    \t$(\"#emailTransittab\").hide();\n\t        $(\"#transmitDetailtab\").hide();\n\t        $(\"#manifestStatustab\").hide();\n\t        $(\"#webhooktab\").show();\n\t    }\n\t}"
+  },
+  "children": []
+}

@@ -1,0 +1,3651 @@
+{
+  "generatedAt": "2026-10-01T19:46:48.053Z",
+  "menuFile": "src/eretail/menuData.ts",
+  "routerFile": "src/App.tsx",
+  "items": [
+    {
+      "rail": "Dashboard",
+      "group": "rail icon",
+      "label": "Dashboard",
+      "route": "/app/dashboard",
+      "source": "src/eretail/menuData.ts:28",
+      "routeSource": "src/App.tsx:158",
+      "component": "EDashboard",
+      "componentFile": "src/eretail/EDashboard.tsx",
+      "apiDependencies": [],
+      "missingApi": []
+    },
+    {
+      "rail": "Dashboard",
+      "group": "(none)",
+      "label": "D-Mills Dashboard",
+      "route": "/app/dashboard",
+      "source": "src/eretail/menuData.ts:30",
+      "routeSource": "src/App.tsx:158",
+      "component": "EDashboard",
+      "componentFile": "src/eretail/EDashboard.tsx",
+      "apiDependencies": [],
+      "missingApi": []
+    },
+    {
+      "rail": "Dashboard",
+      "group": "(none)",
+      "label": "Seller Panel Dashboard",
+      "route": "/app/seller-panel-dashboard",
+      "source": "src/eretail/menuData.ts:31",
+      "routeSource": "src/App.tsx:167",
+      "component": "SellerPanelDashboard",
+      "componentFile": "src/eretail/SellerPanelDashboard.tsx",
+      "apiDependencies": [
+        "/api/seller-panel-dashboard"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Master",
+      "group": "Trading Partners",
+      "label": "Vendor Master",
+      "route": "/app/vendors",
+      "source": "src/eretail/menuData.ts:40",
+      "routeSource": "src/App.tsx:581",
+      "component": "VendorMaster",
+      "componentFile": "src/eretail/masters/VendorMaster.tsx",
+      "apiDependencies": [],
+      "missingApi": []
+    },
+    {
+      "rail": "Master",
+      "group": "Trading Partners",
+      "label": "Customer Master",
+      "route": "/app/customers",
+      "source": "src/eretail/menuData.ts:41",
+      "routeSource": "src/App.tsx:589",
+      "component": "CustomerMaster",
+      "componentFile": "src/eretail/masters/CustomerMaster.tsx",
+      "apiDependencies": [],
+      "missingApi": []
+    },
+    {
+      "rail": "Master",
+      "group": "Trading Partners",
+      "label": "Transporter Master",
+      "route": "/app/transporters",
+      "source": "src/eretail/menuData.ts:42",
+      "routeSource": "src/App.tsx:597",
+      "component": "TransporterMaster",
+      "componentFile": "src/eretail/masters/TransporterMaster.tsx",
+      "apiDependencies": [],
+      "missingApi": []
+    },
+    {
+      "rail": "Master",
+      "group": "Trading Partners",
+      "label": "Client Master",
+      "route": "/app/clients",
+      "source": "src/eretail/menuData.ts:43",
+      "routeSource": "src/App.tsx:605",
+      "component": "ClientMaster",
+      "componentFile": "src/eretail/masters/ClientMaster.tsx",
+      "apiDependencies": [
+        "/api/jsonClientMasterEnquirySearch",
+        "/api/clients"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Master",
+      "group": "Trading Partners",
+      "label": "Customer Group",
+      "route": "/app/customer-groups",
+      "source": "src/eretail/menuData.ts:44",
+      "routeSource": "src/App.tsx:613",
+      "component": "CustomerGroupMaster",
+      "componentFile": "src/eretail/masters/CustomerGroupMaster.tsx",
+      "apiDependencies": [
+        "/api/jsonCustGroupSearch",
+        "/api/customers",
+        "/api/customer-groups"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Master",
+      "group": "POS Setup",
+      "label": "Manage Coupons",
+      "route": "/app/coupons",
+      "source": "src/eretail/menuData.ts:47",
+      "routeSource": "src/App.tsx:629",
+      "component": "ManageCoupons",
+      "componentFile": "src/eretail/masters/ManageCoupons.tsx",
+      "apiDependencies": [
+        "/api/fetchCouponEnquiryData"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Master",
+      "group": "POS Setup",
+      "label": "Manage Voucher Condition",
+      "route": null,
+      "source": "src/eretail/menuData.ts:48",
+      "routeSource": null,
+      "component": null,
+      "componentFile": null,
+      "apiDependencies": [],
+      "missingApi": []
+    },
+    {
+      "rail": "Master",
+      "group": "POS Setup",
+      "label": "Generate Vouchers",
+      "route": "/app/m/vouchers",
+      "source": "src/eretail/menuData.ts:49",
+      "routeSource": "src/App.tsx:685",
+      "component": "GenerateVouchers",
+      "componentFile": "src/eretail/masters/GenerateVouchers.tsx",
+      "apiDependencies": [
+        "/api/generic"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Master",
+      "group": "Custom",
+      "label": "ConsolidateVendorReturn",
+      "route": null,
+      "source": "src/eretail/menuData.ts:52",
+      "routeSource": null,
+      "component": null,
+      "componentFile": null,
+      "apiDependencies": [],
+      "missingApi": []
+    },
+    {
+      "rail": "Master",
+      "group": "Tax Management",
+      "label": "Tax Category (HSN/SAC)",
+      "route": "/app/tax-categories",
+      "source": "src/eretail/menuData.ts:57",
+      "routeSource": "src/App.tsx:757",
+      "component": "TaxCategory",
+      "componentFile": "src/eretail/masters/TaxCategory.tsx",
+      "apiDependencies": [
+        "/api/tax-categories"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Master",
+      "group": "Tax Management",
+      "label": "Tax Code",
+      "route": "/app/tax-code",
+      "source": "src/eretail/menuData.ts:58",
+      "routeSource": "src/App.tsx:621",
+      "component": "TaxCode",
+      "componentFile": "src/eretail/masters/TaxCode.tsx",
+      "apiDependencies": [
+        "/api/taxcodes"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Master",
+      "group": "Tax Management",
+      "label": "Tax Group",
+      "route": "/app/tax-groups",
+      "source": "src/eretail/menuData.ts:59",
+      "routeSource": "src/App.tsx:765",
+      "component": "TaxGroup",
+      "componentFile": "src/eretail/masters/TaxGroup.tsx",
+      "apiDependencies": [
+        "/api/tax-groups",
+        "/api/taxcodes"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Master",
+      "group": "Tax Management",
+      "label": "Tax Zone",
+      "route": "/app/tax-zones",
+      "source": "src/eretail/menuData.ts:60",
+      "routeSource": "src/App.tsx:773",
+      "component": "TaxZone",
+      "componentFile": "src/eretail/masters/TaxZone.tsx",
+      "apiDependencies": [
+        "/api/tax-zones"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Master",
+      "group": "Tax Management",
+      "label": "Tax Application",
+      "route": "/app/tax-application",
+      "source": "src/eretail/menuData.ts:61",
+      "routeSource": "src/App.tsx:637",
+      "component": "TaxApplication",
+      "componentFile": "src/eretail/masters/TaxApplication.tsx",
+      "apiDependencies": [
+        "/api/taxapp",
+        "/api/tax-categories",
+        "/api/tax-groups",
+        "/api/tax-zones"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Master",
+      "group": "Organization Management",
+      "label": "Organization Hierarchy",
+      "route": "/app/m/org-hierarchy",
+      "source": "src/eretail/menuData.ts:64",
+      "routeSource": "src/App.tsx:709",
+      "component": "OrganizationHierarchy",
+      "componentFile": "src/eretail/masters/OrganizationHierarchy.tsx",
+      "apiDependencies": [
+        "/api/org-hierarchy"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Master",
+      "group": "Organization Management",
+      "label": "Location Enquiry",
+      "route": "/app/m/location",
+      "source": "src/eretail/menuData.ts:65",
+      "routeSource": "src/App.tsx:425",
+      "component": "LocationEnquiry",
+      "componentFile": "src/eretail/masters/LocationEnquiry.tsx",
+      "apiDependencies": [
+        "/api/locations"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Master",
+      "group": "Organization Management",
+      "label": "Location Create/Edit",
+      "route": "/app/m/location-create",
+      "source": "src/eretail/menuData.ts:66",
+      "routeSource": "src/App.tsx:429",
+      "component": "LocationEditor",
+      "componentFile": "src/eretail/masters/LocationEditor.tsx",
+      "apiDependencies": [
+        "/api/locations"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Master",
+      "group": "Organization Management",
+      "label": "Manage Store Group",
+      "route": "/app/m/store-group",
+      "source": "src/eretail/menuData.ts:67",
+      "routeSource": "src/App.tsx:430",
+      "component": "StoreGroup",
+      "componentFile": "src/eretail/masters/StoreGroup.tsx",
+      "apiDependencies": [
+        "/api/store-groups"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Master",
+      "group": "SKU Management",
+      "label": "SKU Master",
+      "route": "/app/skus",
+      "source": "src/eretail/menuData.ts:72",
+      "routeSource": "src/App.tsx:476",
+      "component": "Skus",
+      "componentFile": "src/pages/Skus.tsx",
+      "apiDependencies": [
+        "/api/skus",
+        "/api/tax-categories"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Master",
+      "group": "SKU Management",
+      "label": "SKU Import",
+      "route": "/app/sku-import",
+      "source": "src/eretail/menuData.ts:73",
+      "routeSource": "src/App.tsx:733",
+      "component": "SkuImport",
+      "componentFile": "src/eretail/masters/SkuImport.tsx",
+      "apiDependencies": [
+        "/api/sku-imports",
+        "/api/skus"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Master",
+      "group": "SKU Management",
+      "label": "SKU Company Link",
+      "route": "/app/sku-company-link",
+      "source": "src/eretail/menuData.ts:74",
+      "routeSource": "src/App.tsx:653",
+      "component": "SkuCompanyLink",
+      "componentFile": "src/eretail/masters/SkuCompanyLink.tsx",
+      "apiDependencies": [
+        "/api/sku-company-links"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Master",
+      "group": "SKU Management",
+      "label": "SKU Barcode",
+      "route": "/app/sku-barcode",
+      "source": "src/eretail/menuData.ts:75",
+      "routeSource": "src/App.tsx:645",
+      "component": "SkuBarcode",
+      "componentFile": "src/eretail/masters/SkuBarcode.tsx",
+      "apiDependencies": [
+        "/api/skubarcode",
+        "/api/skus"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Master",
+      "group": "SKU Management",
+      "label": "Manage SKU Group",
+      "route": "/app/m/sku-group",
+      "source": "src/eretail/menuData.ts:76",
+      "routeSource": "src/App.tsx:431",
+      "component": "SkuGroup",
+      "componentFile": "src/eretail/masters/SkuGroup.tsx",
+      "apiDependencies": [
+        "/api/sku-groups"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Master",
+      "group": "SKU Management",
+      "label": "Merchandising Hierarchy",
+      "route": "/app/m/merch-hierarchy",
+      "source": "src/eretail/menuData.ts:77",
+      "routeSource": "src/App.tsx:661",
+      "component": "MerchandisingHierarchy",
+      "componentFile": "src/eretail/masters/MerchandisingHierarchy.tsx",
+      "apiDependencies": [
+        "/api/merch-hierarchy"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Master",
+      "group": "SKU Management",
+      "label": "Manage Attribute",
+      "route": "/app/m/manage-attribute",
+      "source": "src/eretail/menuData.ts:78",
+      "routeSource": "src/App.tsx:669",
+      "component": "ManageAttribute",
+      "componentFile": "src/eretail/masters/ManageAttribute.tsx",
+      "apiDependencies": [
+        "/api/manage-attributes"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Master",
+      "group": "SKU Management",
+      "label": "Attribute Set",
+      "route": "/app/m/attribute-set",
+      "source": "src/eretail/menuData.ts:79",
+      "routeSource": "src/App.tsx:677",
+      "component": "AttributeSet",
+      "componentFile": "src/eretail/masters/AttributeSet.tsx",
+      "apiDependencies": [
+        "/api/attribute-sets"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Master",
+      "group": "SKU Management",
+      "label": "Vendor SKU Catalog",
+      "route": "/app/m/vendor-sku-catalog",
+      "source": "src/eretail/menuData.ts:80",
+      "routeSource": "src/App.tsx:693",
+      "component": "VendorSkuCatalog",
+      "componentFile": "src/eretail/masters/VendorSkuCatalog.tsx",
+      "apiDependencies": [
+        "/api/vendor-sku-catalog"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Master",
+      "group": "SKU Management",
+      "label": "Vendor SKU Loc Catalog",
+      "route": "/app/m/vendor-sku-loc-catalog",
+      "source": "src/eretail/menuData.ts:81",
+      "routeSource": "src/App.tsx:701",
+      "component": "VendorSkuLocCatalog",
+      "componentFile": "src/eretail/masters/VendorSkuLocCatalog.tsx",
+      "apiDependencies": [
+        "/api/vendor-sku-loc-catalog"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Master",
+      "group": "SKU Management",
+      "label": "ARS SKU-Location Link",
+      "route": "/app/procurement/ars/sku-location",
+      "source": "src/eretail/menuData.ts:82",
+      "routeSource": "src/App.tsx:845",
+      "component": "ARSSkuLocation",
+      "componentFile": "src/eretail/procurement/ARSWorkflows.tsx",
+      "apiDependencies": [
+        "/api/skus",
+        "/api/vendors",
+        "/api/fetchArsAttributes",
+        "/api/addAndUpdateArsAttributes",
+        "/api/bulkUpdateArsAttributes",
+        "/api/ars",
+        "/api/locations"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Master",
+      "group": "Miscellaneous",
+      "label": "Other Masters",
+      "route": "/app/m/other-masters",
+      "source": "src/eretail/menuData.ts:85",
+      "routeSource": "src/App.tsx:717",
+      "component": "OtherMasters",
+      "componentFile": "src/eretail/masters/OtherMasters.tsx",
+      "apiDependencies": [
+        "/api/generic"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Master",
+      "group": "Miscellaneous",
+      "label": "Pricing Event",
+      "route": "/app/pricing-events",
+      "source": "src/eretail/menuData.ts:86",
+      "routeSource": "src/App.tsx:749",
+      "component": "PricingEvents",
+      "componentFile": "src/eretail/masters/PricingEvents.tsx",
+      "apiDependencies": [
+        "/api/pricing-events"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Master",
+      "group": "Miscellaneous",
+      "label": "Tally Configuration",
+      "route": "/app/tally-configuration",
+      "source": "src/eretail/menuData.ts:87",
+      "routeSource": "src/App.tsx:781",
+      "component": "TallyConfiguration",
+      "componentFile": "src/eretail/masters/TallyConfiguration.tsx",
+      "apiDependencies": [
+        "/api/tally-config"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Master",
+      "group": "Miscellaneous",
+      "label": "Price Zone Master",
+      "route": "/app/m/price-zone",
+      "source": "src/eretail/menuData.ts:88",
+      "routeSource": "src/App.tsx:407",
+      "component": "PriceZoneMaster",
+      "componentFile": "src/eretail/masters/PriceZone.tsx",
+      "apiDependencies": [
+        "/api/price-zones"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Master",
+      "group": "Miscellaneous",
+      "label": "External Apps",
+      "route": "/app/m/external-apps",
+      "source": "src/eretail/menuData.ts:89",
+      "routeSource": "src/App.tsx:415",
+      "component": "ExternalApps",
+      "componentFile": "src/eretail/masters/ExternalApps.tsx",
+      "apiDependencies": [
+        "/api/getRewardMasterDataForExtAppId",
+        "/api/external-apps",
+        "/api/jsonExternalAppsSearch",
+        "/api/checkTaxIntConfigured",
+        "/api/saveExternalAppsData",
+        "/api/testSMSConnection"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Master",
+      "group": "Miscellaneous",
+      "label": "Order Refund",
+      "route": "/app/m/order-refund",
+      "source": "src/eretail/menuData.ts:90",
+      "routeSource": "src/App.tsx:432",
+      "component": "OrderRefund",
+      "componentFile": "src/eretail/masters/OrderRefund.tsx",
+      "apiDependencies": [
+        "/api/order-refunds"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Master",
+      "group": "Miscellaneous",
+      "label": "Sales Representative",
+      "route": null,
+      "source": "src/eretail/menuData.ts:91",
+      "routeSource": null,
+      "component": null,
+      "componentFile": null,
+      "apiDependencies": [],
+      "missingApi": []
+    },
+    {
+      "rail": "Procurement",
+      "group": "PO Create/Edit",
+      "label": "Single Location",
+      "route": "/app/procurement/po/single",
+      "source": "src/eretail/menuData.ts:102",
+      "routeSource": "src/App.tsx:805",
+      "component": "PurchaseOrderEditor",
+      "componentFile": "src/eretail/procurement/ProcurementWorkflows.tsx",
+      "apiDependencies": [
+        "/api/purchase-order-tags",
+        "/api/purchase-order-inbound",
+        "/api/purchase-order-asn",
+        "/api/procurement",
+        "/api/vendors",
+        "/api/skus",
+        "/api/purchase-orders",
+        "/api/purchase-order-comments",
+        "/api/back-orders",
+        "/api/sale-orders"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Procurement",
+      "group": "PO Create/Edit",
+      "label": "Multiple Location",
+      "route": "/app/procurement/po/multiple",
+      "source": "src/eretail/menuData.ts:103",
+      "routeSource": "src/App.tsx:813",
+      "component": "PurchaseOrderEditor",
+      "componentFile": "src/eretail/procurement/ProcurementWorkflows.tsx",
+      "apiDependencies": [
+        "/api/purchase-order-tags",
+        "/api/purchase-order-inbound",
+        "/api/purchase-order-asn",
+        "/api/procurement",
+        "/api/vendors",
+        "/api/skus",
+        "/api/purchase-orders",
+        "/api/purchase-order-comments",
+        "/api/back-orders",
+        "/api/sale-orders"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Procurement",
+      "group": "PO Create/Edit",
+      "label": "From Back Orders",
+      "route": "/app/procurement/po/back-orders",
+      "source": "src/eretail/menuData.ts:104",
+      "routeSource": "src/App.tsx:821",
+      "component": "BackOrderPO",
+      "componentFile": "src/eretail/procurement/ProcurementWorkflows.tsx",
+      "apiDependencies": [
+        "/api/purchase-order-tags",
+        "/api/purchase-order-inbound",
+        "/api/purchase-order-asn",
+        "/api/procurement",
+        "/api/vendors",
+        "/api/skus",
+        "/api/purchase-orders",
+        "/api/purchase-order-comments",
+        "/api/back-orders",
+        "/api/sale-orders"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Procurement",
+      "group": "(none)",
+      "label": "PO Enquiry",
+      "route": "/app/procurement/po-enquiry",
+      "source": "src/eretail/menuData.ts:109",
+      "routeSource": "src/App.tsx:797",
+      "component": "POEnquiry",
+      "componentFile": "src/eretail/procurement/ProcurementWorkflows.tsx",
+      "apiDependencies": [
+        "/api/purchase-order-tags",
+        "/api/purchase-order-inbound",
+        "/api/purchase-order-asn",
+        "/api/procurement",
+        "/api/vendors",
+        "/api/skus",
+        "/api/purchase-orders",
+        "/api/purchase-order-comments",
+        "/api/back-orders",
+        "/api/sale-orders"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Procurement",
+      "group": "(none)",
+      "label": "PO Revision",
+      "route": "/app/purchase-orders",
+      "source": "src/eretail/menuData.ts:110",
+      "routeSource": "src/App.tsx:369",
+      "component": "PurchaseOrders",
+      "componentFile": "src/pages/PurchaseOrders.tsx",
+      "apiDependencies": [
+        "/api/vendors",
+        "/api/purchase-orders",
+        "/api/po-revision"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Procurement",
+      "group": "(none)",
+      "label": "Manage ASN",
+      "route": "/app/grn",
+      "source": "src/eretail/menuData.ts:111",
+      "routeSource": "src/App.tsx:383",
+      "component": "GRN",
+      "componentFile": "src/pages/GRN.tsx",
+      "apiDependencies": [
+        "/api/purchase-orders",
+        "/api/vendors",
+        "/api/customers",
+        "/api/transporters",
+        "/api/clients",
+        "/api/manage-asn",
+        "/api/asn-enquiry"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Procurement",
+      "group": "(none)",
+      "label": "Vendor Promotions",
+      "route": "/app/m/vendor-promotions",
+      "source": "src/eretail/menuData.ts:112",
+      "routeSource": "src/App.tsx:416",
+      "component": "VendorPromotions",
+      "componentFile": "src/eretail/procurement/VendorPromotions.tsx",
+      "apiDependencies": [
+        "/api/vendors",
+        "/api/skus",
+        "/api/purchase-orders",
+        "/api/vendor-promotions"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Procurement",
+      "group": "Setup",
+      "label": "Purchase Charge Masters",
+      "route": "/app/m/purchase-charge",
+      "source": "src/eretail/menuData.ts:117",
+      "routeSource": "src/App.tsx:424",
+      "component": "PurchaseChargeMasters",
+      "componentFile": "src/eretail/procurement/PurchaseChargeMasters.tsx",
+      "apiDependencies": [
+        "/api/chargeMasterSearch",
+        "/api/jsonPOChargeDetailGrid",
+        "/api/delUpdatePOCharges",
+        "/api/saveUpdatePOCharges"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Procurement",
+      "group": "Setup",
+      "label": "Category Buyers",
+      "route": "/app/procurement/category-buyers",
+      "source": "src/eretail/menuData.ts:118",
+      "routeSource": "src/App.tsx:789",
+      "component": "CategoryBuyers",
+      "componentFile": "src/eretail/procurement/CategoryBuyers.tsx",
+      "apiDependencies": [
+        "/api/merch-hierarchy",
+        "/api/locations",
+        "/api/categoryBuyerSearch",
+        "/api/catBuyerSaveBS"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Procurement",
+      "group": "ARS",
+      "label": "ARS SKU-Location Link",
+      "route": "/app/procurement/ars/sku-location",
+      "source": "src/eretail/menuData.ts:82",
+      "routeSource": "src/App.tsx:845",
+      "component": "ARSSkuLocation",
+      "componentFile": "src/eretail/procurement/ARSWorkflows.tsx",
+      "apiDependencies": [
+        "/api/skus",
+        "/api/vendors",
+        "/api/fetchArsAttributes",
+        "/api/addAndUpdateArsAttributes",
+        "/api/bulkUpdateArsAttributes",
+        "/api/ars",
+        "/api/locations"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Procurement",
+      "group": "ARS",
+      "label": "ARS Rules",
+      "route": "/app/procurement/ars/rules",
+      "source": "src/eretail/menuData.ts:122",
+      "routeSource": "src/App.tsx:853",
+      "component": "ARSRules",
+      "componentFile": "src/eretail/procurement/ARSWorkflows.tsx",
+      "apiDependencies": [
+        "/api/skus",
+        "/api/vendors",
+        "/api/fetchArsAttributes",
+        "/api/addAndUpdateArsAttributes",
+        "/api/bulkUpdateArsAttributes",
+        "/api/ars",
+        "/api/locations"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Procurement",
+      "group": "ARS",
+      "label": "ARS Execution Log",
+      "route": "/app/procurement/ars/logs",
+      "source": "src/eretail/menuData.ts:123",
+      "routeSource": "src/App.tsx:861",
+      "component": "ARSExecutionLog",
+      "componentFile": "src/eretail/procurement/ARSWorkflows.tsx",
+      "apiDependencies": [
+        "/api/skus",
+        "/api/vendors",
+        "/api/fetchArsAttributes",
+        "/api/addAndUpdateArsAttributes",
+        "/api/bulkUpdateArsAttributes",
+        "/api/ars",
+        "/api/locations"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Sales",
+      "group": "(none)",
+      "label": "Manage Channels",
+      "route": "/app/channels",
+      "source": "src/eretail/menuData.ts:134",
+      "routeSource": "src/App.tsx:572",
+      "component": "ManageChannels",
+      "componentFile": "src/eretail/ManageChannels.tsx",
+      "apiDependencies": [
+        "/api/channels",
+        "/api/clients",
+        "/api/locations"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Sales",
+      "group": "(none)",
+      "label": "SKU Channel Listing",
+      "route": "/app/sku-channel-listing",
+      "source": "src/eretail/menuData.ts:135",
+      "routeSource": "src/App.tsx:580",
+      "component": "SkuChannelListing",
+      "componentFile": "src/eretail/SkuChannelListing.tsx",
+      "apiDependencies": [
+        "/api/channels",
+        "/api/skus",
+        "/api/clients",
+        "/api/sku-channel-links",
+        "/api/sku-moderation"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Sales",
+      "group": "(none)",
+      "label": "OMS Rules",
+      "route": "/app/m/oms-rules",
+      "source": "src/eretail/menuData.ts:136",
+      "routeSource": "src/App.tsx:437",
+      "component": "OmsRules",
+      "componentFile": "src/eretail/sales/OmsRules.tsx",
+      "apiDependencies": [
+        "/api/oms-rules"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Sales",
+      "group": "(none)",
+      "label": "Master Order Enquiry",
+      "route": "/app/master-order-enquiry",
+      "source": "src/eretail/menuData.ts:141",
+      "routeSource": "src/App.tsx:438",
+      "component": "LiveOrderWorkspace",
+      "componentFile": "src/pages/LiveOrderWorkspace.tsx",
+      "apiDependencies": [
+        "/api/inventory-sync/unified/orders/search"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Sales",
+      "group": "(none)",
+      "label": "Order Enquiry",
+      "route": "/app/order-enquiry",
+      "source": "src/eretail/menuData.ts:142",
+      "routeSource": "src/App.tsx:439",
+      "component": "LiveOrderWorkspace",
+      "componentFile": "src/pages/LiveOrderWorkspace.tsx",
+      "apiDependencies": [
+        "/api/inventory-sync/unified/orders/search"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Sales",
+      "group": "(none)",
+      "label": "Manage Kitting Order",
+      "route": "/app/m/kitting-order",
+      "source": "src/eretail/menuData.ts:143",
+      "routeSource": "src/App.tsx:442",
+      "component": "KittingOrder",
+      "componentFile": "src/eretail/sales/KittingOrder.tsx",
+      "apiDependencies": [
+        "/api/kitting-orders"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Sales",
+      "group": "(none)",
+      "label": "Global Order Search",
+      "route": "/app/global-order-search",
+      "source": "src/eretail/menuData.ts:144",
+      "routeSource": "src/App.tsx:443",
+      "component": "LiveOrderWorkspace",
+      "componentFile": "src/pages/LiveOrderWorkspace.tsx",
+      "apiDependencies": [
+        "/api/inventory-sync/unified/orders/search"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Sales",
+      "group": "Payment Recon",
+      "label": "COD Reconciliation",
+      "route": "/app/cod-reconciliation",
+      "source": "src/eretail/menuData.ts:149",
+      "routeSource": "src/App.tsx:445",
+      "component": "CodReconciliation",
+      "componentFile": "src/eretail/sales/CodReconciliation.tsx",
+      "apiDependencies": [
+        "/api/cod-reconciliation"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Sales",
+      "group": "Payment Recon",
+      "label": "SKU Moderation",
+      "route": "/app/sku-moderation",
+      "source": "src/eretail/menuData.ts:150",
+      "routeSource": "src/App.tsx:446",
+      "component": "SkuModeration",
+      "componentFile": "src/eretail/sales/SkuModeration.tsx",
+      "apiDependencies": [
+        "/api/sku-moderation"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Setup",
+      "label": "Zone",
+      "route": "/app/wms/zone",
+      "source": "src/eretail/menuData.ts:161",
+      "routeSource": "src/App.tsx:447",
+      "component": "WmsZone",
+      "componentFile": "src/eretail/wms/WmsZone.tsx",
+      "apiDependencies": [
+        "/api/wms-zones"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Setup",
+      "label": "Picker Zone Preference",
+      "route": "/app/wms/picker-zone-preference",
+      "source": "src/eretail/menuData.ts:162",
+      "routeSource": "src/App.tsx:448",
+      "component": "PickerZonePreference",
+      "componentFile": "src/eretail/wms/PickerZonePreference.tsx",
+      "apiDependencies": [
+        "/api/picker-zone-preferences"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Setup",
+      "label": "Bin Enquiry",
+      "route": "/app/wms/bin-enquiry",
+      "source": "src/eretail/menuData.ts:163",
+      "routeSource": "src/App.tsx:449",
+      "component": "BinEnquiry",
+      "componentFile": "src/eretail/wms/BinEnquiry.tsx",
+      "apiDependencies": [
+        "/api/bin-enquiry",
+        "/api/bin-editor"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Setup",
+      "label": "Bin Create/Edit",
+      "route": "/app/wms/bin-editor",
+      "source": "src/eretail/menuData.ts:164",
+      "routeSource": "src/App.tsx:450",
+      "component": "BinEditor",
+      "componentFile": "src/eretail/wms/BinEditor.tsx",
+      "apiDependencies": [
+        "/api/bin-editor"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Setup",
+      "label": "Lottable Validation",
+      "route": "/app/wms/lottable-validation",
+      "source": "src/eretail/menuData.ts:165",
+      "routeSource": "src/App.tsx:451",
+      "component": "LottableValidation",
+      "componentFile": "src/eretail/wms/LottableValidation.tsx",
+      "apiDependencies": [
+        "/api/lottable-validations"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Setup",
+      "label": "Receipt Validation",
+      "route": "/app/wms/receipt-validation",
+      "source": "src/eretail/menuData.ts:166",
+      "routeSource": "src/App.tsx:452",
+      "component": "ReceiptValidation",
+      "componentFile": "src/eretail/wms/ReceiptValidation.tsx",
+      "apiDependencies": [
+        "/api/receipt-validations"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Setup",
+      "label": "SKU Label Print",
+      "route": "/app/wms/sku-label-print",
+      "source": "src/eretail/menuData.ts:167",
+      "routeSource": "src/App.tsx:453",
+      "component": "SkuLabelPrint",
+      "componentFile": "src/eretail/wms/SkuLabelPrint.tsx",
+      "apiDependencies": [],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Setup",
+      "label": "Manage PutAway Rule",
+      "route": "/app/wms/putaway-rules",
+      "source": "src/eretail/menuData.ts:168",
+      "routeSource": "src/App.tsx:454",
+      "component": "PutawayRules",
+      "componentFile": "src/eretail/wms/PutawayRules.tsx",
+      "apiDependencies": [
+        "/api/putaway-rules"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Setup",
+      "label": "Manage Allocation Strategies",
+      "route": "/app/wms/allocation-strategies",
+      "source": "src/eretail/menuData.ts:169",
+      "routeSource": "src/App.tsx:455",
+      "component": "AllocationStrategies",
+      "componentFile": "src/eretail/wms/AllocationStrategies.tsx",
+      "apiDependencies": [
+        "/api/allocation-strategies"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Setup",
+      "label": "Manage Cycle Count Wave",
+      "route": "/app/wms/cycle-count-waves",
+      "source": "src/eretail/menuData.ts:170",
+      "routeSource": "src/App.tsx:456",
+      "component": "CycleCountWave",
+      "componentFile": "src/eretail/wms/CycleCountWave.tsx",
+      "apiDependencies": [
+        "/api/cycle-count-waves"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Logistics",
+      "label": "Manage AWB",
+      "route": "/app/wms/manage-awb",
+      "source": "src/eretail/menuData.ts:173",
+      "routeSource": "src/App.tsx:457",
+      "component": "ManageAwb",
+      "componentFile": "src/eretail/wms/ManageAwb.tsx",
+      "apiDependencies": [
+        "/api/manage-awb"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Logistics",
+      "label": "Transporter Preference",
+      "route": "/app/wms/transporter-preference",
+      "source": "src/eretail/menuData.ts:174",
+      "routeSource": "src/App.tsx:458",
+      "component": "TransporterPreference",
+      "componentFile": "src/eretail/wms/TransporterPreference.tsx",
+      "apiDependencies": [
+        "/api/transporter-preferences"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Logistics",
+      "label": "Manage Service Pin Code",
+      "route": "/app/wms/service-pin-codes",
+      "source": "src/eretail/menuData.ts:175",
+      "routeSource": "src/App.tsx:459",
+      "component": "ServicePinCodes",
+      "componentFile": "src/eretail/wms/ServicePinCodes.tsx",
+      "apiDependencies": [
+        "/api/service-pin-codes"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Order Processing",
+      "label": "Order Allocate/Unallocate",
+      "route": "/app/fulfillment/allocate",
+      "source": "src/eretail/menuData.ts:180",
+      "routeSource": "src/App.tsx:252",
+      "component": "Allocate",
+      "componentFile": "src/eretail/modules/Allocate.tsx",
+      "apiDependencies": [
+        "/api/order-allocation"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Order Processing",
+      "label": "Manage Manifest",
+      "route": "/app/fulfillment/shipment-handover",
+      "source": "src/eretail/menuData.ts:181",
+      "routeSource": "src/App.tsx:300",
+      "component": "ShipmentHandover",
+      "componentFile": "src/eretail/modules/ShipmentHandover.tsx",
+      "apiDependencies": [
+        "/api/manage-manifests"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Order Processing",
+      "label": "Delivery Shipping",
+      "route": "/app/fulfillment/delivery-shipping",
+      "source": "src/eretail/menuData.ts:182",
+      "routeSource": "src/App.tsx:260",
+      "component": "DeliveryShipping",
+      "componentFile": "src/eretail/modules/DeliveryShipping.tsx",
+      "apiDependencies": [
+        "/api/delivery-shipping"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Order Processing",
+      "label": "Bulk Order Update",
+      "route": "/app/fulfillment/bulk-update",
+      "source": "src/eretail/menuData.ts:183",
+      "routeSource": "src/App.tsx:268",
+      "component": "BulkUpdate",
+      "componentFile": "src/eretail/modules/BulkUpdate.tsx",
+      "apiDependencies": [
+        "/api/bulk-order-update"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Order Processing",
+      "label": "Manage Picklist",
+      "route": "/app/fulfillment/manage-picklist",
+      "source": "src/eretail/menuData.ts:184",
+      "routeSource": "src/App.tsx:276",
+      "component": "ManagePicklist",
+      "componentFile": "src/eretail/modules/ManagePicklist.tsx",
+      "apiDependencies": [
+        "/api/manage-picklists"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Order Processing",
+      "label": "Manage Picking",
+      "route": "/app/fulfillment/manage-picking",
+      "source": "src/eretail/menuData.ts:185",
+      "routeSource": "src/App.tsx:284",
+      "component": "ManagePicking",
+      "componentFile": "src/eretail/modules/ManagePicking.tsx",
+      "apiDependencies": [
+        "/api/manage-picking"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Order Processing",
+      "label": "Delivery Split",
+      "route": "/app/fulfillment/delivery-split",
+      "source": "src/eretail/menuData.ts:186",
+      "routeSource": "src/App.tsx:292",
+      "component": "DeliverySplit",
+      "componentFile": "src/eretail/modules/DeliverySplit.tsx",
+      "apiDependencies": [
+        "/api/delivery-split"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Order Processing",
+      "label": "Shipment Handover",
+      "route": "/app/fulfillment/shipment-receiving",
+      "source": "src/eretail/menuData.ts:187",
+      "routeSource": "src/App.tsx:308",
+      "component": "ShipmentReceiving",
+      "componentFile": "src/eretail/modules/ShipmentReceiving.tsx",
+      "apiDependencies": [
+        "/api/shipment-handover"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Order Processing",
+      "label": "Order Acknowledgement",
+      "route": "/app/fulfillment/order-acknowledgement",
+      "source": "src/eretail/menuData.ts:188",
+      "routeSource": "src/App.tsx:316",
+      "component": "OrderAcknowledgement",
+      "componentFile": "src/eretail/modules/OrderAcknowledgement.tsx",
+      "apiDependencies": [
+        "/api/order-acknowledgement"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Order Processing",
+      "label": "Consolidate EWB",
+      "route": "/app/fulfillment/consolidate-ewb",
+      "source": "src/eretail/menuData.ts:189",
+      "routeSource": "src/App.tsx:324",
+      "component": "ConsolidateEwb",
+      "componentFile": "src/eretail/modules/ConsolidateEwb.tsx",
+      "apiDependencies": [
+        "/api/consolidate-ewb"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Order Processing",
+      "label": "Sort To Box",
+      "route": "/app/fulfillment/sort-to-box",
+      "source": "src/eretail/menuData.ts:190",
+      "routeSource": "src/App.tsx:325",
+      "component": "SortToBox",
+      "componentFile": "src/eretail/modules/SortToBox.tsx",
+      "apiDependencies": [
+        "/api/sort-to-box"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Inbound",
+      "label": "Manage Inbound Gate Pass",
+      "route": "/app/r/inbound-gate-pass",
+      "source": "src/eretail/menuData.ts:193",
+      "routeSource": "src/App.tsx:213",
+      "component": "InboundGatePass",
+      "componentFile": "src/eretail/modules/InboundGatePass.tsx",
+      "apiDependencies": [
+        "/api/inbound-gate-pass"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Inbound",
+      "label": "Inbound Enquiry",
+      "route": "/app/r/inbound-enquiry",
+      "source": "src/eretail/menuData.ts:194",
+      "routeSource": "src/App.tsx:214",
+      "component": "InboundEnquiry",
+      "componentFile": "src/eretail/modules/InboundEnquiry.tsx",
+      "apiDependencies": [
+        "/api/inbound-enquiry"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Inbound",
+      "label": "Inbound Create/Edit",
+      "route": "/app/r/inbound-create-edit",
+      "source": "src/eretail/menuData.ts:195",
+      "routeSource": "src/App.tsx:215",
+      "component": "InboundCreateEdit",
+      "componentFile": "src/eretail/modules/InboundCreateEdit.tsx",
+      "apiDependencies": [
+        "/api/inbound-create-edit"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Inbound",
+      "label": "Inbound RealTime",
+      "route": "/app/r/inbound-realtime",
+      "source": "src/eretail/menuData.ts:196",
+      "routeSource": "src/App.tsx:216",
+      "component": "InboundRealtime",
+      "componentFile": "src/eretail/modules/InboundRealtime.tsx",
+      "apiDependencies": [
+        "/api/inbound-realtime"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Inbound",
+      "label": "Inbound QC",
+      "route": "/app/r/inbound-qc",
+      "source": "src/eretail/menuData.ts:197",
+      "routeSource": "src/App.tsx:217",
+      "component": "InboundQC",
+      "componentFile": "src/eretail/modules/InboundQC.tsx",
+      "apiDependencies": [
+        "/api/inbound-qc"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Inbound",
+      "label": "Direct Inbound",
+      "route": null,
+      "source": "src/eretail/menuData.ts:198",
+      "routeSource": null,
+      "component": null,
+      "componentFile": null,
+      "apiDependencies": [],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Inbound",
+      "label": "STO Inbound",
+      "route": null,
+      "source": "src/eretail/menuData.ts:199",
+      "routeSource": null,
+      "component": null,
+      "componentFile": null,
+      "apiDependencies": [],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Inbound",
+      "label": "Link USN IMEI",
+      "route": null,
+      "source": "src/eretail/menuData.ts:200",
+      "routeSource": null,
+      "component": null,
+      "componentFile": null,
+      "apiDependencies": [],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Inbound",
+      "label": "Return Inbound Create/Edit",
+      "route": null,
+      "source": "src/eretail/menuData.ts:201",
+      "routeSource": null,
+      "component": null,
+      "componentFile": null,
+      "apiDependencies": [],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Inbound",
+      "label": "FnV QC Enquiry",
+      "route": null,
+      "source": "src/eretail/menuData.ts:202",
+      "routeSource": null,
+      "component": null,
+      "componentFile": null,
+      "apiDependencies": [],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Inbound",
+      "label": "FNV Inbound",
+      "route": null,
+      "source": "src/eretail/menuData.ts:203",
+      "routeSource": null,
+      "component": null,
+      "componentFile": null,
+      "apiDependencies": [],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Inventory",
+      "label": "Central Inventory",
+      "route": "/app/central-inventory",
+      "source": "src/eretail/menuData.ts:208",
+      "routeSource": "src/App.tsx:168",
+      "component": "CentralInventory",
+      "componentFile": "src/pages/CentralInventory.tsx",
+      "apiDependencies": [
+        "/api/inventory-sync/central/overview",
+        "/api/inventory-sync/central/events",
+        "/api/inventory-sync/central/adjustments",
+        "/api/inventory-sync/central/export",
+        "/api/inventory-sync/central/products",
+        "/api/inventory-sync/central/locations",
+        "/api/inventory-sync/central/template",
+        "/api/inventory-sync/central/imports/preview",
+        "/api/inventory-sync/central/imports/",
+        "/api/inventory-sync/central/alert-rules"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Inventory",
+      "label": "Inventory View",
+      "route": "/app/inventory",
+      "source": "src/eretail/menuData.ts:209",
+      "routeSource": "src/App.tsx:397",
+      "component": "Inventory",
+      "componentFile": "src/pages/Inventory.tsx",
+      "apiDependencies": [
+        "/api/inventory"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Inventory",
+      "label": "Inventory Move History",
+      "route": "/app/r/inv-move-history",
+      "source": "src/eretail/menuData.ts:210",
+      "routeSource": "src/App.tsx:218",
+      "component": "InventoryMoveHistory",
+      "componentFile": "src/eretail/modules/InventoryMoveHistory.tsx",
+      "apiDependencies": [
+        "/api/inventory-move-history"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Inventory",
+      "label": "Inventory Move",
+      "route": "/app/r/inv-move",
+      "source": "src/eretail/menuData.ts:211",
+      "routeSource": "src/App.tsx:219",
+      "component": "InventoryMove",
+      "componentFile": "src/eretail/modules/InventoryMove.tsx",
+      "apiDependencies": [
+        "/api/inventory-move"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Inventory",
+      "label": "Inventory Move By Scan",
+      "route": "/app/r/inv-move-scan",
+      "source": "src/eretail/menuData.ts:212",
+      "routeSource": "src/App.tsx:220",
+      "component": "InventoryMoveScan",
+      "componentFile": "src/eretail/modules/InventoryMoveScan.tsx",
+      "apiDependencies": [
+        "/api/inventory-move-scan"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Inventory",
+      "label": "Cycle Count",
+      "route": "/app/r/cycle-count",
+      "source": "src/eretail/menuData.ts:213",
+      "routeSource": "src/App.tsx:221",
+      "component": "CycleCount",
+      "componentFile": "src/eretail/modules/CycleCount.tsx",
+      "apiDependencies": [
+        "/api/cycle-count"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Inventory",
+      "label": "BIN Audit",
+      "route": "/app/r/bin-audit",
+      "source": "src/eretail/menuData.ts:214",
+      "routeSource": "src/App.tsx:222",
+      "component": "BinAudit",
+      "componentFile": "src/eretail/modules/BinAudit.tsx",
+      "apiDependencies": [
+        "/api/bin-audit"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Inventory",
+      "label": "Bulk update Lottables",
+      "route": "/app/r/bulk-lottables",
+      "source": "src/eretail/menuData.ts:215",
+      "routeSource": "src/App.tsx:223",
+      "component": "BulkLottables",
+      "componentFile": "src/eretail/modules/BulkLottables.tsx",
+      "apiDependencies": [
+        "/api/bulk-lottables"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Inventory",
+      "label": "Inventory Hold",
+      "route": null,
+      "source": "src/eretail/menuData.ts:216",
+      "routeSource": null,
+      "component": null,
+      "componentFile": null,
+      "apiDependencies": [],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Inventory",
+      "label": "Manage Stock Adjustment",
+      "route": "/app/m/stock-adjustment",
+      "source": "src/eretail/menuData.ts:217",
+      "routeSource": "src/App.tsx:190",
+      "component": "InventoryOperations",
+      "componentFile": "src/pages/InventoryOperations.tsx",
+      "apiDependencies": [
+        "/api/inventory-ops"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Inventory",
+      "label": "OutBound GatePass",
+      "route": null,
+      "source": "src/eretail/menuData.ts:218",
+      "routeSource": null,
+      "component": null,
+      "componentFile": null,
+      "apiDependencies": [],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Inventory",
+      "label": "Manage Outbound Memo",
+      "route": null,
+      "source": "src/eretail/menuData.ts:219",
+      "routeSource": null,
+      "component": null,
+      "componentFile": null,
+      "apiDependencies": [],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Inventory",
+      "label": "SKU Transaction History",
+      "route": null,
+      "source": "src/eretail/menuData.ts:220",
+      "routeSource": null,
+      "component": null,
+      "componentFile": null,
+      "apiDependencies": [],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Inventory",
+      "label": "Manage SKU Lot Transfer",
+      "route": null,
+      "source": "src/eretail/menuData.ts:221",
+      "routeSource": null,
+      "component": null,
+      "componentFile": null,
+      "apiDependencies": [],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Inventory",
+      "label": "Manage RePack",
+      "route": null,
+      "source": "src/eretail/menuData.ts:222",
+      "routeSource": null,
+      "component": null,
+      "componentFile": null,
+      "apiDependencies": [],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Inventory",
+      "label": "SKU Lot Transfer Create/Edit",
+      "route": null,
+      "source": "src/eretail/menuData.ts:223",
+      "routeSource": null,
+      "component": null,
+      "componentFile": null,
+      "apiDependencies": [],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Inventory",
+      "label": "Manage Inventory Reservation",
+      "route": null,
+      "source": "src/eretail/menuData.ts:224",
+      "routeSource": null,
+      "component": null,
+      "componentFile": null,
+      "apiDependencies": [],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Inventory",
+      "label": "Inventory Move By Task",
+      "route": null,
+      "source": "src/eretail/menuData.ts:225",
+      "routeSource": null,
+      "component": null,
+      "componentFile": null,
+      "apiDependencies": [],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Inventory",
+      "label": "Manage Let Down",
+      "route": null,
+      "source": "src/eretail/menuData.ts:226",
+      "routeSource": null,
+      "component": null,
+      "componentFile": null,
+      "apiDependencies": [],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Inventory",
+      "label": "FnV Repack",
+      "route": null,
+      "source": "src/eretail/menuData.ts:227",
+      "routeSource": null,
+      "component": null,
+      "componentFile": null,
+      "apiDependencies": [],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Miscellaneous",
+      "label": "PutAway Enquiry",
+      "route": "/app/r/putaway-enquiry",
+      "source": "src/eretail/menuData.ts:230",
+      "routeSource": "src/App.tsx:224",
+      "component": "PutawayEnquiry",
+      "componentFile": "src/eretail/wms/PutawayEnquiry.tsx",
+      "apiDependencies": [
+        "/api/putaway-enquiry"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Miscellaneous",
+      "label": "Dispatch Checkpoint Enquiry",
+      "route": "/app/r/dispatch-checkpoint",
+      "source": "src/eretail/menuData.ts:231",
+      "routeSource": "src/App.tsx:225",
+      "component": "DispatchCheckpoint",
+      "componentFile": "src/eretail/wms/DispatchCheckpoint.tsx",
+      "apiDependencies": [
+        "/api/dispatch-checkpoint"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Miscellaneous",
+      "label": "Sku Grading",
+      "route": "/app/r/sku-grading",
+      "source": "src/eretail/menuData.ts:232",
+      "routeSource": "src/App.tsx:226",
+      "component": "SkuGrading",
+      "componentFile": "src/eretail/wms/SkuGrading.tsx",
+      "apiDependencies": [
+        "/api/sku-grading"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Miscellaneous",
+      "label": "Discrepancy Enquiry",
+      "route": "/app/r/discrepancy-enquiry",
+      "source": "src/eretail/menuData.ts:233",
+      "routeSource": "src/App.tsx:227",
+      "component": "DiscrepancyEnquiry",
+      "componentFile": "src/eretail/wms/DiscrepancyEnquiry.tsx",
+      "apiDependencies": [
+        "/api/discrepancy-enquiry"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Miscellaneous",
+      "label": "Bulk Upload",
+      "route": "/app/r/bulk-upload",
+      "source": "src/eretail/menuData.ts:234",
+      "routeSource": "src/App.tsx:228",
+      "component": "BulkUpload",
+      "componentFile": "src/eretail/wms/BulkUpload.tsx",
+      "apiDependencies": [
+        "/api/bulk-upload"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Miscellaneous",
+      "label": "MP Inventory Log",
+      "route": "/app/r/mr-inventory-log",
+      "source": "src/eretail/menuData.ts:235",
+      "routeSource": "src/App.tsx:229",
+      "component": "MpInventoryLog",
+      "componentFile": "src/eretail/wms/MpInventoryLog.tsx",
+      "apiDependencies": [
+        "/api/mp-inventory-log"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Miscellaneous",
+      "label": "LPN Enquiry",
+      "route": "/app/r/lpn-enquiry",
+      "source": "src/eretail/menuData.ts:236",
+      "routeSource": "src/App.tsx:230",
+      "component": "LpnEnquiry",
+      "componentFile": "src/eretail/wms/LpnEnquiry.tsx",
+      "apiDependencies": [
+        "/api/lpn-enquiry"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Miscellaneous",
+      "label": "Transhipment Old",
+      "route": "/app/r/transhipment-old",
+      "source": "src/eretail/menuData.ts:237",
+      "routeSource": "src/App.tsx:232",
+      "component": "TranshipmentOld",
+      "componentFile": "src/eretail/wms/TranshipmentOld.tsx",
+      "apiDependencies": [
+        "/api/transhipment-old",
+        "/api/clients"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Miscellaneous",
+      "label": "Transhipment",
+      "route": "/app/r/transhipment",
+      "source": "src/eretail/menuData.ts:238",
+      "routeSource": "src/App.tsx:231",
+      "component": "Transhipment",
+      "componentFile": "src/eretail/wms/Transhipment.tsx",
+      "apiDependencies": [
+        "/api/transhipment"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "WMS",
+      "group": "Miscellaneous",
+      "label": "QC Params Mapping",
+      "route": "/app/r/qc-params-mapping",
+      "source": "src/eretail/menuData.ts:239",
+      "routeSource": "src/App.tsx:233",
+      "component": "QcParamsMapping",
+      "componentFile": "src/eretail/wms/QcParamsMapping.tsx",
+      "apiDependencies": [
+        "/api/qc-params-mapping"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Returns & Transfers",
+      "group": "Returns",
+      "label": "RTV Enquiry",
+      "route": "/app/returns/rtv-enquiry",
+      "source": "src/eretail/menuData.ts:250",
+      "routeSource": "src/App.tsx:512",
+      "component": "RtvEnquiry",
+      "componentFile": "src/eretail/returns/RtvEnquiry.tsx",
+      "apiDependencies": [
+        "/api/rtv-enquiry"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Returns & Transfers",
+      "group": "Returns",
+      "label": "Vendor Return Create/Edit",
+      "route": "/app/returns/vendor-return",
+      "source": "src/eretail/menuData.ts:251",
+      "routeSource": "src/App.tsx:516",
+      "component": "VendorReturnEditor",
+      "componentFile": "src/eretail/returns/VendorReturnEditor.tsx",
+      "apiDependencies": [
+        "/api/vendor-return-editor"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Returns & Transfers",
+      "group": "Returns",
+      "label": "Return Enquiry",
+      "route": "/app/returns/customer-enquiry",
+      "source": "src/eretail/menuData.ts:252",
+      "routeSource": "src/App.tsx:520",
+      "component": "CustomerReturnEnquiry",
+      "componentFile": "src/eretail/returns/CustomerReturnEnquiry.tsx",
+      "apiDependencies": [
+        "/api/customer-return-enquiry"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Returns & Transfers",
+      "group": "Returns",
+      "label": "Return Create/Edit",
+      "route": "/app/returns/customer-return",
+      "source": "src/eretail/menuData.ts:253",
+      "routeSource": "src/App.tsx:524",
+      "component": "CustomerReturnEditor",
+      "componentFile": "src/eretail/returns/CustomerReturnEditor.tsx",
+      "apiDependencies": [
+        "/api/customer-return-editor"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Returns & Transfers",
+      "group": "Returns",
+      "label": "Return OTC(Flipkart)",
+      "route": "/app/m/return-otc",
+      "source": "src/eretail/menuData.ts:254",
+      "routeSource": "src/App.tsx:433",
+      "component": "ReturnOtc",
+      "componentFile": "src/eretail/returns/ReturnOtc.tsx",
+      "apiDependencies": [
+        "/api/return-otc"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Returns & Transfers",
+      "group": "Returns",
+      "label": "Return OTC(Flipkart) New",
+      "route": "/app/m/return-otc-new",
+      "source": "src/eretail/menuData.ts:255",
+      "routeSource": "src/App.tsx:434",
+      "component": "ReturnOtc",
+      "componentFile": "src/eretail/returns/ReturnOtc.tsx",
+      "apiDependencies": [
+        "/api/return-otc"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Returns & Transfers",
+      "group": "Returns",
+      "label": "Global Returns Search",
+      "route": "/app/returns/global-search",
+      "source": "src/eretail/menuData.ts:256",
+      "routeSource": "src/App.tsx:435",
+      "component": "GlobalReturnsSearch",
+      "componentFile": "src/eretail/returns/GlobalReturnsSearch.tsx",
+      "apiDependencies": [
+        "/api/global-returns-search"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Returns & Transfers",
+      "group": "Returns",
+      "label": "Return W/o Order",
+      "route": "/app/m/return-wo-order",
+      "source": "src/eretail/menuData.ts:257",
+      "routeSource": "src/App.tsx:436",
+      "component": "ReturnWithoutOrder",
+      "componentFile": "src/eretail/returns/ReturnWithoutOrder.tsx",
+      "apiDependencies": [
+        "/api/return-without-order"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Returns & Transfers",
+      "group": "Transfers",
+      "label": "STO Order Enquiry",
+      "route": "/app/transfers",
+      "source": "src/eretail/menuData.ts:262",
+      "routeSource": "src/App.tsx:460",
+      "component": "Transfers",
+      "componentFile": "src/pages/Transfers.tsx",
+      "apiDependencies": [
+        "/api/sto-enquiry"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Returns & Transfers",
+      "group": "Transfers",
+      "label": "STO Order Create/Edit",
+      "route": "/app/transfers/create",
+      "source": "src/eretail/menuData.ts:263",
+      "routeSource": "src/App.tsx:474",
+      "component": "StoEditor",
+      "componentFile": "src/eretail/transfers/StoEditor.tsx",
+      "apiDependencies": [
+        "/api/sto-editor"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Admin",
+      "group": "User Management",
+      "label": "User Enquiry",
+      "route": "/app/admin/user-enquiry",
+      "source": "src/eretail/menuData.ts:274",
+      "routeSource": "src/App.tsx:877",
+      "component": "AdminModule",
+      "componentFile": "src/eretail/admin/AdminModule.tsx",
+      "apiDependencies": [
+        "/api/admin"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Admin",
+      "group": "User Management",
+      "label": "User Create/Edit",
+      "route": "/app/admin/user-create-edit",
+      "source": "src/eretail/menuData.ts:275",
+      "routeSource": "src/App.tsx:877",
+      "component": "AdminModule",
+      "componentFile": "src/eretail/admin/AdminModule.tsx",
+      "apiDependencies": [
+        "/api/admin"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Admin",
+      "group": "User Management",
+      "label": "Role Create/Edit",
+      "route": "/app/admin/role-create-edit",
+      "source": "src/eretail/menuData.ts:276",
+      "routeSource": "src/App.tsx:877",
+      "component": "AdminModule",
+      "componentFile": "src/eretail/admin/AdminModule.tsx",
+      "apiDependencies": [
+        "/api/admin"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Admin",
+      "group": "Logs",
+      "label": "User Audit Logs",
+      "route": "/app/admin/user-audit-logs",
+      "source": "src/eretail/menuData.ts:279",
+      "routeSource": "src/App.tsx:877",
+      "component": "AdminModule",
+      "componentFile": "src/eretail/admin/AdminModule.tsx",
+      "apiDependencies": [
+        "/api/admin"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Admin",
+      "group": "Logs",
+      "label": "Accounting Log",
+      "route": "/app/admin/accounting-log",
+      "source": "src/eretail/menuData.ts:280",
+      "routeSource": "src/App.tsx:877",
+      "component": "AdminModule",
+      "componentFile": "src/eretail/admin/AdminModule.tsx",
+      "apiDependencies": [
+        "/api/admin"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Admin",
+      "group": "Logs",
+      "label": "Tax Integration Log",
+      "route": "/app/admin/tax-integration-log",
+      "source": "src/eretail/menuData.ts:281",
+      "routeSource": "src/App.tsx:877",
+      "component": "AdminModule",
+      "componentFile": "src/eretail/admin/AdminModule.tsx",
+      "apiDependencies": [
+        "/api/admin"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Admin",
+      "group": "Logs",
+      "label": "Device Tracking Log",
+      "route": "/app/admin/device-tracking-log",
+      "source": "src/eretail/menuData.ts:282",
+      "routeSource": "src/App.tsx:877",
+      "component": "AdminModule",
+      "componentFile": "src/eretail/admin/AdminModule.tsx",
+      "apiDependencies": [
+        "/api/admin"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Admin",
+      "group": "Logs",
+      "label": "External Apps Logs",
+      "route": "/app/admin/external-apps-logs",
+      "source": "src/eretail/menuData.ts:283",
+      "routeSource": "src/App.tsx:877",
+      "component": "AdminModule",
+      "componentFile": "src/eretail/admin/AdminModule.tsx",
+      "apiDependencies": [
+        "/api/admin"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Admin",
+      "group": "Logs",
+      "label": "POS Integration Log",
+      "route": "/app/admin/pos-integration-log",
+      "source": "src/eretail/menuData.ts:284",
+      "routeSource": "src/App.tsx:877",
+      "component": "AdminModule",
+      "componentFile": "src/eretail/admin/AdminModule.tsx",
+      "apiDependencies": [
+        "/api/admin"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Admin",
+      "group": "Logs",
+      "label": "Repush Log",
+      "route": "/app/admin/repush-log",
+      "source": "src/eretail/menuData.ts:285",
+      "routeSource": "src/App.tsx:877",
+      "component": "AdminModule",
+      "componentFile": "src/eretail/admin/AdminModule.tsx",
+      "apiDependencies": [
+        "/api/admin"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Admin",
+      "group": "Imports",
+      "label": "Order Import",
+      "route": "/app/admin/order-import",
+      "source": "src/eretail/menuData.ts:290",
+      "routeSource": "src/App.tsx:877",
+      "component": "AdminModule",
+      "componentFile": "src/eretail/admin/AdminModule.tsx",
+      "apiDependencies": [
+        "/api/admin"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Admin",
+      "group": "Imports",
+      "label": "Common Import",
+      "route": "/app/admin/common-import",
+      "source": "src/eretail/menuData.ts:291",
+      "routeSource": "src/App.tsx:877",
+      "component": "AdminModule",
+      "componentFile": "src/eretail/admin/AdminModule.tsx",
+      "apiDependencies": [
+        "/api/admin"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Admin",
+      "group": "Miscellaneous",
+      "label": "Exports",
+      "route": "/app/admin/exports",
+      "source": "src/eretail/menuData.ts:296",
+      "routeSource": "src/App.tsx:877",
+      "component": "AdminModule",
+      "componentFile": "src/eretail/admin/AdminModule.tsx",
+      "apiDependencies": [
+        "/api/admin"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Admin",
+      "group": "Miscellaneous",
+      "label": "Force Order Pull",
+      "route": "/app/admin/force-order-pull",
+      "source": "src/eretail/menuData.ts:297",
+      "routeSource": "src/App.tsx:877",
+      "component": "AdminModule",
+      "componentFile": "src/eretail/admin/AdminModule.tsx",
+      "apiDependencies": [
+        "/api/admin"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Admin",
+      "group": "Miscellaneous",
+      "label": "Settings",
+      "route": "/app/admin/settings",
+      "source": "src/eretail/menuData.ts:298",
+      "routeSource": "src/App.tsx:877",
+      "component": "AdminModule",
+      "componentFile": "src/eretail/admin/AdminModule.tsx",
+      "apiDependencies": [
+        "/api/admin"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Admin",
+      "group": "Miscellaneous",
+      "label": "Manage Api",
+      "route": "/app/admin/manage-api",
+      "source": "src/eretail/menuData.ts:299",
+      "routeSource": "src/App.tsx:877",
+      "component": "AdminModule",
+      "componentFile": "src/eretail/admin/AdminModule.tsx",
+      "apiDependencies": [
+        "/api/admin"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Admin",
+      "group": "Miscellaneous",
+      "label": "API Dashboard",
+      "route": "/app/admin/api-dashboard",
+      "source": "src/eretail/menuData.ts:300",
+      "routeSource": "src/App.tsx:877",
+      "component": "AdminModule",
+      "componentFile": "src/eretail/admin/AdminModule.tsx",
+      "apiDependencies": [
+        "/api/admin"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Admin",
+      "group": "Miscellaneous",
+      "label": "Language Setting",
+      "route": "/app/admin/language-setting",
+      "source": "src/eretail/menuData.ts:301",
+      "routeSource": "src/App.tsx:877",
+      "component": "AdminModule",
+      "componentFile": "src/eretail/admin/AdminModule.tsx",
+      "apiDependencies": [
+        "/api/admin"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Reports",
+      "group": "Inbound",
+      "label": "GR Register",
+      "route": "/app/r/gr-register",
+      "source": "src/eretail/menuData.ts:312",
+      "routeSource": "src/App.tsx:234",
+      "component": "ReportRoute",
+      "componentFile": "src/eretail/ReportRoute.tsx",
+      "apiDependencies": [
+        "/api/reports"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Reports",
+      "group": "Inbound",
+      "label": "PO Report",
+      "route": "/app/r/po-report",
+      "source": "src/eretail/menuData.ts:313",
+      "routeSource": "src/App.tsx:234",
+      "component": "ReportRoute",
+      "componentFile": "src/eretail/ReportRoute.tsx",
+      "apiDependencies": [
+        "/api/reports"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Reports",
+      "group": "Inbound",
+      "label": "Inbound QC Report",
+      "route": "/app/r/inbound-qc-report",
+      "source": "src/eretail/menuData.ts:314",
+      "routeSource": "src/App.tsx:234",
+      "component": "ReportRoute",
+      "componentFile": "src/eretail/ReportRoute.tsx",
+      "apiDependencies": [
+        "/api/reports"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Reports",
+      "group": "Inventory",
+      "label": "Fin Inv Report - By SKU",
+      "route": "/app/r/fin-inv-sku",
+      "source": "src/eretail/menuData.ts:317",
+      "routeSource": "src/App.tsx:234",
+      "component": "ReportRoute",
+      "componentFile": "src/eretail/ReportRoute.tsx",
+      "apiDependencies": [
+        "/api/reports"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Reports",
+      "group": "Inventory",
+      "label": "Fin Inv Report - By SKU BIN",
+      "route": "/app/r/fin-inv-sku-bin",
+      "source": "src/eretail/menuData.ts:318",
+      "routeSource": "src/App.tsx:234",
+      "component": "ReportRoute",
+      "componentFile": "src/eretail/ReportRoute.tsx",
+      "apiDependencies": [
+        "/api/reports"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Reports",
+      "group": "Inventory",
+      "label": "Inventory Ageing",
+      "route": "/app/r/inventory-ageing",
+      "source": "src/eretail/menuData.ts:319",
+      "routeSource": "src/App.tsx:234",
+      "component": "ReportRoute",
+      "componentFile": "src/eretail/ReportRoute.tsx",
+      "apiDependencies": [
+        "/api/reports"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Reports",
+      "group": "Inventory",
+      "label": "Inventory Ledger",
+      "route": "/app/r/inventory-ledger",
+      "source": "src/eretail/menuData.ts:320",
+      "routeSource": "src/App.tsx:234",
+      "component": "ReportRoute",
+      "componentFile": "src/eretail/ReportRoute.tsx",
+      "apiDependencies": [
+        "/api/reports"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Reports",
+      "group": "Finance",
+      "label": "Sales Register",
+      "route": "/app/r/sales-register",
+      "source": "src/eretail/menuData.ts:325",
+      "routeSource": "src/App.tsx:234",
+      "component": "ReportRoute",
+      "componentFile": "src/eretail/ReportRoute.tsx",
+      "apiDependencies": [
+        "/api/reports"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Reports",
+      "group": "Finance",
+      "label": "Purchase Register",
+      "route": "/app/r/purchase-register",
+      "source": "src/eretail/menuData.ts:326",
+      "routeSource": "src/App.tsx:234",
+      "component": "ReportRoute",
+      "componentFile": "src/eretail/ReportRoute.tsx",
+      "apiDependencies": [
+        "/api/reports"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Reports",
+      "group": "Finance",
+      "label": "Sales Return Register",
+      "route": "/app/r/sales-return-register",
+      "source": "src/eretail/menuData.ts:327",
+      "routeSource": "src/App.tsx:234",
+      "component": "ReportRoute",
+      "componentFile": "src/eretail/ReportRoute.tsx",
+      "apiDependencies": [
+        "/api/reports"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Reports",
+      "group": "Sales & Return",
+      "label": "Sales Report",
+      "route": "/app/r/sales-report",
+      "source": "src/eretail/menuData.ts:330",
+      "routeSource": "src/App.tsx:234",
+      "component": "ReportRoute",
+      "componentFile": "src/eretail/ReportRoute.tsx",
+      "apiDependencies": [
+        "/api/reports"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Reports",
+      "group": "Sales & Return",
+      "label": "SKU Wise Sales Report",
+      "route": "/app/r/sku-wise-sales",
+      "source": "src/eretail/menuData.ts:331",
+      "routeSource": "src/App.tsx:234",
+      "component": "ReportRoute",
+      "componentFile": "src/eretail/ReportRoute.tsx",
+      "apiDependencies": [
+        "/api/reports"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Reports",
+      "group": "Sales & Return",
+      "label": "Order Life Cycle",
+      "route": "/app/r/order-life-cycle",
+      "source": "src/eretail/menuData.ts:332",
+      "routeSource": "src/App.tsx:234",
+      "component": "ReportRoute",
+      "componentFile": "src/eretail/ReportRoute.tsx",
+      "apiDependencies": [
+        "/api/reports"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Reports",
+      "group": "Outbound",
+      "label": "Ship Label/Delivery Challan",
+      "route": "/app/r/shipping-label",
+      "source": "src/eretail/menuData.ts:337",
+      "routeSource": "src/App.tsx:234",
+      "component": "ReportRoute",
+      "componentFile": "src/eretail/ReportRoute.tsx",
+      "apiDependencies": [
+        "/api/reports"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Reports",
+      "group": "Outbound",
+      "label": "Invoice",
+      "route": "/app/r/invoice-report",
+      "source": "src/eretail/menuData.ts:338",
+      "routeSource": "src/App.tsx:234",
+      "component": "ReportRoute",
+      "componentFile": "src/eretail/ReportRoute.tsx",
+      "apiDependencies": [
+        "/api/reports"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Reports",
+      "group": "Outbound",
+      "label": "Manifest Report",
+      "route": "/app/r/manifest-report",
+      "source": "src/eretail/menuData.ts:339",
+      "routeSource": "src/App.tsx:234",
+      "component": "ReportRoute",
+      "componentFile": "src/eretail/ReportRoute.tsx",
+      "apiDependencies": [
+        "/api/reports"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Reports",
+      "group": "Outbound",
+      "label": "Dispatch Report",
+      "route": "/app/r/dispatch-report",
+      "source": "src/eretail/menuData.ts:340",
+      "routeSource": "src/App.tsx:234",
+      "component": "ReportRoute",
+      "componentFile": "src/eretail/ReportRoute.tsx",
+      "apiDependencies": [
+        "/api/reports"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Reports",
+      "group": "Miscellaneous",
+      "label": "MIS reports",
+      "route": "/app/r/mis-report",
+      "source": "src/eretail/menuData.ts:343",
+      "routeSource": "src/App.tsx:234",
+      "component": "ReportRoute",
+      "componentFile": "src/eretail/ReportRoute.tsx",
+      "apiDependencies": [
+        "/api/reports"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Reports",
+      "group": "Miscellaneous",
+      "label": "Pick Pack Report",
+      "route": "/app/r/pick-pack-report",
+      "source": "src/eretail/menuData.ts:344",
+      "routeSource": "src/App.tsx:234",
+      "component": "ReportRoute",
+      "componentFile": "src/eretail/ReportRoute.tsx",
+      "apiDependencies": [
+        "/api/reports"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Reports",
+      "group": "Miscellaneous",
+      "label": "Order Unallocation Log",
+      "route": "/app/r/order-unallocation",
+      "source": "src/eretail/menuData.ts:345",
+      "routeSource": "src/App.tsx:234",
+      "component": "ReportRoute",
+      "componentFile": "src/eretail/ReportRoute.tsx",
+      "apiDependencies": [
+        "/api/reports"
+      ],
+      "missingApi": []
+    },
+    {
+      "rail": "Reports",
+      "group": "Miscellaneous",
+      "label": "MIS Report 2.0",
+      "route": "/app/r/mis-report-2",
+      "source": "src/eretail/menuData.ts:346",
+      "routeSource": "src/App.tsx:234",
+      "component": "ReportRoute",
+      "componentFile": "src/eretail/ReportRoute.tsx",
+      "apiDependencies": [
+        "/api/reports"
+      ],
+      "missingApi": []
+    }
+  ],
+  "routes": [
+    {
+      "route": "/",
+      "component": "Login",
+      "componentFile": "src/pages/Login",
+      "source": "src/App.tsx:155",
+      "element": "{<Login />}"
+    },
+    {
+      "route": "/app/dashboard",
+      "component": "EDashboard",
+      "componentFile": "src/eretail/EDashboard",
+      "source": "src/App.tsx:158",
+      "element": "{\n                <P>\n                  <EDashboard />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/profile",
+      "component": "Profile",
+      "componentFile": "src/eretail/Profile",
+      "source": "src/App.tsx:166",
+      "element": "{<P><Profile /></P>}"
+    },
+    {
+      "route": "/app/seller-panel-dashboard",
+      "component": "SellerPanelDashboard",
+      "componentFile": "src/eretail/SellerPanelDashboard",
+      "source": "src/App.tsx:167",
+      "element": "{<P><SellerPanelDashboard /></P>}"
+    },
+    {
+      "route": "/app/central-inventory",
+      "component": "CentralInventory",
+      "componentFile": "src/pages/CentralInventory",
+      "source": "src/App.tsx:168",
+      "element": "{<P><Shell active=\"wms\" breadcrumb=\"WMS > Central Inventory\" openScreens={[{label:'Central Inventory',to:'#'}]}><CentralInventory /></Shell></P>}"
+    },
+    {
+      "route": "/app/control-tower",
+      "component": "ControlTower",
+      "componentFile": "src/eretail/ControlTower",
+      "source": "src/App.tsx:169",
+      "element": "{\n                <P>\n                  <ControlTower />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/vin-lister",
+      "component": "VinLister",
+      "componentFile": "src/eretail/VinLister",
+      "source": "src/App.tsx:177",
+      "element": "{\n                <P>\n                  <VinLister />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/fulfillment",
+      "component": "Navigate",
+      "componentFile": "src/react-router-dom",
+      "source": "src/App.tsx:185",
+      "element": "{<Navigate to=\"/app/dashboard\" replace />}"
+    },
+    {
+      "route": "{`/app/m/${key}`}",
+      "component": "InventoryOperations",
+      "componentFile": "src/pages/InventoryOperations",
+      "source": "src/App.tsx:203",
+      "element": "{\n                  <P>\n                    <InventoryOperations operation={key} />\n                  </P>\n                }"
+    },
+    {
+      "route": "/app/r/inbound-gate-pass",
+      "component": "InboundGatePass",
+      "componentFile": "src/eretail/modules/InboundGatePass",
+      "source": "src/App.tsx:213",
+      "element": "{<P><InboundGatePass /></P>}"
+    },
+    {
+      "route": "/app/r/inbound-enquiry",
+      "component": "InboundEnquiry",
+      "componentFile": "src/eretail/modules/InboundEnquiry",
+      "source": "src/App.tsx:214",
+      "element": "{<P><InboundEnquiry /></P>}"
+    },
+    {
+      "route": "/app/r/inbound-create-edit",
+      "component": "InboundCreateEdit",
+      "componentFile": "src/eretail/modules/InboundCreateEdit",
+      "source": "src/App.tsx:215",
+      "element": "{<P><InboundCreateEdit /></P>}"
+    },
+    {
+      "route": "/app/r/inbound-realtime",
+      "component": "InboundRealtime",
+      "componentFile": "src/eretail/modules/InboundRealtime",
+      "source": "src/App.tsx:216",
+      "element": "{<P><InboundRealtime /></P>}"
+    },
+    {
+      "route": "/app/r/inbound-qc",
+      "component": "InboundQC",
+      "componentFile": "src/eretail/modules/InboundQC",
+      "source": "src/App.tsx:217",
+      "element": "{<P><InboundQC /></P>}"
+    },
+    {
+      "route": "/app/r/inv-move-history",
+      "component": "InventoryMoveHistory",
+      "componentFile": "src/eretail/modules/InventoryMoveHistory",
+      "source": "src/App.tsx:218",
+      "element": "{<P><InventoryMoveHistory /></P>}"
+    },
+    {
+      "route": "/app/r/inv-move",
+      "component": "InventoryMove",
+      "componentFile": "src/eretail/modules/InventoryMove",
+      "source": "src/App.tsx:219",
+      "element": "{<P><InventoryMove /></P>}"
+    },
+    {
+      "route": "/app/r/inv-move-scan",
+      "component": "InventoryMoveScan",
+      "componentFile": "src/eretail/modules/InventoryMoveScan",
+      "source": "src/App.tsx:220",
+      "element": "{<P><InventoryMoveScan /></P>}"
+    },
+    {
+      "route": "/app/r/cycle-count",
+      "component": "CycleCount",
+      "componentFile": "src/eretail/modules/CycleCount",
+      "source": "src/App.tsx:221",
+      "element": "{<P><CycleCount /></P>}"
+    },
+    {
+      "route": "/app/r/bin-audit",
+      "component": "BinAudit",
+      "componentFile": "src/eretail/modules/BinAudit",
+      "source": "src/App.tsx:222",
+      "element": "{<P><BinAudit /></P>}"
+    },
+    {
+      "route": "/app/r/bulk-lottables",
+      "component": "BulkLottables",
+      "componentFile": "src/eretail/modules/BulkLottables",
+      "source": "src/App.tsx:223",
+      "element": "{<P><BulkLottables /></P>}"
+    },
+    {
+      "route": "/app/r/putaway-enquiry",
+      "component": "PutawayEnquiry",
+      "componentFile": "src/eretail/wms/PutawayEnquiry",
+      "source": "src/App.tsx:224",
+      "element": "{<P><PutawayEnquiry /></P>}"
+    },
+    {
+      "route": "/app/r/dispatch-checkpoint",
+      "component": "DispatchCheckpoint",
+      "componentFile": "src/eretail/wms/DispatchCheckpoint",
+      "source": "src/App.tsx:225",
+      "element": "{<P><DispatchCheckpoint /></P>}"
+    },
+    {
+      "route": "/app/r/sku-grading",
+      "component": "SkuGrading",
+      "componentFile": "src/eretail/wms/SkuGrading",
+      "source": "src/App.tsx:226",
+      "element": "{<P><SkuGrading /></P>}"
+    },
+    {
+      "route": "/app/r/discrepancy-enquiry",
+      "component": "DiscrepancyEnquiry",
+      "componentFile": "src/eretail/wms/DiscrepancyEnquiry",
+      "source": "src/App.tsx:227",
+      "element": "{<P><DiscrepancyEnquiry /></P>}"
+    },
+    {
+      "route": "/app/r/bulk-upload",
+      "component": "BulkUpload",
+      "componentFile": "src/eretail/wms/BulkUpload",
+      "source": "src/App.tsx:228",
+      "element": "{<P><BulkUpload /></P>}"
+    },
+    {
+      "route": "/app/r/mr-inventory-log",
+      "component": "MpInventoryLog",
+      "componentFile": "src/eretail/wms/MpInventoryLog",
+      "source": "src/App.tsx:229",
+      "element": "{<P><MpInventoryLog /></P>}"
+    },
+    {
+      "route": "/app/r/lpn-enquiry",
+      "component": "LpnEnquiry",
+      "componentFile": "src/eretail/wms/LpnEnquiry",
+      "source": "src/App.tsx:230",
+      "element": "{<P><LpnEnquiry /></P>}"
+    },
+    {
+      "route": "/app/r/transhipment",
+      "component": "Transhipment",
+      "componentFile": "src/eretail/wms/Transhipment",
+      "source": "src/App.tsx:231",
+      "element": "{<P><Transhipment /></P>}"
+    },
+    {
+      "route": "/app/r/transhipment-old",
+      "component": "TranshipmentOld",
+      "componentFile": "src/eretail/wms/TranshipmentOld",
+      "source": "src/App.tsx:232",
+      "element": "{<P><TranshipmentOld /></P>}"
+    },
+    {
+      "route": "/app/r/qc-params-mapping",
+      "component": "QcParamsMapping",
+      "componentFile": "src/eretail/wms/QcParamsMapping",
+      "source": "src/App.tsx:233",
+      "element": "{<P><QcParamsMapping /></P>}"
+    },
+    {
+      "route": "/app/r/:key",
+      "component": "ReportRoute",
+      "componentFile": "src/eretail/ReportRoute",
+      "source": "src/App.tsx:234",
+      "element": "{\n                <P>\n                  <ReportRoute />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/fulfillment/order-processing",
+      "component": "OrderProcessing",
+      "componentFile": "src/eretail/modules/OrderProcessing",
+      "source": "src/App.tsx:244",
+      "element": "{\n                <P>\n                  <OrderProcessing />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/fulfillment/allocate",
+      "component": "Allocate",
+      "componentFile": "src/eretail/modules/Allocate",
+      "source": "src/App.tsx:252",
+      "element": "{\n                <P>\n                  <Allocate />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/fulfillment/delivery-shipping",
+      "component": "DeliveryShipping",
+      "componentFile": "src/eretail/modules/DeliveryShipping",
+      "source": "src/App.tsx:260",
+      "element": "{\n                <P>\n                  <DeliveryShipping />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/fulfillment/bulk-update",
+      "component": "BulkUpdate",
+      "componentFile": "src/eretail/modules/BulkUpdate",
+      "source": "src/App.tsx:268",
+      "element": "{\n                <P>\n                  <BulkUpdate />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/fulfillment/manage-picklist",
+      "component": "ManagePicklist",
+      "componentFile": "src/eretail/modules/ManagePicklist",
+      "source": "src/App.tsx:276",
+      "element": "{\n                <P>\n                  <ManagePicklist />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/fulfillment/manage-picking",
+      "component": "ManagePicking",
+      "componentFile": "src/eretail/modules/ManagePicking",
+      "source": "src/App.tsx:284",
+      "element": "{\n                <P>\n                  <ManagePicking />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/fulfillment/delivery-split",
+      "component": "DeliverySplit",
+      "componentFile": "src/eretail/modules/DeliverySplit",
+      "source": "src/App.tsx:292",
+      "element": "{\n                <P>\n                  <DeliverySplit />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/fulfillment/shipment-handover",
+      "component": "ShipmentHandover",
+      "componentFile": "src/eretail/modules/ShipmentHandover",
+      "source": "src/App.tsx:300",
+      "element": "{\n                <P>\n                  <ShipmentHandover />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/fulfillment/shipment-receiving",
+      "component": "ShipmentReceiving",
+      "componentFile": "src/eretail/modules/ShipmentReceiving",
+      "source": "src/App.tsx:308",
+      "element": "{\n                <P>\n                  <ShipmentReceiving />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/fulfillment/order-acknowledgement",
+      "component": "OrderAcknowledgement",
+      "componentFile": "src/eretail/modules/OrderAcknowledgement",
+      "source": "src/App.tsx:316",
+      "element": "{\n                <P>\n                  <OrderAcknowledgement />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/fulfillment/consolidate-ewb",
+      "component": "ConsolidateEwb",
+      "componentFile": "src/eretail/modules/ConsolidateEwb",
+      "source": "src/App.tsx:324",
+      "element": "{<P><ConsolidateEwb /></P>}"
+    },
+    {
+      "route": "/app/fulfillment/sort-to-box",
+      "component": "SortToBox",
+      "componentFile": "src/eretail/modules/SortToBox",
+      "source": "src/App.tsx:325",
+      "element": "{\n                <P>\n                  <SortToBox />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/fulfillment/ajio",
+      "component": "AJIOWorkflow",
+      "componentFile": "src/eretail/modules/AJIOWorkflow",
+      "source": "src/App.tsx:333",
+      "element": "{\n                <P>\n                  <AJIOWorkflow />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/fulfillment/amazon-mfn",
+      "component": "AmazonMFNWorkflow",
+      "componentFile": "src/eretail/modules/AmazonMFNWorkflow",
+      "source": "src/App.tsx:341",
+      "element": "{\n                <P>\n                  <AmazonMFNWorkflow />\n                </P>\n              }"
+    },
+    {
+      "route": "/app",
+      "component": "Navigate",
+      "componentFile": "src/react-router-dom",
+      "source": "src/App.tsx:351",
+      "element": "{<Navigate to=\"/app/dashboard\" replace />}"
+    },
+    {
+      "route": "/app/sale-orders",
+      "component": "LiveOrderWorkspace",
+      "componentFile": "src/pages/LiveOrderWorkspace",
+      "source": "src/App.tsx:355",
+      "element": "{\n                <P>\n                  <Shell\n                    active=\"sales\"\n                    breadcrumb=\"SALES > Order Enquiry\"\n                    ope"
+    },
+    {
+      "route": "/app/purchase-orders",
+      "component": "PurchaseOrders",
+      "componentFile": "src/pages/PurchaseOrders",
+      "source": "src/App.tsx:369",
+      "element": "{\n                <P>\n                  <Shell\n                    active=\"procurement\"\n                    breadcrumb=\"PROCUREMENT > PO Revision\"\n             "
+    },
+    {
+      "route": "/app/grn",
+      "component": "GRN",
+      "componentFile": "src/pages/GRN",
+      "source": "src/App.tsx:383",
+      "element": "{\n                <P>\n                  <Shell\n                    active=\"wms\"\n                    breadcrumb=\"WMS > Inbound Create/Edit\"\n                    o"
+    },
+    {
+      "route": "/app/inventory",
+      "component": "Inventory",
+      "componentFile": "src/pages/Inventory",
+      "source": "src/App.tsx:397",
+      "element": "{\n                <P>\n                  {/* Inventory owns the shared Shell; wrapping it here rendered\n                      a second header/sidebar above the p"
+    },
+    {
+      "route": "/app/m/price-zone",
+      "component": "PriceZoneMaster",
+      "componentFile": "src/eretail/masters/PriceZone",
+      "source": "src/App.tsx:407",
+      "element": "{\n                <P>\n                  <PriceZoneMaster />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/m/external-apps",
+      "component": "ExternalApps",
+      "componentFile": "src/eretail/masters/ExternalApps",
+      "source": "src/App.tsx:415",
+      "element": "{<P><ExternalApps /></P>}"
+    },
+    {
+      "route": "/app/m/vendor-promotions",
+      "component": "VendorPromotions",
+      "componentFile": "src/eretail/procurement/VendorPromotions",
+      "source": "src/App.tsx:416",
+      "element": "{\n                <P>\n                  <VendorPromotions />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/m/purchase-charge",
+      "component": "PurchaseChargeMasters",
+      "componentFile": "src/eretail/procurement/PurchaseChargeMasters",
+      "source": "src/App.tsx:424",
+      "element": "{<P><PurchaseChargeMasters /></P>}"
+    },
+    {
+      "route": "/app/m/location",
+      "component": "LocationEnquiry",
+      "componentFile": "src/eretail/masters/LocationEnquiry",
+      "source": "src/App.tsx:425",
+      "element": "{<P><LocationEnquiry /></P>}"
+    },
+    {
+      "route": "/app/m/location-create",
+      "component": "LocationEditor",
+      "componentFile": "src/eretail/masters/LocationEditor",
+      "source": "src/App.tsx:429",
+      "element": "{<P><LocationEditor /></P>}"
+    },
+    {
+      "route": "/app/m/store-group",
+      "component": "StoreGroup",
+      "componentFile": "src/eretail/masters/StoreGroup",
+      "source": "src/App.tsx:430",
+      "element": "{<P><StoreGroup /></P>}"
+    },
+    {
+      "route": "/app/m/sku-group",
+      "component": "SkuGroup",
+      "componentFile": "src/eretail/masters/SkuGroup",
+      "source": "src/App.tsx:431",
+      "element": "{<P><SkuGroup /></P>}"
+    },
+    {
+      "route": "/app/m/order-refund",
+      "component": "OrderRefund",
+      "componentFile": "src/eretail/masters/OrderRefund",
+      "source": "src/App.tsx:432",
+      "element": "{<P><OrderRefund /></P>}"
+    },
+    {
+      "route": "/app/m/return-otc",
+      "component": "ReturnOtc",
+      "componentFile": "src/eretail/returns/ReturnOtc",
+      "source": "src/App.tsx:433",
+      "element": "{<P><ReturnOtc /></P>}"
+    },
+    {
+      "route": "/app/m/return-otc-new",
+      "component": "ReturnOtc",
+      "componentFile": "src/eretail/returns/ReturnOtc",
+      "source": "src/App.tsx:434",
+      "element": "{<P><ReturnOtc modern /></P>}"
+    },
+    {
+      "route": "/app/returns/global-search",
+      "component": "GlobalReturnsSearch",
+      "componentFile": "src/eretail/returns/GlobalReturnsSearch",
+      "source": "src/App.tsx:435",
+      "element": "{<P><GlobalReturnsSearch /></P>}"
+    },
+    {
+      "route": "/app/m/return-wo-order",
+      "component": "ReturnWithoutOrder",
+      "componentFile": "src/eretail/returns/ReturnWithoutOrder",
+      "source": "src/App.tsx:436",
+      "element": "{<P><ReturnWithoutOrder /></P>}"
+    },
+    {
+      "route": "/app/m/oms-rules",
+      "component": "OmsRules",
+      "componentFile": "src/eretail/sales/OmsRules",
+      "source": "src/App.tsx:437",
+      "element": "{<P><OmsRules /></P>}"
+    },
+    {
+      "route": "/app/master-order-enquiry",
+      "component": "LiveOrderWorkspace",
+      "componentFile": "src/pages/LiveOrderWorkspace",
+      "source": "src/App.tsx:438",
+      "element": "{<P><Shell active=\"sales\" breadcrumb=\"SALES > Master Order Enquiry\" openScreens={[{label:'Master Order Enquiry',to:'#'}]}><LiveOrderWorkspace title=\"Master Orde"
+    },
+    {
+      "route": "/app/order-enquiry",
+      "component": "LiveOrderWorkspace",
+      "componentFile": "src/pages/LiveOrderWorkspace",
+      "source": "src/App.tsx:439",
+      "element": "{<P><Shell active=\"sales\" breadcrumb=\"SALES > Order Enquiry\" openScreens={[{label:'Order Enquiry',to:'#'}]}><LiveOrderWorkspace title=\"Order Enquiry\" /></Shell>"
+    },
+    {
+      "route": "/app/order-maintenance",
+      "component": "OrderMaintenance",
+      "componentFile": "src/eretail/sales/OrderMaintenance",
+      "source": "src/App.tsx:440",
+      "element": "{<P><OrderMaintenance /></P>}"
+    },
+    {
+      "route": "/app/market-order-view",
+      "component": "MarketOrderView",
+      "componentFile": "src/eretail/sales/MarketOrderView",
+      "source": "src/App.tsx:441",
+      "element": "{<P><MarketOrderView /></P>}"
+    },
+    {
+      "route": "/app/m/kitting-order",
+      "component": "KittingOrder",
+      "componentFile": "src/eretail/sales/KittingOrder",
+      "source": "src/App.tsx:442",
+      "element": "{<P><KittingOrder /></P>}"
+    },
+    {
+      "route": "/app/global-order-search",
+      "component": "LiveOrderWorkspace",
+      "componentFile": "src/pages/LiveOrderWorkspace",
+      "source": "src/App.tsx:443",
+      "element": "{<P><Shell active=\"sales\" breadcrumb=\"SALES > Global Order Search\" openScreens={[{label:'Global Order Search',to:'#'}]}><LiveOrderWorkspace title=\"Global Order "
+    },
+    {
+      "route": "/app/demo/orders",
+      "component": "DemoOrderViews",
+      "componentFile": "src/pages/DemoOrderViews",
+      "source": "src/App.tsx:444",
+      "element": "{<P><Suspense fallback={<p>Loading demo workspace…</p>}><DemoOrderViews /></Suspense></P>}"
+    },
+    {
+      "route": "/app/cod-reconciliation",
+      "component": "CodReconciliation",
+      "componentFile": "src/eretail/sales/CodReconciliation",
+      "source": "src/App.tsx:445",
+      "element": "{<P><CodReconciliation /></P>}"
+    },
+    {
+      "route": "/app/sku-moderation",
+      "component": "SkuModeration",
+      "componentFile": "src/eretail/sales/SkuModeration",
+      "source": "src/App.tsx:446",
+      "element": "{<P><SkuModeration /></P>}"
+    },
+    {
+      "route": "/app/wms/zone",
+      "component": "WmsZone",
+      "componentFile": "src/eretail/wms/WmsZone",
+      "source": "src/App.tsx:447",
+      "element": "{<P><WmsZone /></P>}"
+    },
+    {
+      "route": "/app/wms/picker-zone-preference",
+      "component": "PickerZonePreference",
+      "componentFile": "src/eretail/wms/PickerZonePreference",
+      "source": "src/App.tsx:448",
+      "element": "{<P><PickerZonePreference /></P>}"
+    },
+    {
+      "route": "/app/wms/bin-enquiry",
+      "component": "BinEnquiry",
+      "componentFile": "src/eretail/wms/BinEnquiry",
+      "source": "src/App.tsx:449",
+      "element": "{<P><BinEnquiry /></P>}"
+    },
+    {
+      "route": "/app/wms/bin-editor",
+      "component": "BinEditor",
+      "componentFile": "src/eretail/wms/BinEditor",
+      "source": "src/App.tsx:450",
+      "element": "{<P><BinEditor /></P>}"
+    },
+    {
+      "route": "/app/wms/lottable-validation",
+      "component": "LottableValidation",
+      "componentFile": "src/eretail/wms/LottableValidation",
+      "source": "src/App.tsx:451",
+      "element": "{<P><LottableValidation /></P>}"
+    },
+    {
+      "route": "/app/wms/receipt-validation",
+      "component": "ReceiptValidation",
+      "componentFile": "src/eretail/wms/ReceiptValidation",
+      "source": "src/App.tsx:452",
+      "element": "{<P><ReceiptValidation /></P>}"
+    },
+    {
+      "route": "/app/wms/sku-label-print",
+      "component": "SkuLabelPrint",
+      "componentFile": "src/eretail/wms/SkuLabelPrint",
+      "source": "src/App.tsx:453",
+      "element": "{<P><SkuLabelPrint /></P>}"
+    },
+    {
+      "route": "/app/wms/putaway-rules",
+      "component": "PutawayRules",
+      "componentFile": "src/eretail/wms/PutawayRules",
+      "source": "src/App.tsx:454",
+      "element": "{<P><PutawayRules /></P>}"
+    },
+    {
+      "route": "/app/wms/allocation-strategies",
+      "component": "AllocationStrategies",
+      "componentFile": "src/eretail/wms/AllocationStrategies",
+      "source": "src/App.tsx:455",
+      "element": "{<P><AllocationStrategies /></P>}"
+    },
+    {
+      "route": "/app/wms/cycle-count-waves",
+      "component": "CycleCountWave",
+      "componentFile": "src/eretail/wms/CycleCountWave",
+      "source": "src/App.tsx:456",
+      "element": "{<P><CycleCountWave /></P>}"
+    },
+    {
+      "route": "/app/wms/manage-awb",
+      "component": "ManageAwb",
+      "componentFile": "src/eretail/wms/ManageAwb",
+      "source": "src/App.tsx:457",
+      "element": "{<P><ManageAwb /></P>}"
+    },
+    {
+      "route": "/app/wms/transporter-preference",
+      "component": "TransporterPreference",
+      "componentFile": "src/eretail/wms/TransporterPreference",
+      "source": "src/App.tsx:458",
+      "element": "{<P><TransporterPreference /></P>}"
+    },
+    {
+      "route": "/app/wms/service-pin-codes",
+      "component": "ServicePinCodes",
+      "componentFile": "src/eretail/wms/ServicePinCodes",
+      "source": "src/App.tsx:459",
+      "element": "{<P><ServicePinCodes /></P>}"
+    },
+    {
+      "route": "/app/transfers",
+      "component": "Transfers",
+      "componentFile": "src/pages/Transfers",
+      "source": "src/App.tsx:460",
+      "element": "{\n                <P>\n                  <Shell\n                    active=\"returns\"\n                    breadcrumb=\"RETURNS & TRANSFERS > STO Order Enquiry\"\n   "
+    },
+    {
+      "route": "/app/transfers/create",
+      "component": "StoEditor",
+      "componentFile": "src/eretail/transfers/StoEditor",
+      "source": "src/App.tsx:474",
+      "element": "{<P><StoEditor /></P>}"
+    },
+    {
+      "route": "/app/transfers/edit",
+      "component": "StoEditor",
+      "componentFile": "src/eretail/transfers/StoEditor",
+      "source": "src/App.tsx:475",
+      "element": "{<P><StoEditor /></P>}"
+    },
+    {
+      "route": "/app/skus",
+      "component": "Skus",
+      "componentFile": "src/pages/Skus",
+      "source": "src/App.tsx:476",
+      "element": "{\n                <P>\n                  <Shell\n                    active=\"master\"\n                    breadcrumb=\"MASTER > SKU Master\"\n                    open"
+    },
+    {
+      "route": "/app/partners",
+      "component": "Partners",
+      "componentFile": "src/pages/Partners",
+      "source": "src/App.tsx:490",
+      "element": "{\n                <P>\n                  <Shell\n                    active=\"master\"\n                    breadcrumb=\"MASTER > Trading Partners\"\n                  "
+    },
+    {
+      "route": "/app/returns",
+      "component": "Navigate",
+      "componentFile": "src/react-router-dom",
+      "source": "src/App.tsx:504",
+      "element": "{\n                <P>\n                  <Navigate to=\"/app/returns/customer-enquiry\" replace />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/returns/rtv-enquiry",
+      "component": "RtvEnquiry",
+      "componentFile": "src/eretail/returns/RtvEnquiry",
+      "source": "src/App.tsx:512",
+      "element": "{<P><RtvEnquiry /></P>}"
+    },
+    {
+      "route": "/app/returns/vendor-return",
+      "component": "VendorReturnEditor",
+      "componentFile": "src/eretail/returns/VendorReturnEditor",
+      "source": "src/App.tsx:516",
+      "element": "{<P><VendorReturnEditor /></P>}"
+    },
+    {
+      "route": "/app/returns/customer-enquiry",
+      "component": "CustomerReturnEnquiry",
+      "componentFile": "src/eretail/returns/CustomerReturnEnquiry",
+      "source": "src/App.tsx:520",
+      "element": "{<P><CustomerReturnEnquiry /></P>}"
+    },
+    {
+      "route": "/app/returns/customer-return",
+      "component": "CustomerReturnEditor",
+      "componentFile": "src/eretail/returns/CustomerReturnEditor",
+      "source": "src/App.tsx:524",
+      "element": "{<P><CustomerReturnEditor /></P>}"
+    },
+    {
+      "route": "/app/returns/:screen",
+      "component": "Navigate",
+      "componentFile": "src/react-router-dom",
+      "source": "src/App.tsx:528",
+      "element": "{\n                <P>\n                  <Navigate to=\"/app/returns/customer-enquiry\" replace />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/reports",
+      "component": "Reports",
+      "componentFile": "src/pages/Reports",
+      "source": "src/App.tsx:536",
+      "element": "{\n                <P>\n                  <Shell\n                    active=\"reports\"\n                    breadcrumb=\"REPORTS > Reports & Analytics\"\n             "
+    },
+    {
+      "route": "/app/legacy-dashboard",
+      "component": "LiveOrderWorkspace",
+      "componentFile": "src/pages/LiveOrderWorkspace",
+      "source": "src/App.tsx:550",
+      "element": "{\n                <P>\n                  <Shell\n                    active=\"dashboard\"\n                    breadcrumb=\"DASHBOARD > Classic\"\n                    o"
+    },
+    {
+      "route": "/app/downloads",
+      "component": "Downloads",
+      "componentFile": "src/eretail/Downloads",
+      "source": "src/App.tsx:564",
+      "element": "{\n                <P>\n                  <Downloads />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/channels",
+      "component": "ManageChannels",
+      "componentFile": "src/eretail/ManageChannels",
+      "source": "src/App.tsx:572",
+      "element": "{\n                <P>\n                  <ManageChannels />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/sku-channel-listing",
+      "component": "SkuChannelListing",
+      "componentFile": "src/eretail/SkuChannelListing",
+      "source": "src/App.tsx:580",
+      "element": "{<P><SkuChannelListing /></P>}"
+    },
+    {
+      "route": "/app/vendors",
+      "component": "VendorMaster",
+      "componentFile": "src/eretail/masters/VendorMaster",
+      "source": "src/App.tsx:581",
+      "element": "{\n                <P>\n                  <VendorMaster />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/customers",
+      "component": "CustomerMaster",
+      "componentFile": "src/eretail/masters/CustomerMaster",
+      "source": "src/App.tsx:589",
+      "element": "{\n                <P>\n                  <CustomerMaster />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/transporters",
+      "component": "TransporterMaster",
+      "componentFile": "src/eretail/masters/TransporterMaster",
+      "source": "src/App.tsx:597",
+      "element": "{\n                <P>\n                  <TransporterMaster />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/clients",
+      "component": "ClientMaster",
+      "componentFile": "src/eretail/masters/ClientMaster",
+      "source": "src/App.tsx:605",
+      "element": "{\n                <P>\n                  <ClientMaster />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/customer-groups",
+      "component": "CustomerGroupMaster",
+      "componentFile": "src/eretail/masters/CustomerGroupMaster",
+      "source": "src/App.tsx:613",
+      "element": "{\n                <P>\n                  <CustomerGroupMaster />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/tax-code",
+      "component": "TaxCode",
+      "componentFile": "src/eretail/masters/TaxCode",
+      "source": "src/App.tsx:621",
+      "element": "{\n                <P>\n                  <TaxCode />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/coupons",
+      "component": "ManageCoupons",
+      "componentFile": "src/eretail/masters/ManageCoupons",
+      "source": "src/App.tsx:629",
+      "element": "{\n                <P>\n                  <ManageCoupons />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/tax-application",
+      "component": "TaxApplication",
+      "componentFile": "src/eretail/masters/TaxApplication",
+      "source": "src/App.tsx:637",
+      "element": "{\n                <P>\n                  <TaxApplication />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/sku-barcode",
+      "component": "SkuBarcode",
+      "componentFile": "src/eretail/masters/SkuBarcode",
+      "source": "src/App.tsx:645",
+      "element": "{\n                <P>\n                  <SkuBarcode />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/sku-company-link",
+      "component": "SkuCompanyLink",
+      "componentFile": "src/eretail/masters/SkuCompanyLink",
+      "source": "src/App.tsx:653",
+      "element": "{\n                <P>\n                  <SkuCompanyLink />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/m/merch-hierarchy",
+      "component": "MerchandisingHierarchy",
+      "componentFile": "src/eretail/masters/MerchandisingHierarchy",
+      "source": "src/App.tsx:661",
+      "element": "{\n                <P>\n                  <MerchandisingHierarchy />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/m/manage-attribute",
+      "component": "ManageAttribute",
+      "componentFile": "src/eretail/masters/ManageAttribute",
+      "source": "src/App.tsx:669",
+      "element": "{\n                <P>\n                  <ManageAttribute />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/m/attribute-set",
+      "component": "AttributeSet",
+      "componentFile": "src/eretail/masters/AttributeSet",
+      "source": "src/App.tsx:677",
+      "element": "{\n                <P>\n                  <AttributeSet />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/m/vouchers",
+      "component": "GenerateVouchers",
+      "componentFile": "src/eretail/masters/GenerateVouchers",
+      "source": "src/App.tsx:685",
+      "element": "{\n                <P>\n                  <GenerateVouchers />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/m/vendor-sku-catalog",
+      "component": "VendorSkuCatalog",
+      "componentFile": "src/eretail/masters/VendorSkuCatalog",
+      "source": "src/App.tsx:693",
+      "element": "{\n                <P>\n                  <VendorSkuCatalog />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/m/vendor-sku-loc-catalog",
+      "component": "VendorSkuLocCatalog",
+      "componentFile": "src/eretail/masters/VendorSkuLocCatalog",
+      "source": "src/App.tsx:701",
+      "element": "{\n                <P>\n                  <VendorSkuLocCatalog />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/m/org-hierarchy",
+      "component": "OrganizationHierarchy",
+      "componentFile": "src/eretail/masters/OrganizationHierarchy",
+      "source": "src/App.tsx:709",
+      "element": "{\n                <P>\n                  <OrganizationHierarchy />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/m/other-masters",
+      "component": "OtherMasters",
+      "componentFile": "src/eretail/masters/OtherMasters",
+      "source": "src/App.tsx:717",
+      "element": "{\n                <P>\n                  <OtherMasters />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/sku-enquiry",
+      "component": "RecordedSkuEnquiry",
+      "componentFile": "src/eretail/masters/RecordedSkuWorkflows",
+      "source": "src/App.tsx:725",
+      "element": "{\n                <P>\n                  <RecordedSkuEnquiry />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/sku-import",
+      "component": "SkuImport",
+      "componentFile": "src/eretail/masters/SkuImport",
+      "source": "src/App.tsx:733",
+      "element": "{\n                <P>\n                  <SkuImport />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/promotions",
+      "component": "PromotionManagement",
+      "componentFile": "src/eretail/masters/PromotionManagement",
+      "source": "src/App.tsx:741",
+      "element": "{\n                <P>\n                  <PromotionManagement />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/pricing-events",
+      "component": "PricingEvents",
+      "componentFile": "src/eretail/masters/PricingEvents",
+      "source": "src/App.tsx:749",
+      "element": "{\n                <P>\n                  <PricingEvents />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/tax-categories",
+      "component": "TaxCategory",
+      "componentFile": "src/eretail/masters/TaxCategory",
+      "source": "src/App.tsx:757",
+      "element": "{\n                <P>\n                  <TaxCategory />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/tax-groups",
+      "component": "TaxGroup",
+      "componentFile": "src/eretail/masters/TaxGroup",
+      "source": "src/App.tsx:765",
+      "element": "{\n                <P>\n                  <TaxGroup />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/tax-zones",
+      "component": "TaxZone",
+      "componentFile": "src/eretail/masters/TaxZone",
+      "source": "src/App.tsx:773",
+      "element": "{\n                <P>\n                  <TaxZone />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/tally-configuration",
+      "component": "TallyConfiguration",
+      "componentFile": "src/eretail/masters/TallyConfiguration",
+      "source": "src/App.tsx:781",
+      "element": "{\n                <P>\n                  <TallyConfiguration />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/procurement/category-buyers",
+      "component": "CategoryBuyers",
+      "componentFile": "src/eretail/procurement/CategoryBuyers",
+      "source": "src/App.tsx:789",
+      "element": "{\n                <P>\n                  <CategoryBuyers />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/procurement/po-enquiry",
+      "component": "POEnquiry",
+      "componentFile": "src/eretail/procurement/ProcurementWorkflows",
+      "source": "src/App.tsx:797",
+      "element": "{\n                <P>\n                  <POEnquiry />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/procurement/po/single",
+      "component": "PurchaseOrderEditor",
+      "componentFile": "src/eretail/procurement/ProcurementWorkflows",
+      "source": "src/App.tsx:805",
+      "element": "{\n                <P>\n                  <PurchaseOrderEditor mode=\"Single Location\" />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/procurement/po/multiple",
+      "component": "PurchaseOrderEditor",
+      "componentFile": "src/eretail/procurement/ProcurementWorkflows",
+      "source": "src/App.tsx:813",
+      "element": "{\n                <P>\n                  <PurchaseOrderEditor mode=\"Multiple Location\" />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/procurement/po/back-orders",
+      "component": "BackOrderPO",
+      "componentFile": "src/eretail/procurement/ProcurementWorkflows",
+      "source": "src/App.tsx:821",
+      "element": "{\n                <P>\n                  <BackOrderPO />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/procurement/vendor-invoices",
+      "component": "VendorInvoices",
+      "componentFile": "src/eretail/procurement/ProcurementWorkflows",
+      "source": "src/App.tsx:829",
+      "element": "{\n                <P>\n                  <VendorInvoices />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/procurement/otb",
+      "component": "OTBManagement",
+      "componentFile": "src/eretail/procurement/ProcurementWorkflows",
+      "source": "src/App.tsx:837",
+      "element": "{\n                <P>\n                  <OTBManagement />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/procurement/ars/sku-location",
+      "component": "ARSSkuLocation",
+      "componentFile": "src/eretail/procurement/ARSWorkflows",
+      "source": "src/App.tsx:845",
+      "element": "{\n                <P>\n                  <ARSSkuLocation />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/procurement/ars/rules",
+      "component": "ARSRules",
+      "componentFile": "src/eretail/procurement/ARSWorkflows",
+      "source": "src/App.tsx:853",
+      "element": "{\n                <P>\n                  <ARSRules />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/procurement/ars/logs",
+      "component": "ARSExecutionLog",
+      "componentFile": "src/eretail/procurement/ARSWorkflows",
+      "source": "src/App.tsx:861",
+      "element": "{\n                <P>\n                  <ARSExecutionLog />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/procurement/ars/settings",
+      "component": "ARSSettings",
+      "componentFile": "src/eretail/procurement/ARSWorkflows",
+      "source": "src/App.tsx:869",
+      "element": "{\n                <P>\n                  <ARSSettings />\n                </P>\n              }"
+    },
+    {
+      "route": "/app/admin/:screen",
+      "component": "AdminModule",
+      "componentFile": "src/eretail/admin/AdminModule",
+      "source": "src/App.tsx:877",
+      "element": "{\n                <P>\n                  <AdminModule />\n                </P>\n              }"
+    },
+    {
+      "route": "*",
+      "component": "Navigate",
+      "componentFile": "src/react-router-dom",
+      "source": "src/App.tsx:886",
+      "element": "{<Navigate to=\"/\" replace />}"
+    }
+  ],
+  "apiRoutes": [
+    "/api/skus",
+    "/api/partners",
+    "/api/sale-orders",
+    "/api/back-orders",
+    "/api/jsonOrderExits",
+    "/api/seller-panel-dashboard",
+    "/api/purchase-orders",
+    "/api/po-revision",
+    "/api/purchase-order-comments",
+    "/api/purchase-order-tags",
+    "/api/purchase-order-inbound",
+    "/api/purchase-order-asn",
+    "/api/grn",
+    "/api/asn-enquiry",
+    "/api/manage-asn",
+    "/api/vendor-promotions",
+    "/api/purchase-charge-masters",
+    "/api/chargeMasterSearch",
+    "/api/jsonPOChargeDetailGrid",
+    "/api/saveUpdatePOCharges",
+    "/api/delUpdatePOCharges",
+    "/api/category-buyers",
+    "/api/categoryBuyerSearch",
+    "/api/catBuyerSaveBS",
+    "/api/inventory",
+    "/api/inventory-ops",
+    "/api/transfers",
+    "/api/sto-enquiry",
+    "/api/sto-editor",
+    "/api/user-enquiry",
+    "/api/user-editor",
+    "/api/role-editor",
+    "/api/order-import",
+    "/api/common-import",
+    "/api/exports",
+    "/api/settings",
+    "/api/returns",
+    "/api/fulfillment",
+    "/api/picklists",
+    "/api/shipments",
+    "/api/generic",
+    "/api/reports",
+    "/api/downloads",
+    "/api/channels",
+    "/api/sku-channel-links",
+    "/api/dashboard",
+    "/api/platforms",
+    "/api/vendors",
+    "/api/jsonVendorEnquirySearch",
+    "/api/taxcodes",
+    "/api/coupons",
+    "/api/fetchCouponEnquiryData",
+    "/api/taxapp",
+    "/api/skubarcode",
+    "/api/customers",
+    "/api/jsonCustEnqSearch",
+    "/api/transporters",
+    "/api/jsonTransporterEnquirySearch",
+    "/api/clients",
+    "/api/jsonClientMasterEnquirySearch",
+    "/api/customer-groups",
+    "/api/jsonCustGroupSearch",
+    "/api/tax-categories",
+    "/api/tax-groups",
+    "/api/tax-zones",
+    "/api/org-hierarchy",
+    "/api/locations",
+    "/api/store-groups",
+    "/api/sku-imports",
+    "/api/sku-company-links",
+    "/api/sku-groups",
+    "/api/merch-hierarchy",
+    "/api/attribute-sets",
+    "/api/vendor-sku-catalog",
+    "/api/vendor-sku-loc-catalog",
+    "/api/manage-attributes",
+    "/api/pricing-events",
+    "/api/price-zones",
+    "/api/external-apps",
+    "/api/external-app-definitions",
+    "/api/saveDefinition",
+    "/api/testSMSConnection",
+    "/api/jsonExternalAppsSearch",
+    "/api/getRewardMasterDataForExtAppId",
+    "/api/checkTaxIntConfigured",
+    "/api/saveExternalAppsData",
+    "/api/order-refunds",
+    "/api/oms-rules",
+    "/api/master-orders",
+    "/api/order-enquiry",
+    "/api/order-maintenance",
+    "/api/kitting-orders",
+    "/api/global-order-search",
+    "/api/cod-reconciliation",
+    "/api/sku-moderation",
+    "/api/wms-zones",
+    "/api/picker-zone-preferences",
+    "/api/bin-enquiry",
+    "/api/bin-editor",
+    "/api/lottable-validations",
+    "/api/receipt-validations",
+    "/api/sku-label-print",
+    "/api/putaway-rules",
+    "/api/putaway-enquiry",
+    "/api/dispatch-checkpoint",
+    "/api/sku-grading",
+    "/api/discrepancy-enquiry",
+    "/api/bulk-upload",
+    "/api/mp-inventory-log",
+    "/api/lpn-enquiry",
+    "/api/transhipment",
+    "/api/transhipment-old",
+    "/api/qc-params-mapping",
+    "/api/rtv-enquiry",
+    "/api/vendor-return-editor",
+    "/api/customer-return-enquiry",
+    "/api/customer-return-editor",
+    "/api/return-otc",
+    "/api/global-returns-search",
+    "/api/return-without-order",
+    "/api/allocation-strategies",
+    "/api/cycle-count-waves",
+    "/api/manage-awb",
+    "/api/transporter-preferences",
+    "/api/service-pin-codes",
+    "/api/order-allocation",
+    "/api/manage-manifests",
+    "/api/delivery-shipping",
+    "/api/bulk-order-update",
+    "/api/manage-picklists",
+    "/api/manage-picking",
+    "/api/delivery-split",
+    "/api/shipment-handover",
+    "/api/order-acknowledgement",
+    "/api/consolidate-ewb",
+    "/api/sort-to-box",
+    "/api/inbound-gate-pass",
+    "/api/inbound-enquiry",
+    "/api/inbound-create-edit",
+    "/api/inbound-realtime",
+    "/api/inbound-qc",
+    "/api/inventory-move-history",
+    "/api/inventory-move",
+    "/api/inventory-move-scan",
+    "/api/cycle-count",
+    "/api/bin-audit",
+    "/api/bulk-lottables",
+    "/api/admin",
+    "/api/admin-parity",
+    "/api/tally-config",
+    "/api/procurement",
+    "/api/ars",
+    "/api/fetchArsAttributes",
+    "/api/addAndUpdateArsAttributes",
+    "/api/bulkUpdateArsAttributes",
+    "/api/downloadArsAttribute",
+    "/api/ajio",
+    "/api/amazon-mfn",
+    "/api/vin-lister",
+    "/api/inventory-sync"
+  ]
+}

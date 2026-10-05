@@ -1,7 +1,135 @@
-import{cors,find,insert,update}from'./mongo.js';
-const t=v=>String(v??'').trim(),has=(v,q)=>!t(q)||t(q)==='-1'||t(v).toLowerCase().includes(t(q).toLowerCase());
-const norm=r=>({...r,waveId:r.wave_id||r.code||'',waveDesc:r.wave_desc||r.name||'',locCode:r.loc_code||'UWH',location:r.location||'JX Karawaci(UWH)',waveType:r.wave_type||'Bin',schMethod:r.sch_method||'',startDate:r.start_date||'',endDate:r.end_date||'',lastRunTime:r.last_run_time||'',status:r.status||'Active'});
-export default async function handler(req,res){if(cors(req,res))return;try{const b=req.body||{},all=await find('generic_records',{module:'cycle-count-wave'});
-if(req.method==='GET')return res.json({locations:[['UWH','JX Karawaci(UWH)']],statuses:[['1','Active'],['0','InActive']],periodTypes:[['1','Permanent'],['2','Temporary']],waveTypes:[['1','Bin']],ruleParameters:[['-1','--- Select ---'],['1','Sku category'],['2','Sku group'],['3','Sku'],['4','Brand'],['5','Zone'],['6','Bin Range'],['7','Bin'],['8','SKU-Location Tag']],schedulingMethods:[['-1','--- Select ---'],['1','Action Triggered'],['2','Periodic']],priorities:[['-1','--- Select ---'],['2','Bin nomenclature'],['1','Bin seq'],['4','High to low'],['3','Low to high']],frequencies:[['-1','--- Select ---'],['1','Daily'],['2','Weekly'],['3','Fortnightly'],['4','Monthly'],['5','Bimonthly'],['6','Quarterly'],['7','Half Yearly'],['8','Yearly']],zones:(await find('generic_records',{module:'wms-zone'})).map(x=>x.code)});
-if(req.method==='POST'&&(b.REQ_SEARCH_FLAG||b.action==='search')){let rows=all.map(norm).filter(r=>has(r.locCode,b.locCode)&&has(r.waveId,b.waveId)&&has(r.waveDesc,b.waveDesc)&&has(r.waveType,b.wavetype)&&has(r.schMethod,b.schMethod)&&has(r.status,b.status==='1'?'Active':b.status==='0'?'InActive':b.status)&&(!t(b.fromStartDate)||r.startDate>=b.fromStartDate)&&(!t(b.toStartDate)||r.startDate<=b.toStartDate)&&(!t(b.fromEndDate)||r.endDate>=b.fromEndDate)&&(!t(b.toEndDate)||r.endDate<=b.toEndDate));rows.sort((a,c)=>t(a[b.sidx]||a.waveId).localeCompare(t(c[b.sidx]||c.waveId))*(b.sord==='desc'?-1:1));const size=[20,50,100,200].includes(+b.rows)?+b.rows:20,page=Math.max(1,+b.page||1),records=rows.length,total=Math.ceil(records/size),gridModel=rows.slice((page-1)*size,page*size);return res.json({cycleCountDTOs:gridModel,gridModel,rows:size,page,total,records,sidx:t(b.sidx)||'updDate',sord:t(b.sord)||'desc'})}
-if(req.method==='POST'||req.method==='PUT'){if(!t(b.waveName))return res.status(400).json({error:'Cycle Wave Name is mandatory'});if(!t(b.startDate))return res.status(400).json({error:'Start Date is mandatory'});if(!t(b.endDate))return res.status(400).json({error:'End Date is mandatory'});if(b.endDate<b.startDate)return res.status(400).json({error:'End Date should be greater than Start Date'});if(!t(b.ruleParameter)||b.ruleParameter==='-1')return res.status(400).json({error:'Rule Parameter is mandatory'});if(!t(b.schedulingMethod)||b.schedulingMethod==='-1')return res.status(400).json({error:'Scheduling Method is mandatory'});let x=b.id?all.find(y=>y.id===+b.id):null;const n=Math.max(0,...all.map(y=>+(t(norm(y).waveId).replace(/\D/g,''))||0))+1,waveId=x?norm(x).waveId:`CCW${String(n).padStart(6,'0')}`,fields={module:'cycle-count-wave',code:waveId,wave_id:waveId,name:t(b.waveName),wave_desc:t(b.waveName),loc_code:b.locCode||'UWH',location:'JX Karawaci(UWH)',wave_type:'Bin',sch_method:b.schedulingMethod==='1'?'Action Triggered':'Periodic',start_date:b.startDate,end_date:b.endDate,status:b.waveStatus==='0'?'InActive':'Active',details:b,modified_by:'super admin',modified_date:new Date().toISOString()};if(x){const u=await update('generic_records',x.id,fields);return res.json({row:norm(u[0]),jsonMessage:'Cycle Count Wave updated successfully'})}const row=await insert('generic_records',{...fields,created_by:'super admin',created_date:new Date().toISOString()});return res.status(201).json({row:norm(row),jsonMessage:'Cycle Count Wave saved successfully'})}return res.status(405).json({error:'Method not allowed'})}catch(e){console.error('Cycle Count Wave error:',e);res.status(500).json({error:e.message})}}
+import { sendDatabaseUnavailable, cors, find, insert, update } from './mongo.js';
+import { locationPairs } from './catalogs.js';
+import { currentUser } from './auth-session.js';
+
+const text = (value) => String(value ?? '').trim();
+const has = (value, query) => !text(query) || text(query) === '-1' || text(value).toLowerCase().includes(text(query).toLowerCase());
+const norm = (row) => ({
+  ...row,
+  waveId: row.wave_id || row.code || '',
+  waveDesc: row.wave_desc || row.name || '',
+  locCode: row.loc_code || '',
+  location: row.location || '',
+  waveType: row.wave_type || 'Bin',
+  schMethod: row.sch_method || '',
+  startDate: row.start_date || '',
+  endDate: row.end_date || '',
+  lastRunTime: row.last_run_time || '',
+  status: row.status || '',
+});
+const ruleParameters = new Set(['1', '2', '3', '4', '5', '6', '7', '8']);
+const ruleFields = {
+  '1': ['categoryName', 'SKU Category'],
+  '2': ['skuGroup', 'SKU Group'],
+  '3': ['sku', 'SKU Code'],
+  '4': ['brandCode', 'Brand'],
+  '6': ['fromBinRange', 'From Bin Range'],
+  '8': ['skuLocationTag', 'SKU-Location Tag'],
+};
+const validDate = (value) => {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const parsed = new Date(`${value}T00:00:00.000Z`);
+  return !Number.isNaN(parsed.valueOf()) && parsed.toISOString().slice(0, 10) === value;
+};
+
+export default async function handler(req, res) {
+  if (cors(req, res)) return;
+  try {
+    const body = req.body || {};
+    const all = await find('generic_records', { module: 'cycle-count-wave' });
+
+    if (req.method === 'GET') {
+      const [locations, zones] = await Promise.all([
+        locationPairs(),
+        find('generic_records', { module: 'wms-zone' }),
+      ]);
+      return res.json({
+        locations,
+        statuses: [['1', 'Active'], ['0', 'InActive']],
+        periodTypes: [['1', 'Permanent'], ['2', 'Temporary']],
+        waveTypes: [['1', 'Bin']],
+        ruleParameters: [['-1', '--- Select ---'], ['1', 'Sku category'], ['2', 'Sku group'], ['3', 'Sku'], ['4', 'Brand'], ['5', 'Zone'], ['6', 'Bin Range'], ['7', 'Bin'], ['8', 'SKU-Location Tag']],
+        schedulingMethods: [['-1', '--- Select ---'], ['1', 'Action Triggered'], ['2', 'Periodic']],
+        priorities: [['-1', '--- Select ---'], ['2', 'Bin nomenclature'], ['1', 'Bin seq'], ['4', 'High to low'], ['3', 'Low to high']],
+        frequencies: [['-1', '--- Select ---'], ['1', 'Daily'], ['2', 'Weekly'], ['3', 'Fortnightly'], ['4', 'Monthly'], ['5', 'Bimonthly'], ['6', 'Quarterly'], ['7', 'Half Yearly'], ['8', 'Yearly']],
+        zones: zones.map((row) => row.code).filter(Boolean),
+      });
+    }
+
+    if (req.method === 'POST' && (body.REQ_SEARCH_FLAG || body.action === 'search')) {
+      let rows = all.map(norm).filter((row) =>
+        has(row.locCode, body.locCode) && has(row.waveId, body.waveId) && has(row.waveDesc, body.waveDesc) &&
+        has(row.waveType, body.wavetype) && has(row.schMethod, body.schMethod) &&
+        has(row.status, body.status === '1' ? 'Active' : body.status === '0' ? 'InActive' : body.status) &&
+        (!text(body.fromStartDate) || row.startDate >= body.fromStartDate) &&
+        (!text(body.toStartDate) || row.startDate <= body.toStartDate) &&
+        (!text(body.fromEndDate) || row.endDate >= body.fromEndDate) &&
+        (!text(body.toEndDate) || row.endDate <= body.toEndDate));
+      rows.sort((left, right) => text(left[body.sidx] || left.waveId).localeCompare(text(right[body.sidx] || right.waveId)) * (body.sord === 'desc' ? -1 : 1));
+      const size = [20, 50, 100, 200].includes(Number(body.rows)) ? Number(body.rows) : 20;
+      const page = Math.max(1, Number(body.page) || 1);
+      const records = rows.length;
+      const total = Math.ceil(records / size);
+      const gridModel = rows.slice((page - 1) * size, page * size);
+      return res.json({ cycleCountDTOs: gridModel, gridModel, rows: size, page, total, records, sidx: text(body.sidx) || 'updDate', sord: text(body.sord) || 'desc' });
+    }
+
+    if (req.method === 'POST' || req.method === 'PUT') {
+      if (!text(body.waveName)) return res.status(400).json({ error: 'Cycle Wave Name is mandatory' });
+      const startDate = text(body.startDate);
+      const endDate = text(body.endDate);
+      if (!startDate) return res.status(400).json({ error: 'Start Date is mandatory' });
+      if (!validDate(startDate)) return res.status(400).json({ error: 'Enter a valid Start Date.' });
+      if (!endDate) return res.status(400).json({ error: 'End Date is mandatory' });
+      if (!validDate(endDate)) return res.status(400).json({ error: 'Enter a valid End Date.' });
+      if (endDate <= startDate) return res.status(400).json({ error: 'End Date should be greater than Start Date' });
+      if (!ruleParameters.has(text(body.ruleParameter))) return res.status(400).json({ error: 'Rule Parameter is mandatory' });
+      if (!['1', '2'].includes(text(body.schedulingMethod))) return res.status(400).json({ error: 'Scheduling Method is mandatory' });
+      if (!['1', '2'].includes(text(body.periodType || '1'))) return res.status(400).json({ error: 'Select a valid Period Type.' });
+
+      const locations = await locationPairs();
+      const location = locations.find(([code]) => code === text(body.locCode));
+      if (!location) return res.status(400).json({ error: 'Select a configured location' });
+
+      const zones = await find('generic_records', { module: 'wms-zone' });
+      const pickZone = text(body.pickZone);
+      if (!pickZone || pickZone === '-1') return res.status(400).json({ error: 'Pick Zone is mandatory.' });
+      if (!zones.some((zone) => text(zone.code) === pickZone)) return res.status(400).json({ error: 'Select a configured Pick Zone.' });
+
+      const [field, label] = ruleFields[text(body.ruleParameter)] || [];
+      if (field && !text(body[field])) return res.status(400).json({ error: `${label} is mandatory for the selected rule parameter.` });
+      if (text(body.ruleParameter) === '6' && !text(body.toBinRange)) return res.status(400).json({ error: 'To Bin Range is mandatory for the selected rule parameter.' });
+      if (text(body.ruleParameter) === '7') {
+        const configuredBins = await find('generic_records', { module: 'bin-enquiry' });
+        const bin = configuredBins.find((row) => text(row.loc_code) === location[0] && text(row.bin_code || row.code).toLowerCase() === text(body.bin).toLowerCase());
+        if (!bin) return res.status(400).json({ error: 'Select a configured Bin for this location.' });
+      }
+
+      const existing = body.id ? all.find((row) => row.id === Number(body.id)) : null;
+      if (req.method === 'PUT' && !existing) return res.status(404).json({ error: 'Cycle Count Wave was not found.' });
+      const sequence = Math.max(0, ...all.map((row) => Number(text(norm(row).waveId).replace(/\D/g, '')) || 0)) + 1;
+      const waveId = existing ? norm(existing).waveId : `CCW${String(sequence).padStart(6, '0')}`;
+      const fields = {
+        module: 'cycle-count-wave', code: waveId, wave_id: waveId,
+        name: text(body.waveName), wave_desc: text(body.waveName),
+        loc_code: location[0], location: location[1], wave_type: 'Bin',
+        sch_method: text(body.schedulingMethod) === '1' ? 'Action Triggered' : 'Periodic',
+        start_date: startDate, end_date: endDate,
+        status: text(body.waveStatus) === '0' ? 'InActive' : 'Active',
+        details: body, modified_by: currentUser(req)?.username || 'unknown', modified_date: new Date().toISOString(),
+      };
+      if (existing) {
+        const [saved] = await update('generic_records', existing.id, fields);
+        return res.json({ row: norm(saved), jsonMessage: 'Cycle Count Wave updated successfully' });
+      }
+      const row = await insert('generic_records', { ...fields, created_by: currentUser(req)?.username || 'unknown', created_date: new Date().toISOString() });
+      return res.status(201).json({ row: norm(row), jsonMessage: 'Cycle Count Wave saved successfully' });
+    }
+
+    return res.status(405).json({ error: 'Method not allowed' });
+  } catch (error) {
+    if (sendDatabaseUnavailable(res, error)) return;
+    console.error('Cycle Count Wave error:', { name: error?.name, code: error?.code });
+    return res.status(500).json({ error: error.message });
+  }
+}

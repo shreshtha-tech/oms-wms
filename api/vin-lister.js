@@ -1,4 +1,4 @@
-import { find, findOne, insert, update, cors } from './mongo.js';
+import { sendDatabaseUnavailable, find, findOne, insert, update, cors } from './mongo.js';
 
 const channels = ['Amazon', 'eBay', 'Lazada', 'Shopee', 'Walmart', 'Magento', 'Zalora', 'Shopify', 'Tokopedia', 'Bli Bli', 'TADA', 'JD'];
 const categories = ['Fashion & Accessories', 'Health n Beauty', 'Jewellery', 'Baby Products', 'Electronics', 'Home Furnishing', 'Luggage & Travel', 'Adv & Mountaineering', 'Pet Supplies', 'Groceries, Meat & FMCG', 'Baby and Mother Care'];
@@ -50,5 +50,6 @@ export default async function handler(req, res) {
       const log = await insert('vin_lister_transmit_logs', { sku_code: product.sku_code, product_name: product.product_name, channel, operation: 'SKU Push', status: 'Processed', processed_at: now() }); return res.status(201).json(log);
     }
     res.status(405).json({ error: 'Unsupported Vin Lister operation.' });
-  } catch (error) { console.error('vin-lister error:', error); res.status(500).json({ error: error.message }); }
+  } catch (error) {
+    if (sendDatabaseUnavailable(res, error)) return; console.error('vin-lister error:', { name: error?.name, code: error?.code }); res.status(500).json({ error: error.message }); }
 }

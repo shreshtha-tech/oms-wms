@@ -1,4 +1,4 @@
-import { cors, find, findOne, insert, update } from './mongo.js';
+import { sendDatabaseUnavailable, cors, find, findOne, insert, update } from './mongo.js';
 const text = (value) => String(value ?? '').trim();
 const has = (value, query) => !text(query) || text(query) === '-1' || text(value).toLowerCase().includes(text(query).toLowerCase());
 const normalize = (row) => ({ ...row, zone_code: row.zone_code || row.code || '', picker_id: row.picker_id || row.picker || row.name || '', zone_preference: row.zone_preference || row.description || '', status: row.status || 'Active', created_by: row.created_by || 'super admin', created_date: row.created_date || '', modified_by: row.modified_by || '', modified_date: row.modified_date || '' });
@@ -25,5 +25,6 @@ export default async function handler(req, res) {
       return res.status(200).json({ row: normalize(changed[0]), jsonMessage: 'Data saved successfully.' });
     }
     return res.status(405).json({ error: 'Method not allowed' });
-  } catch (error) { console.error('Picker Zone Preference error:', error); return res.status(500).json({ error: error.message }); }
+  } catch (error) {
+    if (sendDatabaseUnavailable(res, error)) return; console.error('Picker Zone Preference error:', { name: error?.name, code: error?.code }); return res.status(500).json({ error: error.message }); }
 }

@@ -12,6 +12,11 @@ import CommonImportReplica from './CommonImportReplica';
 import ExportsReplica from './ExportsReplica';
 import ForceOrderPullReplica from './ForceOrderPullReplica';
 import SettingsReplica from './SettingsReplica';
+import AdminLogGrid from './AdminLogGrid';
+import UserAuditLogReplica from './UserAuditLogReplica';
+import LanguageSettingReplica from './LanguageSettingReplica';
+import ManageApiReplica from './ManageApiReplica';
+import ApiDashboardReplica from './ApiDashboardReplica';
 
 type Row = Record<string, any> & { id: number; type: string; status?: string; version?: number };
 type ToastState = { message: string; tone: 'success' | 'error' } | null;
@@ -26,7 +31,17 @@ const screenMeta: Record<string, { title: string; crumb: string }> = {
   'force-order-pull': { title: 'Force Order Pull', crumb: 'Admin > Force Order Pull' },
   settings: { title: 'Settings', crumb: 'Admin > Settings' },
   'manage-api': { title: 'Manage Api', crumb: 'Admin > Api > Manage Api' },
+  'manage-api-edit': { title: 'Manage Api Add/Edit', crumb: 'Admin > Api > Manage Api Add/Edit' },
+  'manage-api-webhook': { title: 'Register Webhook', crumb: 'Admin > Api > Manage Api Webhook' },
   'audit-logs': { title: 'Audit Logs', crumb: 'Admin > Audit Logs' },
+  'user-audit-logs': { title: 'User Audit Logs', crumb: 'Admin > Logs > User Audit Logs' },
+  'accounting-log': { title: 'Accounting Log', crumb: 'Admin > Logs > Accounting Log' },
+  'tax-integration-log': { title: 'Tax Integration Log', crumb: 'Admin > Logs > Tax Integration Log' },
+  'device-tracking-log': { title: 'Device Tracking Log', crumb: 'Admin > Logs > Device Tracking Log' },
+  'external-apps-logs': { title: 'External Apps Logs', crumb: 'Admin > Logs > External Apps Logs' },
+  'pos-integration-log': { title: 'POS Integration Log', crumb: 'Admin > Logs > POS Integration Log' },
+  'repush-log': { title: 'Repush Log', crumb: 'Admin > Logs > Repush Log' },
+  'language-setting': { title: 'Language Setting', crumb: 'Admin > Miscellaneous > Language Setting' },
   'api-dashboard': { title: 'API Dashboard', crumb: 'Admin > Api > API Dashboard' },
 };
 
@@ -91,13 +106,43 @@ function ApiEditor({ row, setRow, save, cancel }: { row: Row; setRow: (row: Row)
 }
 
 function ApiDashboard() {
-  const [data, setData] = useState<any>(null); useEffect(() => { apiGet('/api/admin?action=dashboard').then(setData).catch(() => {}); }, []); const max = Math.max(...(data?.hits || [1]));
-  return <div className="space-y-4"><div className="grid grid-cols-4 gap-3">{[['API Hit Status', '17', '#19a857'], ['Response Time', '65.51 ms', '#ed9a19'], ['Failure Count', '287', '#dd3e35'], ['Hit Count By Execution Time', '1,368', '#19a857']].map(([title, value, color]) => <div key={title} className="rounded border border-slate-200 bg-white p-3"><div className="text-xs text-slate-500">{title}</div><div className="mt-2 rounded p-2 text-xl font-bold text-white" style={{ background: color }}>{value}</div></div>)}</div><div className="grid grid-cols-[1fr_1fr_2fr] gap-4"><Donut title="Top APIs by Hits" values={data?.topApis || []} /><Donut title="Hits By Servers" values={[{ label: 'prd-set01-app01:web', value: 100 }]} single /><div className="rounded border border-slate-200 bg-white p-4"><h3 className="mb-4 font-semibold text-slate-600">Hits By Time</h3><div className="flex h-72 items-end gap-1 border-b border-l border-slate-300 px-5 pb-2">{(data?.hits || []).map((hit: number, index: number) => <div key={index} className="flex-1 bg-[#48b5e5]" style={{ height: `${(hit / max) * 100}%` }} title={`${hit} hits`} />)}</div></div></div></div>;
+  const [data, setData] = useState<any>(null);
+  const [error, setError] = useState('');
+  useEffect(() => {
+    apiGet('/api/admin?action=dashboard').then(setData).catch((reason) => {
+      setError(reason instanceof Error ? reason.message : 'Unable to load API dashboard');
+    });
+  }, []);
+  const cards = data?.cards;
+  const metrics = [
+    ['API Keys', cards?.apiKeys],
+    ['Active API Keys', cards?.activeKeys],
+    ['Force Pull Requests', cards?.pulls],
+    ['Failed Imports', cards?.failedImports],
+  ] as const;
+  return <div className="space-y-4 rounded border border-slate-200 bg-white p-6">
+    <h2 className="text-lg font-semibold">API Dashboard</h2>
+    {error && <p role="alert" className="border border-rose-300 bg-rose-50 p-3 text-rose-700">{error}</p>}
+    {cards && <section aria-label="API summary" className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+      {metrics.map(([label, value]) => <article key={label} className="rounded border border-slate-200 p-4">
+        <h3 className="text-sm text-slate-600">{label}</h3>
+        <p className="mt-2 text-2xl font-semibold text-slate-800">{Number.isFinite(value) ? value : 0}</p>
+      </article>)}
+    </section>}
+    {data && (data.topApis?.length || data.hits?.length)
+      ? <p className="text-slate-600">API request activity is available in the recorded metrics.</p>
+      : <div className="rounded border border-dashed border-slate-300 p-6 text-center text-slate-600">
+        <p>No API request activity has been recorded.</p>
+        <p className="mt-1 text-sm">Request metrics will appear after an integration records API activity.</p>
+      </div>}
+  </div>;
 }
-function Donut({ title, values, single = false }: { title: string; values: { label: string; value: number }[]; single?: boolean }) { const grad = single ? '#756087 0 100%' : '#51c0e4 0 78%, #f26a16 78% 94%, #e1248a 94% 97%, #8a957a 97% 100%'; return <div className="rounded border border-slate-200 bg-white p-4"><h3 className="mb-4 font-semibold text-slate-600">{title}</h3><div className="mx-auto grid h-64 w-64 place-items-center rounded-full" style={{ background: `conic-gradient(${grad})` }}><div className="h-32 w-32 rounded-full bg-white" /></div><div className="mt-3 text-center text-xs text-slate-500">{values.map((v) => v.label).join(' · ')}</div></div>; }
 
 export default function AdminModule() {
   const { screen = 'user-enquiry' } = useParams(); const navigate = useNavigate(); const meta = screenMeta[screen] || screenMeta['user-enquiry'];
-  const content = screen === 'user-enquiry' ? <RecordedUserEnquiry /> : screen === 'audit-logs' ? <RecordedAuditLogs /> : screen === 'user-create-edit' ? <UserEditorReplica /> : screen === 'role-create-edit' ? <RoleEditorReplica /> : screen === 'order-import' ? <OrderImportReplica /> : screen === 'common-import' ? <CommonImportReplica /> : screen === 'exports' ? <ExportsReplica /> : screen === 'force-order-pull' ? <ForceOrderPullReplica /> : screen === 'settings' ? <SettingsReplica /> : screen === 'manage-api' ? <RecordedManageApi /> : screen === 'api-dashboard' ? <ApiDashboard /> : <SettingsReplica />;
-  return <Shell active="admin" breadcrumb={meta.crumb} openScreens={[{ label: meta.title, to: '#' }]}><div className="min-h-full text-[14px]">{content}</div></Shell>;
+  const logScreens = new Set(['audit-logs', 'user-audit-logs', 'accounting-log', 'tax-integration-log', 'device-tracking-log', 'external-apps-logs', 'pos-integration-log', 'repush-log']);
+  const content = screen === 'user-enquiry' ? <RecordedUserEnquiry /> : logScreens.has(screen) ? <RecordedAuditLogs /> : screen === 'user-create-edit' ? <UserEditorReplica /> : screen === 'role-create-edit' ? <RoleEditorReplica /> : screen === 'order-import' ? <OrderImportReplica /> : screen === 'common-import' ? <CommonImportReplica /> : screen === 'exports' ? <ExportsReplica /> : screen === 'force-order-pull' ? <ForceOrderPullReplica /> : screen === 'settings' ? <SettingsReplica /> : screen === 'manage-api' ? <RecordedManageApi /> : screen === 'api-dashboard' ? <ApiDashboard /> : screen === 'language-setting' ? <SettingsReplica /> : <SettingsReplica />;
+  const scopedContent = screen === 'user-audit-logs' ? <UserAuditLogReplica /> : logScreens.has(screen) && screen !== 'audit-logs' ? <AdminLogGrid key={screen} screen={screen} /> : screen === 'language-setting' ? <LanguageSettingReplica /> : screen === 'api-dashboard' ? <ApiDashboardReplica /> : screen === 'manage-api' ? <ManageApiReplica /> : screen === 'manage-api-edit' ? <ManageApiReplica mode="edit" /> : screen === 'manage-api-webhook' ? <ManageApiReplica mode="webhook" /> : content;
+  const parityScreen = ['exports','force-order-pull','user-audit-logs','language-setting','api-dashboard','manage-api','manage-api-edit','manage-api-webhook'].includes(screen) || (logScreens.has(screen) && screen !== 'audit-logs');
+  return <Shell active="admin" breadcrumb={meta.crumb} openScreens={[{ label: meta.title, to: '#' }]}><div className="min-h-full text-[14px]" style={parityScreen ? {height:'100%'} : undefined}>{scopedContent}</div></Shell>;
 }

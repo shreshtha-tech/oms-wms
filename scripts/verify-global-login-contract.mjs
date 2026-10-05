@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { chromium } from 'playwright';
 
-const base = process.env.ERETAIL_BASE_URL || 'http://127.0.0.1:3011';
+const base = process.env.DMILLS_BASE_URL || 'http://127.0.0.1:3002';
 const browser = await chromium.launch({ headless: true });
 try {
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
@@ -9,31 +9,28 @@ try {
 
   await page.getByLabel('Login Id', { exact: true }).waitFor();
   await page.getByLabel('Password', { exact: true }).waitFor();
-  for (const name of ['Login', 'Reset', 'Forgot?']) await page.getByRole('button', { name, exact: true }).waitFor();
-  assert.equal(await page.getByText('Omni-channel OMS & WMS', { exact: true }).isVisible(), true);
-  assert.equal(await page.getByText('Captcha', { exact: true }).count(), 0, 'LIVE login has no captcha control');
-  assert.equal(await page.getByText(/Local mock authentication/i).count(), 0, 'Mock-auth copy is not present in LIVE');
-  assert.equal(await page.getByText(/Multi-channel Order Management/i).count(), 0, 'Invented marketing copy is not present in LIVE');
-  assert.equal(await page.locator('img[src*="lhs-panel-vin-seller-panel-mobile-app-june-26.jpg"]').count(), 1, 'Login side panel must use the observed LIVE image');
+  for (const name of ['Login', 'Reset']) await page.getByRole('button', { name, exact: true }).waitFor();
+  await page.getByText('D-Mills Global Private Limited', { exact: true }).first().waitFor();
+  assert.equal(await page.getByText('© 2026 D-Mills Global Private Limited', { exact: true }).count(), 1);
+
+  const sessionResponse = await page.request.get(`${base}/api/auth/session`);
+  assert.equal(sessionResponse.status(), 200, 'The local authentication endpoint must be reachable.');
+  assert.equal((await sessionResponse.json()).configured, true, 'Set DMILLS_ADMIN_USER and DMILLS_ADMIN_PASSWORD_HASH before login.');
 
   await page.getByRole('button', { name: 'Login', exact: true }).click();
-  await page.getByRole('alert').filter({ hasText: 'Login Failed. Invalid Login Credentials.' }).waitFor();
-  await page.getByLabel('Login Id').fill('reset-check');
-  await page.getByLabel('Password').fill('reset-check');
+  await page.getByRole('alert').filter({ hasText: 'Invalid login credentials.' }).waitFor();
+  await page.getByLabel('Login Id').fill('unknown-user-for-login-check');
+  await page.getByLabel('Password').fill('deliberately-invalid-login-check');
   await page.getByRole('button', { name: 'Reset', exact: true }).click();
   assert.equal(await page.getByLabel('Login Id').inputValue(), '');
   assert.equal(await page.getByLabel('Password').inputValue(), '');
+  assert.equal(await page.getByRole('alert').count(), 0);
 
-  assert.equal(await page.getByRole('link', { name: 'Facebook' }).getAttribute('href'), 'https://www.facebook.com/VinculumGroup/');
-  assert.equal(await page.getByRole('link', { name: 'Twitter' }).getAttribute('href'), 'https://twitter.com/Vin_Omnichannel');
-  assert.equal(await page.getByRole('link', { name: 'LinkedIn' }).getAttribute('href'), 'https://www.linkedin.com/company/vinculumgroup/');
-  assert.equal(await page.getByRole('link', { name: 'Refer Now' }).getAttribute('href'), 'https://www.vinculumgroup.com/customer-referral/');
-
-  await page.getByLabel('Login Id').fill('login-contract');
-  await page.getByLabel('Password').fill('local-adapter');
-  await page.getByLabel('Password').press('Enter');
-  await page.waitForURL('**/app/dashboard');
-  console.log('Global login contract verified: LIVE fields, controls, reset, error message, links, and Enter submission.');
+  const protectedResponse = await page.request.get(`${base}/api/skus`);
+  assert.equal(protectedResponse.status(), 401, 'Protected APIs must reject requests without a session.');
+  const protectedInventoryResponse = await page.request.get(`${base}/api/inventory-sync/central/overview`);
+  assert.equal(protectedInventoryResponse.status(), 401, 'Central Inventory APIs must reject requests without a session.');
+  console.log('Global login contract verified: D-Mills login UI, configured auth endpoint, invalid-credential feedback, reset, and protected business and Central Inventory APIs.');
 } finally {
   await browser.close();
 }

@@ -1,0 +1,196 @@
+--- before/server.js
++++ after/server.js
+@@ -10,9 +10,9 @@
+ import path from "path";
+ import { fileURLToPath } from "url";
+ import { authConfigured, currentUser, authenticateSession, issueSession, revokeSession, verifyCredentials } from "./api/auth-session.js";
+-import { probeDataStore, waitForDataReady, dataStoreStatus, dataStoreConfiguration, dataStoreDataset, closeDataStore } from './api/mongo.js';
++import { probeDataStore, waitForDataReady, dataStoreStatus, dataStoreDataset, closeDataStore } from './api/mongo.js';
+ import { mongoRoutes } from './api/mongo-collections.js';
+-import { mongoReadinessSatisfied, applyMongoDatasetHeader } from './api/mongo-health.js';
++import { publicReadiness, createDatasetHeaderObserver } from './api/mongo-health.js';
+ import { persistenceRequired } from './api/storage-policy.js';
+ import { inventoryPool, inventoryDatabaseStatus } from './inventory/db.js';
+ 
+@@ -184,8 +184,8 @@
+   const mongoRequired = persistenceRequired() || Boolean(process.env.MONGODB_URI);
+   const schemaReady = checks[1].status === 'fulfilled' && checks[1].value.rows[0]?.schema_ready === true;
+   const mongodb = await dataStoreDataset();
+-  const ready = !shuttingDown && schemaReady && mongoReadinessSatisfied(mongoRequired, checks[0].status === 'fulfilled', mongodb) && (!persistenceRequired() || authConfigured());
+-  res.status(ready ? 200 : 503).json({ ready, status: ready ? 'ready' : 'not_ready', mongoConfiguration: dataStoreConfiguration(), mongodb, dependencies: { mongodb: dataStoreStatus().state, postgres: checks[1].status === 'fulfilled' && !schemaReady ? 'SCHEMA_UNAVAILABLE' : inventoryDatabaseStatus().state } });
++  const payload = publicReadiness({ shuttingDown, schemaReady, postgresState: inventoryDatabaseStatus().state, mongoRequired, probeSucceeded: checks[0].status === 'fulfilled', mongo: mongodb, authenticationRequired: persistenceRequired(), authenticationConfigured: authConfigured() });
++  res.status(payload.ready ? 200 : 503).json(payload);
+ });
+ app.use('/api', async (req, res, next) => {
+   try{req.user=await authenticateSession(req);}catch{return res.status(503).json({error:'Session database unavailable'});}
+@@ -365,12 +365,12 @@
+   "/api/amazon-mfn": amazonMfn,
+   "/api/vin-lister": vinLister,
+ };
++const observeDatasetHeader = createDatasetHeaderObserver(dataStoreDataset);
+ for (const [route, handler] of Object.entries(routes)) {
+   app.all(route, async (req, res, next) => {
+     try {
+       if (mongoRoutes.has(route)) {
+-        const mongo = await dataStoreDataset();
+-        applyMongoDatasetHeader(res, mongo);
++        observeDatasetHeader(res);
+       }
+       await handler(req, res);
+     } catch (error) { next(error); }
+--- before/render.yaml
++++ after/render.yaml
+@@ -10,7 +10,7 @@
+     buildCommand: npm ci && npm run build
+     startCommand: npm start
+     preDeployCommand: npm run inventory:migrate
+-    healthCheckPath: /health/ready
++    healthCheckPath: /api/health/live
+     autoDeploy: true
+     envVars:
+       - key: NODE_VERSION
+--- before/.env.example
++++ after/.env.example
+@@ -55,3 +55,5 @@
+ # Approved Meta AUTHENTICATION template with COPY_CODE OTP button.
+ WHATSAPP_OTP_TEMPLATE=
+ WHATSAPP_OTP_TEMPLATE_LANGUAGE=en_US
++# Enable only behind exactly one trusted proxy (Render). Local default is false.
++TRUST_PROXY=false
+--- before/db/DATABASE_SETUP.md
++++ after/db/DATABASE_SETUP.md
+@@ -24,7 +24,7 @@
+ 
+ ## Outage, authentication and dataset status
+ 
+-Readiness now reports selected database name, masked host, connection state and dataset state separately. `UNREACHABLE` and `AUTHENTICATION_FAILED` retain fail-closed 503 responses. `EMPTY_UNINITIALISED` means none of the expected business collections contain records; `_counters` does not count as business data. Collection presence and populated-collection counts are also reported. A reachable empty database is not ready to serve populated workflows, so readiness returns 503; legacy reads can still return successful empty results with `X-Mongo-Dataset-Empty: true`. The shell banner uses the authenticated database-health endpoint. Inspection permission failure is `ACCESS_DENIED`; missing inspection evidence never proves an empty dataset. Checks are bounded and cached for 15 seconds. `POPULATED` means some expected collections contain records, not that every module, tenant or workflow is correct.
++Public readiness reports only ready, status and dependency state words. Selected database, masked host and dataset counts are available only through authenticated `/api/health/databases`. `UNREACHABLE` and `AUTHENTICATION_FAILED` retain fail-closed 503 responses. `EMPTY_UNINITIALISED` means none of the expected business collections contain records; `_counters` does not count as business data. Collection presence and populated-collection counts are also reported. A reachable empty database is not ready to serve populated workflows, so readiness returns 503; legacy reads can still return successful empty results with `X-Mongo-Dataset-Empty: true`. The shell banner uses the authenticated database-health endpoint. Inspection permission failure is `ACCESS_DENIED`; missing inspection evidence never proves an empty dataset. Successful dataset inspections are cached for 15 seconds and concurrent inspections share one in-flight promise. Mapped-route headers use a separate single-flight background observer with a 750 ms wait limit and a 15-second refresh interval; they never delay the handler. The last observed empty state remains best-effort in the header; a cold request may omit it. Handler database operations still fail closed. `POPULATED` means some expected collections contain records, not that every module, tenant or workflow is correct.
+ 
+ `api/mongo-collections.js` is the shared source of truth for collection names, module/entity mappings, dynamic selections, dependency-error handling and branches containing explicit disabled responses. These are static source facts, not live capability claims. `products` is an intentional read alias for `skus`; `sale_orders` is the actual order collection spelling. Registry-only collections are separate from expected runtime collections. `locations` is an ambiguous legacy reference: some code reads a collection by that name while the Location module stores records in `generic_records`. Do not rename or move those records without confirming the intended contract.
+ 
+@@ -63,3 +63,8 @@
+ The runtime normally needs database-scoped `readWrite` on the deliberately selected database for existing business writes, counters and identity indexes; it does not need Atlas admin or global administrative roles. A separate inventory/export identity should have database-scoped read privileges, including the required metadata reads; cross-database listing may remain restricted. Confirm actual roles privately with the owner rather than granting broad rights to make inventory pass.
+ 
+ Atlas backups are unavailable on Free clusters; use reviewed scheduled exports or native database tools, or select a supported backup tier. For eligible dedicated clusters, review the Atlas Backup configuration and retention policy; Flex has its own automatic snapshot policy. Backups being OFF is owner-reported, not verified management evidence. Schedule private exports outside the repository with retention, protected storage and a periodic test restore. No scheduler or backup setting was changed. [Atlas backup documentation](https://www.mongodb.com/docs/atlas/backup-restore-cluster/).
++
++
++Render deploy gating uses `/api/health/live`: HTTP 200 means the process is running, with `alive` normally and `stopping` while draining shutdown. It queries neither MongoDB nor PostgreSQL. Use `/api/health/ready` (or `/health/ready`) for monitoring and manual checks: HTTP 200 means the configured readiness requirements pass; HTTP 503 means shutdown, missing authentication configuration, unavailable PostgreSQL/schema, or required MongoDB outage, authentication failure, empty dataset or unavailable inspection. Liveness passing does not establish usable data or workflow readiness.
++
++The web Blueprint sets `TRUST_PROXY="true"`. Enable this only behind exactly one trusted proxy; local `.env.example` defaults to false. It makes Express use forwarded HTTPS for the session cookie Secure flag and the forwarded client IP for login limits. In the Render dashboard confirm `TRUST_PROXY=true`, privately confirm `MONGODB_DB` selects the intended database and `MONGODB_URI` is correct, and allow the service's Render outbound IPs in Atlas Network Access. Never weaken TLS to resolve connectivity.
+--- before/api/mongo-health.js
++++ after/api/mongo-health.js
+@@ -10,3 +10,37 @@
+ export function applyMongoDatasetHeader(response, mongo) {
+   if (mongo.datasetEmpty === true) response.set('X-Mongo-Dataset-Empty', 'true');
+ }
++
++// Public health responses contain classifications only, never configuration.
++export function publicReadiness({ shuttingDown, schemaReady, postgresState, mongoRequired, probeSucceeded, mongo, authenticationRequired, authenticationConfigured }) {
++  const ready = !shuttingDown && schemaReady && mongoReadinessSatisfied(mongoRequired, probeSucceeded, mongo) && (!authenticationRequired || authenticationConfigured);
++  const mongodb = mongo.datasetState === 'AUTHENTICATION_FAILED' ? 'AUTH_FAILED'
++    : !probeSucceeded ? 'UNREACHABLE'
++    : mongo.state === 'READY' && mongo.datasetState === 'POPULATED' ? 'READY'
++    : mongo.state === 'READY' && mongo.datasetEmpty === true ? 'EMPTY'
++    : ['ACCESS_DENIED', 'INSPECTION_UNAVAILABLE', 'UNCONFIGURED'].includes(mongo.datasetState) ? mongo.datasetState : 'UNREACHABLE';
++  return { ready, status: ready ? 'ready' : 'not_ready', dependencies: {
++    mongodb, postgres: schemaReady ? 'READY' : postgresState === 'READY' ? 'SCHEMA_UNAVAILABLE' : 'UNREACHABLE',
++    authentication: authenticationRequired && !authenticationConfigured ? 'UNCONFIGURED' : 'READY',
++  } };
++}
++
++// Headers are diagnostic only. Start a single bounded refresh and immediately
++// serve the last observation; handlers retain their own fail-closed DB checks.
++export function createDatasetHeaderObserver(inspect, { cacheMs = 15000, timeoutMs = 750 } = {}) {
++  let cached = {}, refreshedAt = 0, pending, inspecting = false;
++  return response => {
++    if (!pending && !inspecting && Date.now() - refreshedAt >= cacheMs) {
++      let timer;
++      inspecting = true;
++      const inspection = Promise.resolve().then(inspect).finally(() => { inspecting = false; });
++      pending = Promise.race([
++        inspection,
++        new Promise(resolve => { timer = setTimeout(() => resolve(null), timeoutMs); timer.unref?.(); }),
++      ]).then(value => { if (value) cached = value; }, () => {}).finally(() => {
++        clearTimeout(timer); refreshedAt = Date.now(); pending = null;
++      });
++    }
++    applyMongoDatasetHeader(response, cached);
++  };
++}
+--- before/scripts/verify-mongo-safety.mjs
++++ after/scripts/verify-mongo-safety.mjs
+@@ -104,3 +104,6 @@
+   for (const secret of ['fixture_user', 'fixture_password', fixtureDocument._id.toHexString()]) assert.ok(!JSON.stringify(quiet).includes(secret));
+   console.log('PASS offline export/restore integration: canonical BSON types, outside-repo files, integrity manifest, dry-run zero connections, non-test/nonempty target refusal');
+ } finally { await rm(folder, { recursive: true, force: true }); }
++
++// Deployment health contracts use only injected offline dependencies.
++await import('./verify-render-health-offline.mjs');
+--- before/scripts/verify-render-health-offline.mjs
++++ after/scripts/verify-render-health-offline.mjs
+@@ -0,0 +1,65 @@
++import assert from 'node:assert/strict';
++import { readFile } from 'node:fs/promises';
++import express from 'express';
++import { publicReadiness, createDatasetHeaderObserver } from '../api/mongo-health.js';
++const source = await readFile(new URL('../server.js', import.meta.url), 'utf8');
++const blueprint = await readFile(new URL('../render.yaml', import.meta.url), 'utf8');
++assert.match(blueprint, /healthCheckPath: \/api\/health\/live/);
++assert.match(blueprint, /key: TRUST_PROXY\s+value: "true"/);
++const live = source.match(/app\.get\(\['\/health\/live'.*$/m)[0];
++const readiness = source.slice(source.indexOf("app.get(['/health/ready'"), source.indexOf("app.use('/api', async"));
++assert.ok(!/mongo|postgres|inventoryPool/i.test(live));
++let registered, shuttingDown = false, mongo, probeSucceeded = true;
++const app = { get: (_paths, handler) => { registered = handler; } };
++const mount = new Function('app', 'shuttingDown', 'probeDataStore', 'inventoryPool', 'persistenceRequired', 'dataStoreDataset', 'inventoryDatabaseStatus', 'authConfigured', 'publicReadiness', readiness);
++const response = () => ({ code: 200, status(code) { this.code = code; return this; }, json(body) { this.body = body; return this; } });
++for (const state of ['UNREACHABLE', 'EMPTY_UNINITIALISED', 'AUTHENTICATION_FAILED', 'POPULATED']) {
++  probeSucceeded = !['UNREACHABLE', 'AUTHENTICATION_FAILED'].includes(state);
++  mongo = { state: probeSucceeded ? 'READY' : 'DEGRADED', datasetState: state, datasetEmpty: state === 'EMPTY_UNINITIALISED', selectedDatabase: 'private_fixture_database', maskedHost: 'private_fixture_host', presentCollections: 0 };
++  new Function('app', 'shuttingDown', live)(app, shuttingDown);
++  const livenessResponse = response(); registered({}, livenessResponse);
++  assert.equal(livenessResponse.code, 200); assert.equal(livenessResponse.body.status, 'alive');
++  mount(app, shuttingDown, async () => { if (!probeSucceeded) throw new Error('offline'); }, () => ({ query: async () => ({ rows: [{ schema_ready: true }] }) }), () => true, async () => mongo, () => ({ state: 'READY' }), () => true, publicReadiness);
++  const readyResponse = response(); await registered({}, readyResponse);
++  assert.equal(readyResponse.code, state === 'POPULATED' ? 200 : 503);
++  assert.deepEqual(Object.keys(readyResponse.body).sort(), ['dependencies', 'ready', 'status']);
++  assert.equal(readyResponse.body.dependencies.mongodb, ({ UNREACHABLE: 'UNREACHABLE', EMPTY_UNINITIALISED: 'EMPTY', AUTHENTICATION_FAILED: 'AUTH_FAILED', POPULATED: 'READY' })[state]);
++  assert.ok(!/private_fixture|Collections|count|host|database/i.test(JSON.stringify(readyResponse.body).replace('mongodb', '').replace('postgres', '')));
++}
++const healthyInputs = { shuttingDown: false, schemaReady: true, postgresState: 'READY', mongoRequired: true, probeSucceeded: true, mongo: { state: 'READY', datasetState: 'POPULATED' }, authenticationRequired: true, authenticationConfigured: true };
++for (const override of [{ shuttingDown: true }, { schemaReady: false }, { authenticationConfigured: false }]) assert.equal(publicReadiness({ ...healthyInputs, ...override }).ready, false);
++new Function('app', 'shuttingDown', live)(app, true);
++const stopping = response(); registered({}, stopping); assert.equal(stopping.body.status, 'stopping'); assert.equal(stopping.code, 200);
++// Exercise the actual issueSession implementation with an injected offline pool.
++const authSource = (await readFile(new URL('../api/auth-session.js', import.meta.url), 'utf8')).replace("import { inventoryPool } from '../inventory/db.js';", 'const inventoryPool = () => ({ query: async () => ({ rows: [] }) });');
++const { issueSession } = await import(`data:text/javascript;base64,${Buffer.from(authSource).toString('base64')}`);
++for (const trusted of [false, true]) {
++  const proxyApp = express(); proxyApp.set('trust proxy', trusted ? 1 : false);
++  const req = Object.create(proxyApp.request); req.app = proxyApp; req.connection = { remoteAddress: '127.0.0.1' }; req.headers = { 'x-forwarded-proto': 'https', 'x-forwarded-for': '203.0.113.7' };
++  assert.equal(req.secure, trusted); assert.equal(req.ip, trusted ? '203.0.113.7' : '127.0.0.1');
++  let cookie; await issueSession({ setHeader: (_name, value) => { cookie = value; } }, 'offline_fixture', req.secure);
++  assert.equal(/; Secure/.test(cookie), trusted);
++}
++assert.match(source, /issueSession\(res, username, req.secure\)/);
++assert.match(await readFile(new URL('../reliability/login-limiter.js', import.meta.url), 'utf8'), /\[req.ip, `\$\{req.ip\}:\$\{username\}`\]/);
++// Extract the actual mapped-route wrapper and run it with a hung inspection.
++const wrapper = source.slice(source.indexOf('for (const [route, handler]'), source.indexOf("app.use('/api', (_req"));
++let inspections = 0;
++const observeDatasetHeader = createDatasetHeaderObserver(() => { inspections++; return new Promise(() => {}); });
++let mapped;
++new Function('app', 'routes', 'mongoRoutes', 'observeDatasetHeader', wrapper)({ all: (_route, handler) => { mapped = handler; } }, { '/api/skus': async (_req, res) => res.status(503).json({ error: 'DATABASE_UNAVAILABLE' }) }, new Set(['/api/skus']), observeDatasetHeader);
++const started = performance.now();
++for (let i = 0; i < 20; i++) { const res = response(); res.set = () => {}; await mapped({}, res, error => { throw error; }); assert.equal(res.code, 503); }
++assert.ok(performance.now() - started < 1000); assert.equal(inspections, 1);
++await new Promise(resolve => setTimeout(resolve, 800));
++await mapped({}, Object.assign(response(), { set() {} }), error => { throw error; });
++assert.equal(inspections, 1, 'Timeout must retain the refresh cooldown');
++const headers = {};
++const emptyObserver = createDatasetHeaderObserver(async () => ({ datasetEmpty: true }));
++const headerResponse = { set: (key, value) => { headers[key] = value; } };
++emptyObserver(headerResponse); await new Promise(resolve => setImmediate(resolve)); emptyObserver(headerResponse);
++assert.equal(headers['X-Mongo-Dataset-Empty'], 'true');
++assert.ok(source.indexOf("app.use('/api/inventory-sync',inventoryPublic)") < source.indexOf('app.use(express.json'));
++assert.ok(source.indexOf("app.use('/api', async") < source.indexOf("app.get('/api/health/databases'"));
++assert.match(await readFile(new URL('../src/components/MongoStatusBanner.tsx', import.meta.url), 'utf8'), /fetch\('\/api\/health\/databases'/);
++console.log('PASS offline Render health: actual live/ready/mapped handlers, minimal payload, proxy cookie/IP, hung inspection, empty header and route ordering; no database connections');

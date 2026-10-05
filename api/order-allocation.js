@@ -1,5 +1,95 @@
-import{cors,find,insert,update}from'./mongo.js';const t=v=>String(v??'').trim(),has=(v,q)=>!t(q)||t(q)==='-1'||t(v).toLowerCase().includes(t(q).toLowerCase());const norm=r=>({...r,clientId:r.client_id??'0',orderNo:r.order_no||'',fromExternOrderNo:r.ext_order_no||r.external_order_no||'',status:r.status||'Confirmed',statusId:r.status_id||'',orderDate:r.order_date||'',skuCode:r.sku_code||'',lineQty:r.qty||r.line_qty||0,openQty:r.open_qty??r.qty??0,lineAmount:r.amount||0,lineNo:r.line_no||1,siteLocation:r.site_location||r.warehouse||'',customerCode:r.customer_name||r.customer||'',orderType:r.order_type||'Normal',orderQty:r.order_qty||r.qty||0,holdFlag:r.on_hold?'Yes':'No',errorDesc:r.logs||'',disbled:!!r.disabled,lineOpenQtyAmount:r.line_open_qty_amount||r.amount||0});
-export default async function handler(req,res){if(cors(req,res))return;try{const b=req.body||{},all=await find('fulfillment_orders');if(req.method==='GET')return res.json({locations:[['-1','--- Select ---'],['UWH','UWH - JX Karawaci']],statuses:[['10','Part Allocated'],['13','Allocated'],['16','Part Picked'],['19','Pick complete'],['28','Partially Shipped'],['4','Confirmed']],orderTypes:[['-1','--- Select ---'],['14','Normal'],['18','Cash On Delivery'],['1','Prepaid'],['2','COD']],clients:[['0','0-DummyClient']],orderTags:[]});
-if(req.method==='POST'&&(b.REQ_SEARCH_FLAG||b.action==='search')){const statuses=Array.isArray(b.status)?b.status:t(b.status).split(/[|,]/).filter(Boolean),orders=t(b.filteredOrderArr).split(',').filter(Boolean);let rows=all.map(norm).filter(x=>has(x.siteLocation,b.siteLocation)&&has(x.fromExternOrderNo,b.fromMagentoOrderNo)&&has(x.orderNo,b.fromOrderNo)&&has(x.holdFlag,b.onHold==='1'?'Yes':b.onHold==='0'?'No':b.onHold)&&has(x.orderType,b.orderType)&&(!t(b.fromOrderDate)||x.orderDate>=b.fromOrderDate)&&(!t(b.toOrderDate)||x.orderDate<=b.toOrderDate)&&(!statuses.length||statuses.includes(x.status)||statuses.includes(x.statusId))&&has(x.skuCode,b.skuCode||b.sku)&&has(x.customerCode,b.customerName)&&has(x.customer_email,b.customerEmail)&&has(x.customer_phone,b.customerPh)&&has(x.clientId,b.clientId)&&(!orders.length||orders.includes(x.orderNo)||orders.includes(x.fromExternOrderNo)));const size=[50,100,200].includes(+b.rows)?+b.rows:50,page=Math.max(1,+b.page||1),records=rows.length,total=Math.ceil(records/size),gridModel=rows.slice((page-1)*size,page*size);return res.json({gridModel,rows:gridModel,page,total,records})}
-if(req.method==='PUT'&&['allocate','unAllocate','close'].includes(b.action)){const ids=(b.ids||[]).map(Number);if(!ids.length)return res.status(400).json({error:'Please Select An Order'});if(b.action==='close'&&!t(b.reason))return res.status(400).json({error:'Reason is mandatory'});if(b.action==='close'&&!t(b.remarks))return res.status(400).json({error:'Cancellation Remarks Is Mandatory'});const selected=all.filter(x=>ids.includes(x.id)),orderMap={};for(const x of selected){const n=norm(x);let fields,message;if(b.action==='allocate'){fields={status:'Allocated',allocation_status:'Allocated',allocated_qty:n.orderQty};message='SUCCESS::Allocated::13'}else if(b.action==='unAllocate'){fields={status:'Confirmed',allocation_status:'Unallocated',allocated_qty:0};message='SUCCESS::UnAllocated::4'}else{fields={status:'Cancelled',open_qty:0,cancellation_reason:b.reason,cancellation_remarks:b.remarks};message='SUCCESS::Closed'}await update('fulfillment_orders',x.id,fields);await insert('fulfillment_audit',{order_id:x.id,order_no:n.orderNo,action:b.action,from_status:n.status,to_status:fields.status,created_at:new Date().toISOString()});orderMap[b.searchType?`${n.orderNo}|${n.lineNo}`:n.orderNo]=message}return res.json({orderMap,jsonMessage:b.action==='allocate'?'Order Allocated Successfully':b.action==='unAllocate'?'Order UnAllocated Successfully':' Record Updated Successfully'})}
-if(req.method==='POST'&&b.action==='import'){const list=Array.isArray(b.orders)?b.orders:[];if(list.length>100)return res.status(400).json({error:'Max 100 lines are allowed at a time'});return res.json({accepted:list.length,jsonMessage:`${list.length} order(s) accepted for import`})}res.status(405).json({error:'Method not allowed'})}catch(e){console.error('Order allocation error:',e);res.status(500).json({error:e.message})}}
+import { clientPairs, locationPairs } from './catalogs.js';
+import { sendDatabaseUnavailable, cors, find } from './mongo.js';
+
+const text = value => String(value ?? '').trim();
+const has = (value, query) => !text(query) || text(query) === '-1' || text(value).toLowerCase().includes(text(query).toLowerCase());
+
+function normalize(row) {
+  return {
+    id: row.id,
+    clientId: row.client_id ?? '',
+    orderNo: row.order_no || '',
+    fromExternOrderNo: row.ext_order_no || row.external_order_no || '',
+    status: row.status || '',
+    statusId: row.status_id || '',
+    orderDate: row.order_date || '',
+    skuCode: row.sku_code || '',
+    lineQty: row.qty ?? row.line_qty ?? '',
+    openQty: row.open_qty ?? '',
+    lineAmount: row.amount ?? '',
+    lineNo: row.line_no ?? '',
+    siteLocation: row.site_location || row.warehouse || '',
+    customerCode: row.customer_name || row.customer || '',
+    customerEmail: row.customer_email || row.email || '',
+    customerPhone: row.customer_phone || row.phone || '',
+    orderType: row.order_type || '',
+    orderQty: row.order_qty ?? row.qty ?? '',
+    holdFlag: row.on_hold ? 'Yes' : 'No',
+    errorDesc: row.logs || '',
+    trust: 'legacy-unverified',
+  };
+}
+
+function page(rows, body) {
+  const size = [50, 100, 200].includes(+body.rows) ? +body.rows : 50;
+  const current = Math.max(1, +body.page || 1);
+  const records = rows.length;
+  const slice = rows.slice((current - 1) * size, current * size);
+  return { gridModel: slice, rows: slice, page: current, total: Math.ceil(records / size), records };
+}
+
+export default async function handler(req, res) {
+  if (cors(req, res)) return;
+  try {
+    const body = req.body || {};
+    const all = await find('fulfillment_orders');
+    if (req.method === 'GET') {
+      const [locations, clients] = await Promise.all([locationPairs(), clientPairs()]);
+      return res.json({
+        allocationAvailable: false,
+        dataTrust: 'legacy-unverified',
+        reason: 'Order allocation, unallocation, and cancellation require Central Inventory reservation and release transactions.',
+        locations: [['-1', '--- Select ---'], ...locations],
+        statuses: [['10', 'Part Allocated'], ['13', 'Allocated'], ['16', 'Part Picked'], ['19', 'Pick complete'], ['28', 'Partially Shipped'], ['4', 'Confirmed']],
+        orderTypes: [['-1', '--- Select ---'], ['14', 'Normal'], ['18', 'Cash On Delivery'], ['1', 'Prepaid'], ['2', 'COD']],
+        clients,
+        orderTags: [],
+      });
+    }
+
+    if (req.method === 'POST' && (body.REQ_SEARCH_FLAG || body.action === 'search')) {
+      const statuses = Array.isArray(body.status) ? body.status : text(body.status).split(/[|,]/).filter(Boolean);
+      const orderFilter = text(body.filteredOrderArr).split(',').filter(Boolean);
+      const rows = all.map(normalize).filter(row =>
+        has(row.siteLocation, body.siteLocation) && has(row.fromExternOrderNo, body.fromMagentoOrderNo) &&
+        has(row.orderNo, body.fromOrderNo) && has(row.holdFlag, body.onHold === '1' ? 'Yes' : body.onHold === '0' ? 'No' : body.onHold) &&
+        has(row.orderType, body.orderType) && (!text(body.fromOrderDate) || row.orderDate >= body.fromOrderDate) &&
+        (!text(body.toOrderDate) || row.orderDate <= body.toOrderDate) &&
+        (!statuses.length || statuses.includes(row.status) || statuses.includes(row.statusId)) &&
+        has(row.skuCode, body.skuCode || body.sku) && has(row.customerCode, body.customerName) &&
+        has(row.customerEmail, body.customerEmail) && has(row.customerPhone, body.customerPh) &&
+        has(row.clientId, body.clientId) && (!orderFilter.length || orderFilter.includes(row.orderNo) || orderFilter.includes(row.fromExternOrderNo)));
+      rows.sort((left, right) => text(left.orderNo).localeCompare(text(right.orderNo)));
+      return res.json({ ...page(rows, body), trust: 'legacy-unverified' });
+    }
+
+    if (req.method === 'POST' && body.action === 'import') {
+      const orders = [...new Set((Array.isArray(body.orders) ? body.orders : []).map(text).filter(Boolean))];
+      if (orders.length > 100) return res.status(400).json({ error: 'Max 100 lines are allowed at a time' });
+      if (!orders.length) return res.status(400).json({ error: 'Enter at least one order number' });
+      const matches = all.filter(row => orders.includes(text(row.order_no)) || orders.includes(text(row.ext_order_no || row.external_order_no)));
+      const resultRows = matches.map(normalize);
+      return res.json({ rows: resultRows, notFound: orders.filter(order => !matches.some(row => [text(row.order_no), text(row.ext_order_no || row.external_order_no)].includes(order))), trust: 'legacy-unverified' });
+    }
+
+    if (req.method === 'PUT') {
+      return res.status(501).json({ error: 'Allocation, unallocation, and order cancellation are paused until Central Inventory can atomically reserve or release each order line.' });
+    }
+    if (req.method === 'POST') return res.status(501).json({ error: 'Order allocation has no supported write action without Central Inventory reservations.' });
+    return res.status(405).json({ error: 'Method not allowed' });
+  } catch (error) {
+    if (sendDatabaseUnavailable(res, error)) return;
+    console.error('Order allocation error:', { name: error?.name, code: error?.code });
+    return res.status(500).json({ error: error.message });
+  }
+}

@@ -34,7 +34,9 @@ try {
   assert.equal(await page.evaluate(() => scrollY), 0, 'Focused subgroup scrolling must not move the page');
   assert.equal(await page.getByText('Tax Management', { exact: true }).isVisible(), true);
   const beforeUnaudited = page.url();
-  await page.getByRole('button', { name: 'Manage Voucher Condition', exact: true }).click();
+  const unavailableMenu = page.getByRole('button', { name: 'Manage Voucher Condition, unavailable in this release', exact: true });
+  assert.equal(await unavailableMenu.isDisabled(), true, 'Unaudited menu entries must be disabled with an accessible availability hint');
+  assert.equal(await unavailableMenu.getAttribute('title'), 'Manage Voucher Condition is unavailable in this release');
   assert.equal(page.url(), beforeUnaudited, 'Unaudited LIVE modules must not enter the removed generic CRUD fallback');
   await master.click();
   assert.equal(await masterFlyout.isVisible(), true, 'Clicking a hovered rail group must not toggle its flyout closed');

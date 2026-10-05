@@ -5,7 +5,8 @@
 | Module | Route | Evidence-backed coverage |
 |---|---|---|
 | Category Buyers | `/app/procurement/category-buyers` | enquiry grid/filtering, advanced filters, add/edit modal, generated buyer code, active state, category multi-select, UDF 1-5 |
-| PO Enquiry | `/app/procurement/po-enquiry` | documented primary filters, results columns, exact lifecycle status vocabulary, add-new navigation |
+| PO Enquiry | `/app/procurement/po-enquiry` | generated-admin isolated browser/API check for persisted Confirm → Release → ReOpen, exact status search, reset/page sizes, anonymous read/write rejection, and unchanged Central Inventory events; LIVE parity remains unverified |
+| PO Revision | `/app/purchase-orders` | generated-admin isolated browser/API check for revision persistence/readback, paged search response, advanced filters, vendor picker, reset, and handled API error state; LIVE parity remains unverified |
 | Single Location PO | `/app/procurement/po/single` | PO header, vendor picker, SKU picker, UDF, terms, comments, save and confirm |
 | Multiple Location PO | `/app/procurement/po/multiple` | Cross dock/Drop Ship method, two-step Manage Allocation, even/custom allocation, SKU selection, totals, save and confirm |
 | PO from Back Orders | `/app/procurement/po/back-orders` | eligible confirmed/ready-to-ship order source list, selection gate, Create PO navigation |
@@ -81,10 +82,13 @@ All procurement routes use the existing authenticated `ProtectedRoute`. The supp
 - API GET checks: buyers, invoices, OTB and purchase orders returned 200 with seeded rows.
 - Negative API checks: blank buyer returned 400; reversed OTB dates returned 400; release-before-confirm returned 409.
 - Positive API lifecycle: multi-location PO with SKU and two allocations returned 201, then Confirm returned 200 and preserved line/allocation data.
-- Authenticated headless-browser checks at 2560×1440 passed all seven routes plus Category Buyer modal/UDF, Manage Allocation modal and OTB Add New editor.
+- `npm run test:po-enquiry`: passed with a generated administrator and disposable MongoDB/PostgreSQL databases. The server-owned PO status began at Pending Confirmation, then Confirm/Release/ReOpen persisted; exact `ReOpen` enquiry returned the row and Confirmed did not. Anonymous read/create returned 401 without insertion. Central Inventory events were unchanged.
+- `npm run test:po-revision`: passed with a generated administrator and disposable MongoDB/PostgreSQL databases. Revision number/reason persisted in MongoDB; API paging and response shape, UI search/filters, vendor picker, reset and handled API error state passed.
+- The former `scripts/verify-procurement-browser.py` route/modal smoke test has been retired. It set a legacy `localStorage.vin_user` value that AuthContext does not accept and checked only visible text. It did not establish signed-in access, handler behavior, or persistence for Category Buyers, PO Enquiry, Multiple Location, Vendor Invoice, OTB, Back Orders, or ASN. Those old claims are not authentication or workflow evidence; use each module's independent checks and reference material only for the behavior they actually cover.
 
 ## 8. Remaining mismatches and uncertainties
 
+- The generated PO checks are local tests, not authenticated LIVE comparisons. Configured-tenant MongoDB reachability and role parity are still unverified.
 - No supplied recording demonstrates ASN, PO import, Vendor Invoice persistence/import, ARS execution, audit history, print layouts, or permission-denied states; these cannot be claimed as recording-verified.
 - The guide mentions PO Tags and bulk imports up to 2,000 rows. The stored PO model supports tags and import-shaped line data, but the dedicated recorded editor does not yet expose a complete upload/error-log UI.
 - Vendor Invoice shows Add/Remove GRN controls and the grid surface; interactive GRN selection is not complete.
@@ -102,5 +106,6 @@ All procurement routes use the existing authenticated `ProtectedRoute`. The supp
 - `api/seed.js`: evidence-aligned procurement seed records.
 - `server.js`: procurement API registration.
 - `src/index.css`: responsive procurement grid behavior.
-- `scripts/verify-procurement-browser.py`: authenticated route/modal browser verification.
+- `scripts/verify-po-enquiry.mjs` and `scripts/verify-po-revision.mjs`: generated-admin isolated workflow checks.
+- `scripts/verify-procurement-browser.py`: retired fail-closed shim documenting why the former localStorage-based smoke test was invalid.
 - `docs/PROCUREMENT_REPLICATION_EVIDENCE.md`: this traceability and completion record.

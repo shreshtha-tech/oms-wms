@@ -1,0 +1,70 @@
+import '../env.js';
+import assert from 'node:assert/strict';
+import { randomUUID } from 'node:crypto';
+import { readFile } from 'node:fs/promises';
+import { inventoryPool,migrateInventory,transaction } from '../inventory/db.js';
+import { recordIncomingOrder } from '../inventory/unified-orders.js';
+import { processInventoryTask } from '../inventory/workers.js';
+import { orderAlertPolicy } from '../inventory/order-alert-policy.js';
+import { whatsappTemplatePayload,runWhatsAppBatch } from '../inventory/whatsapp.js';
+if(!/test|contract/.test(process.env.INVENTORY_DATABASE_URL||''))throw Error('Isolated database required');
+await migrateInventory();const db=inventoryPool(),tenant=`routing-${randomUUID()}`;
+const q=(sql,args=[])=>db.query(sql,args),id=async(sql,args)=>(await q(sql,args)).rows[0].id;
+try{
+ await q(await readFile(new URL('../db/migrations/017_order_alert_teams.sql',import.meta.url),'utf8'));
+ const account=async(platform,settings={})=>id('INSERT INTO ci_channel_account(tenant_id,platform,external_account_id,settings) VALUES($1,$2,$3,$4) RETURNING id',[tenant,platform,randomUUID(),settings]);
+ const shop=await account('shopify'),flip=await account('flipkart'),amazon=await account('amazon'),tally=await account('tally'),dark=await account('blinkit');
+ let phoneSequence=10;
+ const recipient=async(extra='')=>id(`INSERT INTO ci_alert_recipient(tenant_id,name,role,mobile_e164,consented_at,verified_at,event_types${extra?','+extra.split('=')[0]:''}) VALUES($1,$2,'packer',$3,now(),now(),ARRAY['new_order','packing_ready','order_observed']${extra?','+extra.slice(extra.indexOf('=')+1):''}) RETURNING id`,[tenant,randomUUID(),'+9198765432'+String(phoneSequence++)]);
+ const member=await recipient();
+ const team=async(recipientId=member,kind='packing',rules=[{}])=>{const t=await id('INSERT INTO ci_alert_team(tenant_id,name,kind) VALUES($1,$2,$3) RETURNING id',[tenant,randomUUID(),kind]);await q('INSERT INTO ci_alert_team_member(tenant_id,team_id,recipient_id) VALUES($1,$2,$3)',[tenant,t,recipientId]);for(const rule of rules){const keys=Object.keys(rule);await q(`INSERT INTO ci_alert_team_rule(tenant_id,team_id${keys.length?','+keys.join(','):''}) VALUES($1,$2${keys.map((_,i)=>',$'+(i+3)).join('')})`,[tenant,t,...Object.values(rule)]);}return t;};
+ const alerts=async(order)=>(await q('SELECT event_type,recipient_id,team_id FROM ci_order_alert WHERE tenant_id=$1 AND order_id=$2',[tenant,order])).rows;
+ const incoming=async({platform='shopify',accountId=shop,programme=null,topic='orders/create',event={},fulfillment='MFN',notify=true}={})=>transaction(tx=>recordIncomingOrder(tx,{tenantId:tenant,accountId,platform,programme,topic,notify,event:platform==='amazon'?{Payload:{OrderChangeNotification:{AmazonOrderId:randomUUID(),Summary:{FulfillmentType:fulfillment,OrderStatus:'Unshipped',OrderItems:[{OrderItemId:'1',SellerSKU:'TEE-M',Quantity:1}]}}}}:{id:randomUUID(),created_at:new Date().toISOString(),payment_method:'cod',line_items:[{id:'1',sku:'TEE-M',quantity:1}],...event}}));
+ const clear=()=>q('UPDATE ci_alert_team SET active=false WHERE tenant_id=$1',[tenant]);
+ await team(member,'packing',[]);assert.equal((await alerts(await incoming())).length,0,'No rules means no alerts');await clear();
+ for(const rule of [{platform:'shopify'},{account_id:shop},{sku_prefix:'TEE-'},{payment_mode:'cod'},{source_type:'live'}]){
+  await team(member,'packing',[rule]);assert.equal((await alerts(await incoming())).length,1,JSON.stringify(rule));assert.equal((await alerts(await incoming({platform:'flipkart',accountId:flip,event:{payment_method:'card',line_items:[{id:'1',sku:'OTHER',quantity:1}]},topic:'report_observed'}))).length,0);await clear();
+ }
+ await team(member,'packing',[{platform:'flipkart'},{sku_prefix:'TEE-'}]);assert.equal((await alerts(await incoming())).length,1,'Rules are OR');await clear();
+ await team(member,'packing',[{platform:'shopify',payment_mode:'card'}]);assert.equal((await alerts(await incoming())).length,0,'Matchers are AND');await clear();
+ await team();await team();const dedup=await incoming();assert.equal((await alerts(dedup)).length,1,'Two teams one recipient');
+ const external=(await q('SELECT external_order_id FROM ci_unified_order WHERE tenant_id=$1 AND id=$2',[tenant,dedup])).rows[0].external_order_id;
+ await incoming({event:{id:external}});assert.equal((await alerts(dedup)).length,1,'Webhook/poll replay');await clear();
+ const sku=await id("INSERT INTO ci_master_sku(tenant_id,sku,product_name) VALUES($1,'TEE-M','Fixture') RETURNING id",[tenant]);
+ const loc=await id("INSERT INTO ci_location(tenant_id,code,location_type) VALUES($1,'MAIN','warehouse') RETURNING id",[tenant]);
+ await q("INSERT INTO ci_channel_mapping(tenant_id,account_id,master_sku_id,external_sku,internal_location_id,active) VALUES($1,$2,$3,'TEE-M',$4,true)",[tenant,shop,sku,loc]);
+ await team(member,'packing',[{location_id:loc}]);assert.equal((await alerts(await incoming())).length,1,'Mapped warehouse');await q('UPDATE ci_channel_mapping SET active=false WHERE tenant_id=$1',[tenant]);assert.equal((await alerts(await incoming())).length,0,'Inactive warehouse mapping');await clear();
+ const group=await id('INSERT INTO ci_alert_sku_group(tenant_id,name) VALUES($1,$2) RETURNING id',[tenant,randomUUID()]);await q('INSERT INTO ci_alert_sku_group_member(tenant_id,group_id,master_sku_id) VALUES($1,$2,$3)',[tenant,group,sku]);await team(member,'packing',[{sku_group_id:group}]);assert.equal((await alerts(await incoming())).length,1,'SKU group');await clear();
+ await team(member,'packing',[{sku_prefix:'TEE_%'}]);assert.equal((await alerts(await incoming())).length,0,'Prefix is literal');await clear();
+ for(const field of ['verified_at=NULL','consented_at=NULL','muted=true','active=false',"alert_start=((now() AT TIME ZONE 'Asia/Kolkata')::time+interval '2 hours')::time,alert_end=((now() AT TIME ZONE 'Asia/Kolkata')::time+interval '3 hours')::time","event_types=ARRAY['unrelated']"]){
+  await team();await q(`UPDATE ci_alert_recipient SET ${field} WHERE tenant_id=$1 AND id=$2`,[tenant,member]);assert.equal((await alerts(await incoming())).length,0,field);await q("UPDATE ci_alert_recipient SET verified_at=now(),consented_at=now(),muted=false,active=true,alert_start=NULL,alert_end=NULL,event_types=ARRAY['new_order','packing_ready','order_observed'] WHERE tenant_id=$1 AND id=$2",[tenant,member]);await clear();
+ }
+ await team();for(const input of [{event:{created_at:new Date(Date.now()-10800000).toISOString()}},{event:{cancelled_at:new Date().toISOString()}},{topic:'report_observed'},{platform:'blinkit',accountId:dark},{platform:'tally',accountId:tally},{platform:'amazon',accountId:amazon,fulfillment:'AFN'},{platform:'amazon',accountId:amazon,fulfillment:null,event:{}}])assert.equal((await alerts(await incoming(input))).length,0,JSON.stringify(input));await clear();
+ for(const programme of ['shopsy','flipkart_minutes'])await q("INSERT INTO ci_sales_program(tenant_id,account_id,program_key,stock_mode) VALUES($1,$2,$3,'shared')",[tenant,flip,programme]);
+ await team(member,'packing',[{programme:'shopsy'}]);const shopsy=await incoming({platform:'flipkart',accountId:flip,programme:'shopsy'});assert.equal((await alerts(shopsy)).length,1);assert.equal((await alerts(await incoming({platform:'flipkart',accountId:flip}))).length,0);assert.equal((await alerts(await incoming({platform:'flipkart',accountId:flip,programme:'flipkart_minutes'}))).length,0);await clear();
+ await q('UPDATE ci_channel_account SET settings=$3 WHERE tenant_id=$1 AND id=$2',[tenant,flip,{programmeOrderAlerts:{flipkart_minutes:{informational:true}}}]);await team(member,'informational',[{programme:'flipkart_minutes'}]);const minutes=await incoming({platform:'flipkart',accountId:flip,programme:'flipkart_minutes'});assert.equal((await alerts(minutes))[0].event_type,'order_observed');assert.equal((await orderAlertPolicy(db,{tenantId:tenant,orderId:minutes})).stockAllowed,false);await clear();
+ await q('UPDATE ci_channel_account SET settings=$3 WHERE tenant_id=$1 AND id=$2',[tenant,amazon,{informationalOrderAlertsEnabled:true}]);await team(member,'informational',[{platform:'amazon'}]);const fba=await incoming({platform:'amazon',accountId:amazon,fulfillment:'AFN'});assert.equal((await alerts(fba))[0].event_type,'order_observed');assert.equal((await orderAlertPolicy(db,{tenantId:tenant,orderId:fba})).stockAllowed,false);await clear();
+ await q('UPDATE ci_channel_account SET settings=$3 WHERE tenant_id=$1 AND id=$2',[tenant,shop,{orderReportAlertsEnabled:true}]);await team(member,'packing',[{source_type:'report'}]);assert.equal((await alerts(await incoming({topic:'report_observed'}))).length,1);assert.equal((await alerts(await incoming({topic:'report_observed',event:{created_at:'2020-01-01'}}))).length,0);await clear();
+ await q("INSERT INTO ci_sales_program(tenant_id,account_id,program_key,stock_mode) VALUES($1,$2,'amazon_now','shared')",[tenant,amazon]);
+ const quick=await incoming({platform:'amazon',accountId:amazon,programme:'amazon_now'});
+ const quickExternal=(await q('SELECT external_order_id FROM ci_unified_order WHERE tenant_id=$1 AND id=$2',[tenant,quick])).rows[0].external_order_id;
+ const eventCount=(await q('SELECT count(*)::int AS count FROM ci_inventory_event WHERE tenant_id=$1',[tenant])).rows[0].count;
+ await processInventoryTask({tenant_id:tenant,account_id:amazon,task_type:'amazon_ingress',payload:{NotificationType:'ORDER_CHANGE',Payload:{OrderChangeNotification:{AmazonOrderId:quickExternal,NotificationLevel:'OrderLevel',Summary:{FulfillmentType:'MFN',OrderStatus:'Unshipped',OrderItems:[{OrderItemId:'1',SellerSKU:'TEE-M',Quantity:1}]}}}}});
+ assert.equal((await q('SELECT count(*)::int AS count FROM ci_inventory_event WHERE tenant_id=$1',[tenant])).rows[0].count,eventCount,'Custody programme worker must skip warehouse mutations before mapping');
+ await clear();await team(member,'packing',[{platform:'amazon'}]);
+ await q("UPDATE ci_order_alert SET status='cancelled' WHERE tenant_id=$1 AND status='pending'",[tenant]);
+ const late=await incoming({platform:'amazon',accountId:amazon});assert.equal((await alerts(late)).length,1);
+ await q("INSERT INTO ci_program_order(tenant_id,account_id,program_key,order_id,reference,observed_at) VALUES($1,$2,'amazon_now',$3,'fixture',now())",[tenant,amazon,late]);
+ Object.assign(process.env,{INVENTORY_ALLOWED_TENANT_ID:tenant,WHATSAPP_GRAPH_VERSION:'v23.0',WHATSAPP_PHONE_NUMBER_ID:'123456789',WHATSAPP_ACCESS_TOKEN:'fixture-private-token',WHATSAPP_APP_SECRET:'fixture-secret',WHATSAPP_VERIFY_TOKEN:'fixture-verify',WHATSAPP_ORDER_TEMPLATE:'approved_order'});
+ const lateTeam=(await alerts(late))[0].team_id;
+ await q('DELETE FROM ci_alert_team_member WHERE tenant_id=$1 AND team_id=$2 AND recipient_id=$3',[tenant,lateTeam,member]);
+ let removedSends=0;await runWhatsAppBatch(1,async()=>{removedSends++;throw Error('Removed member must not receive a notification');});assert.equal(removedSends,0);
+ await q('INSERT INTO ci_alert_team_member(tenant_id,team_id,recipient_id) VALUES($1,$2,$3)',[tenant,lateTeam,member]);
+ let sends=0;await runWhatsAppBatch(1,async()=>{sends++;throw Error('Custody order must never dispatch packing notification');});assert.equal(sends,0);
+ assert.equal((await q('SELECT status FROM ci_order_alert WHERE tenant_id=$1 AND order_id=$2',[tenant,late])).rows[0].status,'cancelled','Sender rechecks programme policy');await clear();
+ const legacy=await recipient();assert.equal((await alerts(await incoming())).filter(a=>a.recipient_id===legacy).length,2,'Legacy event behavior retained');
+ const foreign=await id("INSERT INTO ci_alert_recipient(tenant_id,name,role,mobile_e164) VALUES('foreign','Foreign','packer','+919876543211') RETURNING id",[]);const t=await team();await assert.rejects(()=>q('INSERT INTO ci_alert_team_member(tenant_id,team_id,recipient_id) VALUES($1,$2,$3)',[tenant,t,foreign]),e=>e.code==='23503');
+ process.env.WHATSAPP_ORDER_TEMPLATE='approved_order';
+ const payload=whatsappTemplatePayload({platform:'flipkart',sales_program:'shopsy',external_order_id:'fixture',team_kind:'informational',team_instruction:'Review\norder',mobile_e164:'+919876543210'},[{seller_sku:'TEE',quantity:1}]);assert.equal(payload.template.components[0].parameters.length,4);assert.match(payload.template.components[0].parameters[0].text,/Shopsy/);assert.equal(payload.template.components[0].parameters[3].text,'Review order');
+ console.log('PASS isolated routing: migration replay, platform/programme/account/location/SKU/group/payment/source rules, OR/AND, dedup/replay, recipient guards, freshness/cancellation, report opt-in, custody/FBA policy, legacy behavior, tenant FK, four-variable content');
+}finally{await db.end();}

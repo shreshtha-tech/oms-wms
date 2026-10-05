@@ -1,1 +1,44 @@
-import{cors,find}from'./mongo.js';const t=v=>String(v??'').trim(),has=(v,q)=>!t(q)||['-1'].includes(t(q))||t(v).toLowerCase().includes(t(q).toLowerCase());const norm=r=>({...r,siteLocName:r.site_loc_name||'UWH - JX Karawaci',siteLocCode:r.site_loc_code||'UWH',pinCode:r.pin_code||'',orderType:r.order_type||'',orderTypeCode:r.order_type_code||'',transporter:r.transporter||'',transporterCode:r.transporter_code||'',courierType:r.courier_type||'',prefOrder:r.pref_order||'',createdBy:r.created_by||'',recordUpby:r.modified_by||'',updatedDate:r.modified_date||''});export default async function handler(req,res){if(cors(req,res))return;try{const b=req.body||{},all=await find('generic_records',{module:'transporter-preference'});if(req.method==='GET')return res.json({locations:[['UWH','UWH - JX Karawaci']],orderTypes:[['','- Select -'],['C','COD'],['NC','Prepaid']],transporters:[['','- Select -'],['1107','Delhivery-1107'],['1102','Fedex-1102'],['1098','UPS-1098']],courierTypes:[['-1','- Select -'],['1','Forward'],['0','Reverse']]});if(req.method==='POST'){let rows=all.map(norm).filter(x=>has(x.pinCode,b.pinCode)&&has(x.siteLocCode,b.siteLocCode)&&has(x.transporterCode,b.transporter)&&has(x.orderTypeCode,b.orderType)&&has(x.courierType,b.courierType==='1'?'Forward':b.courierType==='0'?'Reverse':b.courierType));const size=[20,50,100,200].includes(+b.rows)?+b.rows:20,page=Math.max(1,+b.page||1),records=rows.length,total=Math.ceil(records/size),gridModel=rows.slice((page-1)*size,page*size);return res.json({gridModel,transporterPreferenceDTOs:gridModel,rows:size,page,total,records,sidx:t(b.sidx)||'locCode',sord:t(b.sord)||'asc'})}res.status(405).json({error:'Method not allowed'})}catch(e){console.error('Transporter Preference error:',e);res.status(500).json({error:e.message})}}
+import { sendDatabaseUnavailable, cors, find } from './mongo.js';
+import { locationPairs, transporterPairs } from './catalogs.js';
+
+const text = value => String(value ?? '').trim();
+const has = (value, query) => !text(query) || text(query) === '-1' || text(value).toLowerCase().includes(text(query).toLowerCase());
+const normalize = row => ({
+  ...row,
+  siteLocName: row.site_loc_name || '', siteLocCode: row.site_loc_code || '',
+  pinCode: row.pin_code || '', orderType: row.order_type || '', orderTypeCode: row.order_type_code || '',
+  transporter: row.transporter || '', transporterCode: row.transporter_code || '',
+  courierType: row.courier_type || '', prefOrder: row.pref_order || '',
+  createdBy: row.created_by || '', recordUpby: row.modified_by || '', updatedDate: row.modified_date || '',
+});
+
+export default async function handler(req, res) {
+  if (cors(req, res)) return;
+  try {
+    if (req.method === 'GET') {
+      const [locations, transporters] = await Promise.all([locationPairs(), transporterPairs()]);
+      return res.json({
+        locations,
+        orderTypes: [['', '- Select -'], ['C', 'COD'], ['NC', 'Prepaid']],
+        transporters: [['', '- Select -'], ...transporters],
+        courierTypes: [['-1', '- Select -'], ['1', 'Forward'], ['0', 'Reverse']],
+      });
+    }
+    if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+    const body = req.body || {};
+    const all = await find('generic_records', { module: 'transporter-preference' });
+    const matches = all.map(normalize).filter(row =>
+      has(row.pinCode, body.pinCode) && has(row.siteLocCode, body.siteLocCode)
+      && has(row.transporterCode, body.transporter) && has(row.orderTypeCode, body.orderType)
+      && has(row.courierType, body.courierType === '1' ? 'Forward' : body.courierType === '0' ? 'Reverse' : body.courierType));
+    const size = [20, 50, 100, 200].includes(Number(body.rows)) ? Number(body.rows) : 20;
+    const page = Math.max(1, Number(body.page) || 1);
+    const records = matches.length, total = Math.ceil(records / size);
+    const gridModel = matches.slice((page - 1) * size, page * size);
+    return res.json({ gridModel, transporterPreferenceDTOs: gridModel, rows: size, page, total, records, sidx: text(body.sidx) || 'locCode', sord: text(body.sord) || 'asc' });
+  } catch (error) {
+    if (sendDatabaseUnavailable(res, error)) return;
+    console.error('Transporter Preference error:', { name: error?.name, code: error?.code });
+    return res.status(500).json({ error: error.message });
+  }
+}

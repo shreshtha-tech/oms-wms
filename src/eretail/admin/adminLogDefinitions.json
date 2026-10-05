@@ -1,0 +1,1138 @@
+{
+  "accounting-log": {
+    "title": "Accounting Log",
+    "actions": [
+      "Re Push",
+      "Confirm",
+      "Search",
+      "Reset",
+      "Add New",
+      "Export"
+    ],
+    "tabs": [
+      "Transaction Log",
+      "Transaction Type Log"
+    ],
+    "grids": [
+      {
+        "key": "tallyInterfaceTable",
+        "endpoint": "jsonTallyInterfaceSearch",
+        "columns": [
+          {
+            "key": "cb",
+            "label": "",
+            "width": 35,
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "billPartyCode",
+            "label": "Company Name",
+            "width": 205,
+            "filter": "select",
+            "options": [
+              {
+                "text": "--- Default ---",
+                "value": "-1"
+              }
+            ],
+            "value": "-1",
+            "dateRange": false,
+            "dynamic": true
+          },
+          {
+            "key": "intCode",
+            "label": "Document Type",
+            "width": 147,
+            "filter": "select",
+            "options": [
+              {
+                "text": "--- Select ---",
+                "value": "-1"
+              },
+              {
+                "text": "Customer",
+                "value": "TLY_CUSTOMER"
+              },
+              {
+                "text": "Item",
+                "value": "TLY_ITEMS"
+              },
+              {
+                "text": "Purchase",
+                "value": "TLY_PURCHASE"
+              },
+              {
+                "text": "Purchase Return",
+                "value": "TLY_PRETURN"
+              },
+              {
+                "text": "Sales",
+                "value": "TLY_SALES"
+              },
+              {
+                "text": "Sales Return",
+                "value": "TLY_RETURNS"
+              },
+              {
+                "text": "Vendor",
+                "value": "TLY_VENDOR"
+              }
+            ],
+            "value": "-1",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "key2",
+            "label": "Document Number",
+            "width": 235,
+            "filter": "text",
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "modifiedDate",
+            "label": "Txn Date",
+            "width": 183,
+            "filter": "text",
+            "value": "",
+            "dateRange": true,
+            "dynamic": false
+          },
+          {
+            "key": "status",
+            "label": "Status",
+            "width": 183,
+            "filter": "select",
+            "options": [
+              {
+                "text": "--- Select ---",
+                "value": "-1"
+              },
+              {
+                "text": "Error",
+                "value": "9"
+              },
+              {
+                "text": "Pending Acknowledge",
+                "value": "10"
+              },
+              {
+                "text": "success",
+                "value": "1"
+              },
+              {
+                "text": "Waiting In Queue",
+                "value": "0"
+              }
+            ],
+            "value": "-1",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "errorDesc",
+            "label": "Message",
+            "width": 147,
+            "filter": "text",
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          }
+        ]
+      },
+      {
+        "key": "transmitLogTable",
+        "endpoint": "jsonTransmitLogSearch",
+        "columns": [
+          {
+            "key": "billPartyCodeTL",
+            "label": "Company Name",
+            "width": 265,
+            "filter": "select",
+            "options": [
+              {
+                "text": "--- Default ---",
+                "value": "-1"
+              }
+            ],
+            "value": "-1",
+            "dateRange": false,
+            "dynamic": true
+          },
+          {
+            "key": "intCodeTL",
+            "label": "Document Type",
+            "width": 189,
+            "filter": "select",
+            "options": [
+              {
+                "text": "--- Select ---",
+                "value": "-1"
+              },
+              {
+                "text": "Customer",
+                "value": "TLY_CUSTOMER"
+              },
+              {
+                "text": "Item",
+                "value": "TLY_ITEMS"
+              },
+              {
+                "text": "Purchase",
+                "value": "TLY_PURCHASE"
+              },
+              {
+                "text": "Purchase Return",
+                "value": "TLY_PRETURN"
+              },
+              {
+                "text": "Sales",
+                "value": "TLY_SALES"
+              },
+              {
+                "text": "Sales Return",
+                "value": "TLY_RETURNS"
+              },
+              {
+                "text": "Vendor",
+                "value": "TLY_VENDOR"
+              }
+            ],
+            "value": "-1",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "lastTransmitdate",
+            "label": "Last Transmit Date",
+            "width": 303,
+            "filter": "text",
+            "value": "",
+            "dateRange": true,
+            "dynamic": false
+          },
+          {
+            "key": "modifiedDate",
+            "label": "Modified Date",
+            "width": 236,
+            "value": "",
+            "dateRange": true,
+            "dynamic": false
+          },
+          {
+            "key": "tempModifiedDate",
+            "label": "Actions",
+            "width": 142,
+            "value": "",
+            "dateRange": true,
+            "dynamic": false
+          }
+        ]
+      }
+    ]
+  },
+  "tax-integration-log": {
+    "title": "Tax Integration Log",
+    "actions": [
+      "Search",
+      "Reset",
+      "Manual Repush",
+      "Re Push",
+      "Cancel"
+    ],
+    "tabs": [],
+    "grids": [
+      {
+        "key": "taxSettingLogTable",
+        "endpoint": "jsonTaxTransmitLogSearch",
+        "columns": [
+          {
+            "key": "cb",
+            "label": "",
+            "width": 35,
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "integrationType",
+            "label": "Integration Type",
+            "width": 120,
+            "filter": "select",
+            "options": [
+              {
+                "text": "--- Select ---",
+                "value": "-1"
+              },
+              {
+                "text": "Avalara",
+                "value": "17"
+              },
+              {
+                "text": "Clear(India)",
+                "value": "18"
+              },
+              {
+                "text": "SuperTax",
+                "value": "22"
+              },
+              {
+                "text": "Ernst & Young",
+                "value": "29"
+              },
+              {
+                "text": "Clear(KSA)",
+                "value": "44"
+              },
+              {
+                "text": "Vayana",
+                "value": "59"
+              }
+            ],
+            "value": "-1",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "updDate",
+            "label": "Txn Date",
+            "width": 120,
+            "filter": "text",
+            "value": "17/09/2026 - 24/09/2026",
+            "dateRange": true,
+            "dynamic": false
+          },
+          {
+            "key": "intCode",
+            "label": "Transaction Type",
+            "width": 96,
+            "filter": "select",
+            "options": [
+              {
+                "text": "--- Select ---",
+                "value": "-1"
+              },
+              {
+                "text": "IRN_GET",
+                "value": "IRN_GET"
+              },
+              {
+                "text": "IRN_CANCEL",
+                "value": "IRN_CANCEL"
+              },
+              {
+                "text": "EWB_GEN",
+                "value": "EWB_GEN"
+              },
+              {
+                "text": "IRN_CNSLDT",
+                "value": "IRN_CNSLDT"
+              }
+            ],
+            "value": "-1",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "documentNo",
+            "label": "Document Number",
+            "width": 120,
+            "filter": "text",
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "referenceNo",
+            "label": "Reference No",
+            "width": 120,
+            "filter": "text",
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "referenceNo2",
+            "label": "Ref Number 2",
+            "width": 120,
+            "filter": "text",
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "referenceType",
+            "label": "Ref Type",
+            "width": 120,
+            "filter": "select",
+            "options": [
+              {
+                "text": "--- Select ---",
+                "value": "-1"
+              },
+              {
+                "text": "Return",
+                "value": "3"
+              },
+              {
+                "text": "RTV",
+                "value": "4"
+              },
+              {
+                "text": "SO",
+                "value": "1"
+              },
+              {
+                "text": "STO",
+                "value": "2"
+              }
+            ],
+            "value": "-1",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "status",
+            "label": "Status",
+            "width": 96,
+            "filter": "select",
+            "options": [
+              {
+                "text": "--- Select ---",
+                "value": "-1"
+              },
+              {
+                "text": "Pending",
+                "value": "0"
+              },
+              {
+                "text": "success",
+                "value": "1"
+              },
+              {
+                "text": "Processing",
+                "value": "3"
+              },
+              {
+                "text": "Error",
+                "value": "9"
+              }
+            ],
+            "value": "-1",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "key1",
+            "label": "Output Key",
+            "width": 96,
+            "filter": "text",
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "action",
+            "label": "Action",
+            "width": 92,
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          }
+        ]
+      }
+    ]
+  },
+  "device-tracking-log": {
+    "title": "Device Tracking Log",
+    "actions": [
+      "Re Push",
+      "Search",
+      "Reset"
+    ],
+    "tabs": [],
+    "grids": [
+      {
+        "key": "trackingLogTable",
+        "endpoint": "jsonDeviceTrackerLogSearch",
+        "columns": [
+          {
+            "key": "cb",
+            "label": "",
+            "width": 35,
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "integrationType",
+            "label": "Integration Type",
+            "width": 117,
+            "filter": "select",
+            "options": [
+              {
+                "text": "--- Select ---",
+                "value": "-1"
+              },
+              {
+                "text": "Intugine",
+                "value": "30"
+              }
+            ],
+            "value": "-1",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "updDate",
+            "label": "Txn Date",
+            "width": 117,
+            "filter": "text",
+            "value": "17/09/2026 - 24/09/2026",
+            "dateRange": true,
+            "dynamic": false
+          },
+          {
+            "key": "deviceId",
+            "label": "Device ID",
+            "width": 117,
+            "filter": "text",
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "documentNo",
+            "label": "Invoice No",
+            "width": 117,
+            "filter": "text",
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "referenceNo",
+            "label": "Delivery No",
+            "width": 117,
+            "filter": "text",
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "referenceNo2",
+            "label": "Reference No",
+            "width": 117,
+            "filter": "text",
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "referenceType",
+            "label": "Ref Type",
+            "width": 117,
+            "filter": "select",
+            "options": [
+              {
+                "text": "--- Select ---",
+                "value": "-1"
+              },
+              {
+                "text": "SO",
+                "value": "1"
+              }
+            ],
+            "value": "-1",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "status",
+            "label": "Status",
+            "width": 94,
+            "filter": "select",
+            "options": [
+              {
+                "text": "--- Select ---",
+                "value": "-1"
+              },
+              {
+                "text": "Pending",
+                "value": "0"
+              },
+              {
+                "text": "success",
+                "value": "1"
+              },
+              {
+                "text": "Processing",
+                "value": "3"
+              },
+              {
+                "text": "Error",
+                "value": "9"
+              }
+            ],
+            "value": "-1",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "key1",
+            "label": "Output Key",
+            "width": 94,
+            "filter": "text",
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "action",
+            "label": "Action",
+            "width": 93,
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          }
+        ]
+      }
+    ]
+  },
+  "external-apps-logs": {
+    "title": "External Apps Logs",
+    "actions": [
+      "Reset"
+    ],
+    "tabs": [],
+    "grids": [
+      {
+        "key": "extAppsFailedOrderGrid",
+        "endpoint": "populateExtAppsFailedOrderGrid?REQ_SEARCH_FLAG=true",
+        "columns": [
+          {
+            "key": "cb",
+            "label": "",
+            "width": 35,
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "invoiceNumber",
+            "label": "Document Number",
+            "width": 132,
+            "filter": "text",
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "orderNo",
+            "label": "Reference Number",
+            "width": 132,
+            "filter": "text",
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "channelCode",
+            "label": "ExtApp Desc",
+            "width": 146,
+            "filter": "select",
+            "options": [
+              {
+                "text": "--- Select ---",
+                "value": "-1"
+              }
+            ],
+            "value": "-1",
+            "dateRange": false,
+            "dynamic": true
+          },
+          {
+            "key": "createdDate",
+            "label": "Created Date",
+            "width": 146,
+            "filter": "text",
+            "value": "",
+            "dateRange": true,
+            "dynamic": false
+          },
+          {
+            "key": "updateDate",
+            "label": "Updated Date",
+            "width": 146,
+            "filter": "text",
+            "value": "",
+            "dateRange": true,
+            "dynamic": false
+          },
+          {
+            "key": "statusdesc",
+            "label": "Status",
+            "width": 102,
+            "filter": "select",
+            "options": [
+              {
+                "text": "--- Select ---",
+                "value": "-1"
+              },
+              {
+                "text": "Pending",
+                "value": "0"
+              },
+              {
+                "text": "success",
+                "value": "1"
+              },
+              {
+                "text": "Error",
+                "value": "9"
+              },
+              {
+                "text": "Recon Pending",
+                "value": "10"
+              }
+            ],
+            "value": "9",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "issueDescription",
+            "label": "Message",
+            "width": 293,
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          }
+        ]
+      }
+    ]
+  },
+  "pos-integration-log": {
+    "title": "POS Integration Log",
+    "actions": [
+      "Manual Repush",
+      "Re Push",
+      "Search",
+      "Reset",
+      "Export"
+    ],
+    "tabs": [],
+    "grids": [
+      {
+        "key": "transmitDataTable",
+        "endpoint": "fetchPosIntData",
+        "columns": [
+          {
+            "key": "cb",
+            "label": "",
+            "width": 35,
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "storeCode",
+            "label": "Store Code",
+            "width": 100,
+            "filter": "text",
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "extLocCode",
+            "label": "Ext. Loc Code",
+            "width": 125,
+            "filter": "text",
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "storeName",
+            "label": "Store Name",
+            "width": 140,
+            "filter": "text",
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "invoiceCrtDate",
+            "label": "Invoice Creation Date",
+            "width": 145,
+            "filter": "text",
+            "value": "",
+            "dateRange": true,
+            "dynamic": false
+          },
+          {
+            "key": "returnClosedDate",
+            "label": "Return Closed Date",
+            "width": 140,
+            "filter": "text",
+            "value": "",
+            "dateRange": true,
+            "dynamic": false
+          },
+          {
+            "key": "outputKey",
+            "label": "Out Reference1",
+            "width": 130,
+            "filter": "text",
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "lastSavedCode",
+            "label": "Out Reference2",
+            "width": 125,
+            "filter": "text",
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "refChannelOrderNo",
+            "label": "RefChannel OrderNo",
+            "width": 130,
+            "filter": "text",
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "invoiceNumber",
+            "label": "Invoice No",
+            "width": 110,
+            "filter": "text",
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "documentType",
+            "label": "Doc Type",
+            "width": 100,
+            "filter": "select",
+            "options": [
+              {
+                "text": "--- Select ---",
+                "value": "-1"
+              },
+              {
+                "text": "INVOICE",
+                "value": "INVOICE"
+              },
+              {
+                "text": "SO",
+                "value": "SO"
+              },
+              {
+                "text": "RETURN",
+                "value": "RETURN"
+              },
+              {
+                "text": "CANCEL SO",
+                "value": "CANCEL SO"
+              }
+            ],
+            "value": "-1",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "tmpUpdDate",
+            "label": "Txn Date",
+            "width": 140,
+            "filter": "text",
+            "value": "17/09/2026 - 24/09/2026",
+            "dateRange": true,
+            "dynamic": false
+          },
+          {
+            "key": "documentNo",
+            "label": "Document Number",
+            "width": 125,
+            "filter": "text",
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "referenceNo",
+            "label": "Reference No",
+            "width": 125,
+            "filter": "text",
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "status",
+            "label": "Status",
+            "width": 100,
+            "filter": "select",
+            "options": [
+              {
+                "text": "--- Select ---",
+                "value": "-1"
+              },
+              {
+                "text": "Pending",
+                "value": "0"
+              },
+              {
+                "text": "Success",
+                "value": "1"
+              },
+              {
+                "text": "Error",
+                "value": "9"
+              }
+            ],
+            "value": "-1",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "totalexecTime",
+            "label": "Execution Time(ms)",
+            "width": 125,
+            "filter": "text",
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "txnType",
+            "label": "TxnType",
+            "width": 100,
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "action",
+            "label": "Action",
+            "width": 100,
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          }
+        ]
+      }
+    ]
+  },
+  "repush-log": {
+    "title": "Repush Log",
+    "actions": [
+      "Search",
+      "Repush",
+      "Reset"
+    ],
+    "tabs": [
+      "WebHook",
+      "EmailTransit",
+      "TransmitDetail",
+      "ManifestStatus"
+    ],
+    "grids": [
+      {
+        "key": "webhookList",
+        "endpoint": "",
+        "columns": [
+          {
+            "key": "cb",
+            "label": "",
+            "width": 35,
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "webhookKey",
+            "label": "WebHookKey",
+            "width": 100,
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "docId",
+            "label": "Doc Id",
+            "width": 100,
+            "filter": "text",
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "createDate",
+            "label": "Created Date",
+            "width": 166,
+            "filter": "text",
+            "value": "17/09/2026 - 24/09/2026",
+            "dateRange": true,
+            "dynamic": false
+          },
+          {
+            "key": "docType",
+            "label": "Doc Type",
+            "width": 100,
+            "filter": "select",
+            "options": [
+              {
+                "text": "--- Select ---",
+                "value": "-1"
+              },
+              {
+                "text": "INBOUND",
+                "value": "INBOUND"
+              },
+              {
+                "text": "ORDER",
+                "value": "ORDER"
+              },
+              {
+                "text": "ORDER RETURN",
+                "value": "ORDER RETURN"
+              },
+              {
+                "text": "RTV",
+                "value": "RTV"
+              },
+              {
+                "text": "TRANSHIPMENT",
+                "value": "TRANSHIPMENT"
+              },
+              {
+                "text": "PO",
+                "value": "PO"
+              }
+            ],
+            "value": "-1",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "docStatus",
+            "label": "Doc Status",
+            "width": 100,
+            "filter": "select",
+            "options": [
+              {
+                "text": "--- Select ---",
+                "value": "-1"
+              },
+              {
+                "text": "Allocated",
+                "value": "13"
+              },
+              {
+                "text": "Cancelled",
+                "value": "7"
+              },
+              {
+                "text": "Closed",
+                "value": "37"
+              },
+              {
+                "text": "Confirmed",
+                "value": "4"
+              },
+              {
+                "text": "Delivered",
+                "value": "33"
+              },
+              {
+                "text": "Delivery created",
+                "value": "25"
+              },
+              {
+                "text": "Packed",
+                "value": "22"
+              },
+              {
+                "text": "Part Allocated",
+                "value": "10"
+              },
+              {
+                "text": "Part Picked",
+                "value": "16"
+              },
+              {
+                "text": "Partially Shipped",
+                "value": "28"
+              },
+              {
+                "text": "Pending",
+                "value": "1"
+              },
+              {
+                "text": "Pick complete",
+                "value": "19"
+              },
+              {
+                "text": "Shipped &amp; Returned",
+                "value": "35"
+              },
+              {
+                "text": "Shipped complete",
+                "value": "31"
+              }
+            ],
+            "value": "-1",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "responseCode",
+            "label": "Response Code",
+            "width": 133,
+            "filter": "text",
+            "value": "999",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "rowVersion",
+            "label": "Row Version",
+            "width": 133,
+            "filter": "text",
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "sellerId",
+            "label": "Seller Id",
+            "width": 133,
+            "filter": "text",
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          },
+          {
+            "key": "action",
+            "label": "Action",
+            "width": 132,
+            "value": "",
+            "dateRange": false,
+            "dynamic": false
+          }
+        ]
+      }
+    ]
+  }
+}

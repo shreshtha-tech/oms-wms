@@ -1,0 +1,12 @@
+BEGIN;
+ALTER TABLE ci_alert_recipient ADD COLUMN IF NOT EXISTS consented_at timestamptz;
+ALTER TABLE ci_alert_recipient ADD COLUMN IF NOT EXISTS alert_start time;
+ALTER TABLE ci_alert_recipient ADD COLUMN IF NOT EXISTS alert_end time;
+ALTER TABLE ci_order_alert ADD COLUMN IF NOT EXISTS provider_message_id text;
+ALTER TABLE ci_order_alert ADD COLUMN IF NOT EXISTS claimed_at timestamptz;
+ALTER TABLE ci_order_alert ADD COLUMN IF NOT EXISTS accepted_at timestamptz;
+ALTER TABLE ci_order_alert ALTER COLUMN channel SET DEFAULT 'whatsapp';
+ALTER TABLE ci_order_alert DROP CONSTRAINT IF EXISTS ci_order_alert_status_check;
+ALTER TABLE ci_order_alert ADD CONSTRAINT ci_order_alert_status_check CHECK(status IN ('pending','sending','accepted','sent','delivered','read','failed','uncertain','cancelled'));
+CREATE UNIQUE INDEX IF NOT EXISTS ci_order_alert_provider_id ON ci_order_alert(provider_message_id) WHERE provider_message_id IS NOT NULL;
+COMMIT;

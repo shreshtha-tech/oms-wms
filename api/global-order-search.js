@@ -1,4 +1,4 @@
-import { cors, find, insert } from './mongo.js';
+import { sendDatabaseUnavailable, cors, find, insert } from './mongo.js';
 import { GLOBAL_ORDER_OPTIONS } from './global-order-search-options.js';
 
 const text = (value) => String(value ?? '').trim();
@@ -42,5 +42,6 @@ export default async function handler(req, res) {
     const sortKey = text(body.sidx).replace(/^o\.|^d\.|^ot\./, '').replace(/[A-Z]/g, (character) => `_${character.toLowerCase()}`); rows.sort((a, b) => text(a[sortKey] ?? a.order_date).localeCompare(text(b[sortKey] ?? b.order_date)) * (text(body.sord) === 'asc' ? 1 : -1));
     const size = [20, 50, 100, 200].includes(Number(body.rows)) ? Number(body.rows) : 20, current = Math.max(1, Number(body.page) || 1), records = rows.length, total = Math.ceil(records / size), gridModel = rows.slice((current - 1) * size, current * size);
     return res.status(200).json({ gridModel, rows: gridModel, page: current, records, total, mode, key: procedure });
-  } catch (error) { console.error('global order search error:', error); return res.status(500).json({ error: error.message }); }
+  } catch (error) {
+    if (sendDatabaseUnavailable(res, error)) return; console.error('global order search error:', { name: error?.name, code: error?.code }); return res.status(500).json({ error: error.message }); }
 }

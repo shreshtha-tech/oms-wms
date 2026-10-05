@@ -1,0 +1,542 @@
+{
+  "grids": [
+    {
+      "id": "tallyInterfaceTable",
+      "url": "jsonTallyInterfaceSearch",
+      "datatype": "json",
+      "rowNum": 20,
+      "multiselect": true,
+      "height": "auto",
+      "colModel": [
+        {
+          "name": "cb",
+          "width": 35,
+          "hidden": false,
+          "search": false,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "transmitDetKey",
+          "label": "tallyinterface.transmitdetKey",
+          "width": 100,
+          "hidden": true,
+          "search": false,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "clientId",
+          "label": "Client",
+          "width": 125,
+          "hidden": true,
+          "search": true,
+          "stype": "select",
+          "searchoptions": {
+            "value": ":",
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "billPartyCode",
+          "label": "Company Name",
+          "width": 205,
+          "hidden": false,
+          "search": true,
+          "stype": "select",
+          "searchoptions": {
+            "value": ":",
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "intCode",
+          "label": "Document Type",
+          "width": 147,
+          "hidden": false,
+          "search": true,
+          "stype": "select",
+          "searchoptions": {
+            "value": ":",
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "key2",
+          "label": "Document Number",
+          "width": 235,
+          "hidden": false,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "modifiedDate",
+          "label": "Txn Date",
+          "width": 183,
+          "hidden": false,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          },
+          "formatter": "date"
+        },
+        {
+          "name": "status",
+          "label": "Status",
+          "width": 183,
+          "hidden": false,
+          "search": true,
+          "stype": "select",
+          "searchoptions": {
+            "value": ":",
+            "searchOperMenu": true
+          },
+          "formatter": "function statusFormatLink(cellvalue, options, rowObject) {\n\t\t\t\t//VE-2115 S\n\t\t        var cssString = \"shape-flag-green\";//(rowObject[\"hdnStatus\"]==0 || rowObject[\"hdnStatus\"]==9)?\"shape-flag-darkYellow\" : \"shape-flag-green\";//VE-1655\n\t\t        if(rowObject[\"hdnStatus\"]==0)\n\t\t\t\t\tcssString = \"shape-flag-darkYellow\";\n\t\t\t\telse if(rowObject[\"hdnStatus\"]==9)\n\t\t\t\t\tcssString = \"shape-flag-magenta\";\n\t\t\t\telse if(rowObject[\"hdnStatus\"]==10)\n\t\t\t\t\tcssString = \"shape-flag-violet\";\n\t\t        //VE-2115 E\n\t\t        return \"<span class='shape-flag \"+cssString+\"' style='text-align:left; min-width:60px; display: inline-block; ' >\"+ rowObject[\"status\"]+\"</span>\";                                               \n\t\t\t}"
+        },
+        {
+          "name": "errorDesc",
+          "label": "Message",
+          "width": 147,
+          "hidden": false,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "hdnStatus",
+          "label": "Status",
+          "width": 100,
+          "hidden": true,
+          "search": false,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "action",
+          "label": "Action",
+          "width": 100,
+          "hidden": true,
+          "search": false,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          },
+          "formatter": "function formatActionLink(cellvalue, options, rowObject) {\n    \t\t \n\t\t\tvar html = \"\";\n\t\t\tlet dataFound = false;\n\t\t\tif(rowObject.hdnStatus == 1 || rowObject.hdnStatus == 9) {\n\t\t\t\thtml = \"<div class='col-xs-12' style='text-align:center;'><a href='javascript:void(0);' onclick='javascript:openRequestResponseBody(event, \\\"\"\n\t\t\t\t+ rowObject.transmitDetKey+ \"\\\",\\\"\"\t+options.rowId+ \"\\\");' class='gridIcon gridEditIcon' style='margin-left: 10px;'><i class='fa fa-eye' data-toggle='tooltip' data-placement='left' title='View'></i></a><a href='javascript:void(0);' onclick='javascript:openOutputReference(event, \\\"\"\n\t\t\t\t+ options.rowId\t+ \"\\\");' class='gridIcon gridEditIcon' style='margin-left: 10px;'><i class='fa fa-info' data-toggle='tooltip' data-placement='left' title='Info'></i></a></div>\";\n\t\t\t}\n\t\t\treturn html;\n\t\t}"
+        }
+      ],
+      "colNames": [
+        "<input role='checkbox' id='cb_tallyInterfaceTable' class='cbox' type='checkbox'/>",
+        "tallyinterface.transmitdetKey",
+        "Client",
+        "Company Name",
+        "Document Type",
+        "Document Number",
+        "Txn Date",
+        "Status",
+        "Message",
+        "Status",
+        "Action"
+      ]
+    },
+    {
+      "id": "transmitLogTable",
+      "url": "jsonTransmitLogSearch",
+      "datatype": "json",
+      "rowNum": 20,
+      "multiselect": false,
+      "height": "auto",
+      "colModel": [
+        {
+          "name": "transmitKey",
+          "label": "Transmit Key",
+          "width": 100,
+          "hidden": true,
+          "search": false,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "clientIdTL",
+          "label": "Client",
+          "width": 125,
+          "hidden": true,
+          "search": true,
+          "stype": "select",
+          "searchoptions": {
+            "value": ":",
+            "searchOperMenu": true
+          },
+          "formatter": "function clientIdFormatLinkTL(cellvalue, options, rowObject) {\n\t\t\t        return rowObject[\"clientId\"];                                               \n\t\t\t\t}"
+        },
+        {
+          "name": "billPartyCodeTL",
+          "label": "Company Name",
+          "width": 265,
+          "hidden": false,
+          "search": true,
+          "stype": "select",
+          "searchoptions": {
+            "value": ":",
+            "searchOperMenu": true
+          },
+          "formatter": "function billToPartyFormatLinkTL(cellvalue, options, rowObject) {\n\t\t\t        return rowObject[\"billPartyCode\"];                                               \n\t\t\t\t}"
+        },
+        {
+          "name": "intCodeTL",
+          "label": "Document Type",
+          "width": 189,
+          "hidden": false,
+          "search": true,
+          "stype": "select",
+          "searchoptions": {
+            "value": ":",
+            "searchOperMenu": true
+          },
+          "formatter": "function intCodeFormatLinkTL(cellvalue, options, rowObject) {\n\t\t\t        return rowObject[\"intCode\"];                                               \n\t\t\t\t}"
+        },
+        {
+          "name": "lastTransmitdate",
+          "label": "Last Transmit Date",
+          "width": 303,
+          "hidden": false,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          },
+          "formatter": "date"
+        },
+        {
+          "name": "tempLastTransmitdate",
+          "label": "Last Transmit Date",
+          "width": 125,
+          "hidden": true,
+          "search": false,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          },
+          "formatter": "date"
+        },
+        {
+          "name": "modifiedDate",
+          "label": "Modified Date",
+          "width": 236,
+          "hidden": false,
+          "search": false,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          },
+          "formatter": "date"
+        },
+        {
+          "name": "tempModifiedDate",
+          "label": "Actions",
+          "width": 142,
+          "hidden": false,
+          "search": false,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          },
+          "formatter": "function formatEditLink(cellvalue, options, rowObject) {\n\t\t\t\t\treturn \"<div class='col-xs-12' style='text-align:center;' data-toggle='tooltip' data-placement='left' title='Edit'><a href='javascript:void(0);' onclick='javascript:openLastTransmitDateDialog(\"\n\t\t\t\t\t\t\t+ options.rowId + \");' class='gridIcon gridEditIcon'><i class='fa fa-pencil'></i></a></div>\";\n\t\t\t\t}"
+        }
+      ],
+      "colNames": [
+        "Transmit Key",
+        "Client",
+        "Company Name",
+        "Document Type",
+        "Last Transmit Date",
+        "Last Transmit Date",
+        "Modified Date",
+        "Actions"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "financialClient",
+      "text": "Xero\n    ZohoBooks\n    Tally",
+      "event": "change",
+      "handlers": [
+        "function () {\n    \t\t $(\"#gs_intCode\").empty();\n    \t\t \n    \t\t var retVal = $.ajax({\n\t\t\t\t\turl : \"fetchDocumentType\",\n\t\t\t\t\ttype : \"POST\",\n\t\t\t\t\tdata : {\n\t\t\t\t\t\tfinKey :$(\"#financialClient\").val().split(\"-\")[1],\n\t\t\t\t\t},\n\t\t\t\t\tdataType : \"json\",\n\t\t\t\t\tasync : false\n\t\t\t\t}).responseText;\n    \t\t retVal = jQuery.parseJSON(retVal);\n    \t\t \n\t \t\t var intCodeVls4Cmb2 = new Array;\n\t \t\t var counter=0;\n\t\t\t const myMap = new Map(Object.entries(retVal.documentTypeMap));\n\t\t\t intCodeVls4Cmb2[counter++] = new CodeValueStruct(\"-1\",'--- Select ---');\n\t\t\t \n\t\t\t for (let [key, value] of myMap) {\n\t\t\t    intCodeVls4Cmb2[counter++] = new CodeValueStruct(key,value);\n\t\t\t }\n\t         fillCombo('gs_intCode', intCodeVls4Cmb2);\n\t         fillCombo('gs_intCodeTL', intCodeVls4Cmb2);\n\t         \n\t         reloadTransmitLogSearchGridForDropDown();\n    \t\t reloadSearchGrid();\n    \t}"
+      ]
+    },
+    {
+      "id": "",
+      "text": "",
+      "event": "mouseover",
+      "handlers": [
+        "function(){La.addClass(o)}"
+      ]
+    },
+    {
+      "id": "",
+      "text": "",
+      "event": "mouseout",
+      "handlers": [
+        "function(){La.removeClass(o)}"
+      ]
+    },
+    {
+      "id": "cb_tallyInterfaceTable",
+      "text": "",
+      "event": "click",
+      "handlers": [
+        "function(e){var t,n,r=Y.get(this,i);if(1&e.isTrigger&&this[i]){if(r.length)(S.event.special[i]||{}).delegateType&&e.stopPropagation();else if(r=s.call(arguments),Y.set(this,i,r),t=o(this,i),this[i](),r!==(n=Y.get(this,i))||t?Y.set(this,i,!1):n={},r!==n)return e.stopImmediatePropagation(),e.preventDefault(),n.value}else r.length&&(Y.set(this,i,{value:S.event.trigger(S.extend(r[0],S.Event.prototype),r.slice(1),this)}),e.stopImmediatePropagation())}"
+      ]
+    },
+    {
+      "id": "gs_clientId",
+      "text": "All0-DummyClient",
+      "event": "change",
+      "handlers": [
+        "function(){return k(),!1}"
+      ]
+    },
+    {
+      "id": "gs_billPartyCode",
+      "text": "--- Default ---abhBergner ImpexBillParty3CambridgeshireCambridgeshireCambridgesh",
+      "event": "change",
+      "handlers": [
+        "function(){return k(),!1}"
+      ]
+    },
+    {
+      "id": "gs_intCode",
+      "text": "--- Select ---CustomerItemPurchasePurchase ReturnSalesSales ReturnVendor",
+      "event": "change",
+      "handlers": [
+        "function(){return k(),!1}"
+      ]
+    },
+    {
+      "id": "gs_key2",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "gs_modifiedDate",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "gs_modifiedDate",
+      "text": "",
+      "event": "click",
+      "handlers": [
+        "function(){return e.apply(t||this,r.concat(s.call(arguments)))}"
+      ]
+    },
+    {
+      "id": "gs_modifiedDate",
+      "text": "",
+      "event": "focus",
+      "handlers": [
+        "function(e){var t,n,r=Y.get(this,i);if(1&e.isTrigger&&this[i]){if(r.length)(S.event.special[i]||{}).delegateType&&e.stopPropagation();else if(r=s.call(arguments),Y.set(this,i,r),t=o(this,i),this[i](),r!==(n=Y.get(this,i))||t?Y.set(this,i,!1):n={},r!==n)return e.stopImmediatePropagation(),e.preventDefault(),n.value}else r.length&&(Y.set(this,i,{value:S.event.trigger(S.extend(r[0],S.Event.prototype),r.slice(1),this)}),e.stopImmediatePropagation())}",
+        "function(){return e.apply(t||this,r.concat(s.call(arguments)))}"
+      ]
+    },
+    {
+      "id": "gs_modifiedDate",
+      "text": "",
+      "event": "keyup",
+      "handlers": [
+        "function(){return e.apply(t||this,r.concat(s.call(arguments)))}"
+      ]
+    },
+    {
+      "id": "gs_modifiedDate",
+      "text": "",
+      "event": "keydown",
+      "handlers": [
+        "function(){return e.apply(t||this,r.concat(s.call(arguments)))}"
+      ]
+    },
+    {
+      "id": "gs_modifiedDate",
+      "text": "",
+      "event": "apply",
+      "handlers": [
+        "function(ev, picker) {\r\n\t\t\tchangeDateRangeData(ctrlId,hdnFrom,hdnTo);\r\n\t\t}"
+      ]
+    },
+    {
+      "id": "gs_status",
+      "text": "--- Select ---ErrorPending AcknowledgesuccessWaiting In Queue",
+      "event": "change",
+      "handlers": [
+        "function(){return k(),!1}"
+      ]
+    },
+    {
+      "id": "gs_errorDesc",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "",
+      "text": "2050100200",
+      "event": "change",
+      "handlers": [
+        "function(){return u(\"records\",this)?(d.p.page=Math.round(d.p.rowNum*(d.p.page-1)/this.value-.5)+1,d.p.rowNum=this.value,d.p.pager&&$(\".ui-pg-selbox\",d.p.pager).val(this.value),d.p.toppager&&$(\".ui-pg-selbox\",d.p.toppager).val(this.value),S(),!1):!1}"
+      ]
+    },
+    {
+      "id": "",
+      "text": "",
+      "event": "mouseover",
+      "handlers": [
+        "function(){La.addClass(o)}"
+      ]
+    },
+    {
+      "id": "",
+      "text": "",
+      "event": "mouseout",
+      "handlers": [
+        "function(){La.removeClass(o)}"
+      ]
+    },
+    {
+      "id": "gs_clientIdTL",
+      "text": "All0-DummyClient",
+      "event": "change",
+      "handlers": [
+        "function(){return k(),!1}"
+      ]
+    },
+    {
+      "id": "gs_billPartyCodeTL",
+      "text": "--- Default ---abhBergner ImpexBillParty3CambridgeshireCambridgeshireCambridgesh",
+      "event": "change",
+      "handlers": [
+        "function(){return k(),!1}"
+      ]
+    },
+    {
+      "id": "gs_intCodeTL",
+      "text": "--- Select ---CustomerItemPurchasePurchase ReturnSalesSales ReturnVendor",
+      "event": "change",
+      "handlers": [
+        "function(){return k(),!1}"
+      ]
+    },
+    {
+      "id": "gs_lastTransmitdate",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "gs_lastTransmitdate",
+      "text": "",
+      "event": "click",
+      "handlers": [
+        "function(){return e.apply(t||this,r.concat(s.call(arguments)))}"
+      ]
+    },
+    {
+      "id": "gs_lastTransmitdate",
+      "text": "",
+      "event": "focus",
+      "handlers": [
+        "function(e){var t,n,r=Y.get(this,i);if(1&e.isTrigger&&this[i]){if(r.length)(S.event.special[i]||{}).delegateType&&e.stopPropagation();else if(r=s.call(arguments),Y.set(this,i,r),t=o(this,i),this[i](),r!==(n=Y.get(this,i))||t?Y.set(this,i,!1):n={},r!==n)return e.stopImmediatePropagation(),e.preventDefault(),n.value}else r.length&&(Y.set(this,i,{value:S.event.trigger(S.extend(r[0],S.Event.prototype),r.slice(1),this)}),e.stopImmediatePropagation())}",
+        "function(){return e.apply(t||this,r.concat(s.call(arguments)))}"
+      ]
+    },
+    {
+      "id": "gs_lastTransmitdate",
+      "text": "",
+      "event": "keyup",
+      "handlers": [
+        "function(){return e.apply(t||this,r.concat(s.call(arguments)))}"
+      ]
+    },
+    {
+      "id": "gs_lastTransmitdate",
+      "text": "",
+      "event": "keydown",
+      "handlers": [
+        "function(){return e.apply(t||this,r.concat(s.call(arguments)))}"
+      ]
+    },
+    {
+      "id": "gs_lastTransmitdate",
+      "text": "",
+      "event": "apply",
+      "handlers": [
+        "function(ev, picker) {\r\n\t\t\tchangeDateRangeData(ctrlId,hdnFrom,hdnTo);\r\n\t\t}"
+      ]
+    },
+    {
+      "id": "",
+      "text": "2050100200",
+      "event": "change",
+      "handlers": [
+        "function(){return u(\"records\",this)?(d.p.page=Math.round(d.p.rowNum*(d.p.page-1)/this.value-.5)+1,d.p.rowNum=this.value,d.p.pager&&$(\".ui-pg-selbox\",d.p.pager).val(this.value),d.p.toppager&&$(\".ui-pg-selbox\",d.p.toppager).val(this.value),S(),!1):!1}"
+      ]
+    }
+  ],
+  "functions": {
+    "encryptPasswordRSAUsingPubKey": "function encryptPasswordRSAUsingPubKey(password) {\n\tconst crypt = new JSEncrypt();\n\n\tconst publicKeyRSA = `-----BEGIN PUBLIC KEY-----\n\t\tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwByF8BbfSm98Vf5IsUsW\n\t\tpgCLPYEbYm8AFKIuVnteGA7PmBTJS3Mx1sYv6E8httGIFoPCu+p87nDrKYz1eK3n\n\t\tnJPxQOkxOaigpgejWRL9QCtkzNTbwKDWWGmoLxRgUKQMfLqX6Imwp/TdqOIGZEed\n\t\t206ISr8ENXVrfeW0Roi6yfSXgsOPS+LU+7oaGgaYRWGKDUsIKysKimhiIspGBvLa\n\t\tSG5urTI5bIEQkOqspzFWL/USBgd41mUdNm7LzFQi3CH3WySOdv2+gobRofsH5I4e\n\t\t/iUBGx5JuC+WUNhjwi4+P0QgOwbfDBnCv4VC1skVjBkkxs53M01xPiCNDhcmJbND\n\t\tQQIDAQAB\n\t\t-----END PUBLIC KEY-----`;\n\n\tcrypt.setPublicKey(publicKeyRSA);\n\n\tconst encryptedData = crypt.encrypt(password);\n\n\treturn encryptedData;\n}",
+    "gtag": "function gtag(){dataLayer.push(arguments);}",
+    "alignModal": "function alignModal() {\n\t    \t $(\".modal-dialog\").css(\"margin-top\", $(parent.document).scrollTop()+20);\n\t     }",
+    "showProgressBar": "function showProgressBar() {\n\t\ttry {\n\t\t\tif (typeof blockUIStart === 'function') {\n\t\t\t\tblockUIStart();\n\t\t\t} else if (typeof window.parent.blockUIStart === 'function') {\n\t\t\t\twindow.parent.blockUIStart();\n\t\t\t} else if (typeof window.parent.parent.blockUIStart === 'function') {\n\t\t\t\twindow.parent.parent.blockUIStart();\n\t\t\t} else if (typeof window.parent.parent.parent.blockUIStart === 'function') {\n\t\t\t\twindow.parent.parent.parent.blockUIStart();\n\t\t\t}\n\t\t} catch (e) {\n\t\t  console.log(e.message);\n\t\t}\n\t}",
+    "hideProgressBar": "function hideProgressBar() {\n\t\ttry {\n\t\t\tif (typeof blockUIEnd === 'function') {\n\t\t\t\tblockUIEnd();\n\t\t\t} else if (typeof window.parent.blockUIEnd === 'function') {\n\t\t\t\twindow.parent.blockUIEnd();\n\t\t\t} else if (typeof window.parent.parent.blockUIEnd === 'function') {\n\t\t\t\twindow.parent.parent.blockUIEnd();\n\t\t\t} else if (typeof window.parent.parent.parent.blockUIEnd === 'function') {\n\t\t\t\twindow.parent.parent.parent.blockUIEnd();\n\t\t\t}\n\t\t} catch (e) {\n\t\t\tconsole.log(e.message);\n\t\t}\n\t}",
+    "getGridWidth": "function getGridWidth() {\n\t\ttry {\n\t\t\tvar w = window.parent.$(\"#screensWrapper\").width();\n\t\t\tif(w>100)\n\t\t\t\treturn window.parent.$(\"#screensWrapper\").width()-10;\n\t\t\telse\n\t\t\t\treturn $(window).width()-10;\n\t\t} catch (e) {\n\t\t\tconsole.log(e.message);\n\t\t\treturn $(window).width()-10;\n\t\t}\n\t}",
+    "shortcutKey": "function shortcutKey(){ \t\t\n    \t$(document).bind('keydown', function(e) {\n    \t\tvar keyCode = (e.keyCode) ? e.keyCode : ((e.charCode) ? e.charCode : e.which);\n    \t\tif (e.originalEvent.altKey) {\n    \t\t\t// ALT + S     Search                   \n    \t\t\tif (keyCode === 83) {\n    \t\t\t\treloadSearchGrid();\n    \t\t\t\te.preventDefault();\n    \t\t\t\treturn false;\n    \t\t\t\t\n    \t\t\t}\n    \t\t\t// ALT + N      Reset                 \n    \t\t\tif (keyCode == 78) {\n    \t\t\t\tresetAll();\n    \t\t\t\te.preventDefault();\n    \t\t\t\treturn false;\n    \t\t\t}\n    \t\t\t// ALT + F    Add New\n    \t\t\tif (keyCode == 70){\n    \t\t\t\taddnew();\n    \t\t\t\te.preventDefault();\n    \t\t\t\treturn false;\n    \t\t\t}\n    \t\t\t\n    \t\t}\n    \t});\n    }",
+    "openLastTransmitDateDialog": "function openLastTransmitDateDialog(rowId){\n\t\t\tvar rowData = jQuery('#transmitLogTable').jqGrid('getRowData', rowId);\n\t\t\t$(\"#transmitKey\").val(rowData.transmitKey);\n\t\t\t$(\"#clientIdLbl\").html(rowData.clientIdTL);\n\t\t\t$(\"#companyNameLbl\").html(rowData.billPartyCodeTL);\n\t\t\t$(\"#docTypeLbl\").html(rowData.intCodeTL);\n\t\t\t$(\"#modDateLbl\").html(rowData.modifiedDate);\n\t\t\t$(\"#lastTransmitDate\").val(rowData.lastTransmitdate);\n\n\t\t\t$('#lastTransmitDate').datetimepicker({\n\t  \t    \t useCurrent\t\t: true,\n\t  \t    \t format\t\t\t: 'DD/MM/YYYY hh:mm A',\n\t  \t    \t maxDate\t\t: new Date(),\n\t  \t    \t minDate\t\t: new Date(new Date().getFullYear(), 0, 1)\n\t  \t    });\n\t\t\t$('#lastTransmitDateDialog').modal('show');\n\t\t}",
+    "genricSearchGridResized": "function genricSearchGridResized() {\n\t\t\tvar gridObj = $(\"#tallyInterfaceTable\");\n\t\t\t\n\t\t\tvar gridHeight = window.parent.getParentHeight()-170;\t\n\n\t\t\tvar gridWidth = $(window).width()-15;\n\t\t\tif(gridWidth<270)\n\t\t\t\tgridWidth=270;\n\t\t\t\n\t\t\tgridObj.jqGrid('setGridWidth',gridWidth);\t\t\n\t\t\t\n\t\t\t$(\"#gbox_\"+gridObj[0].id+\" .ui-jqgrid-bdiv\").css(\"height\",gridHeight+\"px\").css('overflow-x',($(window).width()<992 ?'auto':'hidden'));\n\t\t\toldWidth=gridWidth;\n\t\t}",
+    "reloadSearchGrid": "function reloadSearchGrid(event) {\n\t\t\tvar billPartyCode = $(\"#gs_billPartyCode\").val();\n\t\t\tvar intCode = $(\"#gs_intCode\").val();\n\n\t\t\tif($(\"#financialClient\").val().split(\"-\")[1] != \"XRO\" && billPartyCode != \"-1\" && intCode == \"-1\"){\n\t\t\t\ttryFocusBS($(\"#gs_intCode\"));\n\t\t\t\twindow.parent.showAlert('Document Type is manadatory for searching');\n\t\t\t\treturn false;\n\t\t\t}\n\t\t\telse{\n\t\t\t\tvar retVal = $(\"#tallyInterfaceTable\").jqGrid('setGridParam', {\n\t\t\t\t\tdatatype : 'json',\n\t\t\t\t\tpage : 1,\n\t\t\t\t\tpostData : {\n\t\t\t\t\t\tbillPartyCode\t:$(\"#gs_billPartyCode\").val(),\n\t\t\t\t\t\tintCode\t\t\t:$(\"#gs_intCode\").val(),\n\t\t\t\t\t\tkey2\t\t\t:$(\"#gs_key2\").val(),\n\t\t\t\t\t\tstatus\t\t\t:$(\"#gs_status\").val(),\n\t\t\t\t\t\terrorDesc\t\t:$(\"#gs_errorDesc\").val(),\n\t\t\t\t\t\tfromUpdDate\t\t:$(\"#fromUpdDate\").val(),\n\t\t\t\t\t\ttoUpdDate\t\t:$(\"#toUpdDate\").val(),\n\t\t\t\t\t\tclientId\t\t:$(\"#gs_clientId\").val(),\n\t\t\t\t\t\tfinKey\t\t\t:$(\"#financialClient\").val().split(\"-\")[1],\n\t\t\t\t\t\tfinKeyValue\t\t:$(\"#financialClient\").val().split(\"-\")[0], //VE-32865 SE\n\t\t\t\t\t\tREQ_SEARCH_FLAG : true\n\t\t\t\t\t},\n\t\t\t\t\turl : \"jsonTallyInterfaceSearch\",\n\t\t\t\t\tsearch : true\t\t\t\t\n\t\t\t\t}).trigger('reloadGrid');\n\t\t\t\tconsole.log(retVal);\n\t\t\t}\n\t\t}",
+    "resetAll": "function resetAll()\n\t\t{\n\t\t\t $(\"#gs_intCode\").val('-1');\n\t  \t\t $(\"#gs_billPartyCode\").val('-1')\n\t  \t\t $(\"#gs_key2\").val('');\n\t  \t\t $(\"#gs_status\").val('-1');\n\t  \t\t $(\"#gs_errorDesc\").val('');\n\t  \t\t $(\"#gs_modifiedDate\").val('');\n\t  \t\t $(\"#fromUpdDate\").val(\"\");\n\t  \t\t $(\"#toUpdDate\").val(\"\");\n\t  \t\t $(\"#gs_clientId\").val('-1');\n\t  \t\t \n\t\t\t $(\"#tallyInterfaceTable\").jqGrid('clearGridData', {\n\t\t\t\tclearfooter : true\n\t\t     });\n\t\t}",
+    "reloadTransmitLogSearchGrid": "function reloadTransmitLogSearchGrid(event) {\n   \t\t\tvar billPartyCode = $(\"#gs_billPartyCodeTL\").val();\n   \t\t\tvar intCode = $(\"#gs_intCodeTL\").val();\n   \t\t\tif(billPartyCode != \"-1\" && intCode == \"-1\" && $(\"#financialClient\").val().split(\"-\")[1] != \"XRO\"){\n   \t\t\t\ttryFocusBS($(\"#gs_intCodeTL\"));\n   \t\t\t\twindow.parent.showAlert('Document Type is manadatory for searching');\n   \t\t\t\treturn false;\n   \t\t\t}\n   \t\t\telse{\n   \t\t\t\t$(\"#transmitLogTable\").jqGrid('setGridParam', {\n   \t\t\t\t\tdatatype : 'json',\n   \t\t\t\t\tpage : 1,\n   \t\t\t\t\tpostData : {\n   \t\t\t\t\t\tbillPartyCode\t:$(\"#gs_billPartyCodeTL\").val(),\n   \t\t\t\t\t\tintCode\t\t\t:$(\"#gs_intCodeTL\").val(),\n\t\t\t\t\t\tfromLastTransmitdate:$(\"#fromLastTransmitdate\").val(),\n\t\t\t\t\t\ttoLastTransmitdate\t:$(\"#toLastTransmitdate\").val(),\n   \t\t\t\t\t\tclientId\t\t:$(\"#gs_clientIdTL\").val(),\n   \t\t\t\t\t\tfinKey          :$(\"#financialClient\").val().split(\"-\")[1],\n   \t\t\t\t\t\tREQ_SEARCH_FLAG : true\n   \t\t\t\t\t},\n   \t\t\t\t\turl : \"jsonTransmitLogSearch\",\n   \t\t\t\t\tsearch : true\t\t\t\t\n   \t\t\t\t}).trigger('reloadGrid');\n   \t\t\t}\n   \t\t}",
+    "reloadTransmitLogSearchGridForDropDown": "function reloadTransmitLogSearchGridForDropDown(event) {\n   \t\t\tvar billPartyCode = $(\"#gs_billPartyCodeTL\").val();\n   \t\t\tvar intCode = $(\"#gs_intCodeTL\").val();\n   \t\t\tif(billPartyCode != \"-1\" && intCode == \"-1\" && $(\"#financialClient\").val().split(\"-\")[1] != \"XRO\"){\n   \t\t\t\ttryFocusBS($(\"#gs_intCodeTL\"));\n   \t\t\t\twindow.parent.showAlert('Document Type is manadatory for searching');\n   \t\t\t\treturn false;\n   \t\t\t}\n   \t\t\telse{\n   \t\t\t\tvar retVal = $(\"#transmitLogTable\").jqGrid('setGridParam', {\n   \t\t\t\t\tdatatype : 'json',\n   \t\t\t\t\tpage : 1,\n   \t\t\t\t\tpostData : {\n   \t\t\t\t\t\tbillPartyCode\t:$(\"#gs_billPartyCodeTL\").val(),\n   \t\t\t\t\t\tintCode\t\t\t:$(\"#gs_intCodeTL\").val(),\n\t\t\t\t\t\tfromLastTransmitdate:$(\"#fromLastTransmitdate\").val(),\n\t\t\t\t\t\ttoLastTransmitdate\t:$(\"#toLastTransmitdate\").val(),\n   \t\t\t\t\t\tclientId\t\t:$(\"#gs_clientIdTL\").val(),\n   \t\t\t\t\t\tfinKey          :$(\"#financialClient\").val().split(\"-\")[1],\n   \t\t\t\t\t\tREQ_SEARCH_FLAG : true\n   \t\t\t\t\t},\n   \t\t\t\t\turl : \"jsonTransmitLogSearch\",\n   \t\t\t\t\tsearch : true\t\t\t\t\n   \t\t\t\t}).trigger('reloadGrid');\n   \t\t\t}\n   \t\t}",
+    "resetTransmitLog": "function resetTransmitLog()\n   \t\t{\n   \t\t\t $(\"#gs_intCodeTL\").val('-1');\n   \t  \t\t $(\"#gs_billPartyCodeTL\").val('-1');\n   \t  \t \t $(\"#gs_lastTransmitdate\").val('');\n\t  \t\t $(\"#fromLastTransmitdate\").val(\"\");\n\t  \t\t $(\"#toLastTransmitdate\").val(\"\");\n   \t  \t\t $(\"#gs_clientIdTL\").val('-1');\n   \t\t\t $(\"#transmitLogTable\").jqGrid('clearGridData', {\n   \t\t\t\tclearfooter : true\n   \t\t     });\n   \t\t}",
+    "formatActionLink": "function formatActionLink(cellvalue, options, rowObject) {\n    \t\t \n\t\t\tvar html = \"\";\n\t\t\tlet dataFound = false;\n\t\t\tif(rowObject.hdnStatus == 1 || rowObject.hdnStatus == 9) {\n\t\t\t\thtml = \"<div class='col-xs-12' style='text-align:center;'><a href='javascript:void(0);' onclick='javascript:openRequestResponseBody(event, \\\"\"\n\t\t\t\t+ rowObject.transmitDetKey+ \"\\\",\\\"\"\t+options.rowId+ \"\\\");' class='gridIcon gridEditIcon' style='margin-left: 10px;'><i class='fa fa-eye' data-toggle='tooltip' data-placement='left' title='View'></i></a><a href='javascript:void(0);' onclick='javascript:openOutputReference(event, \\\"\"\n\t\t\t\t+ options.rowId\t+ \"\\\");' class='gridIcon gridEditIcon' style='margin-left: 10px;'><i class='fa fa-info' data-toggle='tooltip' data-placement='left' title='Info'></i></a></div>\";\n\t\t\t}\n\t\t\treturn html;\n\t\t}",
+    "openOutputReference": "function openOutputReference(event, transmitDetKey){\n \t\t\tif(transmitDetKey != undefined && transmitDetKey != null){\n \t\t\t\tvar rowData = $(\"#tallyInterfaceTable\").jqGrid('getRowData', transmitDetKey);\n \t\t\t\t$(\"#outputRef1\").html((rowData.key2 != null && rowData.key2 != \"\") ? rowData.key2 : \"N/A\");\n \t\t\t\t$(\"#outputRef2\").html((rowData.key3 != null && rowData.key3 != \"\") ? rowData.key3 : \"N/A\");\n \t\t\t\t$(\"#outputReferenceDialog\").modal(\"show\");\n \t\t\t}\n \t\t}",
+    "openRequestResponseBody": "function openRequestResponseBody(event, transmitDetKey, rowId){\n \t\t\tif(transmitDetKey != undefined && transmitDetKey != null && transmitDetKey != \"\") {\n \t\t\t\t\n \t\t\t\tvar retVal = $.ajax({\n \t\t\t\t\turl : \"fetchZohoRequestResponseById\",\n \t\t\t\t\t\n \t\t\t\t\ttype : \"POST\",\n \t\t\t\t\tdata : {\n \t\t\t\t\t\ttransId : transmitDetKey\n \t\t\t\t\t},\n \t\t\t\t\tdataType : \"json\",\n \t\t\t\t\tasync : false\n \t\t\t\t}).responseText;\n \t\t\t\t\n \t\t\t\tretVal = jQuery.parseJSON(retVal);\n \t\t\t\tif(retVal != null && retVal != undefined && retVal.finTransmitDetailDTO != null \n \t\t\t\t\t\t&& (retVal.finTransmitDetailDTO.requestJson != null || retVal.finTransmitDetailDTO.responseJson != null)){\n \t\t\t\t\t\n \t\t\t\t\tif(retVal.finTransmitDetailDTO.requestJson != undefined && retVal.finTransmitDetailDTO.requestJson != \"\")\n \t\t\t\t\t\teditor.setValue(JSON.stringify(JSON.parse(retVal.finTransmitDetailDTO.requestJson), null, '\\t'), -1);\n \t\t\t\t\telse\n \t\t\t\t\t\teditor.setValue(\"\");\n \t\t\t\t\n \t\t\t\t\t if(retVal.finTransmitDetailDTO.responseJson != undefined && retVal.finTransmitDetailDTO.responseJson != \"\")\n \t\t\t\t\t\teditor1.setValue(JSON.stringify(JSON.parse(retVal.finTransmitDetailDTO.responseJson), null, '\\t'), -1);\n \t\t\t\t\telse\n \t\t\t\t\t\teditor1.setValue(\"\"); \n \t\t\t\t\tvar rowData = jQuery(\"#tallyInterfaceTable\").getRowData(rowId);\n \t\t\t\t\tlet str = \"\";\n \t\t\t\t\tif(rowData != undefined && rowData != null && rowData != \"\"){\n\n \t\t\t\t\t\tstr = \"Document Number : \" + rowData.key2;\n \t\t\t\t\t}\n \t\t\t\t\t$(\"#headLabel\").html(str);\n \t\t\t\t\t//VE-16029 E\n \t\t\t\t\t$(\"#requestResponseDialog\").modal(\"show\");\n \t\t\t\t}\n \t\t\t\telse{\n \t\t\t\t\twindow.parent.showAlert('Something Went Wrong');\n \t\t\t\t\treturn false;\n \t\t\t\t}\n \t\t\t}\n \t\t}",
+    "showHideCol": "function showHideCol(){\n    \t\tfinKeyValue=$(\"#financialClient\").val().split(\"-\")[0];\n\t\t\tvar gridObj = $(\"#tallyInterfaceTable\");\n    \t\t\n\t\t\tif(finKeyValue == '27'){\n\t\t\t\tgridObj.jqGrid(\"showCol\",\"action\");\n    \t\t} else\n\t    \t\tgridObj.jqGrid(\"hideCol\",\"action\");\n    \t\t \n    \t }"
+  },
+  "dialogs": [
+    {
+      "id": "lastTransmitDateDialog",
+      "text": "×\n\t\t\t\t\t\t\n\t\t\t\t\t\tChange Last TransmitDate\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\t\n\t                    \n\t                    \t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tCompany Name\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tDocument Type\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tLast Transmit Date\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tModified Date\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t    \n\t\t\t\t    \t\t\t\t    \n\t\t\t\t\t\n\t\t\t\t\t    Save\n\t\t\t\t\t\tClose"
+    },
+    {
+      "id": "outputReferenceDialog",
+      "text": "×\n\t\t\t\t\t\t\n\t\t\t\t\t\tOutput Result\n\t\t\t\t\t\n\t\t\t\t\t\n\t                    \n\t                    \t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tOutput Ref1\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tOutput Ref2\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t    \n\t\t\t\t    \n\t\t\t\t    \n\t\t\t\t\t\tClose"
+    },
+    {
+      "id": "requestResponseDialog",
+      "text": "×\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\n\t                    \n\t                    \t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\tRequest Body\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\tResponse Body\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+    }
+  ]
+}

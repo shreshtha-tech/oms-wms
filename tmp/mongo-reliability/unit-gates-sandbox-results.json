@@ -1,0 +1,162 @@
+[
+  {
+    "name": "verify-mongo-reliability",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-postgres-reliability",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-provider-reliability",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-production-storage-policy",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-connection-origin",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-connection-authorization",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-connection-readiness",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-connection-runtime-evidence",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-external-app-secret-redaction",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-vendor-boundaries",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-customer-boundaries",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-transporter-boundaries",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-client-boundaries",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-customer-group-bypass",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-generic-protected-modules",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-partner-master-bypass",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-tax-category-bypass",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-tax-group-bypass",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-tax-code-values",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-worker-console-boundary",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-worker-supervisor-boundary",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-whatsapp-reliability",
+    "code": 1,
+    "passed": false
+  },
+  {
+    "name": "verify-whatsapp-transport",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-whatsapp-callback-tenant-boundary",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-whatsapp-preparation-boundary",
+    "code": 1,
+    "passed": false
+  },
+  {
+    "name": "verify-wms-api-input-boundary",
+    "code": 1,
+    "passed": false
+  },
+  {
+    "name": "verify-diagnostic-failure-boundary",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-credential-diagnostic-order",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-observation-diagnostic-order",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-direct-inventory-events-closed",
+    "code": 1,
+    "passed": false
+  },
+  {
+    "name": "verify-legacy-stock-write-blocks",
+    "code": 0,
+    "passed": true
+  },
+  {
+    "name": "verify-legacy-fulfillment-write-blocks",
+    "code": 0,
+    "passed": true
+  }
+]

@@ -164,10 +164,10 @@ export function GlobalScreenOverlayHost() {
       key={feedback.id}
       role={feedback.type === 'err' ? 'alert' : 'status'}
       data-feedback-type={feedback.type}
-      className={`fixed right-[2px] top-[52px] z-[25000] flex min-h-[52px] w-[302px] items-center border px-3 py-2 text-sm shadow-lg ${feedback.type === 'ok' ? 'border-emerald-500 bg-emerald-100 text-emerald-950' : 'border-amber-500 bg-amber-100 text-slate-900'}`}
+      className={`pointer-events-none fixed right-[2px] top-[52px] z-[25000] flex min-h-[52px] w-[302px] items-center border px-3 py-2 text-sm shadow-lg ${feedback.type === 'ok' ? 'border-emerald-500 bg-emerald-100 text-emerald-950' : 'border-amber-500 bg-amber-100 text-slate-900'}`}
     >
       <span className="flex-1">{feedback.msg}</span>
-      <button aria-label="Dismiss message" onClick={clearFeedback} className="ml-2 text-current/60 hover:text-current">×</button>
+      <button aria-label="Dismiss message" onClick={clearFeedback} className="pointer-events-auto ml-2 text-current/60 hover:text-current">×</button>
     </div>}
   </>;
 }

@@ -1,2 +1,128 @@
-import{useEffect,useState}from'react';import{Download,Upload}from'lucide-react';import Modal from'../../components/Modal';import{apiGet,apiSend}from'../../lib/api';import EnquiryScreen from'../EnquiryScreen';import Shell from'../Shell';import{Btn,Toast}from'../parts';
-export default function Allocate(){const[rows,setRows]=useState<any[]>([]),[pager,setPager]=useState({page:0,total:0,records:0,pageSize:50}),[loading,setLoading]=useState(false),[selected,setSelected]=useState<number[]>([]),[advanced,setAdvanced]=useState(false),[scanType,setScanType]=useState(false),[wip,setWip]=useState(false),[forceAlloc,setForceAlloc]=useState(false),[shortPick,setShortPick]=useState(false),[last,setLast]=useState<any>({}),[notice,setNotice]=useState<any>(null),[importOpen,setImportOpen]=useState(false),[importText,setImportText]=useState(''),[closeOpen,setCloseOpen]=useState(false),[reason,setReason]=useState('-1'),[remarks,setRemarks]=useState('');useEffect(()=>{apiGet('/api/order-allocation');void search({},1,50)},[]);async function search(f:any={},page=1,size=pager.pageSize){setLast(f);setLoading(true);try{const r:any=await apiSend('/api/order-allocation','POST',{action:'search',REQ_SEARCH_FLAG:true,rows:size,page,sidx:'orderNo',sord:'asc',siteLocation:f.siteLocation||'-1',fromMagentoOrderNo:f.fromExternOrderNo||'',fromOrderNo:f.orderNo||'',onHold:f.holdFlag||'-1',orderType:f.orderType||'-1',fromOrderDate:f.fromOrderDate||'',toOrderDate:f.toOrderDate||'',wip,forceAlloc,status:f.status||'',skuCode:f.skuCode||'',customerName:f.customerCode||'',customerEmail:f.customerEmail||'',customerPh:f.customerPh||'',orderTagTmp:f.orderTag||'',clientId:'0',filteredOrderArr:f.filteredOrderArr||'',searchType:scanType,sku:f.skuCode||'',virtualBomSku:f.virtualBomSku||'',shortPick});setRows(r.gridModel);setPager({page:r.page,total:r.total,records:r.records,pageSize:size})}catch(e:any){setNotice({msg:e.message,type:'err'})}finally{setLoading(false)}}async function run(action:'allocate'|'unAllocate'|'close'){try{const r:any=await apiSend('/api/order-allocation','PUT',{action,ids:selected,searchType:scanType,selectType:'C',reason:reason==='-1'?'':reason,remarks});setNotice({msg:r.jsonMessage,type:'ok'});setSelected([]);setCloseOpen(false);await search(last)}catch(e:any){setNotice({msg:e.message,type:'err'})}}async function importOrders(){try{const orders=importText.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);const r:any=await apiSend('/api/order-allocation','POST',{action:'import',orders});setNotice({msg:r.jsonMessage,type:'ok'});setImportOpen(false)}catch(e:any){setNotice({msg:e.message,type:'err'})}}const cols:any[]=[{key:'clientId',label:'Client',filter:'select',options:['0-DummyClient']},{key:'orderNo',label:'Order No'},{key:'fromExternOrderNo',label:'Ext Order No'},{key:'status',label:'Status',filter:'select',options:['Part Allocated','Allocated','Part Picked','Pick complete','Partially Shipped','Confirmed']},{key:'orderDate',label:'Order Date'},{key:'skuCode',label:'SKU'},{key:'lineQty',label:'Line Qty',filter:'none'},{key:'openQty',label:'Open Qty',filter:'none'},{key:'lineAmount',label:'Line Amount',filter:'none'},{key:'lineNo',label:'Line No',filter:'none'},{key:'siteLocation',label:'Site Location',filter:'select',options:['UWH - JX Karawaci']},{key:'customerCode',label:'Customer Name'},{key:'orderType',label:'Order Type',filter:'select',options:['Normal','Cash On Delivery','Prepaid','COD']},{key:'orderQty',label:'Order Qty',filter:'none'},{key:'holdFlag',label:'On Hold',filter:'select',options:['Yes','No']},{key:'errorDesc',label:'Logs',filter:'none'}];const fields=advanced?[{key:'customerEmail',label:'Customer Email'},{key:'customerPh',label:'Customer Phone'},{key:'virtualBomSku',label:'Bom SKU'},{key:'filteredOrderArr',label:'Multiple Order No. (comma separated)'},{key:'fromOrderDate',label:'From Order Date'},{key:'toOrderDate',label:'To Order Date'}]:[];return <Shell active="wms" breadcrumb="WMS > Order Processing > Order Allocate/Unallocate" openScreens={[{label:'Order Allocate/Unallocate',to:'#'}]}><div className="mb-2 flex flex-wrap gap-4 text-xs"><label><input aria-label="SKU Wise" type="checkbox" checked={scanType} onChange={e=>setScanType(e.target.checked)}/> SKU Wise</label><label><input aria-label="Show Short Pick Line" type="checkbox" checked={shortPick} onChange={e=>setShortPick(e.target.checked)}/> Show Short Pick Line</label><label><input aria-label="WIP" type="checkbox" checked={wip} onChange={e=>setWip(e.target.checked)}/> WIP</label><label><input aria-label="UnHold & Process" type="checkbox" checked={forceAlloc} onChange={e=>setForceAlloc(e.target.checked)}/> UnHold & Process</label></div><EnquiryScreen sectionTitle="Order Allocate/Unallocate" breadcrumb={[{label:'WMS'},{label:'Order Processing'},{label:'Order Allocate/Unallocate'}]} cols={cols} fields={fields} rows={rows} loading={loading} remote={pager} pageSizes={[50,100,200]} selectedIds={selected} onSelectionChange={setSelected} onSearch={search} onReset={()=>{setAdvanced(false);setSelected([]);void search({},1,50)}} actionsBeforeResetCount={4} actions={[{label:'Allocate',onClick:()=>void run('allocate')},{label:'UnAllocate',onClick:()=>void run('unAllocate')},{label:'Close SO',onClick:()=>selected.length?setCloseOpen(true):setNotice({msg:'Please Select An Order',type:'err'})},{label:'Advance Search',onClick:()=>setAdvanced(!advanced)},{label:'Import',icon:Upload,onClick:()=>setImportOpen(true)},{label:'Export',icon:Download,onClick:()=>setNotice({msg:rows.length?'Order allocation export prepared':'No data found',type:rows.length?'ok':'err'})}]}/><Modal title="Import" open={importOpen} onClose={()=>setImportOpen(false)}><p className="text-xs">Maximum Records can be Entered:500</p><textarea aria-label="Import Order Numbers" className="inp mt-2 h-40" value={importText} onChange={e=>setImportText(e.target.value)} placeholder={'orderno1\norderno2'}/><p className="mt-2 text-xs">Max 100 lines are allowed at a time</p><div className="mt-3 flex justify-end gap-2"><Btn onClick={()=>void importOrders()}>OK</Btn><Btn variant="ghost" onClick={()=>setImportOpen(false)}>Close</Btn></div></Modal><Modal title="Close SO" open={closeOpen} onClose={()=>setCloseOpen(false)}><label className="text-xs">Reason For Cancellation<select aria-label="Reason For Cancellation" className="inp mt-1" value={reason} onChange={e=>setReason(e.target.value)}><option value="-1">--- Select ---</option><option value="10">Cancel order</option><option value="23">Auto Cancelled</option></select></label><label className="mt-3 block text-xs">Remarks<textarea aria-label="Remarks" className="inp mt-1" value={remarks} onChange={e=>setRemarks(e.target.value)}/></label><div className="mt-3 flex justify-end"><Btn onClick={()=>void run('close')}>Close SO</Btn></div></Modal>{notice&&<Toast {...notice} onClose={()=>setNotice(null)}/>}</Shell>}
+import { useEffect, useState } from 'react';
+import { Download, Search, Upload } from 'lucide-react';
+import Modal from '../../components/Modal';
+import { apiGet, apiSend } from '../../lib/api';
+import EnquiryScreen from '../EnquiryScreen';
+import Shell from '../Shell';
+import { Btn, Toast } from '../parts';
+
+function downloadCsv(rows: any[]) {
+  const columns = [
+    ['Client', 'clientId'], ['Order No', 'orderNo'], ['Ext Order No', 'fromExternOrderNo'],
+    ['Status', 'status'], ['Order Date', 'orderDate'], ['SKU', 'skuCode'], ['Line Qty', 'lineQty'],
+    ['Open Qty', 'openQty'], ['Line Amount', 'lineAmount'], ['Line No', 'lineNo'],
+    ['Site Location', 'siteLocation'], ['Customer Name', 'customerCode'], ['Order Type', 'orderType'],
+    ['Order Qty', 'orderQty'], ['On Hold', 'holdFlag'], ['Record Trust', 'trust'],
+  ];
+  const csv = [columns.map(([label]) => label), ...rows.map(row => columns.map(([, key]) => row[key] ?? ''))]
+    .map(values => values.map(value => {
+      const raw = String(value);
+      const safe = /^\s*[=+\-@]/.test(raw) ? `'${raw}` : raw;
+      return `"${safe.replaceAll('"', '""')}"`;
+    }).join(',')).join('\r\n') + '\r\n';
+  const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'order-allocation-legacy-unverified.csv';
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
+export default function Allocate() {
+  const [rows, setRows] = useState<any[]>([]);
+  const [meta, setMeta] = useState<any>({ locations: [], clients: [] });
+  const [pager, setPager] = useState({ page: 1, total: 0, records: 0, pageSize: 50 });
+  const [loading, setLoading] = useState(false);
+  const [advanced, setAdvanced] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [orderText, setOrderText] = useState('');
+  const [notice, setNotice] = useState<any>(null);
+
+  useEffect(() => {
+    apiGet('/api/order-allocation')
+      .then(setMeta)
+      .catch((error: Error) => setNotice({ msg: error.message || 'Unable to load allocation enquiry', type: 'err' }));
+    void search({}, 1, 50);
+  }, []);
+
+  async function search(filters: any = {}, page = 1, size = pager.pageSize) {
+    setLoading(true);
+    try {
+      const result: any = await apiSend('/api/order-allocation', 'POST', {
+        action: 'search', REQ_SEARCH_FLAG: true, rows: size, page, sidx: 'orderNo', sord: 'asc',
+        siteLocation: filters.siteLocation || '-1', fromMagentoOrderNo: filters.fromExternOrderNo || '',
+        fromOrderNo: filters.orderNo || '', onHold: filters.holdFlag || '-1', orderType: filters.orderType || '-1',
+        fromOrderDate: filters.fromOrderDate || '', toOrderDate: filters.toOrderDate || '',
+        status: filters.status || '', skuCode: filters.skuCode || '', customerName: filters.customerCode || '',
+        customerEmail: filters.customerEmail || '', customerPh: filters.customerPh || '', clientId: filters.clientId || '',
+        filteredOrderArr: filters.filteredOrderArr || '', searchType: false, sku: filters.skuCode || '',
+      });
+      setRows(result.gridModel);
+      setPager({ page: result.page, total: result.total, records: result.records, pageSize: size });
+    } catch (error: any) {
+      setRows([]);
+      setNotice({ msg: error.message, type: 'err' });
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function findOrders() {
+    try {
+      const orders = orderText.split(/\r?\n/).map(value => value.trim()).filter(Boolean);
+      const result: any = await apiSend('/api/order-allocation', 'POST', { action: 'import', orders });
+      setRows(result.rows || []);
+      setPager({ page: 1, total: 1, records: (result.rows || []).length, pageSize: pager.pageSize });
+      setNotice({ msg: result.notFound?.length ? `Found ${(result.rows || []).length}; not found: ${result.notFound.join(', ')}` : `Found ${(result.rows || []).length} legacy order row(s). No allocation was performed.`, type: result.notFound?.length ? 'err' : 'ok' });
+      setSearchOpen(false);
+    } catch (error: any) {
+      setNotice({ msg: error.message, type: 'err' });
+    }
+  }
+
+  const cols: any[] = [
+    { key: 'clientId', label: 'Client', filter: 'select', options: (meta.clients || []).map((row: any) => row[1]) },
+    { key: 'orderNo', label: 'Order No' }, { key: 'fromExternOrderNo', label: 'Ext Order No' },
+    { key: 'status', label: 'Status', filter: 'select', options: ['Part Allocated', 'Allocated', 'Part Picked', 'Pick complete', 'Partially Shipped', 'Confirmed'] },
+    { key: 'orderDate', label: 'Order Date' }, { key: 'skuCode', label: 'SKU' },
+    { key: 'lineQty', label: 'Line Qty', filter: 'none' }, { key: 'openQty', label: 'Open Qty', filter: 'none' },
+    { key: 'lineAmount', label: 'Line Amount', filter: 'none' }, { key: 'lineNo', label: 'Line No', filter: 'none' },
+    { key: 'siteLocation', label: 'Site Location', filter: 'select', options: (meta.locations || []).slice(1).map((row: any) => row[1]) },
+    { key: 'customerCode', label: 'Customer Name' },
+    { key: 'orderType', label: 'Order Type', filter: 'select', options: ['Normal', 'Cash On Delivery', 'Prepaid', 'COD'] },
+    { key: 'orderQty', label: 'Order Qty', filter: 'none' },
+    { key: 'holdFlag', label: 'On Hold', filter: 'select', options: ['Yes', 'No'] },
+    { key: 'trust', label: 'Record Trust', filter: 'none' },
+  ];
+  const fields = advanced ? [
+    { key: 'customerEmail', label: 'Customer Email' }, { key: 'customerPh', label: 'Customer Phone' },
+    { key: 'filteredOrderArr', label: 'Multiple Order No. (comma separated)' },
+    { key: 'fromOrderDate', label: 'From Order Date' }, { key: 'toOrderDate', label: 'To Order Date' },
+  ] : [];
+  const actions = [
+    { label: 'Advance Search', onClick: () => setAdvanced(value => !value) },
+    { label: 'Find Orders', icon: Search, onClick: () => setSearchOpen(true) },
+    { label: 'Export CSV', icon: Download, onClick: () => rows.length ? downloadCsv(rows) : setNotice({ msg: 'No data found', type: 'err' }) },
+  ];
+
+  return (
+    <Shell active="wms" breadcrumb="WMS > Order Processing > Order Allocate/Unallocate" openScreens={[{ label: 'Order Allocate/Unallocate', to: '#' }]}>
+      <div role="status" className="mb-3 rounded border border-amber-300 bg-amber-50 p-3 text-sm text-amber-950">
+        This screen reads legacy fulfillment rows only. Allocate, UnAllocate, and Close SO are disabled until Central Inventory can reserve and release order lines. No stock or order status changes are available here.
+      </div>
+      <EnquiryScreen
+        sectionTitle="Order Allocate/Unallocate" breadcrumb={[{ label: 'WMS' }, { label: 'Order Processing' }, { label: 'Order Allocate/Unallocate' }]}
+        cols={cols} fields={fields} rows={rows} loading={loading} remote={pager}
+        pageSizes={[50, 100, 200]} onSearch={search}
+        onReset={() => { setAdvanced(false); void search({}, 1, 50); }}
+        actionsBeforeResetCount={1} actions={actions}
+      />
+      <Modal title="Find Order Numbers (Read Only)" open={searchOpen} onClose={() => setSearchOpen(false)}>
+        <p className="mb-2 text-xs text-slate-600">Enter up to 100 order numbers to find matching legacy rows. This does not allocate them.</p>
+        <textarea aria-label="Find Order Numbers" className="inp mt-2 h-40" value={orderText} onChange={event => setOrderText(event.target.value)} placeholder={'orderno1\norderno2'} />
+        <div className="mt-3 flex justify-end gap-2"><Btn onClick={() => void findOrders()}>Find</Btn><Btn variant="ghost" onClick={() => setSearchOpen(false)}>Close</Btn></div>
+      </Modal>
+      {notice && <Toast {...notice} onClose={() => setNotice(null)} />}
+    </Shell>
+  );
+}

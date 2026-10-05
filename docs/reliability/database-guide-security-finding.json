@@ -1,0 +1,18 @@
+{
+  "at": "2026-10-04T21:48:35.457741+00:00",
+  "finding": "DATABASE_GUIDE_UNSAFE_CREDENTIAL_AND_ACCESS_ADVICE",
+  "source": "db/DATABASE_SETUP.md",
+  "attackPath": "Operator follows reusable password, global database role or unrestricted network guidance",
+  "rootCause": "Historical setup guide embedded password-like example and obsolete runtime/auth/seed claims",
+  "impact": "Potential credential reuse, excess privilege and expanded network exposure; actual configured use UNKNOWN",
+  "repair": "Removed password literal and broad role/network instructions; documented private configuration, least privilege, controlled initialization and actual runtime boundaries",
+  "evidence": [
+    "api/mongo.js",
+    "scripts/seed.js",
+    "server.js"
+  ],
+  "credentialAuthenticity": "UNKNOWN",
+  "historicalExposure": "Historical copies require separate review; no history changed",
+  "rotationRelevance": "UNKNOWN; no rotation or revocation performed",
+  "verification": "Source review and bounded documentation assertions; no hosted permissions or genuine authentication proven"
+}

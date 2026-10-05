@@ -1,0 +1,32 @@
+{
+  "id": "ADMIN_STALE_DELETE_RACE",
+  "date": "2026-10-05",
+  "status": "REPAIRED_CONTROLLED_MEMORY_AND_REAL_LOCAL_MONGO",
+  "attackPath": "A stale delete request could remove a newly edited API key or role because generic DELETE matched only ID. Concurrent deletes could also both report success and append duplicate audits.",
+  "rootCause": "No client version requirement or atomic version predicate on deletion.",
+  "impact": "Loss of newer credential/permission records, ambiguous deletion success and duplicate audit claims. Actual historical exploitation UNKNOWN.",
+  "affectedBoundary": [
+    "api/admin.js DELETE",
+    "api/mongo.js admin deletion"
+  ],
+  "repair": "Require a valid client version, reject stale versions and atomically delete matching id/version; append audit only after one confirmed deletion.",
+  "regression": "scripts/verify-admin-version-race.mjs expanded delete cases",
+  "negativeTests": [
+    "Missing version returns 422",
+    "Stale version returns 409",
+    "20 concurrent deletes have one success",
+    "20 concurrent update/delete attempts have one success; surviving update retains version 2",
+    "Exactly one audit for the winning mutation"
+  ],
+  "evidence": {
+    "memory": "tmp/mongo-reliability/admin-delete-version-memory-current.log exit 0",
+    "realLocalMongo": "tmp/mongo-reliability/admin-delete-version-mongo-current.log exit 0; synthetic replica set and persisted readback; daemon/files removed"
+  },
+  "remainingLimitations": [
+    "No hosted/browser/role/tenant proof",
+    "Older generic-delete callers omitting version receive 422",
+    "Webhook deletion uses a different path and last-webhook concurrency remains unresolved",
+    "Deletion/audit are still separate writes with a crash gap",
+    "Replay after successful deletion returns 404; no durable operation replay receipt"
+  ]
+}

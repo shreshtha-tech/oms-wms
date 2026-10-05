@@ -1,0 +1,420 @@
+{
+  "grids": [
+    {
+      "id": "webhookList",
+      "url": "",
+      "datatype": "json",
+      "rowNum": 20,
+      "multiselect": true,
+      "height": 397,
+      "colModel": [
+        {
+          "name": "cb",
+          "width": 35,
+          "hidden": false,
+          "search": false,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "webhookKey",
+          "label": "WebHookKey",
+          "width": 100,
+          "hidden": false,
+          "search": false,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "docId",
+          "label": "Doc Id",
+          "width": 100,
+          "hidden": false,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          },
+          "formatter": "function docTypeformatLink(cellvalue, options, rowObject) {\n\t\tvar docType = rowObject.docType;\n\t\tvar source = rowObject.source;\n\t\tvar internal_doc_id = rowObject.internal_doc_id;\n\t    var htm = \"<div title='' style='margin-top:3px;margin-bottom:2px;'>\";\n\t\thtm+= \"<div class='col-xs-12 col-sm-12' style='text-align:center; '><span id='codeId' class='gCtrl' onclick='javascript:openNewScreen(\\\"\" + cellvalue+ \"\\\",event,\\\"\" + docType + \"\\\",\\\"\" + source + \"\\\",\\\"\" + internal_doc_id + \"\\\"); \";\n\t\thtm+= \"return false;' style='color: #2179d0; font-weight:bold; font-family:Arial;cursor:pointer;cursor:hand;'>\" + cellvalue + \"</span></div></div>\";\n\t\treturn htm;\n\t\n\t}"
+        },
+        {
+          "name": "docId",
+          "label": "Doc Id",
+          "width": 60,
+          "hidden": true,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "createDate",
+          "label": "Created Date",
+          "width": 166,
+          "hidden": false,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          },
+          "formatter": "date"
+        },
+        {
+          "name": "docType",
+          "label": "Doc Type",
+          "width": 100,
+          "hidden": false,
+          "search": true,
+          "stype": "select",
+          "searchoptions": {
+            "value": ":",
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "docStatus",
+          "label": "Doc Status",
+          "width": 100,
+          "hidden": false,
+          "search": true,
+          "stype": "select",
+          "searchoptions": {
+            "value": ":",
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "responseCode",
+          "label": "Response Code",
+          "width": 133,
+          "hidden": false,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "rowVersion",
+          "label": "Row Version",
+          "width": 133,
+          "hidden": false,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "sellerId",
+          "label": "Seller Id",
+          "width": 133,
+          "hidden": false,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          },
+          "formatter": "function sellerformatLink(cellvalue, options, rowObject) {\n\tvar htm='';\n\t\tif(cellvalue !=null && cellvalue!=''){\n\t\t\t \thtm = \"<div title='' style='margin-top:3px;margin-bottom:2px;'>\";\n\t\t\t\thtm+= \"<div class='col-xs-4' style='text-align:center; '><span class='gCtrl' onclick='javascript:openDialog(\\\"\" + cellvalue+ \"\\\",event); return false;' style='color: #2179d0; font-weight:bold; font-family:Arial;cursor:pointer;cursor:hand;'>\" + cellvalue + \"</span></div>\";\n\t\t\t\thtm+=\"</div>\";\n\t\t}\n\t\treturn htm;\n\t}"
+        },
+        {
+          "name": "apiResponse",
+          "label": "ApiRespsonse",
+          "width": 100,
+          "hidden": true,
+          "search": false,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "source",
+          "label": "Source",
+          "width": 100,
+          "hidden": true,
+          "search": false,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "internal_doc_id",
+          "label": "Source",
+          "width": 100,
+          "hidden": true,
+          "search": false,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "response",
+          "label": "Response",
+          "width": 100,
+          "hidden": true,
+          "search": false,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "createdBy",
+          "label": "Created By",
+          "width": 100,
+          "hidden": true,
+          "search": false,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "modifiedBy",
+          "label": "Modified By",
+          "width": 100,
+          "hidden": true,
+          "search": false,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "modifiedDate",
+          "label": "Modified Date",
+          "width": 100,
+          "hidden": true,
+          "search": false,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "action",
+          "label": "Action",
+          "width": 132,
+          "hidden": false,
+          "search": false,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          },
+          "formatter": "function actionFormatter(cellvalue, options, rowObject) {\n\t\tvar htm = \"<div class='col-xs-6' data-toggle='tooltip' data-placement='right' title=Edit style='text-align:right;'><a href='javascript:void(0);'  onclick='javascript:editWebHook(\\\"\"\n\t\t\t\t+ options.rowId\n\t\t\t\t+ \"\\\",event);' class='gridIcon gridEditIcon'><i class='fa fa-pencil';'></i></a></div><div class='col-xs-2' data-toggle='tooltip' title=View style='text-align:right;'><a href='javascript:void(0);'  onclick='javascript:viewWebHookAPI(\\\"\"\n\t\t\t\t+ options.rowId\n\t\t\t\t+ \"\\\",event);' class='gridIcon gridViewIcon'><i class='fa fa-eye';'></i></a></div><div  class='col-xs-2' data-toggle='tooltip' data-placement='left' title=Audit <a href='javascript:void(0);' onclick='javascript:openAuditPopUp(\\\"\"\n\t\t\t\t+ options.rowId\n\t\t\t\t+ \"\\\",event)'  class='gridIcon gridAuditIcon'><i class='fa fa-info' style='padding:0 4px;'></i></a></div>\";\n\t\treturn htm;//VE-56507 S,E\n\t}"
+        }
+      ],
+      "colNames": [
+        "<input role='checkbox' id='cb_webhookList' class='cbox' type='checkbox'/>",
+        "WebHookKey",
+        "Doc Id",
+        "Doc Id",
+        "Created Date",
+        "Doc Type",
+        "Doc Status",
+        "Response Code",
+        "Row Version",
+        "Seller Id",
+        "ApiRespsonse",
+        "Source",
+        "Source",
+        "Response",
+        "Created By",
+        "Modified By",
+        "Modified Date",
+        "Action"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "",
+      "text": "",
+      "event": "mouseover",
+      "handlers": [
+        "function(){La.addClass(o)}"
+      ]
+    },
+    {
+      "id": "",
+      "text": "",
+      "event": "mouseout",
+      "handlers": [
+        "function(){La.removeClass(o)}"
+      ]
+    },
+    {
+      "id": "cb_webhookList",
+      "text": "",
+      "event": "click",
+      "handlers": [
+        "function(e){var t,n,r=Y.get(this,i);if(1&e.isTrigger&&this[i]){if(r.length)(S.event.special[i]||{}).delegateType&&e.stopPropagation();else if(r=s.call(arguments),Y.set(this,i,r),t=o(this,i),this[i](),r!==(n=Y.get(this,i))||t?Y.set(this,i,!1):n={},r!==n)return e.stopImmediatePropagation(),e.preventDefault(),n.value}else r.length&&(Y.set(this,i,{value:S.event.trigger(S.extend(r[0],S.Event.prototype),r.slice(1),this)}),e.stopImmediatePropagation())}"
+      ]
+    },
+    {
+      "id": "gs_docId",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "gs_docId",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "gs_createDate",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "gs_createDate",
+      "text": "",
+      "event": "click",
+      "handlers": [
+        "function(){return e.apply(t||this,r.concat(s.call(arguments)))}"
+      ]
+    },
+    {
+      "id": "gs_createDate",
+      "text": "",
+      "event": "focus",
+      "handlers": [
+        "function(e){var t,n,r=Y.get(this,i);if(1&e.isTrigger&&this[i]){if(r.length)(S.event.special[i]||{}).delegateType&&e.stopPropagation();else if(r=s.call(arguments),Y.set(this,i,r),t=o(this,i),this[i](),r!==(n=Y.get(this,i))||t?Y.set(this,i,!1):n={},r!==n)return e.stopImmediatePropagation(),e.preventDefault(),n.value}else r.length&&(Y.set(this,i,{value:S.event.trigger(S.extend(r[0],S.Event.prototype),r.slice(1),this)}),e.stopImmediatePropagation())}",
+        "function(){return e.apply(t||this,r.concat(s.call(arguments)))}"
+      ]
+    },
+    {
+      "id": "gs_createDate",
+      "text": "",
+      "event": "keyup",
+      "handlers": [
+        "function(){return e.apply(t||this,r.concat(s.call(arguments)))}"
+      ]
+    },
+    {
+      "id": "gs_createDate",
+      "text": "",
+      "event": "keydown",
+      "handlers": [
+        "function(){return e.apply(t||this,r.concat(s.call(arguments)))}"
+      ]
+    },
+    {
+      "id": "gs_createDate",
+      "text": "",
+      "event": "apply",
+      "handlers": [
+        "function(ev, picker) {\r\n\t\t\tchangeDateRangeData(ctrlId,hdnFrom,hdnTo);\r\n\t\t}"
+      ]
+    },
+    {
+      "id": "gs_docType",
+      "text": "--- Select ---INBOUNDORDERORDER RETURNRTVTRANSHIPMENTPO",
+      "event": "change",
+      "handlers": [
+        "function(){return k(),!1}",
+        "function(event) { \n\t\t\t   statusSearchMap();\n\t\t\t  }"
+      ]
+    },
+    {
+      "id": "gs_docStatus",
+      "text": "--- Select ---AllocatedCancelledClosedConfirmedDeliveredDelivery createdPackedPa",
+      "event": "change",
+      "handlers": [
+        "function(){return k(),!1}"
+      ]
+    },
+    {
+      "id": "gs_responseCode",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "gs_rowVersion",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "gs_sellerId",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "",
+      "text": "2050100200",
+      "event": "change",
+      "handlers": [
+        "function(){return u(\"records\",this)?(d.p.page=Math.round(d.p.rowNum*(d.p.page-1)/this.value-.5)+1,d.p.rowNum=this.value,d.p.pager&&$(\".ui-pg-selbox\",d.p.pager).val(this.value),d.p.toppager&&$(\".ui-pg-selbox\",d.p.toppager).val(this.value),S(),!1):!1}"
+      ]
+    }
+  ],
+  "functions": {
+    "encryptPasswordRSAUsingPubKey": "function encryptPasswordRSAUsingPubKey(password) {\n\tconst crypt = new JSEncrypt();\n\n\tconst publicKeyRSA = `-----BEGIN PUBLIC KEY-----\n\t\tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwByF8BbfSm98Vf5IsUsW\n\t\tpgCLPYEbYm8AFKIuVnteGA7PmBTJS3Mx1sYv6E8httGIFoPCu+p87nDrKYz1eK3n\n\t\tnJPxQOkxOaigpgejWRL9QCtkzNTbwKDWWGmoLxRgUKQMfLqX6Imwp/TdqOIGZEed\n\t\t206ISr8ENXVrfeW0Roi6yfSXgsOPS+LU+7oaGgaYRWGKDUsIKysKimhiIspGBvLa\n\t\tSG5urTI5bIEQkOqspzFWL/USBgd41mUdNm7LzFQi3CH3WySOdv2+gobRofsH5I4e\n\t\t/iUBGx5JuC+WUNhjwi4+P0QgOwbfDBnCv4VC1skVjBkkxs53M01xPiCNDhcmJbND\n\t\tQQIDAQAB\n\t\t-----END PUBLIC KEY-----`;\n\n\tcrypt.setPublicKey(publicKeyRSA);\n\n\tconst encryptedData = crypt.encrypt(password);\n\n\treturn encryptedData;\n}",
+    "gtag": "function gtag(){dataLayer.push(arguments);}",
+    "alignModal": "function alignModal() {\n\t    \t $(\".modal-dialog\").css(\"margin-top\", $(parent.document).scrollTop()+20);\n\t     }",
+    "showProgressBar": "function showProgressBar() {\n\t\ttry {\n\t\t\tif (typeof blockUIStart === 'function') {\n\t\t\t\tblockUIStart();\n\t\t\t} else if (typeof window.parent.blockUIStart === 'function') {\n\t\t\t\twindow.parent.blockUIStart();\n\t\t\t} else if (typeof window.parent.parent.blockUIStart === 'function') {\n\t\t\t\twindow.parent.parent.blockUIStart();\n\t\t\t} else if (typeof window.parent.parent.parent.blockUIStart === 'function') {\n\t\t\t\twindow.parent.parent.parent.blockUIStart();\n\t\t\t}\n\t\t} catch (e) {\n\t\t  console.log(e.message);\n\t\t}\n\t}",
+    "hideProgressBar": "function hideProgressBar() {\n\t\ttry {\n\t\t\tif (typeof blockUIEnd === 'function') {\n\t\t\t\tblockUIEnd();\n\t\t\t} else if (typeof window.parent.blockUIEnd === 'function') {\n\t\t\t\twindow.parent.blockUIEnd();\n\t\t\t} else if (typeof window.parent.parent.blockUIEnd === 'function') {\n\t\t\t\twindow.parent.parent.blockUIEnd();\n\t\t\t} else if (typeof window.parent.parent.parent.blockUIEnd === 'function') {\n\t\t\t\twindow.parent.parent.parent.blockUIEnd();\n\t\t\t}\n\t\t} catch (e) {\n\t\t\tconsole.log(e.message);\n\t\t}\n\t}",
+    "getGridWidth": "function getGridWidth() {\n\t\ttry {\n\t\t\tvar w = window.parent.$(\"#screensWrapper\").width();\n\t\t\tif(w>100)\n\t\t\t\treturn window.parent.$(\"#screensWrapper\").width()-10;\n\t\t\telse\n\t\t\t\treturn $(window).width()-10;\n\t\t} catch (e) {\n\t\t\tconsole.log(e.message);\n\t\t\treturn $(window).width()-10;\n\t\t}\n\t}",
+    "shortcutKey": "function shortcutKey(){ \t\t\n    \t$(document).bind('keydown', function(e) {\n    \t\tvar keyCode = (e.keyCode) ? e.keyCode : ((e.charCode) ? e.charCode : e.which);\n    \t\tif (e.originalEvent.altKey) {\n    \t\t\t// ALT + S     Search                   \n    \t\t\tif (keyCode === 83) {\n    \t\t\t\treloadSearchGrid();\n    \t\t\t\te.preventDefault();\n    \t\t\t\treturn false;\n    \t\t\t\t\n    \t\t\t}\n    \t\t\t// ALT + N      Reset                 \n    \t\t\tif (keyCode == 78) {\n    \t\t\t\tresetAll();\n    \t\t\t\te.preventDefault();\n    \t\t\t\treturn false;\n    \t\t\t}\n    \t\t\t// ALT + F    Add New\n    \t\t\tif (keyCode == 70){\n    \t\t\t\taddnew();\n    \t\t\t\te.preventDefault();\n    \t\t\t\treturn false;\n    \t\t\t}\n    \t\t\t\n    \t\t}\n    \t});\n    }",
+    "gridComplete": "function gridComplete(event, element) {\n\t\t\t\t\t\tpageResized();\n\t\t\t\t\t}",
+    "pageHeight": "function pageHeight() {\n\t\t\t\t\t\treturn $(\"#mainBody\").height();\n\t\t\t\t\t}",
+    "pageResized": "function pageResized() {\n\t\t\t\t\t\tgenricSearchGridResized();\t\t\n\t\t\t\t\t}",
+    "genricSearchGridResized": "function genricSearchGridResized() {\n\t\t\t\t\t\tvar gridObj = $(\"#webhookList\");\n\t\t\t\t\t\t\n\t\t\t\t\t\tvar gridHeight = window.parent.getParentHeight()-158;\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\tvar gridWidth = $(window).width();\n\t\t\t\t\t\tif(gridWidth<270)\n\t\t\t\t\t\t\tgridWidth=270;\n\t\t\t\t\t\tgridObj.jqGrid('setGridParam', { shrinkToFit: $(window).width()<992 ? false : true });\n\t\t\t\t\t\ttry {\n\t\t\t\t\t\t\tif($(window).width()<992) {\n\t\t\t\t\t\t\t\tif(oldWidth>992) {\n\t\t\t\t\t\t\t\t\tgridObj.trigger('reloadGrid');\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t} else {\n\t\t\t\t\t\t\t\tif(oldWidth<992) {\n\t\t\t\t\t\t\t\t\tgridObj.trigger('reloadGrid');\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t} catch (e) {}\n\t\t\t\t\t\t\n\t\t\t\t\t\tgridObj.jqGrid('setGridWidth',gridWidth);\t\t\n\t\t\t\t\t\t$(\"#gbox_\"+gridObj[0].id+\" .ui-jqgrid-bdiv\").css(\"height\",gridHeight+\"px\").css('overflow-x',($(window).width()<992 ?'auto':'hidden'));\n\t\t\t\t\t\toldWidth=gridWidth;\n\t\t\t\t\t}",
+    "callSearchSTSGrid": "function callSearchSTSGrid(flag) {\t\n\tvar retVal = $(\"#webhookList\").jqGrid('setGridParam', {\n\t\tdatatype : 'json',\n\t\tpage : 1,\t\t\n\t\tpostData : {\n\t\t\t\tdocId : $(\"#gs_docId\").val(),\n\t\t\t\tdocType : $(\"#gs_docType\").val(),\n\t\t\t\tdocStatus : $(\"#gs_docStatus\").val(),\n\t\t\t\tresponseCode : $(\"#gs_responseCode\").val(),\n\t\t\t\tsellerId : $(\"#gs_sellerId\").val(),\n\t\t\t\trowVersion : $(\"#gs_rowVersion\").val(),\n\t\t\t\tfromCreateDate : $(\"#fromCreatedDate\").val(),        \n\t\t\t\ttoCreateDate : $(\"#toCreatedDate\").val(), \n\t\t\t\tREQ_SEARCH_FLAG : REQ_SEARCH_FLAG,\n\t\t\t\t doFetchCount : false\n\t\t\t},\n\t\t\turl : \"jsonWebHookSearch\",\n\t\t\tsearch : true\n\t\t}).trigger('reloadGrid');\n\t\tREQ_SEARCH_FLAG=true;\n\t}",
+    "resetAll": "function resetAll() {\n\t\n\t\t$(\"#webhookList\").jqGrid('clearGridData', {\n\t\t\tclearfooter : true\n\t\t});\n\t\t$(\"#gs_docId\").val('');\n\t\t$(\"#gs_docType\").val('-1');\n\t\t$(\"#gs_docStatus\").val('-1');\n\t\t$(\"#gs_responseCode\").val(\"999\");\n\t\t$(\"#gs_sellerId\").val('');\n\t\t$(\"#gs_rowVersion\").val('');\n\t\tvar dateformat='dd/mm/yy';\n\t     var oldDate = new Date(); \n\t     var currdate = new Date(); \n\t     oldDate.setDate(oldDate.getDate() - (7)); \n\t     var formattedold = $.datepicker.formatDate(dateformat,oldDate);\n\t     var formattednew = $.datepicker.formatDate(dateformat,currdate);\n\t     $(\"#fromCreatedDate\").val(formattedold);\n\t     $(\"#toCreatedDate\").val(formattednew);\n\t     $('#gs_createDate').val(formattedold+\" - \"+formattednew);\n\t\tfillGridDropDown();\n\t\n}",
+    "actionFormatter": "function actionFormatter(cellvalue, options, rowObject) {\n\t\tvar htm = \"<div class='col-xs-6' data-toggle='tooltip' data-placement='right' title=Edit style='text-align:right;'><a href='javascript:void(0);'  onclick='javascript:editWebHook(\\\"\"\n\t\t\t\t+ options.rowId\n\t\t\t\t+ \"\\\",event);' class='gridIcon gridEditIcon'><i class='fa fa-pencil';'></i></a></div><div class='col-xs-2' data-toggle='tooltip' title=View style='text-align:right;'><a href='javascript:void(0);'  onclick='javascript:viewWebHookAPI(\\\"\"\n\t\t\t\t+ options.rowId\n\t\t\t\t+ \"\\\",event);' class='gridIcon gridViewIcon'><i class='fa fa-eye';'></i></a></div><div  class='col-xs-2' data-toggle='tooltip' data-placement='left' title=Audit <a href='javascript:void(0);' onclick='javascript:openAuditPopUp(\\\"\"\n\t\t\t\t+ options.rowId\n\t\t\t\t+ \"\\\",event)'  class='gridIcon gridAuditIcon'><i class='fa fa-info' style='padding:0 4px;'></i></a></div>\";\n\t\treturn htm;//VE-56507 S,E\n\t}",
+    "fillGridDropDown": "function fillGridDropDown(){\n\t\tvar docTypeVls4Cmb = new Array;\n\t\tvar counter = 0;\n\t\tdocTypeVls4Cmb[counter++] = new CodeValueStruct('-1',\t'--- Select ---');\n\t\t\n\t\tdocTypeVls4Cmb[counter++] = new CodeValueStruct('INBOUND', 'INBOUND');\n\t\t\n\t\tdocTypeVls4Cmb[counter++] = new CodeValueStruct('ORDER', 'ORDER');\n\t\t\n\t\tdocTypeVls4Cmb[counter++] = new CodeValueStruct('ORDER RETURN', 'ORDER RETURN');\n\t\t\n\t\tdocTypeVls4Cmb[counter++] = new CodeValueStruct('RTV', 'RTV');\n\t\t\n\t\tdocTypeVls4Cmb[counter++] = new CodeValueStruct('TRANSHIPMENT', 'TRANSHIPMENT');\n\t\t\n\t\tdocTypeVls4Cmb[counter++] = new CodeValueStruct('PO', 'PO');\n\t\t\n\t\tfillCombo('gs_docType', docTypeVls4Cmb);\n\t\t\n\t\tvar attributeVls1Cmb = new Array;\n\t\tvar counter = 0;\n\t\tattributeVls1Cmb[counter++] = new CodeValueStruct('-1',\t'--- Select ---');\n\t\t\n\t\t\tattributeVls1Cmb[counter++] = new CodeValueStruct('13', 'Allocated');\n\t\t\n\t\t\tattributeVls1Cmb[counter++] = new CodeValueStruct('7', 'Cancelled');\n\t\t\n\t\t\tattributeVls1Cmb[counter++] = new CodeValueStruct('37', 'Closed');\n\t\t\n\t\t\tattributeVls1Cmb[counter++] = new CodeValueStruct('4', 'Confirmed');\n\t\t\n\t\t\tattributeVls1Cmb[counter++] = new CodeValueStruct('33', 'Delivered');\n\t\t\n\t\t\tattributeVls1Cmb[counter++] = new CodeValueStruct('25', 'Delivery created');\n\t\t\n\t\t\tattributeVls1Cmb[counter++] = new CodeValueStruct('22', 'Packed');\n\t\t\n\t\t\tattributeVls1Cmb[counter++] = new CodeValueStruct('10', 'Part Allocated');\n\t\t\n\t\t\tattributeVls1Cmb[counter++] = new CodeValueStruct('16', 'Part Picked');\n\t\t\n\t\t\tattributeVls1Cmb[counter++] = new CodeValueStruct('28', 'Partially Shipped');\n\t\t\n\t\t\tattributeVls1Cmb[counter++] = new CodeValueStruct('1', 'Pending');\n\t\t\n\t\t\tattributeVls1Cmb[counter++] = new CodeValueStruct('19', 'Pick complete');\n\t\t\n\t\t\tattributeVls1Cmb[counter++] = new CodeValueStruct('35', 'Shipped &amp; Returned');\n\t\t\n\t\t\tattributeVls1Cmb[counter++] = new CodeValueStruct('31', 'Shipped complete');\n\t\t\n\t\tfillCombo('gs_docStatus', attributeVls1Cmb);\n\t\t\n\t\t$(\"#gs_docType\").on(\"change\", function(event) { \n\t\t\t   statusSearchMap();\n\t\t\t  } );\n\n\t}",
+    "displaybtn": "function displaybtn(obj) {\n\t    if (obj == \"emailTransit\") {\n\t        $(\"#emailTransittab\").show();\n\t        $(\"#transmitDetailtab\").hide();\n\t        $(\"#manifestStatustab\").hide();\n\t        $(\"#webhooktab\").hide();\n\t        emailTransitGrid();\n\t    } else if (obj == \"transmitDetail\") {\n\t    \t$(\"#emailTransittab\").hide();\n\t        $(\"#transmitDetailtab\").show();\n\t        $(\"#manifestStatustab\").hide();\n\t        $(\"#webhooktab\").hide();\n\t        transmitDetailGrid();\n\t    }\n\t    else if (obj == \"manifestStatus\") {\n\t    \t$(\"#emailTransittab\").hide();\n\t        $(\"#transmitDetailtab\").hide();\n\t        $(\"#manifestStatustab\").show();\n\t        $(\"#webhooktab\").hide();\n\t        manifestStatusGrid();\n\t    }\n\t    else{\n\t    \t$(\"#emailTransittab\").hide();\n\t        $(\"#transmitDetailtab\").hide();\n\t        $(\"#manifestStatustab\").hide();\n\t        $(\"#webhooktab\").show();\n\t    }\n\t}",
+    "editWebHook": "function editWebHook(rowId){\n\t\tif(rowId != undefined && rowId != null && rowId != \"\"){\n\t\t\tlet data = jQuery('#webhookList').jqGrid ('getRowData', rowId);\n\t\t\tif(data != undefined && data != null){\n\t\t\t\t$(\"#webhookKey\").val(data.webhookKey);\n\t\t\t\t$(\"#hddocId\").val(data.docId);\n\t\t\t\t$(\"#docType\").val(data.docType);\n\t\t\t\t$(\"#docStatus\").val(data.docStatus);\n\t\t\t\t$(\"#responseCode\").val(data.responseCode);\n\t\t\t\t$(\"#rowVersion\").val(data.rowVersion);\n\t\t\t\t$(\"#webhookDialog\").modal(\"show\").draggable();\n\t\t\t}\n\t\t}\n\t}",
+    "viewWebHookAPI": "function viewWebHookAPI(rowId){\n\t\tif(rowId != undefined && rowId != null && rowId != \"\"){\n\t\t\tlet data = jQuery('#webhookList').jqGrid ('getRowData', rowId);\n\t\t\tif(data != undefined && data != null){\n\t\t\tif(null != data.response) {\n\t\t\t\t\t\t\ttry{\n\t\t\t\t\t\t\tvar jsonD =  JSON.parse(data.response);\n\t\t\t\t\t\t\teditor1.setValue(JSON.stringify(jsonD, null, '\\t'), -1);\n\t\t\t\t\t\t\t}catch(e){\n\t\t\t\t\t\t\t\tvar xmlformate = data.response.replaceAll('//','/');\n\t\t\t\t\t\t\t\tvar xmlD =  formatXml(xmlformate,'\\t');\n\t\t\t\t\t\t\t\teditor1.setValue(xmlD)\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t\tif(null != data.apiResponse) {\n\t\t\t\t\t\t\ttry{\n\t\t\t\t\t\t\tvar jsonD =  JSON.parse(data.apiResponse);\n\t\t\t\t\t\t\teditor.setValue(JSON.stringify(jsonD, null, '\\t'), -1);\n\t\t\t\t\t\t\t}catch(e){\n\t\t\t\t\t\t\t\tvar xmlformate = data.apiResponse.replaceAll('//','/');\n\t\t\t\t\t\t\t\tvar xmlD =  formatXml(xmlformate,'\\t');\n\t\t\t\t\t\t\t\teditor.setValue(xmlD);\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t$(\"#webhookDialogAPI\").modal(\"show\").draggable();\n\t\t\t}\n\t\t}\n\t\telse {\n\t\t\twindow.parent.showAlert(err_sww);\n\t\t\treturn;\n\t\t}\n\t}",
+    "formatXml": "function formatXml(xml, tab) { // tab = optional indent value, default is tab (\\t)\n\t    var formatted = '', indent= '';\n\t    tab = tab || '\\t';\n\t    xml.split(/>\\s*</).forEach(function(node) {\n\t        if (node.match( /^\\/\\w/ )) indent = indent.substring(tab.length); // decrease indent by one 'tab'\n\t        formatted += indent + '<' + node + '>\\r\\n';\n\t        if (node.match( /^<?\\w[^>]*[^\\/]$/ )) indent += tab;              // increase indent\n\t    });\n\t    return formatted.substring(1, formatted.length-3);\n\t}",
+    "openAuditPopUp": "function openAuditPopUp(id, event) {\n\t\tlet ret = $(\"#webhookList\").jqGrid('getRowData', id);\n\t\tif(ret != undefined && ret != null){\n\t\t$(\"#createdBy\").html(ret.createdBy);\n\t\t$(\"#createdDate\").html(ret.createDate);\n\t\t$(\"#modifiedBy\").html(ret.modifiedBy);\n\t\t$(\"#modifiedDate\").html(ret.modifiedDate);\n\t\t$(\"#showAuditDataDialog\").modal('show').draggable();\n\t\tevent.preventDefault();\n\t\tevent.stopPropagation();\n\t\t}\n\t}",
+    "tool": "function tool (rowId, cellValue, rowObject) {\n        return ' title=\"' + rowObject.request + '\"';\n    }",
+    "repushUpdate": "function repushUpdate () {\n\t\tvar gridObj = jQuery(\"#webhookList\");\n\t\tvar selRowId = gridObj.jqGrid ('getGridParam', 'selarrrow');\n\t\tvar webhookKeys  = \"\";\n\t\tif(selRowId != undefined && selRowId.length > 0) {\n\t\t\t\n\t\t\tvar idsLen = selRowId.length;\n\t\n\t\t\tfor (var i = 0; i < idsLen; i++) \n\t\t\t{\n\t\t\t    var rowId = selRowId[i];\n\t\t\t    var rowData = gridObj.jqGrid('getRowData', rowId);\n\t\n\t\t\t    if(rowData.webhookKey == undefined || rowData.webhookKey == \"\" || rowData.webhookKey == null){\n\t\t\t\t\twindow.parent.showAlert(\"\");\n\t\t\t\t\treturn false;\n\t\t\t    }\n\t\t\t    else {\t\t\t\t\t    \n\t\t\t    \twebhookKeys += (webhookKeys.length > 0) ? \",\" : \"\";\n\t\t\t    \twebhookKeys += rowData.webhookKey;\n\t\t\t    }\t\t\t\t\t    \t\t\t\t\t    \n\t\t\t}\n\t\t\t\n\t\t\t\tvar retVal = $.ajax({\n\t\t\t\turl : \"repushUpdateList\",\n\t\t\t\t\n\t\t\t\ttype : \"POST\",\n\t\t\t\tdata : {\n\t\t\t\t\twebhookKeys : webhookKeys\n\t\t\t\t},\n\t\t\t\tdataType : \"json\",\n\t\t\t\tasync : false\n\t\t\t}).responseText;\n\t\t\t\n\t\t\tretVal = jQuery.parseJSON(retVal);\n\t\t\tif(retVal != null && retVal != undefined && retVal.jsonMessage == null){\n\t\t\t\tjQuery(\"#webhookList\").trigger(\"reloadGrid\");\n\t\t\t\twindow.parent.showAlert('Records Repushed Successfully');\n\t\t\t\treturn true;\n\t\t\t}\n\t\t}\n\t\t\telse{\n\t\t\t\twindow.parent.showAlert('Please Select Grid Row For Repush'); // VE-53935 S-E\n\t\t\t\treturn false;\n\t\t\t}\n\t}",
+    "statusSearchMap": "function statusSearchMap(){\n\t\tvar docType = $('#gs_docType').val();\n\t\tif(docType != null && docType != undefined){\n\t\tvar attributeVls4Cmb = new Array;\n\t\tvar counter = 0;\n\t\tattributeVls4Cmb[counter++] = new CodeValueStruct('-1',\t'--- Select ---');\n\t\tif(\"PO\"==docType){\n\t\t\n\t\t\tattributeVls4Cmb[counter++] = new CodeValueStruct('7', 'Cancelled');\n\t\t\n\t\t\tattributeVls4Cmb[counter++] = new CodeValueStruct('28', 'Closed');\n\t\t\n\t\t\tattributeVls4Cmb[counter++] = new CodeValueStruct('4', 'Confirmed');\n\t\t\n\t\t\tattributeVls4Cmb[counter++] = new CodeValueStruct('31', 'Expired');\n\t\t\n\t\t\tattributeVls4Cmb[counter++] = new CodeValueStruct('19', 'Partially Received');\n\t\t\n\t\t\tattributeVls4Cmb[counter++] = new CodeValueStruct('1', 'Pending Confirmation');\n\t\t\n\t\t\tattributeVls4Cmb[counter++] = new CodeValueStruct('22', 'Received');\n\t\t\n\t\t\tattributeVls4Cmb[counter++] = new CodeValueStruct('16', 'ReConfirmed');\n\t\t\n\t\t\tattributeVls4Cmb[counter++] = new CodeValueStruct('10', 'Released');\n\t\t\n\t\t\tattributeVls4Cmb[counter++] = new CodeValueStruct('13', 'Reopen');\n\t\t\n\t\t\tattributeVls4Cmb[counter++] = new CodeValueStruct('25', 'Short Closed');\n\t\t\n\t\t\tattributeVls4Cmb[counter++] = new CodeValueStruct('6', 'Error In Releasing');\n\t\t\n\t\t\tattributeVls4Cmb[counter++] = new CodeValueStruct('5', 'Release In Process');\n\t\t\n\t\t}\n\t\tif(\"INBOUND\"==docType){\n\t\t\n\t\t\tattributeVls4Cmb[counter++] = new CodeValueStruct('7', 'Cancelled');\n\t\t\n\t\t\tattributeVls4Cmb[counter++] = new CodeValueStruct('4', 'Confirmed');\n\t\t\n\t\t\tattributeVls4Cmb[counter++] = new CodeValueStruct('3', 'GRN In Process');\n\t\t\n\t\t\tattributeVls4Cmb[counter++] = new CodeValueStruct('10', 'in QC');\n\t\t\n\t\t\tattributeVls4Cmb[counter++] = new CodeValueStruct('1', 'Pending Confirmation');\n\t\t\n\t\t\tattributeVls4Cmb[counter++] = new CodeValueStruct('2', 'Pending Hold');\n\t\t\n\t\t\tattributeVls4Cmb[counter++] = new CodeValueStruct('13', 'QC Done');\n\t\t\n\t\t}\n\t\tif(\"PRODUCTS\"==docType){\n\t\t\n\t\t}\n\t\tif(\"VENDOR\"==docType){\n\t\t\n\t\t}\n\t\tif(\"RTV\"==docType || \"ORDER\" == docType){\n\t\t\n\t\t\tattributeVls4Cmb[counter++] = new CodeValueStruct('13', 'Allocated');\n\t\t\n\t\t\tattributeVls4Cmb[counter++] = new CodeValueStruct('7', 'Cancelled');\n\t\t\n\t\t\tattributeVls4Cmb[counter++] = new CodeValueStruct('37', 'Closed');\n\t\t\n\t\t\tattributeVls4Cmb[counter++] = new CodeValueStruct('4', 'Confirmed');\n\t\t\n\t\t\tattributeVls4Cmb[counter++] = new CodeValueStruct('33', 'Delivered');\n\t\t\n\t\t\tattributeVls4Cmb[counter++] = new CodeValueStruct('25', 'Delivery created');\n\t\t\n\t\t\tattributeVls4Cmb[counter++] = new CodeValueStruct('22', 'Packed');\n\t\t\n\t\t\tattributeVls4Cmb[counter++] = new CodeValueStruct('10', 'Part Allocated');\n\t\t\n\t\t\tattributeVls4Cmb[counter++] = new CodeValueStruct('16', 'Part Picked');\n\t\t\n\t\t\tattributeVls4Cmb[counter++] = new CodeValueStruct('28', 'Partially Shipped');\n\t\t\n\t\t\tattributeVls4Cmb[counter++] = new CodeValueStruct('1', 'Pending');\n\t\t\n\t\t\tattributeVls4Cmb[counter++] = new CodeValueStruct('19', 'Pick complete');\n\t\t\n\t\t\tattributeVls4Cmb[counter++] = new CodeValueStruct('35', 'Shipped &amp; Returned');\n\t\t\n\t\t\tattributeVls4Cmb[counter++] = new CodeValueStruct('31', 'Shipped complete');\n\t\t\n\t\t}\n\t\t\n\t\tfillCombo('gs_docStatus', attributeVls4Cmb);\n\t\t}\n\t}",
+    "sellerformatLink": "function sellerformatLink(cellvalue, options, rowObject) {\n\tvar htm='';\n\t\tif(cellvalue !=null && cellvalue!=''){\n\t\t\t \thtm = \"<div title='' style='margin-top:3px;margin-bottom:2px;'>\";\n\t\t\t\thtm+= \"<div class='col-xs-4' style='text-align:center; '><span class='gCtrl' onclick='javascript:openDialog(\\\"\" + cellvalue+ \"\\\",event); return false;' style='color: #2179d0; font-weight:bold; font-family:Arial;cursor:pointer;cursor:hand;'>\" + cellvalue + \"</span></div>\";\n\t\t\t\thtm+=\"</div>\";\n\t\t}\n\t\treturn htm;\n\t}",
+    "openDialog": "function openDialog(cellVal, event) {\n\t\t\twindow.parent.openScreen(\"Vendor Create\", 'showVendorMaintenanceBS?vendorCode=' + encodeURIComponent(cellVal),\"fa fa-fw fa-pencil-square\");\n\t\tevent.preventDefault();\n\t\treturn false;\n\t}",
+    "docTypeformatLink": "function docTypeformatLink(cellvalue, options, rowObject) {\n\t\tvar docType = rowObject.docType;\n\t\tvar source = rowObject.source;\n\t\tvar internal_doc_id = rowObject.internal_doc_id;\n\t    var htm = \"<div title='' style='margin-top:3px;margin-bottom:2px;'>\";\n\t\thtm+= \"<div class='col-xs-12 col-sm-12' style='text-align:center; '><span id='codeId' class='gCtrl' onclick='javascript:openNewScreen(\\\"\" + cellvalue+ \"\\\",event,\\\"\" + docType + \"\\\",\\\"\" + source + \"\\\",\\\"\" + internal_doc_id + \"\\\"); \";\n\t\thtm+= \"return false;' style='color: #2179d0; font-weight:bold; font-family:Arial;cursor:pointer;cursor:hand;'>\" + cellvalue + \"</span></div></div>\";\n\t\treturn htm;\n\t\n\t}",
+    "openNewScreen": "function openNewScreen(cellVal, event, docType,source,internal_doc_id) {\n\t\t\n\t\tif(docType == \"INBOUND\"){\n\t\t window.parent.openScreen(\"Inbound Create/Edit - \"+cellVal,\"inboundMaintenancefetchDataBS?inboundNumber=\"+cellVal+\"&goBackFlag=true\", \n\t\t\t\t     \"fa fa-fw fa-simplybuilt\");\n\t\t}\n\t\tif(docType == \"RTV\"){\n\t\twindow.parent.openScreen(\"Vendor Return Create/Edit\", 'vendorReturnsFetchDataBS?rtvNo=' + cellVal,\"fa fa-fw fa-pencil-square\");\n\t\t}\n\t\tif(docType == \"VENDOR\"){\n\t\twindow.parent.openScreen(\"Vendor Create\", 'showVendorMaintenanceBS?vendorCode=' + encodeURIComponent(cellVal),\"fa fa-fw fa-pencil-square\");\n\t\t}\n\t\tif(docType == \"PO\"){\n\t\twindow.parent.openScreen('Purchase Order','purchaseOrderBS?poCode=' + cellVal, \"fa fa-fw fa-list-ol\");\n\t\t}\n\t\tif(docType == \"ORDER\"){\n\t\tif(source == \"2\"){ \n\t\t\t\twindow.parent.openScreen(\"Order - \"+cellVal,\"MarketOrderViewERP?orderNo=\"+cellVal, \"fa fa-fw fa-list-ol\");\n\t\t\t}\n\t\t\telse{\n\t\t\t\tvar currentFrameId = window.frameElement.name;\n\t\t\t\twindow.parent.openScreen(\"Order Create Edit - \"+cellVal,\"orderMaintenanceBS?orderCode=\"+internal_doc_id+\"&fromPOS=yes&hdnOrderEnquiryId=\"+currentFrameId,\"fa fa-fw fa-simplybuilt\");\n\t\t\t}\n\t\t}\n\t\tevent.preventDefault();\n\t\tevent.stopPropagation();\n\t    return false;\n\t}"
+  },
+  "dialogs": [
+    {
+      "id": "webhookDialog",
+      "text": "×\n\t\t\t\t\trepusheditscreen\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tWebHookKey\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tDoc Id\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tDoc Type\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tDoc Status\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tResponse Code\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tRow Version\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\t\tSave"
+    },
+    {
+      "id": "webhookDialogAPI",
+      "text": "×\n\t\t\t\t\tAPI Screen\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\tRequest Body\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\tXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n\t\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\tResponse Body\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\tXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+    },
+    {
+      "id": "showAuditDataDialog",
+      "text": "×\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\tAudit\n\t\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\tCreated By\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\tCreated Date\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\tModified By\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\tModified Date"
+    }
+  ]
+}

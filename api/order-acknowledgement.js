@@ -1,7 +1,91 @@
-import{cors,find,insert,update}from'./mongo.js';const t=v=>String(v??'').trim(),has=(v,q)=>!t(q)||t(q)==='-1'||t(v).toLowerCase().includes(t(q).toLowerCase()),now=()=>new Date().toISOString();
-const norm=x=>({id:x.id,extOrderNo:x.ext_order_no||x.order_no,hdnOrderNo:x.order_no,orderNo:x.order_no,channelName:x.channel||'',channelCode:x.channel_code||x.channel||'',orderType:x.order_type||x.payment_mode||'',orderDate:x.order_date||'',skuCode:x.sku_code||'',skuDesc:x.sku_name||'',walkinLocation:x.walkin_location||'',fulfillmentLocation:x.fulfillment_location||x.warehouse||'',orderQty:Number(x.qty)||0,lineNo:x.line_no||1,lineAmount:Number(x.amount)||0,image:x.image||'',customerAddress:[x.customer,x.city].filter(Boolean).join(' - '),lot:x.lot||'',udfs:x.udfs||'',udf1:x.udf1||'',udf2:x.udf2||'',udf3:x.udf3||'',udf4:x.udf4||'',udf5:x.udf5||'',udf6:x.udf6||'',udf7:x.udf7||'',udf8:x.udf8||'',udf9:x.udf9||'',udf10:x.udf10||'',ackStatus:x.ack_status||(x.acknowledged?'Acknowledged':'Pending Acknowledgement'),acknowledgedBy:x.acknowledged_by||'',acknowledgedDate:x.acknowledged_date||'',rejectionReason:x.rejection_reason||'',rejectionRemarks:x.rejection_remarks||'',clientId:'0'});const page=(rows,b)=>{const size=[20,50,100,200].includes(+b.rows)?+b.rows:100,p=Math.max(1,+b.page||1),records=rows.length,total=Math.ceil(records/size),slice=rows.slice((p-1)*size,p*size);return{gridModel:slice,rowDTOListFromUpdate:slice,rows:slice,page:p,total,records}};
-export default async function handler(req,res){if(cors(req,res))return;try{const b=req.body||{},orders=await find('fulfillment_orders'),all=orders.map(norm);if(req.method==='GET')return res.json({channels:[...new Set(all.map(x=>x.channelName).filter(Boolean))],orderTypes:[...new Set(all.map(x=>x.orderType).filter(Boolean))],rejectionReasons:['Out of Stock'],pageSizes:[20,50,100,200],counts:{pending:all.filter(x=>x.ackStatus==='Pending Acknowledgement').length,history:all.filter(x=>x.ackStatus!=='Pending Acknowledgement').length}});if(req.method!=='POST')return res.status(405).json({error:'Method not allowed'});
-if(b.action==='search'||b.REQ_SEARCH_FLAG){let rows=all.filter(x=>(b.tab==='history'?x.ackStatus!=='Pending Acknowledgement':x.ackStatus==='Pending Acknowledgement')&&has(x.extOrderNo,b.extOrderNo)&&has(x.orderNo,b.orderNo)&&has(x.channelName,b.channelName)&&has(x.orderType,b.orderType)&&has(x.skuCode,b.skuCode)&&(!t(b.fromOrderDate)||x.orderDate>=b.fromOrderDate)&&(!t(b.toOrderDate)||x.orderDate<=b.toOrderDate));rows.sort((a,z)=>t(a.orderDate).localeCompare(t(z.orderDate))*(t(b.sord)==='asc'?1:-1));return res.json(page(rows,b))}
-if(b.action==='accept'){const ids=(b.ids||[]).map(Number);if(!ids.length)return res.status(400).json({error:'No order(s) selected to Acknowledge'});for(const id of ids){const x=orders.find(o=>o.id===id);if(x)await update('fulfillment_orders',id,{acknowledged:true,ack_status:'Acknowledged',acknowledged_by:'Local User',acknowledged_date:now()})}return res.json({jsonMessage:'Order(s) acknowledged successfully'})}
-if(b.action==='reject'){const ids=(b.ids||[]).map(Number);if(!ids.length)return res.status(400).json({error:'No order(s) selected to Reject'});if(!t(b.rejectionReason)||t(b.rejectionReason)==='-1')return res.status(400).json({error:'Rejection Reason is mandatory'});if(!t(b.rejectionRemarks))return res.status(400).json({error:'Rejection Remarks is mandatory'});for(const id of ids){const x=orders.find(o=>o.id===id);if(x){await update('fulfillment_orders',id,{acknowledged:false,ack_status:'Rejected',rejection_reason:t(b.rejectionReason),rejection_remarks:t(b.rejectionRemarks),acknowledged_by:'Local User',acknowledged_date:now()});await insert('generic_records',{module:'order-acknowledgement-audit',code:`OAA${Date.now()}${id}`,order_no:x.order_no,action:'Rejected',reason:t(b.rejectionReason),remarks:t(b.rejectionRemarks),user:'Local User',action_date:now()})}}return res.json({jsonMessage:'Order(s) rejected successfully'})}
-if(b.action==='audit'){const rows=await find('generic_records',{module:'order-acknowledgement-audit'});return res.json({rows:rows.filter(x=>!t(b.orderNo)||x.order_no===b.orderNo)})}return res.status(400).json({error:'Invalid action'})}catch(e){console.error('Order Acknowledgement error:',e);res.status(500).json({error:e.message})}}
+import { sendDatabaseUnavailable, cors, find } from './mongo.js';
+
+const text = value => String(value ?? '').trim();
+const has = (value, query) => !text(query) || text(query) === '-1' || text(value).toLowerCase().includes(text(query).toLowerCase());
+const normalize = row => ({
+  id: row.id,
+  extOrderNo: row.ext_order_no || row.order_no,
+  hdnOrderNo: row.order_no,
+  orderNo: row.order_no,
+  channelName: row.channel || '',
+  channelCode: row.channel_code || row.channel || '',
+  orderType: row.order_type || row.payment_mode || '',
+  orderDate: row.order_date || '',
+  skuCode: row.sku_code || '',
+  skuDesc: row.sku_name || '',
+  walkinLocation: row.walkin_location || '',
+  fulfillmentLocation: row.fulfillment_location || row.warehouse || '',
+  orderQty: Number(row.qty) || 0,
+  lineNo: row.line_no || 1,
+  lineAmount: Number(row.amount) || 0,
+  image: row.image || '',
+  customerAddress: [row.customer, row.city].filter(Boolean).join(' - '),
+  lot: row.lot || '',
+  udfs: row.udfs || '',
+  udf1: row.udf1 || '', udf2: row.udf2 || '', udf3: row.udf3 || '', udf4: row.udf4 || '', udf5: row.udf5 || '',
+  udf6: row.udf6 || '', udf7: row.udf7 || '', udf8: row.udf8 || '', udf9: row.udf9 || '', udf10: row.udf10 || '',
+  ackStatus: row.ack_status || (row.acknowledged ? 'Acknowledged' : 'Pending Acknowledgement'),
+  acknowledgedBy: row.acknowledged_by || '',
+  acknowledgedDate: row.acknowledged_date || '',
+  rejectionReason: row.rejection_reason || '',
+  rejectionRemarks: row.rejection_remarks || '',
+  trust: 'legacy-unverified',
+});
+
+function page(rows, body) {
+  const size = [20, 50, 100, 200].includes(+body.rows) ? +body.rows : 100;
+  const current = Math.max(1, +body.page || 1);
+  const records = rows.length;
+  const slice = rows.slice((current - 1) * size, current * size);
+  return { gridModel: slice, rowDTOListFromUpdate: slice, rows: slice, page: current, total: Math.ceil(records / size), records };
+}
+
+export default async function handler(req, res) {
+  if (cors(req, res)) return;
+  try {
+    const body = req.body || {};
+    const orders = (await find('fulfillment_orders')).map(normalize);
+    if (req.method === 'GET') {
+      return res.json({
+        available: false,
+        dataTrust: 'legacy-unverified',
+        reason: 'Order acknowledgement requires an authenticated channel connector and provider readback.',
+        channels: [...new Set(orders.map(row => row.channelName).filter(Boolean))],
+        orderTypes: [...new Set(orders.map(row => row.orderType).filter(Boolean))],
+        rejectionReasons: ['Out of Stock'],
+        pageSizes: [20, 50, 100, 200],
+        counts: {
+          pending: orders.filter(row => row.ackStatus === 'Pending Acknowledgement').length,
+          history: orders.filter(row => row.ackStatus !== 'Pending Acknowledgement').length,
+        },
+      });
+    }
+    if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+    if (body.action === 'search' || body.REQ_SEARCH_FLAG) {
+      const rows = orders.filter(row =>
+        (body.tab === 'history' ? row.ackStatus !== 'Pending Acknowledgement' : row.ackStatus === 'Pending Acknowledgement') &&
+        has(row.extOrderNo, body.extOrderNo) && has(row.orderNo, body.orderNo) &&
+        has(row.channelName, body.channelName) && has(row.orderType, body.orderType) &&
+        has(row.skuCode, body.skuCode) &&
+        (!text(body.fromOrderDate) || row.orderDate >= body.fromOrderDate) &&
+        (!text(body.toOrderDate) || row.orderDate <= body.toOrderDate));
+      rows.sort((left, right) => text(left.orderDate).localeCompare(text(right.orderDate)) * (text(body.sord) === 'asc' ? 1 : -1));
+      return res.json(page(rows, body));
+    }
+
+    if (body.action === 'audit') {
+      const rows = await find('generic_records', { module: 'order-acknowledgement-audit' });
+      return res.json({ rows: rows.filter(row => !text(body.orderNo) || row.order_no === body.orderNo).map(row => ({ ...row, trust: 'legacy-unverified' })), trust: 'legacy-unverified' });
+    }
+
+    if (body.action === 'accept' || body.action === 'reject') {
+      return res.status(501).json({ error: 'Marketplace acknowledgement is unavailable until an authenticated channel connector can submit and verify the provider response.' });
+    }
+    return res.status(400).json({ error: 'Invalid action' });
+  } catch (error) {
+    if (sendDatabaseUnavailable(res, error)) return;
+    console.error('Order Acknowledgement error:', { name: error?.name, code: error?.code });
+    return res.status(500).json({ error: error.message });
+  }
+}

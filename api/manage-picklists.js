@@ -1,10 +1,165 @@
-import{cors,find,findOne,insert,update}from'./mongo.js';const t=v=>String(v??'').trim(),has=(v,q)=>!t(q)||t(q)==='-1'||t(v).toLowerCase().includes(t(q).toLowerCase()),date=()=>new Date().toISOString().slice(0,10);
-const norm=r=>({...r,clientId:r.client_id||'0-DummyClient',pickListNo:r.picklist_no||'',stat:r.status||'Open',statId:r.status==='Completed'?'4':r.status==='In Progress'?'8':'1',picklistDateStr:r.created_date||'',user:r.generated_by||'super admin',userCrt:r.picker||'Unassigned',pickerMap:r.picker||'Unassigned',pickListName:r.description||'',picklistEndDateStr:r.finished_date||'',picklistQty:r.total_qty||0,completion:r.completion||0,processQty:r.process_qty||0,ispicklistlocked:r.is_locked?'1':'0',printStatus:r.print_status||'Not Printed',locCode:r.location_code||r.warehouse||'',assignedPicklistDate:r.assigned_date||'',picklistStartTime:r.start_time||'',picklistPrintDateStr:r.print_date||'',picklistTag:r.picklist_tag||'',zonesValue:r.zones||'',sortFlag:r.sortation_required?'Yes':'No',waveDescr:r.wave_description||'',waveFilterNo:r.wave_filter_no||'',isB2BOrder:r.order_processing||'B2C',assignPickers:r.picker||'',pickListStatus:r.status||'Open'});
-const page=(rows,b,root='rowDTOListFromUpdate')=>{const size=[5,10,20,30,40,50,100,200,300,400,500,1000,1500,2000].includes(+b.rows)?+b.rows:20,p=Math.max(1,+b.page||1),records=rows.length,total=Math.ceil(records/size),slice=rows.slice((p-1)*size,p*size);return{[root]:slice,gridModel:slice,rows:slice,page:p,total,records}};
-export default async function handler(req,res){if(cors(req,res))return;try{const b=req.body||{};if(req.method==='GET'){return res.json({channels:['AJIO B2C','AJIO Business','AJIO DS','Amazon FBA India','Amazon India'],pickingModes:[['1','Orderwise'],['2','Pick+Sort'],['3','Orderwise&PickSort']],picklistTypes:[['3','Count Of Order'],['2','Count Of SKU'],['4','Template'],['1','Multi Qty'],['0','Single Qty']],locations:[['UWH','UWH-JX Karawaci']],orderStatuses:['Allocated','Part Allocated'],orderDocumentTypes:['SO','RTV','STO','KIT','DELIVERY RETURN'],orderTypes:['Normal','COD','Prepaid','B2BGC-COD','B2CGC-COD'],pickers:['Unassigned','Local Picker'],statuses:['Open','In Progress','Completed','Cancelled'],templates:await find('generic_records',{module:'picklist-template'}),waves:await find('generic_records',{module:'picklist-wave'})})}
-if(req.method==='POST'&&(b.action==='search'||b.REQ_SEARCH_FLAG)){let rows=(await find('picklists')).map(norm).filter(x=>has(x.pickListNo,b.pickNO||b.orderNo)&&has(x.stat,b.stat)&&has(x.user,b.user)&&has(x.userCrt,b.userCrt)&&has(x.locCode,b.locCode)&&has(x.zonesValue,b.zonesValue)&&has(x.sortFlag,b.sortFlag)&&has(x.waveFilterNo,b.waveFilterNo)&&has(x.pickListName,b.pickListName)&&has(x.isB2BOrder,b.isB2BOrder)&&(!t(b.frompicklistDate)||x.picklistDateStr>=b.frompicklistDate)&&(!t(b.topicklistDate)||x.picklistDateStr<=b.topicklistDate));rows.sort((a,z)=>t(a.picklistDateStr).localeCompare(t(z.picklistDateStr))*(t(b.sord)==='asc'?1:-1));return res.json(page(rows,b))}
-if(req.method==='POST'&&b.action==='search-orders'){let rows=(await find('fulfillment_orders')).filter(x=>['Allocated','Part Allocated'].includes(x.status)&&has(x.order_no,b.orderNo)&&has(x.warehouse,b.siteLoc)&&has(x.status,b.orderStatus)&&has(x.order_type,b.orderType)&&(!t(b.fromOrderDate)||x.order_date>=b.fromOrderDate)&&(!t(b.toOrderDate)||x.order_date<=b.toOrderDate));return res.json(page(rows,b,'orderDTOList'))}
-if(req.method==='POST'&&b.action==='generate'){const ids=(b.ids||[]).map(Number);if(!ids.length)return res.status(400).json({error:'Please select atleast one order to generate Picklist'});const orders=(await find('fulfillment_orders')).filter(x=>ids.includes(x.id));if(!orders.length)return res.status(404).json({error:'Selected orders were not found'});const no=`PL${Date.now().toString().slice(-8)}`,qty=orders.reduce((s,x)=>s+Number(x.qty||0),0),row=await insert('picklists',{picklist_no:no,warehouse:b.siteLoc||orders[0].warehouse,location_code:b.siteLoc||orders[0].warehouse,pick_mode:b.pickingMode||'Orderwise',picklist_type:b.picklistType||'Single Qty',order_count:orders.length,sku_count:new Set(orders.map(x=>x.sku_code)).size,total_qty:qty,status:'Open',created_date:date(),generated_by:'super admin',picker:'Unassigned',description:t(b.description),order_processing:b.isB2BOrder||'B2C'});for(const x of orders)await update('fulfillment_orders',x.id,{status:'Picklist Generated',picklist_no:no});return res.status(201).json({row:norm(row),jsonMessage:`Picklist ${no} generated successfully`})}
-if(req.method==='POST'&&b.action==='wave-search'){let rows=(await find('generic_records',{module:'picklist-wave'})).filter(x=>has(x.code,b.waveNumber)&&has(x.name,b.waveDescription)&&has(x.location,b.locationCode)&&has(x.status,b.status)&&has(x.wave_type,b.waveType));return res.json(page(rows,b,'waveDTOList'))}
-if(req.method==='POST'&&b.action==='template-save'){if(!t(b.templateName)||!t(b.location)||t(b.location)==='-1')return res.status(400).json({error:'Template Name and Source Warehouse Location are mandatory'});const row=await insert('generic_records',{module:'picklist-template',code:`PT${Date.now().toString().slice(-6)}`,name:t(b.templateName),location:t(b.location),order_processing:b.isB2B||'B2C',status:b.status||'Active',grouping_sequence:b.groupingSequence||'By Order',split_zone_wise:!!b.splitZoneWise,order_count:+b.orderCount||0,sku_count:+b.skuCount||0,sku_qty:+b.skuQty||0,split_category:!!b.splitCategory,reassign_pack:!!b.reassignPack,assign_priority:b.assignPriority||'',category:b.category||'',created_date:date()});return res.status(201).json({row,jsonMessage:'Template saved successfully'})}
-if(req.method==='PUT'){const current=await findOne('picklists',{id:+b.id});if(!current)return res.status(404).json({error:'Picklist was not found'});const fields=b.action==='unlock'?{is_locked:false}:b.action==='print'?{print_status:'Printed',print_date:date()}:{picker:t(b.picker)||current.picker,description:t(b.description).slice(0,50),assigned_date:date()};const changed=(await update('picklists',current.id,fields))[0];return res.json({row:norm(changed),jsonMessage:b.action==='unlock'?'PickList unlock successfully':b.action==='print'?'Picklist print prepared':'Updated Successfully.'})}return res.status(405).json({error:'Method not allowed'})}catch(e){console.error('Manage Picklist error:',e);res.status(500).json({error:e.message})}}
+import { sendDatabaseUnavailable, cors, find, insert } from './mongo.js';
+import { channelNames, locationPairs } from './catalogs.js';
+import { currentUser } from './auth-session.js';
+
+const text = value => String(value ?? '').trim();
+const includes = (value, query) => !text(query) || text(query) === '-1'
+  || text(value).toLowerCase().includes(text(query).toLowerCase());
+
+function normalizePicklist(row) {
+  return {
+    ...row,
+    recordTrust: 'legacy-unverified',
+    clientId: row.client_id ?? '',
+    pickListNo: row.picklist_no ?? '',
+    stat: row.status ?? '',
+    statId: row.status_code ?? '',
+    picklistDateStr: row.created_date ?? '',
+    user: row.generated_by ?? '',
+    userCrt: row.picker ?? '',
+    pickerMap: row.picker ?? '',
+    pickListName: row.description ?? '',
+    picklistEndDateStr: row.finished_date ?? '',
+    picklistQty: row.total_qty ?? '',
+    completion: row.completion ?? '',
+    processQty: row.process_qty ?? '',
+    ispicklistlocked: row.is_locked == null ? '' : (row.is_locked ? '1' : '0'),
+    printStatus: row.print_status ?? '',
+    locCode: row.location_code ?? row.warehouse ?? '',
+    assignedPicklistDate: row.assigned_date ?? '',
+    picklistStartTime: row.start_time ?? '',
+    picklistPrintDateStr: row.print_date ?? '',
+    picklistTag: row.picklist_tag ?? '',
+    zonesValue: row.zones ?? '',
+    sortFlag: row.sortation_required == null ? '' : (row.sortation_required ? 'Yes' : 'No'),
+    waveDescr: row.wave_description ?? '',
+    waveFilterNo: row.wave_filter_no ?? '',
+    isB2BOrder: row.order_processing ?? '',
+    assignPickers: row.picker ?? '',
+    pickListStatus: row.status ?? '',
+  };
+}
+
+function page(rows, body, key = 'rowDTOListFromUpdate') {
+  const size = [5, 10, 20, 30, 40, 50, 100, 200, 300, 400, 500, 1000, 1500, 2000].includes(+body.rows)
+    ? +body.rows : 20;
+  const currentPage = Math.max(1, +body.page || 1);
+  const records = rows.length;
+  const items = rows.slice((currentPage - 1) * size, currentPage * size);
+  return { [key]: items, gridModel: items, rows: items, page: currentPage, total: Math.ceil(records / size), records };
+}
+
+export default async function handler(req, res) {
+  if (cors(req, res)) return;
+  try {
+    const body = req.body || {};
+    if (req.method === 'GET') {
+      const [channels, locations, templates, waves] = await Promise.all([
+        channelNames(), locationPairs(), find('generic_records', { module: 'picklist-template' }),
+        find('generic_records', { module: 'picklist-wave' }),
+      ]);
+      return res.json({
+        channels,
+        pickingModes: [['1', 'Orderwise'], ['2', 'Pick+Sort'], ['3', 'Orderwise&PickSort']],
+        picklistTypes: [['3', 'Count Of Order'], ['2', 'Count Of SKU'], ['4', 'Template'], ['1', 'Multi Qty'], ['0', 'Single Qty']],
+        locations,
+        orderStatuses: ['Allocated', 'Part Allocated'],
+        orderDocumentTypes: ['SO', 'RTV', 'STO', 'KIT', 'DELIVERY RETURN'],
+        orderTypes: ['Normal', 'COD', 'Prepaid', 'B2BGC-COD', 'B2CGC-COD'],
+        pickers: [],
+        statuses: ['Open', 'In Progress', 'Completed', 'Cancelled'],
+        available: false,
+        dataTrust: 'legacy-unverified',
+        picklistGenerationAvailable: false,
+        notice: 'Picklist enquiry is read-only. Generation, unlocking, and picker assignment require Central Inventory reservations and a supported pick workflow.',
+        templates,
+        waves,
+      });
+    }
+
+    if (req.method !== 'POST') {
+      return res.status(['PUT', 'PATCH', 'DELETE'].includes(req.method) ? 501 : 405)
+        .json({ error: 'Picklist workflow writes are unavailable until reservation and picking transactions are connected.' });
+    }
+
+    if (body.action === 'search' || body.REQ_SEARCH_FLAG) {
+      const rows = (await find('picklists')).map(normalizePicklist).filter(row =>
+        includes(row.pickListNo, body.pickNO || body.orderNo)
+        && includes(row.stat, body.stat)
+        && includes(row.user, body.user)
+        && includes(row.userCrt, body.userCrt)
+        && includes(row.locCode, body.locCode)
+        && includes(row.zonesValue, body.zonesValue)
+        && includes(row.sortFlag, body.sortFlag)
+        && includes(row.waveFilterNo, body.waveFilterNo)
+        && includes(row.pickListName, body.pickListName)
+        && includes(row.isB2BOrder, body.isB2BOrder)
+        && (!text(body.frompicklistDate) || row.picklistDateStr >= body.frompicklistDate)
+        && (!text(body.topicklistDate) || row.picklistDateStr <= body.topicklistDate));
+      rows.sort((a, b) => text(a.picklistDateStr).localeCompare(text(b.picklistDateStr)) * (text(body.sord) === 'asc' ? 1 : -1));
+      return res.json(page(rows, body));
+    }
+
+    if (body.action === 'search-orders') {
+      const rows = (await find('fulfillment_orders')).filter(row =>
+        ['Allocated', 'Part Allocated'].includes(row.status)
+        && includes(row.order_no, body.orderNo)
+        && includes(row.warehouse ?? row.location_code, body.siteLoc)
+        && includes(row.status, body.orderStatus)
+        && includes(row.order_type, body.orderType)
+        && (!text(body.fromOrderDate) || row.order_date >= body.fromOrderDate)
+        && (!text(body.toOrderDate) || row.order_date <= body.toOrderDate))
+        .map(row => ({ ...row, recordTrust: 'legacy-unverified' }));
+      return res.json(page(rows, body, 'orderDTOList'));
+    }
+
+    if (body.action === 'wave-search') {
+      const rows = (await find('generic_records', { module: 'picklist-wave' }))
+        .filter(row => includes(row.code, body.waveNumber)
+          && includes(row.name, body.waveDescription)
+          && includes(row.location, body.locationCode)
+          && includes(row.status, body.status)
+          && includes(row.wave_type, body.waveType))
+        .map(row => ({ ...row, recordTrust: 'legacy-unverified' }));
+      return res.json(page(rows, body, 'waveDTOList'));
+    }
+
+    if (body.action === 'template-save') {
+      if (!text(body.templateName) || !text(body.location) || text(body.location) === '-1') {
+        return res.status(400).json({ error: 'Template Name and Source Warehouse Location are mandatory' });
+      }
+      if (!(await locationPairs()).some(([code]) => code === text(body.location))) {
+        return res.status(400).json({ error: 'Select a configured source warehouse location.' });
+      }
+      const row = await insert('generic_records', {
+        module: 'picklist-template',
+        code: `PT${Date.now().toString().slice(-6)}`,
+        name: text(body.templateName),
+        location: text(body.location),
+        order_processing: body.isB2B || 'B2C',
+        status: body.status || 'Active',
+        grouping_sequence: body.groupingSequence || 'By Order',
+        split_zone_wise: !!body.splitZoneWise,
+        order_count: +body.orderCount || 0,
+        sku_count: +body.skuCount || 0,
+        sku_qty: +body.skuQty || 0,
+        split_category: !!body.splitCategory,
+        reassign_pack: !!body.reassignPack,
+        assign_priority: body.assignPriority || '',
+        category: body.category || '',
+        created_by: currentUser(req)?.username || 'unknown',
+        created_date: new Date().toISOString().slice(0, 10),
+      });
+      return res.status(201).json({ row, jsonMessage: 'Template saved successfully' });
+    }
+
+    if (body.action === 'generate') {
+      return res.status(501).json({ error: 'Picklist generation is paused until selected orders have active Central Inventory reservations and a supported pick workflow.' });
+    }
+    return res.status(501).json({ error: 'This picklist action is unavailable until the reservation and picking workflow is connected.' });
+  } catch (error) {
+    if (sendDatabaseUnavailable(res, error)) return;
+    console.error('Manage Picklist error:', { name: error?.name, code: error?.code });
+    return res.status(500).json({ error: error.message });
+  }
+}

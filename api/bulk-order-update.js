@@ -1,5 +1,40 @@
-import { cors, find, insert, update } from './mongo.js';
-const MODULE='bulk-order-update-result',TYPES={'5':'Order Cancel','1':'Order Pack','2':'Order Ship','4':'Order UnPack'},text=v=>String(v??'').trim();let latestBatch='';
-const val=(row,...keys)=>{for(const key of keys){const k=Object.keys(row||{}).find(x=>x.toLowerCase().replace(/[^a-z0-9]/g,'')===key.toLowerCase().replace(/[^a-z0-9]/g,''));if(k&&text(row[k]))return text(row[k])}return''};
-const paged=(rows,b)=>{const size=[20,50,100,200].includes(+b.rows)?+b.rows:20,page=Math.max(1,+b.page||1),records=rows.length,total=Math.ceil(records/size),gridModel=rows.slice((page-1)*size,page*size);return{gridModel,rows:gridModel,page,total,records}};
-export default async function handler(req,res){if(cors(req,res))return;try{if(req.method==='GET')return res.json({importTypes:Object.entries(TYPES).map(([id,name])=>({id,name})),maxRows:500,pageSizes:[20,50,100,200]});if(req.method!=='POST')return res.status(405).json({error:'Method not allowed'});const b=req.body||{};if(b.action==='results'){const batch=text(b.batch)||latestBatch,rows=(await find('generic_records',{module:MODULE})).filter(x=>!batch||x.batch===batch).sort((a,z)=>+a.seq_no-+z.seq_no);return res.json({...paged(rows,b),batch})}if(b.action!=='import')return res.status(400).json({error:'Invalid action'});const type=text(b.importType);if(!TYPES[type])return res.status(400).json({error:'Please select Import Type'});if(!Array.isArray(b.importRows)||!b.importRows.length)return res.status(400).json({error:'Please select a file to import'});if(b.importRows.length>500)return res.status(400).json({error:'Max 500 rows can be imported in an attempt of Import.'});const orders=await find('fulfillment_orders'),batch=`${Date.now()}`,results=[];latestBatch=batch;for(let i=0;i<b.importRows.length;i++){const src=b.importRows[i]||{},orderNo=val(src,'Order No','orderNo','order_no'),outbound=val(src,'Outbound Delivery','outboundDelivery','delivery_no'),transporter=val(src,'Transporter Code','transporterCode','courier'),tracking=val(src,'Tracking No','trackingNo','awb'),order=orders.find(x=>text(x.order_no).toLowerCase()===orderNo.toLowerCase());let error='';if(!orderNo)error='Order No is mandatory';else if(!order)error='Order No not found';else if(type==='2'&&(!transporter||!tracking))error='Transporter Code and Tracking No are mandatory';if(!error){const fields=type==='5'?{status:'Cancelled'}:type==='1'?{status:'Packed',pack_date:new Date().toISOString()}:type==='2'?{status:'Shipped',courier:transporter,awb:tracking,ship_date:new Date().toISOString()}:{status:'Picked',pack_date:'',box_no:'',manifest_no:''};await update('fulfillment_orders',order.id,fields)}results.push(await insert('generic_records',{module:MODULE,batch,seq_no:i+1,order_no:orderNo,outbound_delivery:outbound,transporter_code:transporter,tracking_no:tracking,error_description:error,status:error?'Failed':'Success',import_type:type,import_type_name:TYPES[type],created_date:new Date().toISOString()}))}return res.json({...paged(results,b),batch,jsonMessage:'File imported successfully.'})}catch(e){console.error('Bulk Order Update error:',e);return res.status(500).json({error:e.message})}}
+import { sendDatabaseUnavailable, cors, find } from './mongo.js';
+
+const MODULE = 'bulk-order-update-result';
+const TYPES = { '5': 'Order Cancel', '1': 'Order Pack', '2': 'Order Ship', '4': 'Order UnPack' };
+
+const paged = (rows, body) => {
+  const size = [20, 50, 100, 200].includes(+body.rows) ? +body.rows : 20;
+  const page = Math.max(1, +body.page || 1);
+  const records = rows.length;
+  const gridModel = rows.slice((page - 1) * size, page * size);
+  return { gridModel, rows: gridModel, page, total: Math.ceil(records / size), records };
+};
+
+export default async function handler(req, res) {
+  if (cors(req, res)) return;
+  try {
+    if (req.method === 'GET') return res.json({
+      importTypes: Object.entries(TYPES).map(([id, name]) => ({ id, name })),
+      maxRows: 500,
+      pageSizes: [20, 50, 100, 200],
+      available: false,
+      notice: 'Order status imports remain disabled until each state change is committed through Central Inventory and provider-aware fulfillment services.',
+    });
+    if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+    const body = req.body || {};
+    if (body.action === 'results') {
+      const rows = (await find('generic_records', { module: MODULE }))
+        .sort((a, b) => +a.seq_no - +b.seq_no);
+      return res.json({ ...paged(rows, body), batch: body.batch || null, trust: 'legacy-unverified' });
+    }
+    if (body.action === 'import') return res.status(501).json({
+      error: 'Bulk order status import is paused until each order state transition is integrated with Central Inventory and supported carrier/provider services.',
+    });
+    return res.status(400).json({ error: 'Invalid action' });
+  } catch (error) {
+    if (sendDatabaseUnavailable(res, error)) return;
+    console.error('Bulk Order Update error:', { name: error?.name, code: error?.code });
+    return res.status(500).json({ error: error.message });
+  }
+}

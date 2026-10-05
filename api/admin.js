@@ -1,4 +1,6 @@
-import { cors, find, findOne, insert, update, remove } from './mongo.js';
+import { sendDatabaseUnavailable, cors, find, findOne, insert, updateAdminIfVersion, removeAdminIfVersion } from './mongo.js';
+import { currentUser } from './auth-session.js';
+import { channelRows, locations } from './catalogs.js';
 
 const USERS = 'user';
 const ROLES = 'role';
@@ -6,11 +8,13 @@ const IMPORTS = 'import';
 const PULLS = 'force-pull';
 const APIS = 'api-key';
 const AUDIT = 'audit';
+const storedKey='[stored]';
+const adminView=row=>({...row,version:row.version??0,...(row.type===APIS?{apiKey:row.apiKey?storedKey:''}:{})});
 
 const now = () => new Date().toISOString();
 const typeRows = async (type) => find('admin_records', { type }, { sort: { id: 1 } });
-const audit = async (event, entity, entityId, meta = {}) => insert('admin_records', {
-  type: AUDIT, event, entity, entityId, meta, at: now(), actor: 'demo-admin',
+const audit = async (req, event, entity, entityId, meta = {}) => insert('admin_records', {
+  type: AUDIT, event, entity, entityId, meta, at: now(), actor: currentUser(req)?.username || 'unknown',
 });
 const bad = (res, message) => res.status(422).json({ error: message });
 
@@ -19,19 +23,29 @@ export default async function handler(req, res) {
   try {
     const action = req.query.action || req.body?.action;
     if (req.method === 'GET') {
+      if (action === 'force-pull-catalog') {
+        const [configuredChannels, configuredLocations] = await Promise.all([channelRows(), locations()]);
+        return res.json({
+          channels: configuredChannels.filter(row => row.channel_code && row.channel_name).map(row => [String(row.channel_code), String(row.channel_name)]),
+          warehouses: configuredLocations.filter(row => /warehouse|head office|ho|wh/i.test(row.type)).map(row => [row.code, row.name]),
+        });
+      }
+      if (action === 'manage-api-catalog') {
+        return res.json({ locations: (await locations()).map(row => row.name) });
+      }
       if (action === 'dashboard') {
         const apis = await typeRows(APIS);
         const pulls = await typeRows(PULLS);
         return res.json({
           cards: { apiKeys: apis.length, activeKeys: apis.filter((r) => r.status === 'Active').length, pulls: pulls.length, failedImports: (await typeRows(IMPORTS)).filter((r) => r.status === 'Failure').length },
-          hits: [112, 354, 88, 90, 91, 90, 87, 91, 12, 169, 89, 92],
-          topApis: [{ label: 'eretail/v3/sku/inventoryStatus', value: 78 }, { label: 'eretail/v1/orders/validate', value: 16 }, { label: 'eretail/v1/order/orderPull', value: 3 }, { label: 'eretail/v1/order/orderreturn', value: 3 }],
+          hits: [],
+          topApis: [],
         });
       }
       const type = String(req.query.type || '');
       if (!type) return bad(res, 'Record type is required');
       const rows = await typeRows(type);
-      return res.json(rows);
+      return res.json(rows.map(adminView));
     }
     if (req.method === 'POST') {
       if (action === 'force-pull') {
@@ -40,9 +54,7 @@ export default async function handler(req, res) {
         const orderList = String(orders || '').toUpperCase().split(',').map((s) => s.trim()).filter(Boolean);
         if (!orderList.length) return bad(res, 'Order Number is Mandatory');
         if (orderList.length > 20) return bad(res, 'Max 20 order numbers are allowed');
-        const record = await insert('admin_records', { type: PULLS, location, orders: orderList, addWhHo: !!addWhHo, status: 'Completed', createdAt: now() });
-        await audit('Orders Pulled Successfully', PULLS, record.id, { location, count: orderList.length });
-        return res.status(201).json(record);
+        return res.status(501).json({ error: 'Order pull requires a configured channel integration.' });
       }
       const { type, ...payload } = req.body;
       if (![USERS, ROLES, IMPORTS, APIS].includes(type)) return bad(res, 'Unsupported Admin record type');
@@ -59,33 +71,37 @@ export default async function handler(req, res) {
         if (duplicate) return res.status(409).json({ error: 'API Key already exists' });
       }
       const record = await insert('admin_records', { type, ...payload, status: payload.status || 'Active', createdAt: now(), version: 1 });
-      await audit('Created', type, record.id);
-      return res.status(201).json(record);
+      await audit(req, 'Created', type, record.id);
+      return res.status(201).json(adminView(record));
     }
     if (req.method === 'PUT') {
       const { id, type, version, ...payload } = req.body;
+      if (!Number.isSafeInteger(version) || version < 0) return bad(res, 'A valid record version is required. Refresh and try again.');
       const record = await findOne('admin_records', { id });
       if (!record || (type && record.type !== type)) return res.status(404).json({ error: 'Admin record not found' });
-      if (version != null && record.version != null && Number(version) !== Number(record.version)) return res.status(409).json({ error: 'Record was changed by another user. Refresh and try again.' });
+      if (version !== (record.version ?? 0)) return res.status(409).json({ error: 'Record was changed by another user. Refresh and try again.' });
       // The list/editor deliberately receive a masked key. Do not let that
       // display value overwrite the stored key when another API field changes.
-      if (record.type === APIS && typeof payload.apiKey === 'string' && payload.apiKey.includes('X')) payload.apiKey = record.apiKey;
-      const rows = await update('admin_records', id, { ...payload, version: (record.version || 0) + 1, updatedAt: now() });
-      await audit('Updated', record.type, id);
-      const updated = rows[0];
-      return res.json(updated);
+      if (record.type === APIS && typeof payload.apiKey === 'string' && (payload.apiKey===storedKey||payload.apiKey===String(record.apiKey||'').slice(0,4)+'xxxx'+String(record.apiKey||'').slice(-4))) payload.apiKey = record.apiKey;
+      const updated = await updateAdminIfVersion(id, record.version, { ...payload, updatedAt: now() });
+      if (!updated) return res.status(409).json({ error: 'Record was changed by another user. Refresh and try again.' });
+      await audit(req, 'Updated', record.type, id);
+      return res.json(adminView(updated));
     }
     if (req.method === 'DELETE') {
-      const { id, type } = req.body;
+      const { id, type, version } = req.body;
+      if (!Number.isSafeInteger(version) || version < 0) return bad(res, 'A valid record version is required. Refresh and try again.');
       const record = await findOne('admin_records', { id });
       if (!record || (type && record.type !== type)) return res.status(404).json({ error: 'Admin record not found' });
-      await remove('admin_records', id);
-      await audit('Deleted', record.type, id);
+      if (version !== (record.version ?? 0)) return res.status(409).json({ error: 'Record was changed by another user. Refresh and try again.' });
+      if (!await removeAdminIfVersion(id,record.version)) return res.status(409).json({ error: 'Record was changed by another user. Refresh and try again.' });
+      await audit(req, 'Deleted', record.type, id);
       return res.json({ ok: true });
     }
     res.status(405).json({ error: 'Method not allowed' });
   } catch (error) {
-    console.error('Admin API error:', error);
-    res.status(500).json({ error: error.message || 'Unexpected Admin API error' });
+    if (sendDatabaseUnavailable(res, error)) return;
+    console.error('Admin API unexpected failure');
+    res.status(500).json({ error: 'Unexpected Admin API error' });
   }
 }

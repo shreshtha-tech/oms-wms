@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+process.env.MONGODB_URI='';process.env.NODE_ENV='test';process.env.DMILLS_REQUIRE_PERSISTENCE='false';
+const store=await import('../api/mongo.js');assert.equal(await store.waitForDataReady(),'memory');
+const dedicated=(await import('../api/tax-categories.js')).default,generic=(await import('../api/generic.js')).default;
+const call=async(handler,method,body)=>{const res={statusCode:200,status(code){this.statusCode=code;return this;},json(value){this.value=value;return this;},setHeader(){}};await handler({method,body,query:{}},res);return res;};
+const row=await store.insert('generic_records',{module:'tax-category',code:'FIXTURE-HSN',name:'Fixture',status:'Active'});
+await store.insert('skus',{sku_code:'FIXTURE-SKU',hsn:row.code});
+assert.equal((await call(dedicated,'PUT',{id:row.id,code:'CHANGED',name:'Fixture'})).statusCode,409);
+assert.equal((await call(generic,'PUT',{id:row.id,code:'CHANGED'})).statusCode,501,'Generic write must not bypass referenced HSN guard');
+assert.equal((await store.findOne('generic_records',{id:row.id})).code,'FIXTURE-HSN');
+assert.equal((await call(generic,'DELETE',{id:row.id})).statusCode,501);
+console.log('PASS: referenced HSN rename rejected by dedicated API; generic edit/delete blocked; source category preserved. Memory only.');

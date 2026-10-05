@@ -1,0 +1,1125 @@
+{
+  "scope": "Literal API call candidates only; dynamic wrappers/direct database calls/scripts excluded. Not exhaustive writer proof.",
+  "candidates": [
+    {
+      "file": "api/admin-parity.js",
+      "line": 15,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "d18074b3c01eb5f063b33069ee8a0e7f049e17de2c02b934f72e9aac292f5941",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/admin-parity.js",
+      "line": 56,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "d18074b3c01eb5f063b33069ee8a0e7f049e17de2c02b934f72e9aac292f5941",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/allocation-strategies.js",
+      "line": 10,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "bd619c3ec2f6e0b727525d76ec0bb7bf3998ad19c42472311ac506d2f882267d",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/allocation-strategies.js",
+      "line": 10,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "bd619c3ec2f6e0b727525d76ec0bb7bf3998ad19c42472311ac506d2f882267d",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/allocation-strategies.js",
+      "line": 11,
+      "operation": "remove",
+      "collection": "generic_records",
+      "file_sha256": "bd619c3ec2f6e0b727525d76ec0bb7bf3998ad19c42472311ac506d2f882267d",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/attribute-sets.js",
+      "line": 47,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "8c4cdb6b4f956c1a31744e316b1872fd6f38977df03ca76fd8c405781771b938",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/attribute-sets.js",
+      "line": 55,
+      "operation": "remove",
+      "collection": "generic_records",
+      "file_sha256": "8c4cdb6b4f956c1a31744e316b1872fd6f38977df03ca76fd8c405781771b938",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/bin-audit.js",
+      "line": 7,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "c46198dbeeefcc8d12355d126bb6d99156a1d33bb00227da06e7d9fb85d3d080",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/bin-editor.js",
+      "line": 36,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "e5188e95b6afa717c6d48c7373b501765b290bb341f89d6c8d43e95d9ff9c943",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/bin-editor.js",
+      "line": 37,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "e5188e95b6afa717c6d48c7373b501765b290bb341f89d6c8d43e95d9ff9c943",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/bin-editor.js",
+      "line": 39,
+      "operation": "remove",
+      "collection": "generic_records",
+      "file_sha256": "e5188e95b6afa717c6d48c7373b501765b290bb341f89d6c8d43e95d9ff9c943",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/bulk-upload.js",
+      "line": 2,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "4511d61a8e4cb631625d30149e30196ae476560e5cfeded089b581e0127d785d",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/clients.js",
+      "line": 87,
+      "operation": "insert",
+      "collection": "partners",
+      "file_sha256": "c6b66964563e961c49c129994719c261c13a5f783f916a5be3c759e060c2f072",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/clients.js",
+      "line": 106,
+      "operation": "update",
+      "collection": "partners",
+      "file_sha256": "c6b66964563e961c49c129994719c261c13a5f783f916a5be3c759e060c2f072",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/customer-groups.js",
+      "line": 98,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "6827ba6614fddff39d11cca26efa227f54a79da20b3e04cb5503fd31f8088626",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/customer-groups.js",
+      "line": 106,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "6827ba6614fddff39d11cca26efa227f54a79da20b3e04cb5503fd31f8088626",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/customer-groups.js",
+      "line": 108,
+      "operation": "remove",
+      "collection": "generic_records",
+      "file_sha256": "6827ba6614fddff39d11cca26efa227f54a79da20b3e04cb5503fd31f8088626",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/customer-groups.js",
+      "line": 114,
+      "operation": "remove",
+      "collection": "generic_records",
+      "file_sha256": "6827ba6614fddff39d11cca26efa227f54a79da20b3e04cb5503fd31f8088626",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/customer-groups.js",
+      "line": 121,
+      "operation": "remove",
+      "collection": "generic_records",
+      "file_sha256": "6827ba6614fddff39d11cca26efa227f54a79da20b3e04cb5503fd31f8088626",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/customer-groups.js",
+      "line": 125,
+      "operation": "remove",
+      "collection": "generic_records",
+      "file_sha256": "6827ba6614fddff39d11cca26efa227f54a79da20b3e04cb5503fd31f8088626",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/customer-groups.js",
+      "line": 204,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "6827ba6614fddff39d11cca26efa227f54a79da20b3e04cb5503fd31f8088626",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/customers.js",
+      "line": 49,
+      "operation": "update",
+      "collection": "partners",
+      "file_sha256": "66f785ee0e9fe6303533c7e4aeda573b9af4e294a28246051ac901e4b7442f79",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/cycle-count-waves.js",
+      "line": 122,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "60e4076ad81c2e7a71d8d502951add58889e79337415fb242e44cbe119a8d1dd",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/cycle-count-waves.js",
+      "line": 125,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "60e4076ad81c2e7a71d8d502951add58889e79337415fb242e44cbe119a8d1dd",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/cycle-count.js",
+      "line": 47,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "e6d5f2753817fa8b76ead4108cd4ccda7720dfba8cb13810706ebc0338529de0",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/discrepancy-enquiry.js",
+      "line": 88,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "55dca97f024769557463e64235f1afa04d588c1bea461a08b8c2e27ee6a63eb2",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/discrepancy-enquiry.js",
+      "line": 101,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "55dca97f024769557463e64235f1afa04d588c1bea461a08b8c2e27ee6a63eb2",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/discrepancy-enquiry.js",
+      "line": 126,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "55dca97f024769557463e64235f1afa04d588c1bea461a08b8c2e27ee6a63eb2",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/discrepancy-enquiry.js",
+      "line": 138,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "55dca97f024769557463e64235f1afa04d588c1bea461a08b8c2e27ee6a63eb2",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/exports.js",
+      "line": 32,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "2bb13a01d6dabd67909cf463886c4c9f5b95027050199a951cdc91fa70a83ca5",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/generic.js",
+      "line": 49,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "7b74ee4d0fcfa0b4997a6a63174decde9f0f5878affe0c68b65548ccbbd81b97",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/generic.js",
+      "line": 54,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "7b74ee4d0fcfa0b4997a6a63174decde9f0f5878affe0c68b65548ccbbd81b97",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/generic.js",
+      "line": 59,
+      "operation": "remove",
+      "collection": "generic_records",
+      "file_sha256": "7b74ee4d0fcfa0b4997a6a63174decde9f0f5878affe0c68b65548ccbbd81b97",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/global-order-search.js",
+      "line": 31,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "a13ac8566e605693fddc944dd10b46c3c82f653ea7586b29d3fac52b81e49395",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/global-returns-search.js",
+      "line": 2,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "da2b16defed615514ecf3d7bcae22b98b7843da6b40aa9a6c6baaba174906a53",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/inbound-gate-pass.js",
+      "line": 4,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "eaf439b92fb4bc425276c0237db1614a79b7be60790692016f2737037dc7ddc3",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/inbound-gate-pass.js",
+      "line": 4,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "eaf439b92fb4bc425276c0237db1614a79b7be60790692016f2737037dc7ddc3",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/inventory-move.js",
+      "line": 30,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "073adcec2aa1b9d6f8edd1fa4ce600687f2683ce847e9b5b594d6fdac0fcf627",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/kitting-orders.js",
+      "line": 11,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "da822ad62e7cd0ed8b10f57315ab93bbadfc6db0a33815b8272fdde6f20bff87",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/kitting-orders.js",
+      "line": 11,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "da822ad62e7cd0ed8b10f57315ab93bbadfc6db0a33815b8272fdde6f20bff87",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/kitting-orders.js",
+      "line": 12,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "da822ad62e7cd0ed8b10f57315ab93bbadfc6db0a33815b8272fdde6f20bff87",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/kitting-orders.js",
+      "line": 13,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "da822ad62e7cd0ed8b10f57315ab93bbadfc6db0a33815b8272fdde6f20bff87",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/locations.js",
+      "line": 24,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "8cdaaf796bbe8e2161a048f58138668b9b6d85d05414177ca665a1a2dc197f90",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/locations.js",
+      "line": 25,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "8cdaaf796bbe8e2161a048f58138668b9b6d85d05414177ca665a1a2dc197f90",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/lottable-validations.js",
+      "line": 66,
+      "operation": "updateWhere",
+      "collection": "generic_records",
+      "file_sha256": "6e792b21e8164bd5c54b92cd6fe404a25a4037516574ab038334c07b641bf6d7",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/lottable-validations.js",
+      "line": 73,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "6e792b21e8164bd5c54b92cd6fe404a25a4037516574ab038334c07b641bf6d7",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/lottable-validations.js",
+      "line": 76,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "6e792b21e8164bd5c54b92cd6fe404a25a4037516574ab038334c07b641bf6d7",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/lpn-enquiry.js",
+      "line": 1,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "58e583d3343d75dda373f54641f9352d646759054e8b6438ac010fcf3cb7d62f",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/lpn-enquiry.js",
+      "line": 3,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "58e583d3343d75dda373f54641f9352d646759054e8b6438ac010fcf3cb7d62f",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/lpn-enquiry.js",
+      "line": 4,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "58e583d3343d75dda373f54641f9352d646759054e8b6438ac010fcf3cb7d62f",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/lpn-enquiry.js",
+      "line": 6,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "58e583d3343d75dda373f54641f9352d646759054e8b6438ac010fcf3cb7d62f",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/lpn-enquiry.js",
+      "line": 7,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "58e583d3343d75dda373f54641f9352d646759054e8b6438ac010fcf3cb7d62f",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/manage-asn.js",
+      "line": 65,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "f057e70a340d99afe239911f49f0f845400b5fb0c0ff322ac54271fb2ecc89cf",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/manage-attributes.js",
+      "line": 104,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "c57028a1b40f1946335c5614a8a885c112cc3f0caf58adf3f3d4819887805fe8",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/manage-awb.js",
+      "line": 73,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "f3ad88d12d4da97f63f001556a87c7d97d8d2a5deccfc80b3410d3346d497696",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/manage-awb.js",
+      "line": 87,
+      "operation": "remove",
+      "collection": "generic_records",
+      "file_sha256": "f3ad88d12d4da97f63f001556a87c7d97d8d2a5deccfc80b3410d3346d497696",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/manage-picklists.js",
+      "line": 134,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "02cf573ed8df9332a709ee5b415c8375ccad5b98cbf10e8228697fab35002e76",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/merch-hierarchy.js",
+      "line": 134,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "49c4d80b636242aff34cb04ee4d1173e751c2c80107b72ad4c9d731a57e4e188",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/merch-hierarchy.js",
+      "line": 143,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "49c4d80b636242aff34cb04ee4d1173e751c2c80107b72ad4c9d731a57e4e188",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/mongo.js",
+      "line": 212,
+      "operation": "insert",
+      "collection": "vendors",
+      "file_sha256": "56e2ebe323a240ba194df45949ee46993ec5c25e93b35ba863c3b88a4b43d5f6",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/order-maintenance.js",
+      "line": 11,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "476e8988a1d2ee5d83e1aa76a10f057ad0d694f321466629aa81cbd85b3fa163",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/order-maintenance.js",
+      "line": 12,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "476e8988a1d2ee5d83e1aa76a10f057ad0d694f321466629aa81cbd85b3fa163",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/order-maintenance.js",
+      "line": 13,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "476e8988a1d2ee5d83e1aa76a10f057ad0d694f321466629aa81cbd85b3fa163",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/order-maintenance.js",
+      "line": 14,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "476e8988a1d2ee5d83e1aa76a10f057ad0d694f321466629aa81cbd85b3fa163",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/order-maintenance.js",
+      "line": 15,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "476e8988a1d2ee5d83e1aa76a10f057ad0d694f321466629aa81cbd85b3fa163",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/order-maintenance.js",
+      "line": 15,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "476e8988a1d2ee5d83e1aa76a10f057ad0d694f321466629aa81cbd85b3fa163",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/order-maintenance.js",
+      "line": 16,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "476e8988a1d2ee5d83e1aa76a10f057ad0d694f321466629aa81cbd85b3fa163",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/order-maintenance.js",
+      "line": 17,
+      "operation": "remove",
+      "collection": "generic_records",
+      "file_sha256": "476e8988a1d2ee5d83e1aa76a10f057ad0d694f321466629aa81cbd85b3fa163",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/org-hierarchy.js",
+      "line": 29,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "498557ee823bdc0d58c2baa62e1245fe04f77629b67426046690fea41b65a8a6",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/org-hierarchy.js",
+      "line": 30,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "498557ee823bdc0d58c2baa62e1245fe04f77629b67426046690fea41b65a8a6",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/partners.js",
+      "line": 28,
+      "operation": "insert",
+      "collection": "partners",
+      "file_sha256": "af369538001312a5cf2632b602ccf4dd144517377bc93cf501c3bd5f9b9d62e3",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/partners.js",
+      "line": 32,
+      "operation": "update",
+      "collection": "partners",
+      "file_sha256": "af369538001312a5cf2632b602ccf4dd144517377bc93cf501c3bd5f9b9d62e3",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/partners.js",
+      "line": 37,
+      "operation": "remove",
+      "collection": "partners",
+      "file_sha256": "af369538001312a5cf2632b602ccf4dd144517377bc93cf501c3bd5f9b9d62e3",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/picker-zone-preferences.js",
+      "line": 18,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "91b7cf94d3369b53bab2d826ae0d612450043fc63966e1725979cbddc46de3ce",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/picker-zone-preferences.js",
+      "line": 24,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "91b7cf94d3369b53bab2d826ae0d612450043fc63966e1725979cbddc46de3ce",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/price-zones.js",
+      "line": 2,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "b1bbfb8dd5f9f73871566dc2d6572ae2aabec233823b67899e311ad52652cae3",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/price-zones.js",
+      "line": 2,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "b1bbfb8dd5f9f73871566dc2d6572ae2aabec233823b67899e311ad52652cae3",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/price-zones.js",
+      "line": 2,
+      "operation": "remove",
+      "collection": "generic_records",
+      "file_sha256": "b1bbfb8dd5f9f73871566dc2d6572ae2aabec233823b67899e311ad52652cae3",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/pricing-events.js",
+      "line": 14,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "2a5f4cb6efa7bdddd8ddedda871bd3d48eadb0317817fe27ada3d0d30f2235c9",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/pricing-events.js",
+      "line": 14,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "2a5f4cb6efa7bdddd8ddedda871bd3d48eadb0317817fe27ada3d0d30f2235c9",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/putaway-enquiry.js",
+      "line": 126,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "a6110bf5b1259794f958d053855760fc59d04c4b2c6c895c5d206b505a71f0d1",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/putaway-enquiry.js",
+      "line": 147,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "a6110bf5b1259794f958d053855760fc59d04c4b2c6c895c5d206b505a71f0d1",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/putaway-rules.js",
+      "line": 197,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "df14914b305816239ef3f328f1fb189ede8b7240eb149f7bc08cd162075e8dcc",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/putaway-rules.js",
+      "line": 200,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "df14914b305816239ef3f328f1fb189ede8b7240eb149f7bc08cd162075e8dcc",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/putaway-rules.js",
+      "line": 211,
+      "operation": "remove",
+      "collection": "generic_records",
+      "file_sha256": "df14914b305816239ef3f328f1fb189ede8b7240eb149f7bc08cd162075e8dcc",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/qc-params-mapping.js",
+      "line": 2,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "d897fc776c347eba742d7a168bcb7363a22e7e9c67306dd6664ee182a755c541",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/qc-params-mapping.js",
+      "line": 2,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "d897fc776c347eba742d7a168bcb7363a22e7e9c67306dd6664ee182a755c541",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/qc-params-mapping.js",
+      "line": 2,
+      "operation": "remove",
+      "collection": "generic_records",
+      "file_sha256": "d897fc776c347eba742d7a168bcb7363a22e7e9c67306dd6664ee182a755c541",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/receipt-validations.js",
+      "line": 81,
+      "operation": "updateWhere",
+      "collection": "generic_records",
+      "file_sha256": "56c582a5bdea6cfb7287986cd3349f0f84c545b342f39b37e6d195f826e3e16b",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/receipt-validations.js",
+      "line": 92,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "56c582a5bdea6cfb7287986cd3349f0f84c545b342f39b37e6d195f826e3e16b",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/receipt-validations.js",
+      "line": 95,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "56c582a5bdea6cfb7287986cd3349f0f84c545b342f39b37e6d195f826e3e16b",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/return-without-order.js",
+      "line": 34,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "116e1cd4ac8446b9094508378f56ecd6243a4d6a028f749c126e77ed929885fd",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/return-without-order.js",
+      "line": 70,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "116e1cd4ac8446b9094508378f56ecd6243a4d6a028f749c126e77ed929885fd",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/return-without-order.js",
+      "line": 73,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "116e1cd4ac8446b9094508378f56ecd6243a4d6a028f749c126e77ed929885fd",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/return-without-order.js",
+      "line": 88,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "116e1cd4ac8446b9094508378f56ecd6243a4d6a028f749c126e77ed929885fd",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/return-without-order.js",
+      "line": 94,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "116e1cd4ac8446b9094508378f56ecd6243a4d6a028f749c126e77ed929885fd",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/return-without-order.js",
+      "line": 99,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "116e1cd4ac8446b9094508378f56ecd6243a4d6a028f749c126e77ed929885fd",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/rtv-enquiry.js",
+      "line": 3,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "43170450b0da6bedc385c73e780d2dcc3f4a97992d212355124b4f98f633e7e0",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/service-pin-codes.js",
+      "line": 61,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "6226d75f16a29fa5d8d50cbb4bd72370439e794afdcb69585d8649b17862446c",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/service-pin-codes.js",
+      "line": 62,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "6226d75f16a29fa5d8d50cbb4bd72370439e794afdcb69585d8649b17862446c",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/service-pin-codes.js",
+      "line": 68,
+      "operation": "remove",
+      "collection": "generic_records",
+      "file_sha256": "6226d75f16a29fa5d8d50cbb4bd72370439e794afdcb69585d8649b17862446c",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/settings.js",
+      "line": 23,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "249362193f80893d8fdc54f2cb14ccf17072aeb63826229e1d6412b842928ac2",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/settings.js",
+      "line": 23,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "249362193f80893d8fdc54f2cb14ccf17072aeb63826229e1d6412b842928ac2",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/sku-company-links.js",
+      "line": 140,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "eee1e1036f502a7aa43f33f6c7a220280f5f026ca720b7db1aa656606cd5cdfc",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/sku-company-links.js",
+      "line": 173,
+      "operation": "removeIfPresent",
+      "collection": "generic_records",
+      "file_sha256": "eee1e1036f502a7aa43f33f6c7a220280f5f026ca720b7db1aa656606cd5cdfc",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/sku-grading.js",
+      "line": 71,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "be9bfe81c0173fa18e9da3288ea6ac54e38078b977fd7d30189ccfecea297073",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/sku-grading.js",
+      "line": 89,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "be9bfe81c0173fa18e9da3288ea6ac54e38078b977fd7d30189ccfecea297073",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/sku-grading.js",
+      "line": 96,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "be9bfe81c0173fa18e9da3288ea6ac54e38078b977fd7d30189ccfecea297073",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/sku-grading.js",
+      "line": 102,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "be9bfe81c0173fa18e9da3288ea6ac54e38078b977fd7d30189ccfecea297073",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/sku-groups.js",
+      "line": 121,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "5eb829bf1dfc084587c3c59c0002cf9b2bee07ec7562e81a8fa4b9d302566e52",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/sku-groups.js",
+      "line": 130,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "5eb829bf1dfc084587c3c59c0002cf9b2bee07ec7562e81a8fa4b9d302566e52",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/sku-imports.js",
+      "line": 43,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "85bfaeb778e039a74555adf880d302414a2f60cc66abfd5e746c8e38ae2c3bd2",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/sku-moderation.js",
+      "line": 84,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "635302a0654585d4a24926a43334f026670df1eec49b65dc5dad33cc66a769b7",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/store-groups.js",
+      "line": 4,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "fd7a27eb4d50b4a73cf440c41d40a9ef7cd0f0708efa1b8e509f5c9b13f25c7f",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/store-groups.js",
+      "line": 4,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "fd7a27eb4d50b4a73cf440c41d40a9ef7cd0f0708efa1b8e509f5c9b13f25c7f",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/tally-config.js",
+      "line": 75,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "d3ab05e89dd75f4fe35e89af36014b1164a98036fccc5d13c917ebb93f578abe",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/tally-config.js",
+      "line": 75,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "d3ab05e89dd75f4fe35e89af36014b1164a98036fccc5d13c917ebb93f578abe",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/tally-config.js",
+      "line": 76,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "d3ab05e89dd75f4fe35e89af36014b1164a98036fccc5d13c917ebb93f578abe",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/tally-config.js",
+      "line": 88,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "d3ab05e89dd75f4fe35e89af36014b1164a98036fccc5d13c917ebb93f578abe",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/tally-config.js",
+      "line": 88,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "d3ab05e89dd75f4fe35e89af36014b1164a98036fccc5d13c917ebb93f578abe",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/tally-config.js",
+      "line": 90,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "d3ab05e89dd75f4fe35e89af36014b1164a98036fccc5d13c917ebb93f578abe",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/tax-categories.js",
+      "line": 23,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "2b5d447c93e4706f5360fe2613978402775d32bb24905d58df90076b0a55f4ac",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/tax-categories.js",
+      "line": 45,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "2b5d447c93e4706f5360fe2613978402775d32bb24905d58df90076b0a55f4ac",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/tax-groups.js",
+      "line": 145,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "46a0f8844cb4d7dae9fa126a5e8983aa1027b4707be780410da21fedfde18bb3",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/tax-groups.js",
+      "line": 157,
+      "operation": "remove",
+      "collection": "generic_records",
+      "file_sha256": "46a0f8844cb4d7dae9fa126a5e8983aa1027b4707be780410da21fedfde18bb3",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/tax-groups.js",
+      "line": 182,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "46a0f8844cb4d7dae9fa126a5e8983aa1027b4707be780410da21fedfde18bb3",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/tax-groups.js",
+      "line": 192,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "46a0f8844cb4d7dae9fa126a5e8983aa1027b4707be780410da21fedfde18bb3",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/tax-zones.js",
+      "line": 114,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "789b9d107c1400e9ae70c22b91ba592813ea9c25432933fbeb2b63429e18c104",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/tax-zones.js",
+      "line": 122,
+      "operation": "remove",
+      "collection": "generic_records",
+      "file_sha256": "789b9d107c1400e9ae70c22b91ba592813ea9c25432933fbeb2b63429e18c104",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/tax-zones.js",
+      "line": 148,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "789b9d107c1400e9ae70c22b91ba592813ea9c25432933fbeb2b63429e18c104",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/tax-zones.js",
+      "line": 154,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "789b9d107c1400e9ae70c22b91ba592813ea9c25432933fbeb2b63429e18c104",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/transhipment-old.js",
+      "line": 132,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "9d4f128658f28e270e199fa9b1701ebb31ad89aa0b331decc3556a6d484b2c0a",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/transhipment.js",
+      "line": 53,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "4a4e3b2ec06d0646a0af87c0afb0e5b5c9ac15af5cc0c3256adeeb3628ad492a",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/transporters.js",
+      "line": 25,
+      "operation": "insert",
+      "collection": "partners",
+      "file_sha256": "234fba0ae92ac1a206ec220316a91cbe81cd2cbe843b5d35c71a466d0f149f60",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/transporters.js",
+      "line": 36,
+      "operation": "update",
+      "collection": "partners",
+      "file_sha256": "234fba0ae92ac1a206ec220316a91cbe81cd2cbe843b5d35c71a466d0f149f60",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/vendor-sku-catalog.js",
+      "line": 44,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "c08a5796df0ad95078101a5b8021faad5c7cee7a1de5951a3242efb3409a3008",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/vendor-sku-loc-catalog.js",
+      "line": 51,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "4bb21311e9ac1a691b2cf4acbd10d7d85c527c0b4ad2716b8dbb3ad48d014588",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/wms-zones.js",
+      "line": 58,
+      "operation": "insert",
+      "collection": "generic_records",
+      "file_sha256": "58097ab672e1837fca2ed519ce43bea0b0b7c928fd8832c825e10345cdb53d37",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/wms-zones.js",
+      "line": 65,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "58097ab672e1837fca2ed519ce43bea0b0b7c928fd8832c825e10345cdb53d37",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    },
+    {
+      "file": "api/wms-zones.js",
+      "line": 75,
+      "operation": "update",
+      "collection": "generic_records",
+      "file_sha256": "58097ab672e1837fca2ed519ce43bea0b0b7c928fd8832c825e10345cdb53d37",
+      "review_status": "UNREVIEWED_UNLESS_LINKED_IN_CURRENT_AUDIT"
+    }
+  ]
+}

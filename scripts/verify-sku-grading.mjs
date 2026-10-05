@@ -1,3 +1,72 @@
-import assert from'node:assert/strict';import{chromium}from'playwright';const base=process.env.ERETAIL_BASE_URL||'http://127.0.0.1:3011',send=async b=>{const r=await fetch(base+'/api/sku-grading',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(b)});return{r,j:await r.json()}};
-const meta=await(await fetch(base+'/api/sku-grading')).json();assert.deepEqual(meta.pageSizes,[20,50,100,200]);assert.deepEqual(meta.statuses.map(x=>x[1]),['--- Select ---','Confirmed','Pending']);assert.deepEqual(meta.exportFields,['GradeId','Inbound No','Status','Creation Date','OrgId','locCode']);let x=await send({action:'export',gridDataLen:0,fields:[]});assert.equal(x.j.error,'No data in grid to export');x=await send({action:'create-line',inboundNo:'',fromSku:'A'});assert.equal(x.j.error,'Please Select Inbound No');x=await send({action:'create-line',inboundNo:'INB-VERIFY'});assert.equal(x.j.error,'Invalid Data');const valid={action:'create-line',inboundNo:'INB-VERIFY',fromSku:'FROM-SKU',fromSkuDesc:'From SKU',fromBin:'BIN-A',fromLpn:'LPN-A',fromLot:'LOT-A',availableQty:10,mrp:100,wac:80,toSku:'TO-SKU',toBin:'BIN-A',toLpn:'LPN-A',qty:2,unitPrice:90,lottables:['L1','L2','','','','','']};x=await send({...valid,qty:11});assert.equal(x.j.error,'Sku available quantity is less than converted quantity.');x=await send({...valid,toBin:'BIN-B'});assert.equal(x.j.error,'From LPN and To LPN can not be same for different bin code.');x=await send(valid);assert.equal(x.r.status,200);const row=x.j.row;assert.match(row.gradeId,/^UWH\d{9}$/);assert.equal(row.statusText,'Pending');assert.equal((await(await fetch(base+`/api/sku-grading?gradeId=${row.gradeId}`)).json()).row.details.length,1);x=await send({action:'confirm',gradeId:row.gradeId});assert.equal(x.j.row.statusText,'Confirmed');x=await send({action:'export',gridDataLen:1,fields:['GradeId','Status']});assert.match(x.j.reportId,/^SGE-/);
-const b=await chromium.launch({headless:true}),p=await b.newPage({viewport:{width:1440,height:1000}}),errors=[];p.on('pageerror',e=>errors.push(e.message));p.on('console',m=>m.type()==='error'&&errors.push(m.text()));try{await p.goto(base);const c=(await p.locator('.font-mono').textContent()).trim();await p.getByPlaceholder('Username').fill('grading');await p.getByPlaceholder('Password').fill('local');await p.getByPlaceholder('Enter captcha').fill(c);await p.getByRole('button',{name:'Login'}).click();await p.waitForURL('**/app/dashboard');await p.goto(base+'/app/r/sku-grading');for(const a of['Search','Reset','Export','Add New'])await p.getByRole('button',{name:a,exact:true}).waitFor();for(const h of['Graded Id','Inbound No','Creation Date','Status','Location'])await p.getByRole('columnheader',{name:h,exact:true}).first().waitFor();assert.deepEqual(await p.getByLabel('Page size').locator('option').allTextContents(),['20','50','100','200']);assert.deepEqual(await p.getByLabel('Status').locator('option').allTextContents(),['--- Select ---','Confirmed','Pending']);await p.getByRole('button',{name:'Export'}).click();await p.getByText('No data in grid to export').waitFor();await p.getByRole('button',{name:'Add New'}).click();await p.getByRole('button',{name:'Confirm'}).click();await p.getByText('Invalid Data').waitFor();await p.getByLabel('Select SKU').click();await p.getByText('Please Select Inbound No').waitFor();await p.getByLabel('Select Inbound').click();const inboundDialog=p.getByRole('dialog',{name:'Inbound Pick List'});for(const h of['Inbound No','Inbound Type'])await inboundDialog.getByRole('columnheader',{name:h}).waitFor();await inboundDialog.getByRole('button',{name:'Close'}).click();await p.getByRole('button',{name:'Add Grade To'}).click();const grade=p.getByRole('dialog',{name:'Grade To'});for(const l of['To SKU Code','To SKU Desc','To Bin Location','To LPN','To MRP','To WAC','To Qty to Convert','To Unit Price'])await grade.getByLabel(l).waitFor();await grade.getByRole('button',{name:'Add'}).click();await p.getByText('Invalid Data').waitFor();await grade.getByRole('button',{name:'Close'}).click();await p.goto(base+`/app/r/sku-grading?gradeId=${row.gradeId}`);await p.getByText('FROM-SKU').waitFor();await p.getByRole('button',{name:'Print'}).click();await p.getByText('Please Select Atleast One Sku To Generate Label').waitFor();await p.getByLabel('Select FROM-SKU').check();await p.getByRole('button',{name:'Print'}).click();await p.getByText('SKU labels prepared').waitFor();await p.getByRole('button',{name:'LOT-A'}).click();const lot=p.getByRole('dialog',{name:'Lot Details'});await lot.getByText('Lottable 1').waitFor();await lot.getByRole('button',{name:'Close'}).click();await p.goto(base+'/app/r/sku-grading');await p.getByLabel('Graded Id').fill(row.gradeId);await p.getByRole('button',{name:'Search'}).click();await p.getByRole('button',{name:row.gradeId}).waitFor();await p.getByRole('button',{name:'Export'}).click();const exp=p.getByRole('dialog',{name:'**Please Select Field For Export'});for(const f of meta.exportFields)await exp.getByText(f,{exact:true}).waitFor();await exp.getByRole('button',{name:'Export'}).click();await p.getByText(/Pending Report created: SGE-/).waitFor();assert.deepEqual(errors,[]);console.log('PASS SKU Grading: exact enquiry/default options/paging, inbound and SKU pickers, Grade To and quantity/LPN validations, persisted grading, confirmation, lot details, label selection, configurable Pending Report export, and clean console.')}finally{await b.close()}
+import assert from 'node:assert/strict';
+import { randomBytes, scryptSync } from 'node:crypto';
+import { chromium } from 'playwright';
+
+const password = 'LocalGradingCheck123!';
+const salt = randomBytes(16).toString('hex');
+process.env.PORT = process.env.ERETAIL_TEST_PORT || '3022';
+process.env.MONGODB_URI = '';
+process.env.DMILLS_ADMIN_USER = 'gradingcheck';
+process.env.DMILLS_ADMIN_PASSWORD_HASH = `${salt}:${scryptSync(password, salt, 64).toString('hex')}`;
+
+const { insert } = await import('../api/mongo.js');
+await import('../server.js');
+const base = `http://127.0.0.1:${process.env.PORT}`;
+for (let attempt = 0; attempt < 30; attempt++) {
+  try { if ((await fetch(`${base}/api/auth/session`)).ok) break; }
+  catch { /* server still starting */ }
+  await new Promise(resolve => setTimeout(resolve, 200));
+}
+
+let browser;
+let failed = false;
+try {
+  browser = await chromium.launch({ headless: true });
+  const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+  await page.goto(`${base}/login`);
+  await page.getByRole('textbox', { name: 'Login Id' }).fill('gradingcheck');
+  await page.getByLabel('Password').fill(password);
+  await page.getByRole('button', { name: 'Login' }).click();
+  await page.waitForURL('**/app/dashboard');
+
+  const request = page.request;
+  const empty = await (await request.get(`${base}/api/sku-grading`)).json();
+  assert.deepEqual(empty.locations, [['-1', '--- Select ---']]);
+  assert.deepEqual(empty.inbound, []);
+  assert.deepEqual(empty.inventory, []);
+  await page.goto(`${base}/app/r/sku-grading`);
+  await page.getByText('No SKU grades to view.').waitFor();
+
+  await insert('generic_records', { module: 'location', code: 'DMWH', name: 'D-Mills Warehouse' });
+  await insert('grn', { inbound_no: 'DM-IN-1', location_code: 'DMWH' });
+  await insert('inventory', { sku_code: 'DM-SKU-1', name: 'D-Mills Product', bin: 'DM-BIN', available_qty: 10 });
+  const configured = await (await request.get(`${base}/api/sku-grading`)).json();
+  assert.equal(configured.locations[1][0], 'DMWH');
+  assert.equal(configured.inbound[0].inboundCode, 'DM-IN-1');
+  assert.equal(configured.inventory[0].skuCode, 'DM-SKU-1');
+
+  const send = async body => {
+    const response = await request.post(`${base}/api/sku-grading`, { data: body });
+    return { status: response.status(), body: await response.json() };
+  };
+  assert.equal((await send({ action: 'create-line', inboundNo: '' })).body.error, 'Please Select Inbound No');
+  const valid = { action: 'create-line', inboundNo: 'DM-IN-1', locCode: 'DMWH', fromSku: 'DM-SKU-1', fromBin: 'DM-BIN', availableQty: 10, toSku: 'DM-SKU-1', toBin: 'DM-BIN', qty: 2, unitPrice: 90 };
+  assert.match((await send({ ...valid, locCode: 'UNKNOWN' })).body.error, /configured location/);
+  assert.match((await send({ ...valid, qty: 11 })).body.error, /available quantity/);
+  const created = await send(valid);
+  assert.equal(created.status, 200);
+  assert.match(created.body.row.gradeId, /^SG\d{9}$/);
+  const gradeId = created.body.row.gradeId;
+  assert.equal((await send({ action: 'confirm', gradeId })).body.row.statusText, 'Confirmed');
+  await page.goto(`${base}/app/r/sku-grading?gradeId=${gradeId}`);
+  await page.getByText('DM-SKU-1').first().waitFor();
+  await page.getByRole('button', { name: 'Print' }).click();
+  await page.getByText('Please Select Atleast One Sku To Generate Label').waitFor();
+  console.log('PASS SKU Grading: empty catalogs, configured records, validation, persistence, confirmation, and browser view');
+} catch (error) {
+  failed = true;
+  console.error(error);
+} finally {
+  await browser?.close();
+  process.exit(failed ? 1 : 0);
+}

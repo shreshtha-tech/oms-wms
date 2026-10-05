@@ -1,4 +1,4 @@
-import { find, findOne, insert, update, remove, cors } from './mongo.js';
+import { sendDatabaseUnavailable, find, findOne, insert, update, remove, cors } from './mongo.js';
 
 async function validateTaxCategory(code, currentCode = '') {
   const category = await findOne('generic_records', { module: 'tax-category', code });
@@ -6,10 +6,15 @@ async function validateTaxCategory(code, currentCode = '') {
   if (category.status !== 'Active' && code !== currentCode) return 'Inactive Tax Category cannot be assigned';
   return null;
 }
-async function validateTaxGroup(code, currentCode = '') {
-  const group = await findOne('generic_records', { module: 'tax-group', code });
-  if (!group) return code === currentCode ? null : 'Tax Group does not exist';
-  if (group.status !== 'Active' && code !== currentCode) return 'Inactive Tax Group cannot be assigned';
+async function validateTaxGroup(code, currentCode, allowUnchangedLegacyValue = false) {
+  const normalized = String(code || '').trim();
+  if (!normalized) {
+    if (allowUnchangedLegacyValue && !currentCode) return null;
+    return 'Tax Group Code is required';
+  }
+  const group = await findOne('generic_records', { module: 'tax-group', code: normalized });
+  if (!group) return normalized === currentCode && allowUnchangedLegacyValue ? null : 'Tax Group does not exist';
+  if (group.status !== 'Active' && normalized !== currentCode) return 'Inactive Tax Group cannot be assigned';
   return null;
 }
 async function validateTaxZone(code, currentCode = '') {
@@ -22,7 +27,9 @@ async function validateTaxZone(code, currentCode = '') {
 function validateRule(body) {
   if (!['Sales', 'Purchase'].includes(body.tax_type)) return 'Please Select Tax Type';
   if (!['ALL', 'IN', 'OUT', 'With In'].includes(body.goods_direction)) return 'Please Select Goods Direction';
-  if (!body.start_date) return 'Please Select Start Date';
+  const date = String(body.start_date || '');
+  const parsedDate = /^\d{4}-\d{2}-\d{2}$/.test(date) ? new Date(`${date}T00:00:00.000Z`) : null;
+  if (!parsedDate || Number.isNaN(parsedDate.getTime()) || parsedDate.toISOString().slice(0, 10) !== date) return 'Please Select a valid Start Date';
   if (!['Active', 'Inactive'].includes(body.is_active)) return 'Invalid status';
   if (body.from_mrp === '' || body.from_mrp === undefined || body.from_mrp === null) return 'Please Enter From MRP';
   if (body.to_mrp === '' || body.to_mrp === undefined || body.to_mrp === null) return 'Please Enter To MRP';
@@ -41,7 +48,18 @@ export default async function handler(req, res) {
     if (req.method === 'GET') {
       const rows = await find('tax_application', {}, { sort: { id: -1 } });
       if (req.query.resolve === 'true') {
-        const candidates = rows.filter((row) => row.is_active === 'Active' && row.tax_category === req.query.tax_category && row.tax_type === req.query.tax_type && (!row.tax_zone || row.tax_zone === req.query.tax_zone) && (!req.query.goods_direction || row.goods_direction === 'ALL' || row.goods_direction === req.query.goods_direction)).filter((row) => { const amount = Number(req.query.mrp || 0), from = Number(row.from_mrp || 0), to = Number(row.to_mrp || 0); return amount >= from && (!to || amount <= to); });
+        const category = await findOne('generic_records', { module: 'tax-category', code: req.query.tax_category });
+        if (!category || category.status !== 'Active') return res.status(200).json({ match: null, candidates: [] });
+        const zone = await findOne('generic_records', { module: 'tax-zone', code: req.query.tax_zone });
+        if (!zone || zone.status !== 'Active') return res.status(200).json({ match: null, candidates: [] });
+        const today = new Date().toISOString().slice(0, 10);
+        const groups = await find('generic_records', { module: 'tax-group' });
+        const activeGroupCodes = new Set(groups.filter((group) => group.status === 'Active').map((group) => String(group.code)));
+        const candidates = rows.filter((row) => row.is_active === 'Active' && row.tax_category === req.query.tax_category && row.tax_type === req.query.tax_type && row.start_date <= today && activeGroupCodes.has(String(row.tax_group_code)) && (!row.tax_zone || row.tax_zone === req.query.tax_zone) && (!req.query.goods_direction || row.goods_direction === 'ALL' || row.goods_direction === req.query.goods_direction)).filter((row) => { const amount = Number(req.query.mrp || 0), from = Number(row.from_mrp || 0), to = Number(row.to_mrp || 0); return Number.isFinite(amount) && amount >= from && (!to || amount <= to); }).sort((left, right) => {
+          const leftSpecificity = req.query.goods_direction && left.goods_direction === req.query.goods_direction ? 1 : 0;
+          const rightSpecificity = req.query.goods_direction && right.goods_direction === req.query.goods_direction ? 1 : 0;
+          return rightSpecificity - leftSpecificity || String(right.start_date).localeCompare(String(left.start_date)) || Number(right.from_mrp || 0) - Number(left.from_mrp || 0) || Number(right.id) - Number(left.id);
+        });
         return res.status(200).json({ match: candidates[0] || null, candidates });
       }
       return res.status(200).json(rows);
@@ -69,8 +87,10 @@ export default async function handler(req, res) {
       const taxError = await validateTaxCategory(b.tax_category); if (taxError) return res.status(400).json({ error: taxError });
       const groupError = await validateTaxGroup(b.tax_group_code); if (groupError) return res.status(400).json({ error: groupError });
       const zoneError = await validateTaxZone(b.tax_zone); if (zoneError) return res.status(400).json({ error: zoneError });
-      const normalized = { ...b, tax_type: b.tax_type || '', goods_direction: b.goods_direction || '', start_date: b.start_date || '', is_active: b.is_active || 'Active', from_mrp: Number(b.from_mrp), to_mrp: Number(b.to_mrp) };
+      const normalized = { ...b, tax_type: b.tax_type || '', goods_direction: b.goods_direction || '', start_date: b.start_date || '', is_active: b.is_active || 'Active' };
       const ruleError = validateRule(normalized); if (ruleError) return res.status(400).json({ error: ruleError });
+      normalized.from_mrp = Number(b.from_mrp);
+      normalized.to_mrp = Number(b.to_mrp);
       if ((await find('tax_application', {})).some((row) => sameRule(row, normalized))) return res.status(409).json({ error: 'An identical Tax Application rule already exists.' });
       const doc = await insert('tax_application', {
         tax_category: b.tax_category, tax_type: normalized.tax_type,
@@ -85,10 +105,11 @@ export default async function handler(req, res) {
       const { id, ...fields } = req.body;
       const current = (await find('tax_application', {})).find((row) => row.id === Number(id)); if (!current) return res.status(404).json({ error: 'Tax Application not found' });
       const taxError = await validateTaxCategory(fields.tax_category, current.tax_category); if (taxError) return res.status(400).json({ error: taxError });
-      const groupError = await validateTaxGroup(fields.tax_group_code, current.tax_group_code); if (groupError) return res.status(400).json({ error: groupError });
+      const groupError = await validateTaxGroup(fields.tax_group_code, current.tax_group_code, true); if (groupError) return res.status(400).json({ error: groupError });
       const zoneError = await validateTaxZone(fields.tax_zone, current.tax_zone); if (zoneError) return res.status(400).json({ error: zoneError });
-      const next = { ...current, ...fields, from_mrp: Number(fields.from_mrp), to_mrp: Number(fields.to_mrp) };
-      const ruleError = validateRule(next); if (ruleError) return res.status(400).json({ error: ruleError });
+      const rawNext = { ...current, ...fields };
+      const ruleError = validateRule(rawNext); if (ruleError) return res.status(400).json({ error: ruleError });
+      const next = { ...rawNext, from_mrp: Number(rawNext.from_mrp), to_mrp: Number(rawNext.to_mrp) };
       if ((await find('tax_application', {})).some((row) => row.id !== current.id && sameRule(row, next))) return res.status(409).json({ error: 'An identical Tax Application rule already exists.' });
       const rows = await update('tax_application', id, next);
       return res.status(200).json(rows[0]);
@@ -97,5 +118,6 @@ export default async function handler(req, res) {
       return res.status(409).json({ error: 'Tax Applications are maintained by status; deletion is not available.' });
     }
     res.status(405).json({ error: 'Method not allowed' });
-  } catch (err) { console.error('taxapp error:', err); res.status(500).json({ error: err.message }); }
+  } catch (err) {
+    if (sendDatabaseUnavailable(res, err)) return; console.error('taxapp error:', { name: err?.name, code: err?.code }); res.status(500).json({ error: err.message }); }
 }

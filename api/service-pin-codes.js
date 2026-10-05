@@ -1,10 +1,12 @@
-import { cors, find, insert, update, remove } from './mongo.js';
+import { sendDatabaseUnavailable, cors, find, insert, update, remove } from './mongo.js';
+import { locations, transporterPairs } from './catalogs.js';
+import { currentUser } from './auth-session.js';
 
 const t = (v) => String(v ?? '').trim();
 const has = (v, q) => !t(q) || ['-1'].includes(t(q)) || t(v).toLowerCase().includes(t(q).toLowerCase());
 const norm = (r) => ({
   ...r, pinCode: r.pin_code || r.code || '', pinCodeDel: r.pin_code || r.code || '',
-  siteLocName: r.site_loc_name || 'UWH - JX Karawaci', siteLocCode: r.site_loc_code || 'UWH',
+  siteLocName: r.site_loc_name || '', siteLocCode: r.site_loc_code || '',
   displayFromEmbargoStartDate: r.embargo_start || '', displayFromEmbargoEndDate: r.embargo_end || '',
   areaCode: r.area_code || '', orderType: r.order_type || '', orderTypeCode: r.order_type_code || '',
   courierType: r.courier_type || '', courierTypeCode: r.courier_type_code || '',
@@ -16,10 +18,10 @@ export default async function handler(req, res) {
   try {
     const b = req.body || {}, all = await find('generic_records', { module: 'service-pin-code' });
     if (req.method === 'GET') return res.json({
-      locations: [['UWH', 'UWH - JX Karawaci'], ['KLW', 'KLW - JX Karawaci 2']],
+      locations: (await locations()).map(row => [row.code, row.name]),
       orderTypes: [['-1', '--- Select ---'], ['C', 'COD'], ['NC', 'Prepaid']],
       courierTypes: [['-1', '--- Select ---'], ['0', 'Reverse'], ['1', 'Forward']],
-      transporters: [['-1', '--- Select ---'], ['101010101', 'Delhivary India - AWB-101010101'], ['345678', 'DI-345678'], ['1107', 'Delhivery-1107']],
+      transporters: [['-1', '--- Select ---'], ...await transporterPairs()],
     });
     if (req.method === 'POST' && (b.REQ_SEARCH_FLAG || b.action === 'search')) {
       let matches = all.map(norm).filter((x) =>
@@ -42,6 +44,10 @@ export default async function handler(req, res) {
     if (req.method === 'POST' || req.method === 'PUT') {
       if (!t(b.siteLocCode) || b.siteLocCode === '-1') return res.status(400).json({ error: 'Please select the Location' });
       if (!t(b.transporterCode) || b.transporterCode === '-1') return res.status(400).json({ error: 'Please select the Transporter' });
+      const configuredLocation = (await locations()).find(row => row.code === t(b.siteLocCode));
+      if (!configuredLocation) return res.status(400).json({ error: 'Please select a configured Location' });
+      const configuredTransporter = (await transporterPairs()).find(([code]) => code === t(b.transporterCode));
+      if (!configuredTransporter) return res.status(400).json({ error: 'Please select a configured Transporter' });
       if (!t(b.orderTypeCode) || b.orderTypeCode === '-1') return res.status(400).json({ error: 'Please select the Order Type' });
       if (!t(b.courierTypeCode) || b.courierTypeCode === '-1') return res.status(400).json({ error: 'Please Select The Courier Type' });
       if (!t(b.pinCode)) return res.status(400).json({ error: 'Please Enter Pin Code' });
@@ -51,9 +57,9 @@ export default async function handler(req, res) {
       if (b.embargoStart && b.embargoEnd && b.embargoStart > b.embargoEnd) return res.status(400).json({ error: 'Embargo Start date cannot be greater than Embargo End date' });
       if (b.embargoEnd && b.embargoEnd < new Date().toISOString().slice(0, 10)) return res.status(400).json({ error: 'end date cannot be less than today' });
       const existing = b.id ? all.find((y) => y.id === +b.id) : all.find((y) => { const n = norm(y); return n.pinCode === t(b.pinCode) && n.siteLocCode === b.siteLocCode && n.orderTypeCode === b.orderTypeCode && n.courierTypeCode === b.courierTypeCode && n.transporterCode === b.transporterCode; });
-      const fields = { module: 'service-pin-code', code: t(b.pinCode), pin_code: t(b.pinCode), site_loc_code: b.siteLocCode, site_loc_name: b.siteLocName || `${b.siteLocCode} - JX Karawaci`, transporter_code: b.transporterCode, transporter: b.transporterName || b.transporterCode, order_type_code: b.orderTypeCode, order_type: b.orderTypeCode === 'C' ? 'COD' : 'Prepaid', courier_type_code: b.courierTypeCode, courier_type: b.courierTypeCode === '1' ? 'Forward' : 'Reverse', embargo_start: t(b.embargoStart), embargo_end: t(b.embargoEnd), area_code: t(b.areaCode), sla_days: t(b.slaDays), modified_by: 'super admin', modified_date: new Date().toISOString() };
+      const fields = { module: 'service-pin-code', code: t(b.pinCode), pin_code: t(b.pinCode), site_loc_code: configuredLocation.code, site_loc_name: configuredLocation.name, transporter_code: configuredTransporter[0], transporter: configuredTransporter[1], order_type_code: b.orderTypeCode, order_type: b.orderTypeCode === 'C' ? 'COD' : 'Prepaid', courier_type_code: b.courierTypeCode, courier_type: b.courierTypeCode === '1' ? 'Forward' : 'Reverse', embargo_start: t(b.embargoStart), embargo_end: t(b.embargoEnd), area_code: t(b.areaCode), sla_days: t(b.slaDays), modified_by: currentUser(req)?.username || 'unknown', modified_date: new Date().toISOString() };
       if (existing) { const u = await update('generic_records', existing.id, fields); return res.json({ row: norm(u[0]), jsonMessage: 'pin code saved successfully' }); }
-      const row = await insert('generic_records', { ...fields, created_by: 'super admin', created_date: new Date().toISOString() });
+      const row = await insert('generic_records', { ...fields, created_by: currentUser(req)?.username || 'unknown', created_date: new Date().toISOString() });
       return res.status(201).json({ row: norm(row), jsonMessage: 'pin code saved successfully' });
     }
     if (req.method === 'DELETE') {
@@ -63,5 +69,6 @@ export default async function handler(req, res) {
       return res.json({ jsonMessage: 'Pin Code Deleted Successfully' });
     }
     res.status(405).json({ error: 'Method not allowed' });
-  } catch (e) { console.error('Service Pin Code error:', e); res.status(500).json({ error: e.message }); }
+  } catch (e) {
+    if (sendDatabaseUnavailable(res, e)) return; console.error('Service Pin Code error:', { name: e?.name, code: e?.code }); res.status(500).json({ error: e.message }); }
 }

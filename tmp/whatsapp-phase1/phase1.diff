@@ -1,0 +1,663 @@
+--- a/inventory/whatsapp.js
++++ b/inventory/whatsapp.js
+@@ -1,7 +1,9 @@
+ import express from 'express';
+ import { createHmac, timingSafeEqual } from 'node:crypto';
+ import { inventoryPool, transaction } from './db.js';
+-import { providerFetch, httpsOrigin } from './connection-security.js';
++import https from 'node:https';
++import { lookup } from 'node:dns/promises';
++import { httpsOrigin, publicAddress } from './connection-security.js';
+ 
+ const senderKeys=['WHATSAPP_GRAPH_VERSION','WHATSAPP_PHONE_NUMBER_ID','WHATSAPP_ACCESS_TOKEN','WHATSAPP_APP_SECRET','WHATSAPP_VERIFY_TOKEN'];
+ const configured=()=>senderKeys.every(key=>Boolean(process.env[key]))&&/^v\d+\.\d+$/.test(process.env.WHATSAPP_GRAPH_VERSION||'')&&/^\d+$/.test(process.env.WHATSAPP_PHONE_NUMBER_ID||'');
+@@ -16,55 +18,138 @@
+ 
+ export function whatsappTemplatePayload(row,items,settings=process.env){
+  const fourth=row.event_type==='packing_ready'?(row.dispatch_by?new Date(row.dispatch_by).toLocaleString('en-IN',{timeZone:'Asia/Kolkata'}):'See order panel'):'Check stock in D-Mills';
+- const params=[row.platform,row.external_order_id,items.map(i=>`${i.seller_sku} × ${i.quantity}`).join(', ').slice(0,500)||'See order panel',fourth];
++ const params=[row.platform,row.external_order_id,items.map(i=>`${i.seller_sku} × ${i.quantity}`).join(', ')||'See order panel',fourth].map(value=>String(value??'See order panel').replace(/[\r\n\t]/g,' ').replace(/ {4,}/g,' ').slice(0,500));
+  const template=row.event_type==='packing_ready'?settings.WHATSAPP_PACKING_TEMPLATE:row.event_type==='order_observed'?(settings.WHATSAPP_OBSERVED_ORDER_TEMPLATE||settings.WHATSAPP_ORDER_TEMPLATE):settings.WHATSAPP_ORDER_TEMPLATE;
+- if(!template)throw new Error('Approved WhatsApp template is not configured for this order update');
++ if(!/^[a-z0-9_]{1,512}$/.test(template||''))throw new Error('Approved WhatsApp template is not configured or has an invalid name');
++ if(!/^\+[1-9]\d{7,14}$/.test(row.mobile_e164||''))throw new Error('Recipient phone format is invalid');
++ if(!/^[a-z]{2,3}(?:_[A-Z]{2})?$/.test(settings.WHATSAPP_TEMPLATE_LANGUAGE||'en_US'))throw new Error('WhatsApp template language is invalid');
+  return {messaging_product:'whatsapp',recipient_type:'individual',to:row.mobile_e164.slice(1),type:'template',template:{name:template,language:{code:settings.WHATSAPP_TEMPLATE_LANGUAGE||'en_US'},components:[{type:'body',parameters:params.map(text=>({type:'text',text}))}]}};
+ }
+ 
+-export async function runWhatsAppBatch(limit=10,fetcher=providerFetch){
++// Fixed Meta origin only; signal dispatch when Node finishes writing the request.
++// Injected transports use the same onDispatch callback before simulating a sent request.
++export async function whatsappFetch(input,{onDispatch=()=>{},...options}={}){
++ const url=new URL(input);
++ if(url.origin!=='https://graph.facebook.com'||url.username||url.password)throw new Error('Invalid Meta origin');
++ let timer;const answers=await Promise.race([lookup(url.hostname,{all:true}),new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error('Meta DNS lookup timed out')),20000);})]).finally(()=>clearTimeout(timer));
++ if(!answers.length||answers.some(answer=>!publicAddress(answer.address)))throw new Error('Meta hostname did not resolve to a public address');
++ const chosen=answers[0];
++ return new Promise((resolve,reject)=>{
++  const request=https.request(url,{...options,lookup:(_host,opts,cb)=>opts.all?cb(null,[chosen]):cb(null,chosen.address,chosen.family)},response=>{
++   const chunks=[];let size=0;
++   response.on('data',chunk=>{size+=chunk.length;if(size>4_000_000){request.destroy(new Error('Meta response exceeds 4 MB'));return;}chunks.push(chunk);});
++   response.on('end',()=>resolve({ok:response.statusCode>=200&&response.statusCode<300,status:response.statusCode,json:async()=>JSON.parse(Buffer.concat(chunks).toString())}));
++   response.on('error',reject);
++  });
++  request.once('finish',onDispatch);
++  request.setTimeout(20000,()=>request.destroy(new Error('Meta request timed out')));
++  request.on('error',reject);
++  request.end(options.body);
++ });
++}
++
++// PostgreSQL session lock serializes ALL sender processes (web OTP and worker).
++// Hold it for at least one second per attempt, without holding a DB transaction.
++export async function withWhatsAppRateLimit(tenantId,operation){
++ if(!tenantId)throw new Error('Inventory tenant is required for WhatsApp sending');
++ const key=`whatsapp-send:${tenantId}`;let client,started;
++ // Waiting callers release their pool connection, leaving capacity for the
++ // winning sender's transaction even during a burst of web OTP requests.
++ while(true){
++  client=await inventoryPool().connect();let acquired=false;
++  try{acquired=(await client.query('SELECT pg_try_advisory_lock(hashtextextended($1,0)) AS acquired',[key])).rows[0].acquired;}
++  catch(error){client.release(true);throw error;}
++  if(acquired)break;client.release();await new Promise(resolve=>setTimeout(resolve,100));
++ }
++ started=Date.now();
++ try{return await operation();}
++ finally{
++  let discard=false;
++  try{await new Promise(resolve=>setTimeout(resolve,Math.max(0,1000-(Date.now()-started))));await client.query('SELECT pg_advisory_unlock(hashtextextended($1,0))',[key]);}
++  catch(error){discard=true;throw error;}
++  finally{client.release(discard);}
++ }
++}
++
++const permanentMetaCodes=new Set([10,190,200,131005,131008,131009,131021,131026,131030,131031,131042,131047,132000,132001,132005,132007,132012,132015,132016,133010]);
++const transientMetaCodes=new Set([1,2,4,17,32,613,80007,130429,131000,131016,131048,131056]);
++export function metaRetryable(httpStatus,error={}){
++ if(permanentMetaCodes.has(Number(error.code))||httpStatus===401||httpStatus===403)return false;
++ return httpStatus===429||httpStatus>=500||transientMetaCodes.has(Number(error.code));
++}
++export function whatsappSafeText(value,settings=process.env){
++ let text=typeof value==='string'?value:'Unknown error';
++ for(const key of senderKeys){const secret=settings[key];if(secret)text=text.split(secret).join('[redacted]');}
++ text=text.replace(/[\r\n\t]/g,' ').replace(/ {4,}/g,' ');
++ return text.replace(/(?:Bearer\s+|access_token[=:]\s*)[^\s,;]+/gi,'[redacted]').replace(/\+?\d[\d ().-]{6,}\d/g,phone=>`***${phone.replace(/\D/g,'').slice(-4)}`).replace(/[\r\n\t]/g,' ').replace(/ {4,}/g,' ').slice(0,300);
++}
++export function metaErrorText(error={},httpStatus){
++ const code=Number.isSafeInteger(error.code)?error.code:'unknown',subcode=Number.isSafeInteger(error.error_subcode)?error.error_subcode:'none';
++ return `Meta error code=${code} subcode=${subcode}${httpStatus?` HTTP=${httpStatus}`:''}: ${whatsappSafeText(error.message||error.title||'Message rejected')}`;
++}
++export const whatsappBackoff=attempt=>Math.min(3600,30*2**Math.min(attempt,7)*(1+Math.random()*0.25));
++
++export async function runWhatsAppBatch(limit=10,fetcher=whatsappFetch){
+  const tenantId=process.env.INVENTORY_ALLOWED_TENANT_ID;
+  if(!tenantId)throw new Error('INVENTORY_ALLOWED_TENANT_ID is required before processing WhatsApp alerts');
+  const pool=inventoryPool();
+  await pool.query("UPDATE ci_order_alert SET status='failed',last_error=COALESCE(last_error,'Notification attempt limit exhausted; operator review required'),claimed_at=NULL WHERE tenant_id=$1 AND status='pending' AND attempt_count>=8",[tenantId]);
+- const stale=await pool.query("UPDATE ci_order_alert SET status='uncertain',last_error='Worker stopped during send; delivery must be checked before retry' WHERE tenant_id=$1 AND status='sending' AND claimed_at<now()-interval '2 minutes' RETURNING id",[tenantId]);
++ const stale=await pool.query("UPDATE ci_order_alert SET status='uncertain',last_error='Worker stopped during a send; check delivery before retry',claimed_at=NULL WHERE tenant_id=$1 AND status='sending' AND claimed_at<now()-interval '2 minutes' RETURNING id",[tenantId]);
+  await pool.query("UPDATE ci_order_alert a SET status='failed',last_error='New-order alert expired before WhatsApp delivery' FROM ci_unified_order o WHERE a.tenant_id=$1 AND a.tenant_id=o.tenant_id AND a.order_id=o.id AND a.event_type='new_order' AND a.status='pending' AND o.first_seen_at<now()-interval '2 hours'",[tenantId]);
+  if(!whatsappReady())return {claimed:0,uncertain:stale.rowCount,configured:false};
+- const claims=await transaction(async db=>(await db.query(`UPDATE ci_order_alert a SET status='sending',claimed_at=now(),attempt_count=attempt_count+1
+-  FROM ci_alert_recipient r,ci_unified_order o WHERE a.tenant_id=$5 AND r.tenant_id=a.tenant_id AND o.tenant_id=a.tenant_id AND a.recipient_id=r.id AND a.order_id=o.id AND r.verified_at IS NOT NULL AND o.work_status NOT IN ('cancelled','returned')
+-  AND (a.event_type<>'packing_ready' OR o.work_status NOT IN ('packed','dispatched'))
+-  AND a.id IN (SELECT q.id FROM ci_order_alert q JOIN ci_alert_recipient x ON x.tenant_id=q.tenant_id AND x.id=q.recipient_id
+-    WHERE q.tenant_id=$5 AND q.status='pending' AND q.attempt_count<8 AND q.available_at<=now() AND x.active AND NOT x.muted AND x.consented_at IS NOT NULL AND x.verified_at IS NOT NULL
+-    AND ((q.event_type='new_order' AND $2) OR (q.event_type='order_observed' AND $3) OR (q.event_type='packing_ready' AND $4))
+-    AND (x.alert_start IS NULL OR (x.alert_start<x.alert_end AND (now() AT TIME ZONE 'Asia/Kolkata')::time>=x.alert_start AND (now() AT TIME ZONE 'Asia/Kolkata')::time<x.alert_end)
+-      OR (x.alert_start>x.alert_end AND ((now() AT TIME ZONE 'Asia/Kolkata')::time>=x.alert_start OR (now() AT TIME ZONE 'Asia/Kolkata')::time<x.alert_end)))
+-    AND (q.event_type<>'packing_ready' OR EXISTS(SELECT 1 FROM ci_order_timeline t WHERE t.tenant_id=q.tenant_id AND t.order_id=q.order_id AND t.event_type='stock_reserved'))
+-    ORDER BY q.available_at,q.id FOR UPDATE OF q SKIP LOCKED LIMIT $1)
+-  RETURNING a.id,a.tenant_id,a.order_id,a.event_type,a.attempt_count,r.mobile_e164,o.platform,o.external_order_id,o.provider_status,o.dispatch_by`,[limit,Boolean(process.env.WHATSAPP_ORDER_TEMPLATE),Boolean(process.env.WHATSAPP_OBSERVED_ORDER_TEMPLATE||process.env.WHATSAPP_ORDER_TEMPLATE),Boolean(process.env.WHATSAPP_PACKING_TEMPLATE),tenantId])).rows);
+- for(const row of claims){
+-  let sendStarted=false;
+-  try{
+-   const items=(await pool.query('SELECT seller_sku,quantity FROM ci_unified_order_line WHERE tenant_id=$1 AND order_id=$2 ORDER BY external_line_id LIMIT 10',[row.tenant_id,row.order_id])).rows;
+-   const body=whatsappTemplatePayload(row,items);
+-   const version=process.env.WHATSAPP_GRAPH_VERSION,phoneId=process.env.WHATSAPP_PHONE_NUMBER_ID;
+-   if(!/^v\d+\.\d+$/.test(version)||!/^\d+$/.test(phoneId))throw new Error('WhatsApp API version or phone number ID is invalid');
+-   const requestBody=JSON.stringify(body);
+-   sendStarted=true;
+-   const response=await fetcher(`https://graph.facebook.com/${version}/${phoneId}/messages`,{method:'POST',headers:{Authorization:`Bearer ${process.env.WHATSAPP_ACCESS_TOKEN}`,'Content-Type':'application/json'},body:requestBody});
+-   if(!response.ok){const retry=response.status===429||response.status>=500;await pool.query(`UPDATE ci_order_alert SET status=$2,available_at=now()+($3||' seconds')::interval,last_error=$4,claimed_at=NULL WHERE id=$1 AND status='sending'`,[row.id,retry&&row.attempt_count<8?'pending':'failed',String(Math.min(3600,30*2**Math.min(row.attempt_count,7))),`Meta rejected message (HTTP ${response.status})`]);continue;}
+-   const payload=await response.json().catch(()=>null),messageId=payload?.messages?.[0]?.id;
+-   if(typeof messageId!=='string'||!messageId.startsWith('wamid.'))throw new Error('Meta response lacked a message ID');
+-   await pool.query("UPDATE ci_order_alert SET status='accepted',provider_message_id=$2,accepted_at=now(),claimed_at=NULL,last_error=NULL WHERE id=$1 AND status='sending'",[row.id,messageId]);
+-   await pool.query(`INSERT INTO ci_order_timeline(tenant_id,order_id,event_key,event_type,detail) VALUES($1,$2,$3,'whatsapp_accepted',$4) ON CONFLICT DO NOTHING`,[row.tenant_id,row.order_id,`whatsapp:${row.id}:accepted`,JSON.stringify({recipientId:row.id})]);
+-  }catch{
+-   if(sendStarted){
+-    await pool.query("UPDATE ci_order_alert SET status='uncertain',last_error='WhatsApp send outcome unknown; review Meta before retry',claimed_at=NULL WHERE id=$1 AND status='sending'",[row.id]);
+-   }else{
+-    await pool.query("UPDATE ci_order_alert SET status=$2,available_at=now()+($3||' seconds')::interval,last_error='WhatsApp preparation failed before send',claimed_at=NULL WHERE id=$1 AND status='sending'",[row.id,row.attempt_count<8?'pending':'failed',String(Math.min(3600,30*2**Math.min(row.attempt_count,7)))]);
++ let claimed=0;
++ for(let index=0;index<limit;index++){
++  const processed=await withWhatsAppRateLimit(tenantId,async()=>{
++   let row,requestBody,version,phoneId,dispatched=false,responseKnown=false,acceptedId,knownFailure;
++   try{
++    const prepared=await transaction(async db=>{
++     row=(await db.query(`SELECT a.id,a.tenant_id,a.order_id,a.event_type,a.attempt_count,r.mobile_e164,o.platform,o.external_order_id,o.dispatch_by
++      FROM ci_order_alert a JOIN ci_alert_recipient r ON r.tenant_id=a.tenant_id AND r.id=a.recipient_id JOIN ci_unified_order o ON o.tenant_id=a.tenant_id AND o.id=a.order_id
++      WHERE a.tenant_id=$1 AND a.status='pending' AND a.attempt_count<8 AND a.available_at<=now()
++      AND r.active AND NOT r.muted AND r.consented_at IS NOT NULL AND r.verified_at IS NOT NULL
++      AND (a.event_type=ANY(r.event_types) OR (a.event_type='new_order' AND 'order_observed'=ANY(r.event_types))) AND o.work_status NOT IN ('cancelled','returned')
++      AND (a.event_type<>'packing_ready' OR (o.work_status NOT IN ('packed','dispatched') AND EXISTS(SELECT 1 FROM ci_order_timeline t WHERE t.tenant_id=a.tenant_id AND t.order_id=a.order_id AND t.event_type='stock_reserved')))
++      AND ((a.event_type='new_order' AND $2) OR (a.event_type='order_observed' AND $3) OR (a.event_type='packing_ready' AND $4))
++      AND (r.alert_start IS NULL OR (r.alert_start<r.alert_end AND (now() AT TIME ZONE 'Asia/Kolkata')::time>=r.alert_start AND (now() AT TIME ZONE 'Asia/Kolkata')::time<r.alert_end)
++       OR (r.alert_start>r.alert_end AND ((now() AT TIME ZONE 'Asia/Kolkata')::time>=r.alert_start OR (now() AT TIME ZONE 'Asia/Kolkata')::time<r.alert_end)))
++      ORDER BY a.available_at,a.id FOR UPDATE OF a SKIP LOCKED LIMIT 1`,[tenantId,Boolean(process.env.WHATSAPP_ORDER_TEMPLATE),Boolean(process.env.WHATSAPP_OBSERVED_ORDER_TEMPLATE||process.env.WHATSAPP_ORDER_TEMPLATE),Boolean(process.env.WHATSAPP_PACKING_TEMPLATE)])).rows[0];
++     if(!row)return false;
++     const items=(await db.query('SELECT seller_sku,quantity FROM ci_unified_order_line WHERE tenant_id=$1 AND order_id=$2 ORDER BY external_line_id LIMIT 10',[tenantId,row.order_id])).rows;
++     requestBody=JSON.stringify(whatsappTemplatePayload(row,items));
++     version=process.env.WHATSAPP_GRAPH_VERSION;phoneId=process.env.WHATSAPP_PHONE_NUMBER_ID;
++     if(!configured())throw new Error('WhatsApp sender configuration is invalid');
++     await db.query("UPDATE ci_order_alert SET status='sending',claimed_at=now(),attempt_count=attempt_count+1 WHERE tenant_id=$1 AND id=$2 AND status='pending'",[tenantId,row.id]);
++     row.attempt_count++;return true;
++    });
++    if(!prepared)return false;
++    const response=await fetcher(`https://graph.facebook.com/${version}/${phoneId}/messages`,{method:'POST',headers:{Authorization:`Bearer ${process.env.WHATSAPP_ACCESS_TOKEN}`,'Content-Type':'application/json'},body:requestBody,onDispatch:()=>{dispatched=true;}});
++    dispatched=true; // A provider response proves the request was dispatched.
++    let payload=null;try{payload=await response.json();}catch{}
++    responseKnown=!response.ok;
++    if(!response.ok){
++     const error=payload?.error||{};
++     knownFailure={status:metaRetryable(response.status,error)&&row.attempt_count<8?'pending':'failed',message:metaErrorText(error,response.status)};
++     await pool.query("UPDATE ci_order_alert SET status=$3,available_at=now()+($4||' seconds')::interval,last_error=$5,claimed_at=NULL WHERE tenant_id=$1 AND id=$2 AND status='sending'",[tenantId,row.id,knownFailure.status,String(whatsappBackoff(row.attempt_count)),knownFailure.message]);
++     return true;
++    }
++    acceptedId=payload?.messages?.[0]?.id;
++    if(typeof acceptedId!=='string'||!acceptedId.startsWith('wamid.')){acceptedId=null;throw new Error('Meta response lacked a message ID');}
++    await transaction(async db=>{
++     const updated=await db.query("UPDATE ci_order_alert SET status='accepted',provider_message_id=$3,accepted_at=now(),claimed_at=NULL,last_error=NULL WHERE tenant_id=$1 AND id=$2 AND status='sending' RETURNING id",[tenantId,row.id,acceptedId]);
++     if(updated.rowCount)await db.query(`INSERT INTO ci_order_timeline(tenant_id,order_id,event_key,event_type,detail) VALUES($1,$2,$3,'whatsapp_accepted','{}') ON CONFLICT DO NOTHING`,[tenantId,row.order_id,`whatsapp:${row.id}:accepted`]);
++    });
++   }catch(error){
++    if(!row)throw new Error('WhatsApp queue lookup unavailable');
++    // A confirmed rejection/acceptance is not an unknown delivery outcome.
++    const status=acceptedId?'accepted':responseKnown?knownFailure.status:dispatched?'uncertain':'failed';
++    const message=acceptedId?'Meta accepted message; local audit requires review':responseKnown?knownFailure.message:dispatched?'WhatsApp send outcome unknown; review Meta before retry':`WhatsApp preparation failed before dispatch: ${whatsappSafeText(error instanceof Error?error.message:'Unknown preparation error')}`;
++    await pool.query("UPDATE ci_order_alert SET status=$3,provider_message_id=coalesce($4,provider_message_id),accepted_at=CASE WHEN $3='accepted' THEN coalesce(accepted_at,now()) ELSE accepted_at END,last_error=$5,claimed_at=NULL,available_at=CASE WHEN $3='pending' THEN now()+($6||' seconds')::interval ELSE available_at END WHERE tenant_id=$1 AND id=$2 AND status IN ('pending','sending')",[tenantId,row.id,status,acceptedId||null,message,String(whatsappBackoff(row.attempt_count))]);
+    }
+-  }
++   return true;
++  });
++  if(!processed)break;claimed++;
+  }
+- return {claimed:claims.length,uncertain:stale.rowCount,configured:true};
++ return {claimed,uncertain:stale.rowCount,configured:true};
+ }
+ 
+ export const whatsappPublic=express.Router();
+@@ -88,11 +173,11 @@
+    for(const status of value.statuses||[]){
+     if(typeof status.id!=='string'||!['sent','delivered','read','failed'].includes(status.status))continue;
+     await transaction(async db=>{
+-    const rank={accepted:0,sent:1,delivered:2,read:3,failed:4};
++    const rank={accepted:0,sent:1,delivered:2,read:3};
+     const row=(await db.query('SELECT id,tenant_id,order_id,status FROM ci_order_alert WHERE tenant_id=$2 AND provider_message_id=$1 FOR UPDATE',[status.id,tenantId])).rows[0];
+-    if(!row||row.status===status.status||row.status==='read'||(row.status==='delivered'&&status.status==='sent')||row.status==='failed')return;
++    if(!row||row.status===status.status||row.status==='read'||row.status==='failed'||row.status==='cancelled'||(row.status==='delivered'&&['sent','failed'].includes(status.status)))return;
+     if(status.status!=='failed'&&rank[status.status]<rank[row.status])return;
+-    await db.query('UPDATE ci_order_alert SET status=$2,delivered_at=CASE WHEN $2 IN (\'delivered\',\'read\') THEN now() ELSE delivered_at END,last_error=CASE WHEN $2=\'failed\' THEN \'Meta reported delivery failure\' ELSE NULL END WHERE id=$1',[row.id,status.status]);
++    await db.query("UPDATE ci_order_alert SET status=$2,delivered_at=CASE WHEN $2 IN ('delivered','read') THEN coalesce(delivered_at,now()) ELSE delivered_at END,last_error=$4 WHERE tenant_id=$3 AND id=$1",[row.id,status.status,tenantId,status.status==='failed'?metaErrorText(status.errors?.[0]||{title:'Meta reported delivery failure'}):null]);
+     await db.query(`INSERT INTO ci_order_timeline(tenant_id,order_id,event_key,event_type,detail) VALUES($1,$2,$3,$4,'{}') ON CONFLICT DO NOTHING`,[row.tenant_id,row.order_id,`whatsapp:${row.id}:${status.status}`,`whatsapp_${status.status}`]);
+     });
+    }
+--- a/inventory/recipient-otp.js
++++ b/inventory/recipient-otp.js
+@@ -1,11 +1,13 @@
+ import { createHmac, randomInt, randomUUID, timingSafeEqual } from 'node:crypto';
+ import { transaction } from './db.js';
+-import { providerFetch } from './connection-security.js';
++import { whatsappFetch, withWhatsAppRateLimit } from './whatsapp.js';
+ 
+ const phonePattern=/^\+[1-9]\d{7,14}$/;
+ const templatePattern=/^[a-z0-9_]{1,512}$/;
+ const codePattern=/^\d{6}$/;
+-const failure=(status,message)=>Object.assign(new Error(message),{status});
++const trustedFailure=Symbol('recipient verification failure');
++const failure=(status,message)=>Object.assign(new Error(message),{status,[trustedFailure]:true});
++const safeOperation=async operation=>{try{return await operation();}catch(error){if(error?.[trustedFailure])throw error;throw failure(503,'Recipient verification unavailable; retry later');}};
+ const digest=(recipientId,challengeId,code,secret)=>createHmac('sha256',secret).update(`${recipientId}:${challengeId}:${code}`).digest('hex');
+ 
+ export function otpConfigured(settings=process.env){
+@@ -20,7 +22,8 @@
+  ]}};
+ }
+ 
+-export async function requestRecipientOtp({tenantId,recipientId,pool,fetcher=providerFetch,settings=process.env}){
++async function sendRecipientOtp({tenantId,recipientId,pool,fetcher=whatsappFetch,settings=process.env}){
++ if(!tenantId)throw failure(503,'Inventory tenant is required for recipient verification');
+  if(!otpConfigured(settings))throw failure(409,'Configure the Meta sender and approved WhatsApp authentication template first');
+  const code=String(randomInt(0,1_000_000)).padStart(6,'0'),challengeId=randomUUID();
+  const recipient=await transaction(async db=>{
+@@ -33,13 +36,14 @@
+   if(inWindow&&prior.window_count>=10)throw failure(429,'Daily verification-code limit reached');
+   await db.query(`INSERT INTO ci_recipient_verification(recipient_id,tenant_id,challenge_id,code_hash,expires_at,status,attempts,requested_at,window_start,window_count,provider_message_id)
+    VALUES($1,$2,$3,$4,now()+interval '10 minutes','sending',0,now(),now(),1,NULL)
+-   ON CONFLICT(recipient_id) DO UPDATE SET challenge_id=EXCLUDED.challenge_id,code_hash=EXCLUDED.code_hash,expires_at=EXCLUDED.expires_at,status='sending',attempts=0,requested_at=now(),window_start=CASE WHEN ci_recipient_verification.window_start<now()-interval '24 hours' THEN now() ELSE ci_recipient_verification.window_start END,window_count=CASE WHEN ci_recipient_verification.window_start<now()-interval '24 hours' THEN 1 ELSE ci_recipient_verification.window_count+1 END,provider_message_id=NULL`,
++   ON CONFLICT(recipient_id) DO UPDATE SET challenge_id=EXCLUDED.challenge_id,code_hash=EXCLUDED.code_hash,expires_at=EXCLUDED.expires_at,status='sending',attempts=0,requested_at=now(),window_start=CASE WHEN ci_recipient_verification.window_start<now()-interval '24 hours' THEN now() ELSE ci_recipient_verification.window_start END,window_count=CASE WHEN ci_recipient_verification.window_start<now()-interval '24 hours' THEN 1 ELSE ci_recipient_verification.window_count+1 END,provider_message_id=NULL WHERE ci_recipient_verification.tenant_id=EXCLUDED.tenant_id`,
+    [recipientId,tenantId,challengeId,digest(recipientId,challengeId,code,settings.WHATSAPP_APP_SECRET)]);
+   return row;
+  });
+  const url=`https://graph.facebook.com/${settings.WHATSAPP_GRAPH_VERSION}/${settings.WHATSAPP_PHONE_NUMBER_ID}/messages`;
+  try{
+-  const response=await fetcher(url,{method:'POST',headers:{Authorization:`Bearer ${settings.WHATSAPP_ACCESS_TOKEN}`,'Content-Type':'application/json'},body:JSON.stringify(otpTemplatePayload(recipient.mobile_e164,code,settings))});
++  const body=JSON.stringify(otpTemplatePayload(recipient.mobile_e164,code,settings));
++  const response=await withWhatsAppRateLimit(tenantId,()=>fetcher(url,{method:'POST',headers:{Authorization:`Bearer ${settings.WHATSAPP_ACCESS_TOKEN}`,'Content-Type':'application/json'},body}));
+   if(!response.ok)throw failure(502,`Meta rejected the verification template (HTTP ${response.status})`);
+   const messageId=(await response.json())?.messages?.[0]?.id;
+   if(typeof messageId!=='string'||!messageId.startsWith('wamid.'))throw failure(502,'Meta did not confirm acceptance of the verification message');
+@@ -48,11 +52,15 @@
+   return {sent:true,expiresAt:updated.rows[0].expires_at};
+  }catch(error){
+   await pool.query("UPDATE ci_recipient_verification SET status='failed' WHERE tenant_id=$1 AND recipient_id=$2 AND challenge_id=$3 AND status='sending'",[tenantId,recipientId,challengeId]).catch(()=>{});
+-  throw error.status?error:failure(503,'Could not confirm that Meta accepted the verification message');
++  // Provider exceptions are untrusted: never return a token or full number.
++  if(error?.status===409)throw failure(409,'A newer verification request replaced this code');
++  if(error?.status===502)throw failure(502,'Meta did not confirm acceptance of the verification template');
++  throw failure(503,'Could not confirm that Meta accepted the verification message');
+  }
+ }
+ 
+-export async function verifyRecipientOtp({tenantId,recipientId,code,settings=process.env}){
++async function confirmRecipientOtp({tenantId,recipientId,code,settings=process.env}){
++ if(!tenantId)throw failure(503,'Inventory tenant is required for recipient verification');
+  if(!codePattern.test(code||''))throw failure(400,'Enter the six-digit verification code');
+  if(!settings.WHATSAPP_APP_SECRET)throw failure(409,'WhatsApp verification is not configured');
+  const result=await transaction(async db=>{
+@@ -74,3 +82,6 @@
+  if(result.incorrect)throw failure(result.locked?429:400,result.locked?'Too many incorrect codes; request a new one':'Incorrect verification code');
+  return result;
+ }
++
++export function requestRecipientOtp(options){return safeOperation(()=>sendRecipientOtp(options));}
++export function verifyRecipientOtp(options){return safeOperation(()=>confirmRecipientOtp(options));}
+--- a/scripts/verify-whatsapp-preparation-boundary.mjs
++++ b/scripts/verify-whatsapp-preparation-boundary.mjs
+@@ -1,26 +1,3 @@
+-import assert from 'node:assert/strict';
+-import {readFile} from 'node:fs/promises';
+-const source=await readFile(new URL('../inventory/whatsapp.js',import.meta.url),'utf8');
+-const batch=source.slice(source.indexOf('export async function runWhatsAppBatch'),source.indexOf('export const whatsappPublic')).replace('export async function','async function');
+-const build=new Function('inventoryPool','transaction','whatsappReady','whatsappTemplatePayload','process','providerFetch',`${batch}\nreturn runWhatsAppBatch;`);
+-for(const stage of ['lines','template','serialization','send'])for(const attempt of [1,8]){
+- const writes=[];let sends=0;
+- const row={id:'alert',tenant_id:'tenant',order_id:'order',attempt_count:attempt};
+- const pool={query:async(sql,args)=>{
+-  if(sql.startsWith('SELECT seller_sku')){if(stage==='lines')throw Error('fixture-private-secret');return {rows:[]};}
+-  if(args?.[0]==='alert')writes.push({sql,args});
+-  return {rowCount:0,rows:[]};
+- }};
+- const template=()=>{if(stage==='template')throw Error('fixture-private-secret');if(stage==='serialization'){const circular={};circular.self=circular;return circular;}return {};};
+- const run=build(()=>pool,async fn=>fn({query:async()=>({rows:[row]})}),()=>true,template,{env:{INVENTORY_ALLOWED_TENANT_ID:'tenant',WHATSAPP_GRAPH_VERSION:'v23.0',WHATSAPP_PHONE_NUMBER_ID:'123'}},()=>{});
+- await run(10,async()=>{sends++;throw Error('fixture-private-secret');});
+- assert.equal(sends,stage==='send'?1:0);
+- assert.equal(writes.length,1);
+- const [{sql,args}]=writes;
+- assert.ok(sql.includes('claimed_at=NULL'));
+- assert.ok(sql.includes("status='sending'"));
+- assert.equal(JSON.stringify(writes).includes('fixture-private'),false);
+- if(stage==='send')assert.ok(sql.includes("status='uncertain'"));
+- else{assert.equal(args[1],attempt<8?'pending':'failed');assert.equal(args[2],attempt===1?'60':'3600');assert.ok(sql.includes('preparation failed before send'));}
+-}
+-console.log('PASS runtime-source WhatsApp preparation failures retry/terminate without sending; started-send exceptions remain uncertain, with safe diagnostics.');
++// Exercises the imported sender with fake Meta/database boundaries, including
++// pre-dispatch failed versus post-dispatch uncertain and local persistence errors.
++import './verify-whatsapp-reliability.mjs';
+--- a/scripts/verify-whatsapp-callback-tenant-boundary.mjs
++++ b/scripts/verify-whatsapp-callback-tenant-boundary.mjs
+@@ -1,9 +1,10 @@
+ import assert from 'node:assert/strict';
+ import {readFile} from 'node:fs/promises';
+ import {createHmac,timingSafeEqual} from 'node:crypto';
++import {metaErrorText} from '../inventory/whatsapp.js';
+ const source=await readFile(new URL('../inventory/whatsapp.js',import.meta.url),'utf8');
+ const callbackSource=source.slice(source.indexOf('export const whatsappPublic')).replace('export const','const');
+-for(const scenario of ['own','other','missing','bad-signature']){
++for(const scenario of ['own','other','missing','bad-signature','absent-signature']){
+  let handler,response,transactions=0;const writes=[];
+  const env={INVENTORY_ALLOWED_TENANT_ID:scenario==='missing'?undefined:'tenant-a',WHATSAPP_APP_SECRET:'fixture-secret',WHATSAPP_PHONE_NUMBER_ID:'123'};
+  const row={id:'alert',tenant_id:scenario==='other'?'tenant-b':'tenant-a',order_id:'order',status:'accepted'};
+@@ -14,14 +15,15 @@
+    assert.equal(args[1],'tenant-a');
+    return {rows:row.tenant_id===args[1]?[row]:[]};
+   }
++  if(sql.startsWith('UPDATE')){assert.ok(sql.includes('tenant_id=$3'));assert.equal(args[2],'tenant-a');}
+   writes.push({sql,args});return {rows:[]};
+  }});};
+- new Function('express','createHmac','timingSafeEqual','transaction','process',callbackSource)(express,createHmac,timingSafeEqual,transaction,{env});
++ new Function('express','createHmac','timingSafeEqual','transaction','process','metaErrorText',callbackSource)(express,createHmac,timingSafeEqual,transaction,{env},metaErrorText);
+  const body=Buffer.from(JSON.stringify({object:'whatsapp_business_account',entry:[{changes:[{field:'messages',value:{metadata:{phone_number_id:'123'},statuses:[{id:'wamid.fixture',status:'delivered'}]}}]}]}));
+- const signature=scenario==='bad-signature'?'sha256.'+'0'.repeat(64):'sha256='+createHmac('sha256',env.WHATSAPP_APP_SECRET).update(body).digest('hex');
++ const signature=scenario==='absent-signature'?'':scenario==='bad-signature'?'sha256.'+'0'.repeat(64):'sha256='+createHmac('sha256',env.WHATSAPP_APP_SECRET).update(body).digest('hex');
+  await handler({body,get:()=>signature},{sendStatus:code=>{response=code;}});
+- assert.equal(response,scenario==='missing'?503:scenario==='bad-signature'?401:200);
+- assert.equal(transactions,['missing','bad-signature'].includes(scenario)?0:1);
++ assert.equal(response,scenario==='missing'?503:['bad-signature','absent-signature'].includes(scenario)?401:200);
++ assert.equal(transactions,['missing','bad-signature','absent-signature'].includes(scenario)?0:1);
+  assert.equal(writes.length,scenario==='own'?2:0);
+ }
+ console.log('PASS runtime-source WhatsApp signed callbacks scope lookup to configured tenant; foreign alerts remain unchanged; missing tenant fails closed.');
+--- a/scripts/verify-unified-orders.mjs
++++ b/scripts/verify-unified-orders.mjs
+@@ -650,9 +650,9 @@
+    {name:'authentication',expected:'failed',fetcher:async()=>({ok:false,status:401})},
+    {name:'authorization',expected:'failed',fetcher:async()=>({ok:false,status:403})},
+    {name:'transient',expected:'pending',fetcher:async()=>({ok:false,status:503})},
+-   {name:'timeout',expected:'uncertain',fetcher:async()=>{throw new Error('fixture-private-network-secret');}},
++   {name:'timeout',expected:'uncertain',fetcher:async(_url,options)=>{options.onDispatch();throw new Error('fixture-private-network-secret');}},
+    {name:'lost-message-id',expected:'uncertain',fetcher:async()=>({ok:true,status:200,json:async()=>{throw new Error('fixture-private-response-secret');}})},
+-   {name:'malformed-exception',expected:'uncertain',fetcher:async()=>{throw null;}},
++   {name:'malformed-exception',expected:'uncertain',fetcher:async(_url,options)=>{options.onDispatch();throw null;}},
+   ];
+   for(const failureCase of notificationCases){
+    await db.query("UPDATE ci_order_alert SET status='pending',attempt_count=0,available_at=now(),last_error=NULL WHERE id=$1",[retryAlert.id]);
+@@ -661,7 +661,7 @@
+    const state=(await db.query('SELECT status,attempt_count,claimed_at,last_error,extract(epoch from (available_at-now())) AS delay FROM ci_order_alert WHERE id=$1',[retryAlert.id])).rows[0];
+    assert.equal(state.status,failureCase.expected,failureCase.name);assert.equal(state.attempt_count,1);assert.equal(state.claimed_at,null);
+    assert.ok(state.last_error);assert.doesNotMatch(state.last_error,/fixture-private/);
+-   if(state.status==='pending'){assert.ok(Number(state.delay)>55&&Number(state.delay)<=60);}
++   if(state.status==='pending'){assert.ok(Number(state.delay)>55&&Number(state.delay)<=75);}
+    else{assert.equal((await runWhatsAppBatch(1,fetcher)).claimed,0);assert.equal(calls,1,'Terminal or uncertain outcome must not automatically send again');}
+   }
+   const observationChild=spawn(process.execPath,['--no-warnings','--experimental-loader','./scripts/fixture-observation-provider-loader.mjs','scripts/verify-observation-success-audit.mjs'],{env:process.env,stdio:'inherit'});
+--- /dev/null
++++ b/scripts/verify-whatsapp-current-behaviour.mjs
+@@ -0,0 +1,27 @@
++import assert from 'node:assert/strict';
++import { readFile } from 'node:fs/promises';
++
++// Run before changing the sender; the saved source preserves the observed baseline.
++const source=await readFile(new URL('../tmp/whatsapp-phase1/whatsapp.before.js',import.meta.url),'utf8');
++const batch=source.slice(source.indexOf('export async function runWhatsAppBatch'),source.indexOf('export const whatsappPublic')).replace('export async function','async function');
++const build=new Function('inventoryPool','transaction','whatsappReady','whatsappTemplatePayload','process','providerFetch',`${batch}\nreturn runWhatsAppBatch;`);
++for(const stage of ['lines','template','serialization','config','fetch','response','accept-write','timeline']){
++ const writes=[];let sends=0;
++ const row={id:'alert',tenant_id:'tenant',order_id:'order',attempt_count:1};
++ const pool={query:async(sql,args)=>{
++  if(sql.startsWith('SELECT seller_sku')){if(stage==='lines')throw Error('fixture private');return {rows:[]};}
++  if(sql.includes("status='accepted'")&&stage==='accept-write')throw Error('fixture private');
++  if(sql.startsWith('INSERT INTO ci_order_timeline')&&stage==='timeline')throw Error('fixture private');
++  if(args?.[0]==='alert')writes.push({sql,args});
++  return {rowCount:0,rows:[]};
++ }};
++ const template=()=>{if(stage==='template')throw Error('fixture private');if(stage==='serialization'){const x={};x.self=x;return x;}return {};};
++ const env={INVENTORY_ALLOWED_TENANT_ID:'tenant',WHATSAPP_GRAPH_VERSION:stage==='config'?'invalid':'v23.0',WHATSAPP_PHONE_NUMBER_ID:'123'};
++ const run=build(()=>pool,async fn=>fn({query:async()=>({rows:[row]})}),()=>true,template,{env},()=>{});
++ await run(1,async()=>{sends++;if(stage==='fetch')throw Error('fixture private');return {ok:true,json:async()=>stage==='response'?{}:{messages:[{id:'wamid.fixture'}]}};});
++ assert.equal(sends,['lines','template','serialization','config'].includes(stage)?0:1);
++ const final=writes.at(-1);
++ if(!sends)assert.equal(final.args[1],'pending');
++ else assert.ok(final.sql.includes("status='uncertain'"));
++}
++console.log('PASS baseline: preparation/config failures retry pending; fetch/response/persistence exceptions enter uncertain catch (timeline failure cannot overwrite accepted due to status guard).');
+--- /dev/null
++++ b/scripts/verify-whatsapp-reliability.mjs
+@@ -0,0 +1,135 @@
++import assert from 'node:assert/strict';
++import { createHmac } from 'node:crypto';
++import { readFile } from 'node:fs/promises';
++import express from 'express';
++import { inventoryPool } from '../inventory/db.js';
++import { runWhatsAppBatch,whatsappPublic,whatsappTemplatePayload,metaRetryable,metaErrorText,whatsappBackoff,withWhatsAppRateLimit } from '../inventory/whatsapp.js';
++import { requestRecipientOtp,verifyRecipientOtp } from '../inventory/recipient-otp.js';
++
++// No provider or database network calls: exercise imported production functions.
++process.env.INVENTORY_DATABASE_URL='postgres://fixture:fixture@localhost/whatsapp_test';
++Object.assign(process.env,{INVENTORY_ALLOWED_TENANT_ID:'tenant-a',WHATSAPP_GRAPH_VERSION:'v23.0',WHATSAPP_PHONE_NUMBER_ID:'123456789',WHATSAPP_ACCESS_TOKEN:'fixture-private-token',WHATSAPP_APP_SECRET:'fixture-private-secret',WHATSAPP_VERIFY_TOKEN:'fixture-private-verify',WHATSAPP_ORDER_TEMPLATE:'approved_order',WHATSAPP_OTP_TEMPLATE:'approved_otp'});
++const pool=inventoryPool(),phone='+919876543210';
++let state,queries=[],failureStage,callbackRow,otpRow,challenge,sendCode,selected=false;
++const row=()=>({id:'alert',tenant_id:'tenant-a',order_id:'order',event_type:'new_order',attempt_count:0,mobile_e164:phone,platform:'shopify',external_order_id:'order-1'});
++pool.query=async(sql,args=[])=>{
++ queries.push({sql,args});
++ if(sql.includes('pg_try_advisory_lock'))return {rows:[{acquired:true}]};
++ if(/\b(?:SELECT|UPDATE)\b/.test(sql)&&/ci_order_alert|ci_alert_recipient|ci_recipient_verification/.test(sql))assert.ok(sql.includes('tenant_id'),'Every sender SELECT/UPDATE must carry tenant_id');
++ if(sql.startsWith('SELECT a.id')){if(selected)return {rows:[]};selected=true;return {rows:[row()]};}
++ if(sql.startsWith('SELECT seller_sku')){if(failureStage==='lines')throw Error('DB echoed '+phone+' '+process.env.WHATSAPP_ACCESS_TOKEN);if(failureStage==='config')process.env.WHATSAPP_GRAPH_VERSION='invalid';return {rows:[{seller_sku:'TEE',quantity:2}]};}
++ if(sql.startsWith('SELECT id,tenant_id'))return {rows:callbackRow&&callbackRow.tenant_id===args[1]?[callbackRow]:[]};
++ if(sql.startsWith('SELECT id,mobile_e164'))return {rows:otpRow?[otpRow]:[]};
++ if(sql.startsWith('SELECT id,verified_at'))return {rows:otpRow?[otpRow]:[]};
++ if(sql.startsWith('SELECT requested_at'))return {rows:challenge?[{...challenge}]:[]};
++ if(sql.startsWith('SELECT challenge_id'))return {rows:challenge?[{...challenge}]:[]};
++ if(sql.startsWith('INSERT INTO ci_recipient_verification')){challenge={challenge_id:args[2],code_hash:args[3],expires_at:new Date(Date.now()+600000),status:'sending',attempts:0,requested_at:new Date(),window_start:new Date(),window_count:1};}
++ if(sql.startsWith('UPDATE ci_recipient_verification')){
++  if(sql.includes("status='sent'"))challenge.status='sent';
++  if(sql.includes("status='failed'"))challenge.status='failed';
++  if(sql.includes('attempts=attempts+1')){challenge.attempts++;if(challenge.attempts>=5)challenge.status='locked';}
++  if(sql.includes("status='verified'"))challenge.status='verified';
++  return {rowCount:1,rows:[{expires_at:challenge?.expires_at}]};
++ }
++ if(sql.startsWith('UPDATE ci_alert_recipient')){otpRow.verified_at=new Date();otpRow.active=Boolean(otpRow.consented_at);}
++ if(sql.startsWith('UPDATE ci_order_alert')&&args[0]==='tenant-a'&&args[1]==='alert'){
++  if(sql.includes("SET status='sending'"))state='sending';
++  else if(sql.includes("status='accepted'")){if(failureStage==='accepted'){failureStage=null;throw Error('fixture acceptance persistence outage');}state='accepted';}
++  else if(sql.includes('status=$3')){if(failureStage==='rejection-write'){failureStage=null;throw Error('fixture rejection persistence outage');}state=args[2];}
++ }
++ if(sql.startsWith('UPDATE ci_order_alert')&&callbackRow&&args[0]===callbackRow.id){callbackRow.status=args[1];callbackRow.last_error=args[3];}
++ if(sql.startsWith('INSERT INTO ci_order_timeline')&&failureStage==='timeline'){failureStage=null;throw Error('fixture timeline outage');}
++ return {rows:[],rowCount:1};
++};
++pool.connect=async()=>({query:(...args)=>pool.query(...args),release:()=>{}});
++const reject=(status,code)=>async(_url,options)=>{options.onDispatch();return {ok:false,status,json:async()=>({error:{code,error_subcode:42,message:`Rejected ${phone} ${process.env.WHATSAPP_ACCESS_TOKEN}`}})};};
++for(const test of [
++ {name:'line lookup',stage:'lines',expected:'failed',sends:0},
++ {name:'invalid template',template:'INVALID',expected:'failed',sends:0},
++ {name:'config changed during preparation',stage:'config',expected:'failed',sends:0},
++ {name:'invalid language',language:'invalid!',expected:'failed',sends:0},
++ {name:'serialization',serialization:true,expected:'failed',sends:0},
++ {name:'pre-dispatch transport',fetcher:async()=>{throw Error('DNS preparation failed');},expected:'failed',sends:1},
++ {name:'post-dispatch network',fetcher:async(_url,options)=>{options.onDispatch();throw Error('network lost');},expected:'uncertain',sends:1},
++ {name:'missing acceptance id',fetcher:async()=>({ok:true,status:200,json:async()=>({})}),expected:'uncertain',sends:1},
++ {name:'permanent token',fetcher:reject(503,190),expected:'failed',sends:1},
++ {name:'permanent template',fetcher:reject(400,132001),expected:'failed',sends:1},
++ {name:'recipient not allowed',fetcher:reject(400,131030),expected:'failed',sends:1},
++ {name:'429',fetcher:reject(429,0),expected:'pending',sends:1},
++ {name:'503',fetcher:reject(503,0),expected:'pending',sends:1},
++ {name:'throughput HTTP 400',fetcher:reject(400,130429),expected:'pending',sends:1},
++ {name:'rejection write fault',stage:'rejection-write',fetcher:reject(400,132001),expected:'failed',sends:1},
++ {name:'null after dispatch',fetcher:async(_url,options)=>{options.onDispatch();throw null;},expected:'uncertain',sends:1},
++ {name:'acceptance write fault',stage:'accepted',expected:'accepted',sends:1},
++ {name:'timeline write fault',stage:'timeline',expected:'accepted',sends:1},
++]){
++ queries=[];selected=false;failureStage=test.stage;state='pending';let sends=0;
++ process.env.WHATSAPP_GRAPH_VERSION='v23.0';
++ process.env.WHATSAPP_ORDER_TEMPLATE=test.template||'approved_order';process.env.WHATSAPP_TEMPLATE_LANGUAGE=test.language||'en_US';
++ const stringify=JSON.stringify;
++ if(test.serialization)JSON.stringify=function(value,...args){if(value?.messaging_product==='whatsapp')throw Error('Cannot serialize payload');return stringify(value,...args);};
++ try{assert.equal((await runWhatsAppBatch(1,async(...args)=>{sends++;return test.fetcher?test.fetcher(...args):{ok:true,status:200,json:async()=>({messages:[{id:'wamid.fixture'}]})};})).claimed,1);}
++ finally{JSON.stringify=stringify;}
++ assert.equal(state,test.expected,test.name);assert.equal(sends,test.sends,test.name);
++ const errors=queries.filter(q=>q.sql.startsWith('UPDATE ci_order_alert')).flatMap(q=>q.args.filter(x=>typeof x==='string'&&x.includes('Meta')||typeof x==='string'&&x.includes('preparation')));
++ for(const error of errors){assert.ok(!error.includes(phone));assert.ok(!error.includes(process.env.WHATSAPP_ACCESS_TOKEN));}
++ if(test.expected==='pending'){const retry=queries.find(q=>q.args[2]==='pending');assert.ok(Number(retry.args[3])>=60&&Number(retry.args[3])<=75);assert.match(retry.args[4],/code=.*subcode=42/);}
++ if(!sends)assert.ok(!queries.some(q=>q.args[1]==='alert'&&q.sql.startsWith('UPDATE ci_order_alert')&&q.sql.includes("SET status='sending'")),'Preparation must finish before send state');
++ console.log(`PASS ${test.name}: ${state}`);
++}
++process.env.WHATSAPP_ORDER_TEMPLATE='approved_order';process.env.WHATSAPP_TEMPLATE_LANGUAGE='en_US';
++for(const code of [190,131030,132001,132015,132016])assert.equal(metaRetryable(500,{code}),false);
++for(const code of [130429,131048,131056,131016])assert.equal(metaRetryable(400,{code}),true);
++for(let n=0;n<20;n++){const delay=whatsappBackoff(2);assert.ok(delay>=120&&delay<=150);}
++assert.equal(whatsappTemplatePayload({...row(),external_order_id:'ID\n\t    value'},[{seller_sku:'A\n    B',quantity:1}]).template.components[0].parameters.length,4);
++assert.ok(!/[\n\t]| {4,}/.test(JSON.stringify(whatsappTemplatePayload(row(),[{seller_sku:'A\n    B',quantity:1}]).template.components[0].parameters)));
++assert.ok(!metaErrorText({code:131030,message:phone+' fixture-private-token'}).includes(phone));
++
++// Real Express raw-body middleware and signatures, fake database only.
++const app=express();app.use('/whatsapp',whatsappPublic);
++const server=app.listen(0,'127.0.0.1');await new Promise(resolve=>server.once('listening',resolve));
++try{
++ const send=async(status,signatureMode='valid',tenant='tenant-a',error)=>{
++  if(tenant===null)delete process.env.INVENTORY_ALLOWED_TENANT_ID;else process.env.INVENTORY_ALLOWED_TENANT_ID=tenant;
++  const body=Buffer.from(JSON.stringify({object:'whatsapp_business_account',entry:[{changes:[{field:'messages',value:{metadata:{phone_number_id:'123456789'},statuses:[{id:'wamid.fixture',status,errors:error?[error]:[]}]}}]}]}));
++  const signature='sha256='+createHmac('sha256',process.env.WHATSAPP_APP_SECRET).update(body).digest('hex');
++  return fetch(`http://127.0.0.1:${server.address().port}/whatsapp/webhook`,{method:'POST',headers:{'content-type':'application/json',...(signatureMode==='absent'?{}:{'x-hub-signature-256':signatureMode==='bad'?'sha256='+'0'.repeat(64):signature})},body});
++ };
++ callbackRow={id:'callback',tenant_id:'tenant-b',order_id:'order',status:'accepted'};
++ assert.equal((await send('delivered')).status,200);assert.equal(callbackRow.status,'accepted');
++ assert.equal((await send('delivered','valid',null)).status,503);
++ assert.equal((await send('delivered','bad')).status,401);assert.equal((await send('delivered','absent')).status,401);
++ callbackRow={id:'callback',tenant_id:'tenant-a',order_id:'order',status:'accepted'};
++ for(const status of ['delivered','sent','failed','read','sent']){assert.equal((await send(status)).status,200);}
++ assert.equal(callbackRow.status,'read');
++ callbackRow.status='accepted';assert.equal((await send('failed','valid','tenant-a',{code:131026,title:'Delivery failed '+phone})).status,200);
++ assert.match(callbackRow.last_error,/code=131026.*Delivery failed/);assert.ok(!callbackRow.last_error.includes(phone));
++ await send('sent');assert.equal(callbackRow.status,'failed');
++ console.log('PASS raw-body signed callbacks: tenant boundary, 503, bad/absent signature 401, ordering and failure codes');
++}finally{await new Promise(resolve=>server.close(resolve));}
++
++// Actual limiter minimum hold; database advisory-lock serialization is checked in PostgreSQL suite.
++queries=[];let invoked=false;const start=Date.now();await withWhatsAppRateLimit('tenant-a',async()=>{invoked=true;});assert.ok(invoked);assert.ok(Date.now()-start>=990);assert.ok(queries.some(q=>q.sql.includes('pg_try_advisory_lock')&&q.args[0]==='whatsapp-send:tenant-a'));assert.ok(queries.some(q=>q.sql.includes('pg_advisory_unlock')));
++
++queries=[];otpRow={id:'recipient',mobile_e164:phone,verified_at:null,consented_at:new Date()};challenge=null;
++const settings={...process.env};
++const otpFetch=async(_url,options)=>{sendCode=JSON.parse(options.body).template.components[0].parameters[0].text;return {ok:true,json:async()=>({messages:[{id:'wamid.otp'}]})};};
++await requestRecipientOtp({tenantId:'tenant-a',recipientId:'recipient',pool,fetcher:otpFetch,settings});
++assert.ok(!JSON.stringify(challenge).includes(sendCode),'Only HMAC digest is persisted');
++await assert.rejects(()=>requestRecipientOtp({tenantId:'tenant-a',recipientId:'recipient',pool,fetcher:otpFetch,settings}),error=>error.status===429);
++challenge.requested_at=new Date(Date.now()-61000);challenge.window_count=10;
++await assert.rejects(()=>requestRecipientOtp({tenantId:'tenant-a',recipientId:'recipient',pool,fetcher:otpFetch,settings}),error=>error.status===429);
++challenge.window_count=1;
++const wrong=sendCode==='000000'?'111111':'000000';
++for(let n=0;n<5;n++)await assert.rejects(()=>verifyRecipientOtp({tenantId:'tenant-a',recipientId:'recipient',code:wrong,settings}),error=>error.status===(n===4?429:400));
++assert.equal(challenge.status,'locked');
++await assert.rejects(()=>verifyRecipientOtp({tenantId:'tenant-a',recipientId:'recipient',code:sendCode,settings}),error=>error.status===409);
++challenge.status='sent';challenge.attempts=0;challenge.expires_at=new Date(Date.now()-1);
++await assert.rejects(()=>verifyRecipientOtp({tenantId:'tenant-a',recipientId:'recipient',code:sendCode,settings}),error=>error.status===409);
++challenge.expires_at=new Date(Date.now()+600000);otpRow.consented_at=null;
++assert.equal((await verifyRecipientOtp({tenantId:'tenant-a',recipientId:'recipient',code:sendCode,settings})).verified,true);assert.equal(otpRow.active,false);
++otpRow.verified_at=null;challenge.requested_at=new Date(Date.now()-61000);
++await assert.rejects(()=>requestRecipientOtp({tenantId:'tenant-a',recipientId:'recipient',pool,settings,fetcher:async()=>{throw Object.assign(Error(phone+' '+settings.WHATSAPP_ACCESS_TOKEN),{status:400});}}),error=>error.status===503&&!error.message.includes(phone)&&!error.message.includes(settings.WHATSAPP_ACCESS_TOKEN));
++for(const path of ['inventory/whatsapp.js','inventory/recipient-otp.js']){const source=await readFile(path,'utf8');assert.ok(!/console\.(?:log|error|warn)/.test(source));}
++console.log('PASS OTP: cooldown, daily cap, 10-minute expiry, five-attempt lockout, HMAC, consent activation, safe errors and tenant SQL');
++await pool.end();
+--- /dev/null
++++ b/scripts/verify-whatsapp-transport.mjs
+@@ -0,0 +1,36 @@
++import assert from 'node:assert/strict';
++import https from 'node:https';
++import dns from 'node:dns/promises';
++import { EventEmitter } from 'node:events';
++import { syncBuiltinESMExports } from 'node:module';
++import { whatsappFetch } from '../inventory/whatsapp.js';
++const originalRequest=https.request,originalLookup=dns.lookup;
++try{
++ for(const scenario of ['dns','private-dns','tls','dispatched-loss','accepted','oversize']){
++  let dispatched=false,requests=0;
++  dns.lookup=async()=>{if(scenario==='dns')throw Error('fixture DNS failure');return [{address:scenario==='private-dns'?'127.0.0.1':'8.8.8.8',family:4}];};
++  syncBuiltinESMExports();
++  https.request=(url,options,onResponse)=>{
++   requests++;assert.equal(url.origin,'https://graph.facebook.com');assert.equal(options.onDispatch,undefined);
++   const request=new EventEmitter();request.setTimeout=milliseconds=>assert.equal(milliseconds,20000);
++   request.destroy=error=>queueMicrotask(()=>request.emit('error',error));
++   request.end=body=>{assert.equal(body,'fixture-body');queueMicrotask(()=>{
++    if(scenario==='tls'){request.emit('error',Error('fixture TLS failure'));return;}
++    request.emit('finish');
++    if(scenario==='dispatched-loss'){request.emit('error',Error('fixture connection lost'));return;}
++    const response=new EventEmitter();response.statusCode=200;onResponse(response);
++    response.emit('data',scenario==='oversize'?Buffer.alloc(4_000_001):Buffer.from('{"messages":[{"id":"wamid.fixture"}]}'));
++    if(scenario!=='oversize')response.emit('end');
++   });};
++   return request;
++  };
++  if(scenario==='accepted'){
++   const response=await whatsappFetch('https://graph.facebook.com/v23.0/123/messages',{body:'fixture-body',onDispatch:()=>{dispatched=true;}});
++   assert.equal((await response.json()).messages[0].id,'wamid.fixture');
++  }else await assert.rejects(()=>whatsappFetch('https://graph.facebook.com/v23.0/123/messages',{body:'fixture-body',onDispatch:()=>{dispatched=true;}}));
++  assert.equal(dispatched,['dispatched-loss','accepted','oversize'].includes(scenario),scenario);
++  assert.equal(requests,['dns','private-dns'].includes(scenario)?0:1);
++ }
++ await assert.rejects(()=>whatsappFetch('https://user:password@graph.facebook.com/v23.0/123/messages'),/Invalid Meta origin/);
++ console.log('PASS fake Node HTTPS transport: DNS/TLS failures before dispatch, request-finish signal, post-dispatch loss, acceptance, response size cap and credential-free fixed origin; no network calls');
++}finally{dns.lookup=originalLookup;https.request=originalRequest;syncBuiltinESMExports();}
+--- /dev/null
++++ b/scripts/verify-whatsapp-postgres.mjs
+@@ -0,0 +1,71 @@
++import '../env.js';
++import assert from 'node:assert/strict';
++import { randomUUID,createHmac } from 'node:crypto';
++import express from 'express';
++import { inventoryPool,migrateInventory,transaction } from '../inventory/db.js';
++import { recordIncomingOrder } from '../inventory/unified-orders.js';
++import { runWhatsAppBatch,withWhatsAppRateLimit,whatsappPublic } from '../inventory/whatsapp.js';
++import { requestRecipientOtp,verifyRecipientOtp } from '../inventory/recipient-otp.js';
++if(!/test|contract/.test(process.env.INVENTORY_DATABASE_URL||''))throw Error('Use an isolated test database');
++await migrateInventory();
++const db=inventoryPool(),tenant=`whatsapp-${randomUUID()}`,foreign=`foreign-${randomUUID()}`;
++Object.assign(process.env,{INVENTORY_ALLOWED_TENANT_ID:tenant,WHATSAPP_GRAPH_VERSION:'v23.0',WHATSAPP_PHONE_NUMBER_ID:'123456789',WHATSAPP_ACCESS_TOKEN:'fixture-private-token',WHATSAPP_APP_SECRET:'fixture-private-secret',WHATSAPP_VERIFY_TOKEN:'fixture-verify',WHATSAPP_ORDER_TEMPLATE:'approved_order',WHATSAPP_OTP_TEMPLATE:'approved_otp'});
++try{
++ const account=(await db.query("INSERT INTO ci_channel_account(tenant_id,platform,external_account_id) VALUES($1,'shopify','fixture-shop') RETURNING id",[tenant])).rows[0];
++ const recipient=(await db.query("INSERT INTO ci_alert_recipient(tenant_id,name,role,mobile_e164,consented_at,verified_at) VALUES($1,'Fixture','packer','+919876543210',now(),now()) RETURNING id",[tenant])).rows[0];
++ const orderId=await transaction(tx=>recordIncomingOrder(tx,{tenantId:tenant,accountId:account.id,platform:'shopify',event:{id:'fresh',created_at:new Date().toISOString(),line_items:[{id:'line',sku:'TEE',quantity:1}]},topic:'orders/create',packingAlerts:false}));
++ const alert=(await db.query('SELECT id FROM ci_order_alert WHERE tenant_id=$1 AND order_id=$2',[tenant,orderId])).rows[0];
++ const reset=()=>db.query("UPDATE ci_order_alert SET status='pending',attempt_count=0,available_at=now(),provider_message_id=NULL,last_error=NULL WHERE tenant_id=$1 AND id=$2",[tenant,alert.id]);
++ const state=async()=>(await db.query('SELECT status,last_error,provider_message_id,attempt_count,extract(epoch from available_at-now()) AS delay FROM ci_order_alert WHERE tenant_id=$1 AND id=$2',[tenant,alert.id])).rows[0];
++ for(const [name,configure,expected] of [
++  ['unverified',"verified_at=NULL",0],['unconsented',"consented_at=NULL",0],['muted',"muted=true",0],['inactive',"active=false",0],['event disabled',"event_types=ARRAY['packing_ready']",0],
++  ['hours',"alert_start=((now() AT TIME ZONE 'Asia/Kolkata')::time+interval '2 hours')::time,alert_end=((now() AT TIME ZONE 'Asia/Kolkata')::time+interval '3 hours')::time",0],
++ ]){
++  await db.query(`UPDATE ci_alert_recipient SET ${configure} WHERE tenant_id=$1 AND id=$2`,[tenant,recipient.id]);
++  let sends=0;assert.equal((await runWhatsAppBatch(1,async()=>{sends++;throw Error('Must not send');})).claimed,expected,name);assert.equal(sends,0,name);
++  await db.query("UPDATE ci_alert_recipient SET verified_at=now(),consented_at=now(),muted=false,active=true,event_types=ARRAY['new_order'],alert_start=NULL,alert_end=NULL WHERE tenant_id=$1 AND id=$2",[tenant,recipient.id]);
++ }
++ for(const [code,http,expected] of [[190,503,'failed'],[132001,400,'failed'],[131030,400,'failed'],[130429,400,'pending'],[0,429,'pending'],[0,503,'pending']]){
++  await reset();assert.equal((await runWhatsAppBatch(1,async(_url,options)=>{options.onDispatch();return {ok:false,status:http,json:async()=>({error:{code,error_subcode:9,message:'Rejected +919876543210 fixture-private-token'}})};})).claimed,1);
++  const row=await state();assert.equal(row.status,expected);assert.match(row.last_error,new RegExp(`code=${code} subcode=9`));assert.ok(!row.last_error.includes('919876543210'));assert.ok(!row.last_error.includes('fixture-private-token'));
++  if(expected==='pending')assert.ok(Number(row.delay)>55&&Number(row.delay)<=75);
++  else assert.equal((await runWhatsAppBatch(1,async()=>{throw Error('Permanent failure must not resend');})).claimed,0);
++ }
++ await reset();process.env.WHATSAPP_ORDER_TEMPLATE='INVALID';let sends=0;
++ await runWhatsAppBatch(1,async()=>{sends++;});assert.equal(sends,0);assert.equal((await state()).status,'failed');assert.match((await state()).last_error,/preparation.*template/);process.env.WHATSAPP_ORDER_TEMPLATE='approved_order';
++ await reset();await runWhatsAppBatch(1,async()=>{throw Error('DNS failed before dispatch');});assert.equal((await state()).status,'failed');
++ await reset();await runWhatsAppBatch(1,async(_url,options)=>{options.onDispatch();throw Error('Response lost after dispatch');});assert.equal((await state()).status,'uncertain');
++ assert.equal((await runWhatsAppBatch(1,async()=>{throw Error('Must not retry uncertain');})).claimed,0);
++ await reset();
++ await db.query("CREATE FUNCTION codexqa_whatsapp_audit_failure() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN IF NEW.event_type='whatsapp_accepted' THEN RAISE EXCEPTION 'fixture acceptance audit unavailable'; END IF; RETURN NEW; END $$");
++ await db.query('CREATE TRIGGER codexqa_whatsapp_audit_failure BEFORE INSERT ON ci_order_timeline FOR EACH ROW EXECUTE FUNCTION codexqa_whatsapp_audit_failure()');
++ try{await runWhatsAppBatch(1,async()=>({ok:true,status:200,json:async()=>({messages:[{id:'wamid.accepted-fixture'}]})}));assert.equal((await state()).status,'accepted');assert.equal((await state()).provider_message_id,'wamid.accepted-fixture');assert.match((await state()).last_error,/audit requires review/);}
++ finally{await db.query('DROP TRIGGER codexqa_whatsapp_audit_failure ON ci_order_timeline');await db.query('DROP FUNCTION codexqa_whatsapp_audit_failure()');}
++ // Cross-session tenant pacing, including the web/worker shared limiter.
++ const times=[];await Promise.all([1,2,3].map(()=>withWhatsAppRateLimit(tenant,async()=>{times.push(Date.now());})));
++ assert.ok(times[1]-times[0]>=990&&times[2]-times[1]>=990,'Tenant send starts must be at least one second apart');
++ const separate=[];await Promise.all([tenant,foreign].map(t=>withWhatsAppRateLimit(t,async()=>{separate.push(Date.now());})));assert.ok(Math.abs(separate[1]-separate[0])<750,'Different tenants must not share a limiter');
++ const app=express();app.use('/whatsapp',whatsappPublic);const server=app.listen(0,'127.0.0.1');await new Promise((resolve,reject)=>{server.once('listening',resolve);server.once('error',reject);});
++ try{
++  const callback=async(status,error,signatureMode='valid')=>{
++   const body=Buffer.from(JSON.stringify({object:'whatsapp_business_account',entry:[{changes:[{field:'messages',value:{metadata:{phone_number_id:'123456789'},statuses:[{id:'wamid.accepted-fixture',status,errors:error?[error]:[]}]}}]}]}));
++   const signature='sha256='+createHmac('sha256',process.env.WHATSAPP_APP_SECRET).update(body).digest('hex');
++   return fetch(`http://127.0.0.1:${server.address().port}/whatsapp/webhook`,{method:'POST',headers:{'content-type':'application/json',...(signatureMode==='absent'?{}:{'x-hub-signature-256':signatureMode==='bad'?'sha256='+'0'.repeat(64):signature})},body});
++  };
++  process.env.INVENTORY_ALLOWED_TENANT_ID=foreign;assert.equal((await callback('delivered')).status,200);assert.equal((await state()).status,'accepted');
++  delete process.env.INVENTORY_ALLOWED_TENANT_ID;assert.equal((await callback('delivered')).status,503);process.env.INVENTORY_ALLOWED_TENANT_ID=tenant;
++  assert.equal((await callback('delivered',null,'bad')).status,401);assert.equal((await callback('delivered',null,'absent')).status,401);
++  assert.equal((await callback('failed',{code:131026,title:'Recipient +919876543210 unavailable'})).status,200);assert.equal((await state()).status,'failed');assert.match((await state()).last_error,/code=131026/);
++  await callback('sent');assert.equal((await state()).status,'failed');
++  await db.query("UPDATE ci_order_alert SET status='accepted' WHERE tenant_id=$1 AND id=$2",[tenant,alert.id]);
++  for(const status of ['delivered','sent','failed','read','sent'])await callback(status);assert.equal((await state()).status,'read');
++ }finally{await new Promise(resolve=>server.close(resolve));}
++ const otpRecipient=(await db.query("INSERT INTO ci_alert_recipient(tenant_id,name,role,mobile_e164,consented_at,active) VALUES($1,'OTP fixture','manager','+919876543211',now(),false) RETURNING id",[tenant])).rows[0];let code;
++ const options={tenantId:tenant,recipientId:otpRecipient.id,pool:db,fetcher:async(_url,options)=>{code=JSON.parse(options.body).template.components[0].parameters[0].text;return {ok:true,json:async()=>({messages:[{id:'wamid.otp'}]})};}};
++ await requestRecipientOtp(options);await assert.rejects(()=>requestRecipientOtp(options),e=>e.status===429);
++ const wrong=code==='000000'?'111111':'000000';for(let n=0;n<5;n++)await assert.rejects(()=>verifyRecipientOtp({...options,code:wrong}),e=>e.status===(n===4?429:400));
++ assert.equal((await db.query('SELECT status FROM ci_recipient_verification WHERE tenant_id=$1 AND recipient_id=$2',[tenant,otpRecipient.id])).rows[0].status,'locked');
++ await db.query("UPDATE ci_recipient_verification SET requested_at=now()-interval '61 seconds',window_count=10 WHERE tenant_id=$1 AND recipient_id=$2",[tenant,otpRecipient.id]);await assert.rejects(()=>requestRecipientOtp(options),e=>e.status===429);
++ await db.query("UPDATE ci_recipient_verification SET window_count=1 WHERE tenant_id=$1 AND recipient_id=$2",[tenant,otpRecipient.id]);await requestRecipientOtp(options);assert.equal((await verifyRecipientOtp({...options,code})).verified,true);
++ console.log('PASS isolated PostgreSQL WhatsApp: consent/OTP/mute/hours/events, preparation failure, dispatch uncertainty, Meta codes/retry/jitter, acceptance persistence fault, tenant rate serialization, signed callback tenant/auth/order/failure codes, OTP cooldown/cap/lockout');
++}finally{await db.end();}
+--- /dev/null
++++ b/scripts/run-isolated-whatsapp-phase1.mjs
+@@ -0,0 +1,16 @@
++import '../env.js';
++import { randomUUID } from 'node:crypto';
++import { spawn } from 'node:child_process';
++import pg from 'pg';
++const suite=process.argv[2]||'scripts/verify-whatsapp-postgres.mjs';
++if(!['scripts/verify-whatsapp-postgres.mjs','scripts/verify-central-inventory-api.mjs'].includes(suite))throw Error('Unsupported isolated Phase 1 suite');
++const base=process.env.INVENTORY_DATABASE_URL;
++if(!base)throw Error('INVENTORY_DATABASE_URL required');
++const url=new URL(base);if(!['localhost','127.0.0.1','::1'].includes(url.hostname))throw Error('Use local PostgreSQL for isolated suites');
++const name=`codexqa_test_whatsapp_${randomUUID().replaceAll('-','').slice(0,16)}`;
++const client=new pg.Client({connectionString:base,connectionTimeoutMillis:8000});let created=false;
++try{
++ await client.connect();await client.query(`CREATE DATABASE "${name}"`);created=true;url.pathname=`/${name}`;
++ const child=spawn(process.execPath,[suite],{cwd:process.cwd(),env:{...process.env,INVENTORY_DATABASE_URL:url.toString()},stdio:'inherit'});
++ const code=await new Promise((resolve,reject)=>{child.once('error',reject);child.once('exit',resolve);});if(code!==0)throw Error('Isolated verifier failed');
++}finally{try{if(created){await client.query(`DROP DATABASE "${name}" WITH (FORCE)`);console.log('Isolated Phase 1 PostgreSQL database removed.');}}finally{await client.end();}}

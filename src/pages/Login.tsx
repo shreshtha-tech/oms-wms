@@ -20,12 +20,12 @@ export default function Login() {
     setSubmitting(false);
   };
 
-  const submit = (event: React.FormEvent) => {
+  const submit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (submitting) return;
     setError('');
     setSubmitting(true);
-    const result = login(loginId, password);
+    const result = await login(loginId, password);
     if (result.ok) navigate('/app/dashboard');
     else {
       setSubmitting(false);
@@ -35,17 +35,14 @@ export default function Login() {
 
   return (
     <div className="min-h-screen bg-[#f4f4f4] lg:grid lg:grid-cols-[58.3%_41.7%]">
-      <div className="relative hidden min-h-screen overflow-hidden bg-[#0579b6] lg:block">
-        <img alt="" src="https://www.vinculumgroup.com/vin-eretail/img/lhs-panel-vin-seller-panel-mobile-app-june-26.jpg" className="w-full" />
+      <div className="relative hidden min-h-screen overflow-hidden bg-[#0579b6] lg:flex lg:items-center lg:justify-center">
+        <div className="px-12 text-center text-5xl font-bold leading-tight text-white">D-Mills Global<br />Private Limited</div>
       </div>
 
       <main className="flex min-h-screen items-start justify-center bg-white px-12 pt-[18vh] lg:px-[8vw]">
         <div className="w-full max-w-[465px]">
           <div className="mb-14 text-center">
-            <div className="inline-flex items-end font-black tracking-[-0.06em] text-[#151515]">
-              <span className="mr-1 inline-flex h-12 w-12 -skew-x-6 items-center justify-center bg-[#e5232b] text-[38px] italic leading-none text-white">e</span>
-              <span className="text-[48px] leading-none">RETAIL</span>
-            </div>
+            <div className="text-3xl font-black text-[#151515]">D-Mills Global Private Limited</div>
             <div className="mt-2 text-base text-[#333]">Omni-channel OMS &amp; WMS</div>
           </div>
 
@@ -58,7 +55,7 @@ export default function Login() {
             <label className="flex items-center border-b-2 border-[#dedede] pb-2 text-[#9d9d9d] focus-within:border-[#269bd2]">
               <LockKeyhole size={29} strokeWidth={1.2} />
               <input id="password" type="password" autoComplete="off" aria-label="Password" placeholder="Password" value={password} onChange={(event) => setPassword(event.target.value)} className="w-full bg-transparent px-3 py-1 text-base text-[#444] outline-none placeholder:text-[#aaa]" />
-              <button type="button" className="text-sm text-[#555]">Forgot?</button>
+              <span className="text-xs text-[#555]">Contact your administrator to reset access.</span>
             </label>
 
             {error && <div role="alert" className="text-sm text-rose-600">{error}</div>}
@@ -69,19 +66,7 @@ export default function Login() {
             </div>
           </form>
 
-          <div className="mt-12 text-center text-base text-[#333]">
-            <span>Connect With Us:</span>
-            <span className="ml-3 inline-flex gap-2">
-              <a aria-label="Facebook" href="https://www.facebook.com/VinculumGroup/" className="flex h-8 w-8 items-center justify-center rounded-full bg-[#5878b9] font-bold text-white">f</a>
-              <a aria-label="Twitter" href="https://twitter.com/Vin_Omnichannel" className="flex h-8 w-8 items-center justify-center rounded-full bg-[#209bd1] font-bold text-white">♥</a>
-              <a aria-label="LinkedIn" href="https://www.linkedin.com/company/vinculumgroup/" className="flex h-8 w-8 items-center justify-center rounded-full bg-[#39a9dc] font-bold text-white">in</a>
-            </span>
-          </div>
-
-          <div className="mt-10 text-center">
-            <p className="text-xl font-bold text-[#303030]">Click below to refer a customer for<br />Vinculum</p>
-            <a href="https://www.vinculumgroup.com/customer-referral/" className="mt-3 inline-flex h-10 min-w-48 items-center justify-center rounded-md bg-[#079bd7] px-8 text-xl text-white">Refer Now</a>
-          </div>
+          <p className="mt-12 text-center text-sm text-slate-500">© 2026 D-Mills Global Private Limited</p>
         </div>
       </main>
     </div>

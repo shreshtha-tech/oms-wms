@@ -1,19 +1,101 @@
-# Render Blueprint — deploy the whole app as one Node web service.
+# Render Blueprint — web console plus a separate central-inventory worker.
 # In Render: New + -> Blueprint -> connect this repo. Render reads this file,
 # runs the build, and starts the server. Set MONGODB_URI in the Render
 # dashboard (marked sync:false so it is NOT committed to git).
 services:
   - type: web
-    name: vin-eretail
+    name: d-mills-global-console
     runtime: node
-    plan: free
-    buildCommand: npm install && npm run build
+    plan: starter
+    buildCommand: npm ci && npm run build
     startCommand: npm start
+    preDeployCommand: npm run inventory:migrate
+    healthCheckPath: /api/health/live
     autoDeploy: true
     envVars:
       - key: NODE_VERSION
-        value: 20.11.1
+        value: 24.21.0
+      - key: DMILLS_REQUIRE_PERSISTENCE
+        value: "true"
+      - key: TRUST_PROXY
+        value: "true"
       - key: MONGODB_URI
         sync: false
       - key: MONGODB_DB
-        value: eretail
+        # Explicit selection overrides the URI database path. Choose local and
+        # Render values deliberately; production requires this key.
+        value: d_mills_global
+      - key: DMILLS_ADMIN_USER
+        sync: false
+      - key: DMILLS_ADMIN_PASSWORD_HASH
+        sync: false
+      - key: INVENTORY_DATABASE_URL
+        sync: false
+      - key: INVENTORY_CREDENTIAL_KEY
+        sync: false
+      - key: INVENTORY_ALLOWED_TENANT_ID
+        sync: false
+      - key: INVENTORY_PUBLIC_ORIGIN
+        sync: false
+      - key: AMAZON_SP_API_APPLICATION_ID
+        sync: false
+      - key: SHOPIFY_CLIENT_ID
+        sync: false
+      - key: SHOPIFY_CLIENT_SECRET
+        sync: false
+      - key: WHATSAPP_GRAPH_VERSION
+        sync: false
+      - key: WHATSAPP_PHONE_NUMBER_ID
+        sync: false
+      - key: WHATSAPP_ACCESS_TOKEN
+        sync: false
+      - key: WHATSAPP_APP_SECRET
+        sync: false
+      - key: WHATSAPP_VERIFY_TOKEN
+        sync: false
+      - key: WHATSAPP_ORDER_TEMPLATE
+        sync: false
+      - key: WHATSAPP_PACKING_TEMPLATE
+        sync: false
+      - key: WHATSAPP_OTP_TEMPLATE
+        sync: false
+      - key: WHATSAPP_OTP_TEMPLATE_LANGUAGE
+        value: en_US
+      - key: WHATSAPP_TEMPLATE_LANGUAGE
+        value: en_US
+  - type: worker
+    name: d-mills-inventory-worker
+    runtime: node
+    plan: 0.5c-512mb
+    buildCommand: npm ci
+    startCommand: node scripts/inventory-worker-supervisor.mjs
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: 24.21.0
+      - key: INVENTORY_DATABASE_URL
+        sync: false
+      - key: INVENTORY_CREDENTIAL_KEY
+        sync: false
+      - key: INVENTORY_ALLOWED_TENANT_ID
+        sync: false
+      - key: WHATSAPP_GRAPH_VERSION
+        sync: false
+      - key: WHATSAPP_PHONE_NUMBER_ID
+        sync: false
+      - key: WHATSAPP_ACCESS_TOKEN
+        sync: false
+      - key: WHATSAPP_APP_SECRET
+        sync: false
+      - key: WHATSAPP_VERIFY_TOKEN
+        sync: false
+      - key: WHATSAPP_ORDER_TEMPLATE
+        sync: false
+      - key: WHATSAPP_PACKING_TEMPLATE
+        sync: false
+      - key: WHATSAPP_OTP_TEMPLATE
+        sync: false
+      - key: WHATSAPP_OTP_TEMPLATE_LANGUAGE
+        value: en_US
+      - key: WHATSAPP_TEMPLATE_LANGUAGE
+        value: en_US

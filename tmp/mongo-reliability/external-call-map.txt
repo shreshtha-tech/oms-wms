@@ -1,0 +1,48 @@
+inventory/connection-provider.js:6:export async function refreshProviderToken(platform,fields,fetcher=providerFetch){
+inventory/connection-provider.js:13:  const response=await fetcher('https://api.flipkart.net/oauth-service/oauth/token?grant_type=client_credentials&scope=Seller_Api',{method:'GET',headers:{Authorization:`Basic ${Buffer.from(`${fields.clientId}:${fields.clientSecret}`).toString('base64')}`}});
+inventory/connection-provider.js:20: const data=await jsonResponse(await fetcher(url,{method:'POST',headers,body:new URLSearchParams(body).toString()}),platform);
+inventory/connection-provider.js:24:export function shopifyClient(fields,fetcher=providerFetch){return new ShopifyConnector({shop:fields.shop,token:fields.accessToken,clientId:fields.refreshToken?undefined:fields.clientId,clientSecret:fields.refreshToken?undefined:fields.clientSecret,apiVersion:fields.apiVersion||'2026-07',fetcher});}
+inventory/connection-provider.js:25:export async function wooRequest(fields,path,{method='GET',body,fetcher=providerFetch}={}) {
+inventory/connection-provider.js:26: const response=await fetcher(`${fields.storeUrl}/wp-json/wc/v3${path}`,{method,headers:{Authorization:`Basic ${Buffer.from(`${fields.consumerKey}:${fields.consumerSecret}`).toString('base64')}`,'Content-Type':'application/json'},...(body?{body:JSON.stringify(body)}:{})});
+inventory/connection-provider.js:29:export async function probeConnection(platform,input,{fetcher=providerFetch}={}) {
+inventory/connection-provider.js:30: const fields=await refreshProviderToken(platform,input,fetcher);
+inventory/connection-provider.js:32:  const connector=shopifyClient(fields,fetcher);
+inventory/connection-provider.js:43:  const connector=new AmazonConnector({...fields,endpoint:amazonOrigins[fields.region],fetcher});
+inventory/connection-provider.js:50:  const raw=await wooRequest(fields,'/products?per_page=1',{fetcher});
+inventory/connection-provider.js:55:  const raw=await jsonResponse(await fetcher(`https://api.flipkart.net/sellers/listings/v3/${encodeURIComponent(fields.testSku)}`,{headers:{Authorization:`Bearer ${fields.accessToken}`}}),'Flipkart');
+inventory/connection-provider.js:61:  const raw=await jsonResponse(await fetcher(`https://apigateway.snapdeal.com/seller-api/products/inventory/bulk?supcs=${encodeURIComponent(fields.supc)}`,{headers:{clientId:fields.clientId,'X-Auth-Token':fields.authToken,'X-Seller-Authz-Token':fields.sellerToken}}),'Snapdeal');
+inventory/connection-provider.js:66:  const raw=await jsonResponse(await fetcher(`https://api.zakya.${fields.region}/inventory/v1/items?organization_id=${encodeURIComponent(fields.organizationId)}&per_page=1`,{headers:{Authorization:`Zoho-oauthtoken ${fields.accessToken}`}}),'Zoho POS');
+inventory/connection-setup.js:6:export async function currentCredentials(account,{forceRefresh=false,fetcher}={}){
+inventory/connection-setup.js:15:  const fields=await refreshProviderToken(account.platform,previous,fetcher);
+inventory/unified-orders.js:145:   timer=setInterval(()=>{if(!closed)res.write(': keepalive\n\n');},20000);res.on('close',cleanup);
+inventory/connectors/amazon.js:2:  constructor({sellerId,marketplaceId,clientId,clientSecret,refreshToken,endpoint='https://sellingpartnerapi-fe.amazon.com',fetcher=fetch,rateControl}){
+inventory/connectors/amazon.js:3:    this.sellerId=sellerId;this.marketplaceId=marketplaceId;this.clientId=clientId;this.clientSecret=clientSecret;this.refreshToken=refreshToken;this.endpoint=endpoint;this.fetcher=fetcher;this.rateControl=rateControl;this.token='';this.tokenExpires=0;this.nextPatchAt=0;this.patchTokens=10;
+inventory/connectors/amazon.js:8:    const response=await this.fetcher('https://api.amazon.com/auth/o2/token',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body,signal:AbortSignal.timeout(20000)});
+inventory/connectors/amazon.js:14:    const response=await this.fetcher(`${this.endpoint}${path}`,{method,headers:{'x-amz-access-token':await this.accessToken(),'Content-Type':'application/json','User-Agent':'CentralInventory/1.0 (Language=JavaScript)'},body:body?JSON.stringify(body):undefined,signal:AbortSignal.timeout(20000)});
+inventory/connectors/amazon.js:21:    if(this.patchTokens<1){await new Promise(r=>setTimeout(r,Math.ceil((1-this.patchTokens)*200)));this.patchTokens=1;}this.patchTokens--;
+inventory/connectors/shopify.js:4:  constructor({shop,token,clientId,clientSecret,apiVersion='2026-07',fetcher=fetch,rateControl}) {
+inventory/connectors/shopify.js:6:    this.shop=shop;this.url=`https://${shop}/admin/api/${apiVersion}/graphql.json`;this.token=token;this.clientId=clientId;this.clientSecret=clientSecret;this.tokenExpires=0;this.fetcher=fetcher;this.rateControl=rateControl;this.available=0;this.restoreRate=100;this.updatedAt=Date.now();
+inventory/connectors/shopify.js:11:    const response=await this.fetcher(`https://${this.shop}/admin/oauth/access_token`,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({client_id:this.clientId,client_secret:this.clientSecret,grant_type:'client_credentials'}),signal:AbortSignal.timeout(20000)});
+inventory/connectors/shopify.js:30:    if(this.available<estimatedCost)await new Promise(r=>setTimeout(r,Math.ceil((estimatedCost-this.available)/this.restoreRate*1000)));
+inventory/connectors/shopify.js:31:    const response=await this.fetcher(this.url,{method:'POST',headers:{'Content-Type':'application/json','X-Shopify-Access-Token':await this.accessToken()},body:JSON.stringify({query,variables}),signal:AbortSignal.timeout(20000)});
+inventory/connectors/zoho-pos.js:2:  constructor({region='in',organizationId,accessToken,fetcher=fetch}){if(!['in','com'].includes(region))throw new Error('Unsupported Zoho POS region');this.base=`https://api.zakya.${region}/inventory/v1`;this.organizationId=organizationId;this.accessToken=accessToken;this.fetcher=fetcher;this.calls=[];}
+inventory/connectors/zoho-pos.js:4:    const now=Date.now();this.calls=this.calls.filter(t=>now-t<60000);if(this.calls.length>=100)await new Promise(r=>setTimeout(r,60000-(now-this.calls[0])));this.calls.push(Date.now());
+inventory/connectors/zoho-pos.js:5:    const response=await this.fetcher(`${this.base}${path}${path.includes('?')?'&':'?'}organization_id=${encodeURIComponent(this.organizationId)}`,{headers:{Authorization:`Zoho-oauthtoken ${this.accessToken}`}});
+inventory/connections.js:64:export async function verifyAndSave(tenant,platform,input,{id,fetcher=providerFetch}={}){
+inventory/connections.js:76: try{result=await probeConnection(platform,fields,{fetcher});}
+inventory/recipient-otp.js:25:async function sendRecipientOtp({tenantId,recipientId,pool,fetcher=whatsappFetch,settings=process.env}){
+inventory/recipient-otp.js:46:  const response=await withWhatsAppRateLimit(tenantId,()=>fetcher(url,{method:'POST',headers:{Authorization:`Bearer ${settings.WHATSAPP_ACCESS_TOKEN}`,'Content-Type':'application/json'},body}));
+inventory/alert-admin.js:39:export async function sendTeamTest({tenantId,teamId,recipientId,operator,requestId,fetcher=whatsappFetch}){
+inventory/alert-admin.js:64:   const response=await fetcher(`https://graph.facebook.com/${process.env.WHATSAPP_GRAPH_VERSION}/${process.env.WHATSAPP_PHONE_NUMBER_ID}/messages`,{method:'POST',headers:{Authorization:`Bearer ${process.env.WHATSAPP_ACCESS_TOKEN}`,'Content-Type':'application/json'},body,onDispatch:()=>{dispatched=true;}});
+inventory/alert-admin.js:74:export function alertAdminApi({fetcher=whatsappFetch}={}){
+inventory/alert-admin.js:96: router.post('/teams/:id/test',wrap(async(req,res)=>res.json(await sendTeamTest({tenantId:req.inventoryTenantId,teamId:req.params.id,recipientId:req.body.recipientId,operator:req.user.username,requestId:req.body.requestId,fetcher}))));
+inventory/rate-limit.js:10:  });if(!wait)return;await new Promise(r=>setTimeout(r,wait));}
+inventory/whatsapp.js:39: let timer;const answers=await Promise.race([lookup(url.hostname,{all:true}),new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error('Meta DNS lookup timed out')),20000);})]).finally(()=>clearTimeout(timer));
+inventory/whatsapp.js:50:  request.setTimeout(20000,()=>request.destroy(new Error('Meta request timed out')));
+inventory/whatsapp.js:67:  if(acquired)break;client.release();await new Promise(resolve=>setTimeout(resolve,100));
+inventory/whatsapp.js:73:  try{await new Promise(resolve=>setTimeout(resolve,Math.max(0,1000-(Date.now()-started))));await client.query('SELECT pg_advisory_unlock(hashtextextended($1,0))',[key]);}
+inventory/whatsapp.js:97:export async function runWhatsAppBatch(limit=10,fetcher=whatsappFetch){
+inventory/whatsapp.js:137:    const response=await fetcher(`https://graph.facebook.com/${version}/${phoneId}/messages`,{method:'POST',headers:{Authorization:`Bearer ${process.env.WHATSAPP_ACCESS_TOKEN}`,'Content-Type':'application/json'},body:requestBody,onDispatch:()=>{dispatched=true;}});
+inventory/connection-security.js:34:    request.setTimeout(20000,()=>request.destroy(new Error('Provider request timed out')));
+api/external-app-connections.js:16:    const response = await fetch(`https://${subDomain}.auth.marketingcloudapis.com/v2/token`, {
+api/external-app-connections.js:21:      signal: AbortSignal.timeout(15000),

@@ -1,10 +1,102 @@
-import{cors,find,insert,update}from'./mongo.js';
-const t=v=>String(v??'').trim(),has=(v,q)=>!t(q)||t(q)==='-1'||t(v).toLowerCase().includes(t(q).toLowerCase()),now=()=>new Date().toISOString();
-const eligible=x=>!!t(x.ewb_no),norm=x=>({id:x.id,integrationType:x.integration_type||'E-Way Bill',clientId:x.client_id||'0',updDate:x.ewb_updated_date||x.ship_date||x.order_date||'',documentType:'Invoice',documentNo:x.invoice_no||'',referenceNo:x.delivery_no||x.ob_del_no||x.order_no,referenceNo2:x.order_no||'',vehicleNo:x.vehicle_no||'',ewbNo:x.ewb_no||'',ewbValidity:x.ewb_validity||'',referenceType:x.order_type||'SO',isCewbGenerated:x.consolidate_ewb_no?'Yes':'No',consolidateEwbNo:x.consolidate_ewb_no||''});
-const paged=(rows,b,root='transmitLogDTOs')=>{const size=[20,50,100,200].includes(+b.rows)?+b.rows:20,p=Math.max(1,+b.page||1),records=rows.length,total=Math.ceil(records/size),slice=rows.slice((p-1)*size,p*size);return{[root]:slice,gridModel:slice,rows:slice,page:p,total,records}};
-const match=(x,b)=>has(x.integrationType,b.integrationType)&&has(x.documentNo,b.documentNo)&&has(x.referenceNo,b.referenceNo)&&has(x.referenceNo2,b.referenceNo2)&&has(x.vehicleNo,b.vehicleNo)&&has(x.ewbNo,b.ewbNo)&&has(x.referenceType,b.referenceType)&&has(x.isCewbGenerated,b.isCewbGenerated)&&has(x.consolidateEwbNo,b.consolidateEwbNo)&&(!t(b.fromUpdDate)||x.updDate>=b.fromUpdDate)&&(!t(b.toUpdDate)||x.updDate<=b.toUpdDate);
-export default async function handler(req,res){if(cors(req,res))return;try{const b=req.body||{},orders=await find('fulfillment_orders'),source=orders.filter(eligible),rows=source.map(norm);if(req.method==='GET')return res.json({integrationTypes:['E-Way Bill'],transportModes:[['1','Road'],['2','Rail'],['3','Air'],['4','Ship']],reasons:[['4','Others']],pageSizes:[20,50,100,200],counts:{generate:rows.length,history:new Set(rows.map(x=>x.consolidateEwbNo).filter(Boolean)).size}});if(req.method!=='POST')return res.status(405).json({error:'Method not allowed'});
-if(b.action==='search'||b.REQ_SEARCH_FLAG){if(b.tab==='history'){const audits=await find('generic_records',{module:'consolidate-ewb'});let out=audits.map(x=>({id:x.id,cewbNo:x.cewb_no,cewbVehicleNo:x.vehicle_no,key5:x.trans_mode,transMode:x.trans_mode_name,viewDeliveries:'View Deliveries',action:'View / Print / Re-generate',crtDate:x.created_date,deliveryIds:x.delivery_ids||[]})).filter(x=>has(x.cewbNo,b.cewbNo)&&has(x.cewbVehicleNo,b.cewbVehicleNo)&&has(x.transMode,b.transMode));out.sort((a,z)=>t(a.crtDate).localeCompare(t(z.crtDate))*(t(b.sord)==='asc'?1:-1));return res.json(paged(out,b))}let out=rows.filter(x=>match(x,b));out.sort((a,z)=>t(a[b.sidx]||a.updDate).localeCompare(t(z[b.sidx]||z.updDate))*(t(b.sord)==='asc'?1:-1));return res.json(paged(out,b))}
-if(b.action==='generate'){const ids=(b.ids||[]).map(Number),selected=source.filter(x=>ids.includes(x.id)&&!x.consolidate_ewb_no);if(!selected.length)return res.status(400).json({error:'No records selected'});if(!t(b.transMode))return res.status(400).json({error:'Something Went Wrong'});if(t(b.transMode)==='1'&&!t(b.vehicleNo))return res.status(400).json({error:'Vehicle No is Mandatory.'});if(selected.some(x=>!t(x.ewb_no)))return res.status(400).json({error:'Something Went Wrong'});const cewbNo=`CEWB${Date.now().toString().slice(-10)}`,stamp=now();for(const x of selected)await update('fulfillment_orders',x.id,{consolidate_ewb_no:cewbNo,cewb_vehicle_no:t(b.vehicleNo),cewb_transport_mode:t(b.transMode),cewb_generated_date:stamp});const saved=await insert('generic_records',{module:'consolidate-ewb',code:cewbNo,cewb_no:cewbNo,vehicle_no:t(b.vehicleNo),trans_mode:t(b.transMode),trans_mode_name:{1:'Road',2:'Rail',3:'Air',4:'Ship'}[t(b.transMode)],delivery_ids:selected.map(x=>x.id),ewb_nos:selected.map(x=>x.ewb_no),created_date:stamp,modified_date:stamp});return res.json({jsonMessage:null,message:'CEWB Generated Successfully',ewayBillGenerationDTO:{cewbNo},row:saved})}
-if(b.action==='deliveries'){const audit=(await find('generic_records',{module:'consolidate-ewb'})).find(x=>x.id===+b.id||x.cewb_no===t(b.cewbNo));if(!audit)return res.status(404).json({error:'Something Went Wrong'});return res.json({transmitLogDTOs:source.filter(x=>(audit.delivery_ids||[]).includes(x.id)).map(x=>({documentNo:x.invoice_no||'',referenceNo:x.delivery_no||x.ob_del_no||x.order_no,ewbNo:x.ewb_no}))})}
-if(b.action==='regenerate'){if(!t(b.transMode))return res.status(400).json({error:'Mode of Transport is mandatory'});if(t(b.transMode)==='1'&&!t(b.vehicleNo))return res.status(400).json({error:'Vehicle No is Mandatory.'});if(!t(b.reason))return res.status(400).json({error:'Reason is mandatory'});if(!t(b.remarks))return res.status(400).json({error:'Remarks is mandatory'});const audit=(await find('generic_records',{module:'consolidate-ewb'})).find(x=>x.id===+b.id);if(!audit)return res.status(400).json({error:'Something Went Wrong'});await update('generic_records',audit.id,{vehicle_no:t(b.vehicleNo),trans_mode:t(b.transMode),trans_mode_name:{1:'Road',2:'Rail',3:'Air',4:'Ship'}[t(b.transMode)],reason:t(b.reason),remarks:t(b.remarks),modified_date:now()});for(const id of audit.delivery_ids||[])await update('fulfillment_orders',id,{cewb_vehicle_no:t(b.vehicleNo),cewb_transport_mode:t(b.transMode),cewb_regenerated_date:now()});return res.json({jsonMessage:null,message:'CEWB Generated Successfully',ewayBillGenerationDTO:{cewbNo:audit.cewb_no}})}return res.status(400).json({error:'Invalid action'})}catch(e){console.error('Consolidate EWB error:',e);res.status(500).json({error:e.message})}}
+import { sendDatabaseUnavailable, cors, find } from './mongo.js';
+
+const text = value => String(value ?? '').trim();
+const has = (value, query) => !text(query) || text(query) === '-1' || text(value).toLowerCase().includes(text(query).toLowerCase());
+const eligible = order => Boolean(text(order.ewb_no));
+
+function normalize(order) {
+  return {
+    id: order.id,
+    integrationType: order.integration_type || '',
+    clientId: order.client_id || '',
+    updDate: order.ewb_updated_date || order.ship_date || order.order_date || '',
+    documentType: order.document_type || '',
+    documentNo: order.invoice_no || '',
+    referenceNo: order.delivery_no || order.ob_del_no || order.order_no || '',
+    referenceNo2: order.order_no || '',
+    vehicleNo: order.vehicle_no || '',
+    ewbNo: order.ewb_no || '',
+    ewbValidity: order.ewb_validity || '',
+    referenceType: order.order_type || '',
+    isCewbGenerated: order.consolidate_ewb_no ? 'Yes' : 'No',
+    consolidateEwbNo: order.consolidate_ewb_no || '',
+  };
+}
+
+function page(rows, body, root = 'transmitLogDTOs') {
+  const size = [20, 50, 100, 200].includes(+body.rows) ? +body.rows : 20;
+  const current = Math.max(1, +body.page || 1);
+  const records = rows.length;
+  const slice = rows.slice((current - 1) * size, current * size);
+  return { [root]: slice, gridModel: slice, rows: slice, page: current, total: Math.ceil(records / size), records };
+}
+
+function matches(row, body) {
+  return has(row.integrationType, body.integrationType) && has(row.documentNo, body.documentNo) &&
+    has(row.referenceNo, body.referenceNo) && has(row.referenceNo2, body.referenceNo2) &&
+    has(row.vehicleNo, body.vehicleNo) && has(row.ewbNo, body.ewbNo) &&
+    has(row.referenceType, body.referenceType) && has(row.isCewbGenerated, body.isCewbGenerated) &&
+    has(row.consolidateEwbNo, body.consolidateEwbNo) &&
+    (!text(body.fromUpdDate) || row.updDate >= body.fromUpdDate) &&
+    (!text(body.toUpdDate) || row.updDate <= body.toUpdDate);
+}
+
+export default async function handler(req, res) {
+  if (cors(req, res)) return;
+  try {
+    const body = req.body || {};
+    const orders = await find('fulfillment_orders');
+    const source = orders.filter(eligible);
+    const rows = source.map(normalize);
+
+    if (req.method === 'GET') {
+      return res.json({
+        available: false,
+        dataTrust: 'legacy-unverified',
+        reason: 'Consolidated e-way bill creation requires a verified government e-way bill connector.',
+        integrationTypes: ['E-Way Bill'],
+        transportModes: [['1', 'Road'], ['2', 'Rail'], ['3', 'Air'], ['4', 'Ship']],
+        reasons: [['4', 'Others']],
+        pageSizes: [20, 50, 100, 200],
+        counts: { generate: rows.length, history: new Set(rows.map(row => row.consolidateEwbNo).filter(Boolean)).size },
+      });
+    }
+    if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+    if (body.action === 'search' || body.REQ_SEARCH_FLAG) {
+      if (body.tab === 'history') {
+        const audits = await find('generic_records', { module: 'consolidate-ewb' });
+        const history = audits.map(row => ({
+          id: row.id, cewbNo: row.cewb_no, cewbVehicleNo: row.vehicle_no,
+          key5: row.trans_mode, transMode: row.trans_mode_name,
+          viewDeliveries: 'View Deliveries', crtDate: row.created_date,
+          deliveryIds: row.delivery_ids || [], trust: 'legacy-unverified',
+        })).filter(row => has(row.cewbNo, body.cewbNo) && has(row.cewbVehicleNo, body.cewbVehicleNo) && has(row.transMode, body.transMode));
+        history.sort((left, right) => text(left.crtDate).localeCompare(text(right.crtDate)) * (text(body.sord) === 'asc' ? 1 : -1));
+        return res.json({ ...page(history, body), trust: 'legacy-unverified' });
+      }
+      const results = rows.filter(row => matches(row, body));
+      results.sort((left, right) => text(left[body.sidx] || left.updDate).localeCompare(text(right[body.sidx] || right.updDate)) * (text(body.sord) === 'asc' ? 1 : -1));
+      return res.json(page(results, body));
+    }
+
+    if (body.action === 'deliveries') {
+      const audit = (await find('generic_records', { module: 'consolidate-ewb' })).find(row => row.id === +body.id || row.cewb_no === text(body.cewbNo));
+      if (!audit) return res.status(404).json({ error: 'Consolidated e-way bill record not found.' });
+      const deliveries = source.filter(order => (audit.delivery_ids || []).includes(order.id)).map(order => ({
+        documentNo: order.invoice_no || '', referenceNo: order.delivery_no || order.ob_del_no || order.order_no || '',
+        ewbNo: order.ewb_no || '',
+      }));
+      return res.json({ transmitLogDTOs: deliveries, trust: 'legacy-unverified' });
+    }
+
+    if (body.action === 'generate' || body.action === 'regenerate') {
+      return res.status(501).json({ error: 'Consolidated e-way bill generation is unavailable until a verified government e-way bill connector can create and read back the CEWB.' });
+    }
+    return res.status(400).json({ error: 'Invalid action' });
+  } catch (error) {
+    if (sendDatabaseUnavailable(res, error)) return;
+    console.error('Consolidate EWB error:', { name: error?.name, code: error?.code });
+    return res.status(500).json({ error: error.message });
+  }
+}

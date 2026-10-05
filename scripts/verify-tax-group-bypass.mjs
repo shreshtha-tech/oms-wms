@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+process.env.MONGODB_URI='';process.env.NODE_ENV='test';process.env.DMILLS_REQUIRE_PERSISTENCE='false';
+const store=await import('../api/mongo.js');assert.equal(await store.waitForDataReady(),'memory');
+const dedicated=(await import('../api/tax-groups.js')).default,generic=(await import('../api/generic.js')).default;
+const group=await store.insert('generic_records',{module:'tax-group',code:'FIXTURE',name:'Preserve'});
+const mapping=await store.insert('tax_group_codes',{group_id:group.id,tax_code_id:10001,sequence:1});
+const call=async(handler)=>{const res={statusCode:200,status(code){this.statusCode=code;return this;},json(value){this.value=value;return this;},setHeader(){}};await handler({method:'DELETE',body:{id:group.id},query:{}},res);return res;};
+assert.equal((await call(dedicated)).statusCode,409);
+assert.equal((await call(generic)).statusCode,501,'Generic tax-group delete must not orphan component mappings');
+assert.ok(await store.findOne('generic_records',{id:group.id}));assert.ok(await store.findOne('tax_group_codes',{id:mapping.id}));
+console.log('PASS: generic Tax Group deletion blocked; group/component rows preserved. Memory only.');

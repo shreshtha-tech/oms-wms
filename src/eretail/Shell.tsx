@@ -1,3 +1,6 @@
+import { useRequestFailure } from '../lib/requestFailures';
+import RequestErrorState from '../components/RequestErrorState';
+import MongoStatusBanner from '../components/MongoStatusBanner';
 import { useState, useEffect, ReactNode } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, X, LogOut, User, Search, Maximize2, Flag, Download, MapPin, Asterisk } from 'lucide-react';
@@ -5,6 +8,7 @@ import { useAuth } from '../context/AuthContext';
 import { RAIL, RailEntry } from './menuData';
 import { apiSend } from '../lib/api';
 import { useScreenFrame, useScreens } from './ScreenContext';
+import './ShellResponsive.css';
 
 function Flyout({ entry, onNav }: { entry: RailEntry; onNav: () => void }) {
   const nav = useNavigate();
@@ -15,13 +19,13 @@ function Flyout({ entry, onNav }: { entry: RailEntry; onNav: () => void }) {
     entry.columns!.map((column, columnIndex) => column.groups[row] ? ({ group: column.groups[row], columnIndex, row }) : null).filter(Boolean),
   ).flat() as { group: NonNullable<RailEntry['columns']>[number]['groups'][number]; columnIndex: number; row: number }[];
   const measuredHeights: Record<string, Record<string, number>> = {
-    wms: { Setup: 171, 'Order Processing': 171, Inventory: 171, Inbound: 140, Miscellaneous: 140 },
+    wms: { Setup: 225, 'Order Processing': 225, Inventory: 225, Inbound: 155, Miscellaneous: 155 },
     admin: { Miscellaneous: 130, Logs: 170 },
     reports: { 'Sales & Return': 171, Miscellaneous: 120 },
     returns: { Transfers: 80 },
   };
   return (
-    <div data-menu-flyout className="absolute left-full top-0 z-50 w-[630px] overflow-visible text-slate-200">
+    <div data-menu-flyout data-menu-kind={entry.key} className="absolute left-full top-0 z-50 w-[630px] overflow-visible text-slate-200">
       <div className="flex h-[40px] items-center bg-[#26313f] px-[15px] text-[16px] font-semibold text-white">{entry.title}</div>
       <div data-menu-flyout-body className="grid h-[419px] w-[630px] auto-rows-max grid-cols-[repeat(3,200px)] content-start items-start gap-[6px] bg-[#26313f] p-[5px]">
         {groups.map(({ group: g, columnIndex, row }, index) => (
@@ -30,9 +34,12 @@ function Flyout({ entry, onNav }: { entry: RailEntry; onNav: () => void }) {
             <ul className="py-[2px]">
               {g.items.map((it) => (
                 <li key={it.label} className="h-[20px]">
-                  <button
+                  <button title={it.to ? it.label : `${it.label} is unavailable in this release`}
+                    aria-label={it.to ? it.label : `${it.label}, unavailable in this release`}
+                    aria-disabled={!it.to}
+                    disabled={!it.to}
                     onClick={() => go(it.to)}
-                    className="ml-[20px] flex h-[13.5px] w-auto items-center gap-[5px] whitespace-nowrap px-0 text-left text-[12px] leading-[13.5px] text-slate-200 hover:text-[#5ec6d9]"
+                    className={`ml-[20px] flex h-[13.5px] w-auto items-center gap-[5px] whitespace-nowrap px-0 text-left text-[12px] leading-[13.5px] ${it.to ? 'text-slate-200 hover:text-[#5ec6d9]' : 'cursor-not-allowed text-slate-500 opacity-65'}`}
                   >
                     <ChevronRight size={11} className="shrink-0 text-[#3fb6c9]" />
                     {it.label}
@@ -58,6 +65,7 @@ export default function Shell({
   const { user, logout } = useAuth();
   const nav = useNavigate();
   const location = useLocation();
+  const requestFailure = useRequestFailure();
   const screenFrame = useScreenFrame();
   const { screens, history, showFeedback, openScreen, activateScreen: recordActivation, goBack, closeScreen, orderType, setOrderType } = useScreens();
   const [openKey, setOpenKey] = useState<string | null>(null);
@@ -75,7 +83,11 @@ export default function Shell({
   const [passwordError, setPasswordError] = useState('');
 
   const requestedScreens = openScreens && openScreens.length ? openScreens : [{ label: breadcrumb.split('>').pop()!.trim(), to: '#' }];
-  const currentLabel = requestedScreens[requestedScreens.length - 1].label;
+  // Each persistent route frame owns its tab identity.  Do not infer the
+  // active tab from the last auxiliary breadcrumb entry: several workflows
+  // render secondary links/actions in `openScreens`, but LIVE registers the
+  // actual frame once and switches by that frame key.
+  const currentLabel = screenFrame && !screenFrame.key.startsWith('pending:') ? screenFrame.key : requestedScreens[0].label;
   const effectivePath = screenFrame?.path || `${location.pathname}${location.search}`;
 
   useEffect(() => {
@@ -170,7 +182,7 @@ export default function Shell({
   };
 
   return (
-    <div className="relative flex h-screen overflow-hidden flex-col bg-[#eef1f3] font-sans" onClick={() => { setOpenKey(null); setUserMenu(false); setScreenMenu(false); }}>
+    <div className="eretail-shell relative flex h-screen overflow-hidden flex-col bg-[#eef1f3] font-sans" onClick={() => { setOpenKey(null); setUserMenu(false); setScreenMenu(false); }}>
       {/* Top header — medium blue */}
       <header className="relative z-40 flex h-[51px] shrink-0 items-start bg-[#3b8fc4] text-white">
         <div className="flex h-[50px] w-[50px] items-center justify-center bg-white">
@@ -180,17 +192,17 @@ export default function Shell({
         </div>
         {history.length > 1 && <button aria-label="Back" title="Back" data-history-depth={history.length} onClick={backScreen} className="ml-2 flex h-8 w-8 shrink-0 items-center justify-center rounded bg-white/15 hover:bg-white/25"><ChevronLeft size={18} /></button>}
         {/* LIVE multi-screen strip: secondary screens stay ordered and switchable. */}
-        <div className="ml-3 flex max-w-[42vw] items-center gap-1 overflow-x-auto">
+        <div data-open-screen-strip className="ml-3 flex h-[51px] w-[550px] shrink-0 flex-wrap content-start items-start gap-[3px] overflow-y-auto px-[3px] pt-[4px] leading-[15px]">
           {screens.filter((screen) => screen.closable).map((screen) => (
-            <div key={screen.label} className={`flex shrink-0 items-center rounded px-2 py-1.5 text-sm font-medium ${screen.label === currentLabel ? 'bg-[#8e2fb0] text-white' : 'bg-white/15 text-white/85 hover:bg-white/25'}`}>
+            <div key={screen.label} className={`flex h-[20px] shrink-0 items-center rounded px-2 text-[12px] font-medium ${screen.label === currentLabel ? 'bg-[#8e2fb0] text-white' : 'bg-white/15 text-white/85 hover:bg-white/25'}`}>
               <button onClick={() => activateScreen(screen.label)}>{screen.label}</button>
               <button aria-label={`Close ${screen.label}`} onClick={() => dismissScreen(screen.label)} className="ml-1 rounded-full p-0.5 hover:bg-white/20"><X size={13} /></button>
             </div>
           ))}
         </div>
         <div className="ml-auto flex h-[50px] items-start">
-          <div className="mr-[3px] w-[210px] text-right text-white">
-            <div className="flex h-[22px] items-center justify-end gap-1 text-[12px]"><MapPin size={12} className="text-[#aaeeff]" />JX Karawaci</div>
+          <div data-global-search className="mr-[3px] w-[210px] text-right text-white">
+            <div className="flex h-[22px] items-center justify-end gap-1 text-[12px]"><MapPin size={12} className="text-[#aaeeff]" />No location selected</div>
             <div className="flex h-[24px]" onClick={(e) => e.stopPropagation()}>
               <select id="searchType" aria-label="Search Type" value={orderType} onChange={(e) => { setOrderType(e.target.value); setSearch(''); }} className="h-[24px] w-[105px] rounded-l-[9px] border-0 bg-[#23709c] px-[1px] text-[12px] text-white outline-none">
                 {searchOptions.map(([value, label]) => <option key={value} value={value}>{label}</option>)}
@@ -204,7 +216,7 @@ export default function Shell({
           <button onClick={(e) => { e.stopPropagation(); setLocationOpen(true); }} className="flex h-[50px] w-[42px] items-center justify-center" title="Switch Location"><Asterisk size={16} /></button>
           <div className="relative" onClick={(e) => e.stopPropagation()}>
             <button data-screen-count={screens.length} onClick={() => setScreenMenu((value) => !value)} className="relative flex h-[50px] w-[42px] items-center justify-center" title="Open Screen(s)">
-              <Flag size={18} className="text-white/90" /><span className="absolute -right-2 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-rose-500 px-1 text-[9px] font-bold">{screens.length}</span>
+              <Flag size={18} className="text-white/90" /><span className="absolute right-0 top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-rose-500 px-1 text-[9px] font-bold">{screens.length}</span>
             </button>
             {screenMenu && <div className="absolute right-0 top-9 z-50 w-[280px] border border-slate-200 bg-white text-slate-700 shadow-xl">
               <div className="border-b px-3 py-2 text-center text-sm">You have {screens.length} Open Screen(s)</div>
@@ -227,16 +239,14 @@ export default function Shell({
                   <p className="text-sm">{user?.username}</p>
                   <p className="text-[11px]">You last visited on <b>{new Date().toLocaleString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true })}</b></p>
                   <div className="mx-auto mt-1 flex h-[45px] w-[45px] items-center justify-center rounded-full bg-white/20"><User size={25} /></div>
-                  <p className="mt-1 text-left text-sm">Contact Helpdesk</p>
-                  <a href="mailto:vineretail.helpdesk@vinculumgroup.com" className="mt-1 block text-left text-[12px] text-white">vineretail.helpdesk@vinculumgroup.com</a>
-                  <p className="text-left text-[12px]">+91 7838 130 820</p>
+                  <p className="mt-1 text-left text-sm">Contact your administrator for support</p>
                   <button onClick={() => { setUserMenu(false); setSpeedOpen(true); }} className="mt-[10px] h-[33px] bg-[#00c0ef] px-3 text-[13px]">Test My Internet Speed</button>
                 </div>
                 <div className="flex h-[45px] items-center gap-[4px] px-[11px]">
                   <button onClick={() => { setUserMenu(false); nav('/app/profile'); }} className="h-[34px] border bg-white px-[12px] text-sm">Profile</button>
                   <button title="Change Password" onClick={() => { setUserMenu(false); setPasswords({ old: '', next: '', confirm: '' }); setPasswordError(''); setPasswordOpen(true); }} className="h-[34px] w-[40px] border bg-white">⌘</button>
                   <button title="User Activity Log" onClick={() => { setUserMenu(false); setActivityOpen(true); }} className="h-[34px] w-[40px] border bg-white">▦</button>
-                  <button onClick={() => { logout(); nav('/'); }} className="ml-auto flex h-[34px] items-center gap-1 border bg-white px-[12px] text-sm"><LogOut size={14} /> Sign out</button>
+                  <button onClick={() => { void logout().finally(() => nav('/')); }} className="ml-auto flex h-[34px] items-center gap-1 border bg-white px-[12px] text-sm"><LogOut size={14} /> Sign out</button>
                 </div>
               </div>
             )}
@@ -255,7 +265,7 @@ export default function Shell({
                 onMouseEnter={() => entry.columns && setOpenKey(entry.key)}
                 onMouseLeave={() => setOpenKey((k) => (k === entry.key ? null : k))}>
                 <button
-                  onClick={() => { if (entry.single) nav(entry.single); }}
+                  onClick={(event) => { event.stopPropagation(); if (entry.single) nav(entry.single); else setOpenKey(entry.key); }}
                   title={entry.title}
                   className={`flex h-[42px] w-[50px] items-center justify-center border-l-[3px] transition ${on ? 'border-[#3fb6c9] bg-[#26313f] text-white' : 'border-transparent text-slate-400 hover:bg-white/5 hover:text-white'}`}>
                   <entry.icon size={20} />
@@ -268,19 +278,19 @@ export default function Shell({
 
         <div className="flex min-h-0 min-w-0 flex-1 flex-col">
           {/* The LIVE module runs inside an iframe: fixed dialogs are bounded by the module viewport and cannot cover shell navigation. */}
-          <main className="relative min-h-0 flex-1 overflow-y-auto p-4" style={{ transform: 'translateZ(0)' }}>{children}</main>
+          <main className="relative min-h-0 flex-1 overflow-y-auto p-4" style={{ transform: 'translateZ(0)' }}><MongoStatusBanner />{requestFailure && <RequestErrorState error={requestFailure.error} onRetry={() => { void requestFailure.retry().then(() => window.dispatchEvent(new Event('api-recovered'))).catch(() => {}); }} />}<div hidden={!!requestFailure}>{children}</div></main>
         </div>
       </div>
       <footer className="ml-[50px] flex h-[19px] shrink-0 items-center bg-white px-[15px] text-[11px] text-[#444]">
-        <strong>Copyright © 2012&nbsp; <a className="text-[#3c8dbc]" href="http://www.vinculumgroup.com" target="_blank" rel="noreferrer">Vinculum Solutions Pvt Ltd</a>.</strong>
-        <span className="ml-auto"><b>Version </b>9.3.188&nbsp;&nbsp; All rights reserved.&nbsp;</span>
+        <strong>© 2026 D-Mills Global Private Limited</strong>
+        <span className="ml-auto">Made by Shreshtha Gupta.</span>
       </footer>
       {locationOpen && <div role="dialog" aria-label="User Preferences" className="fixed inset-0 z-[1050] bg-black/50" onClick={(event) => event.target === event.currentTarget && setLocationOpen(false)}>
         <div className="mx-auto mt-[20px] h-[342px] w-[600px] bg-white p-[20px] text-[12px] text-[#333] shadow-xl">
           <h2 className="mb-[10px] text-[15px] font-semibold">User Preferences</h2>
           <div className="grid grid-cols-[145px_1fr] items-center gap-y-[3px]">
-            <label htmlFor="companyDetail">Company</label><select id="companyDetail" defaultValue="USPL" className="h-[34px] border px-2"><option value="">Please select a Company</option><option value="USPL">Vinculum Solutions Pvt Ltd.</option></select>
-            <label htmlFor="locationDetail">Location</label><select id="locationDetail" defaultValue="UWH" className="h-[34px] border px-2"><option value="">Please select a Location</option><option value="UWH">UWH-JX Karawaci</option></select>
+            <label htmlFor="companyDetail">Company</label><select id="companyDetail" defaultValue="" className="h-[34px] border px-2"><option value="">Please select a Company</option></select>
+            <label htmlFor="locationDetail">Location</label><select id="locationDetail" defaultValue="" className="h-[34px] border px-2"><option value="">Please select a Location</option></select>
             <label htmlFor="languageDetail">Language</label><select id="languageDetail" value={language} onChange={(event) => setLanguage(event.target.value)} className="h-[34px] border px-2"><option>Please select a Language</option>{['English','Thai/ไทย','Bahasa','Simple Chinese/简单的中文','Vietnamese/Tiếng Việt','Hindi/हिंदी','Arabic (Saudi Arabia)'].map((value) => <option key={value}>{value}</option>)}</select>
             <label htmlFor="timeZoneDetail">Timezone</label><select id="timeZoneDetail" value={timeZone} onChange={(event) => setTimeZone(event.target.value)} className="h-[34px] border px-2"><option>Please select a Timezone</option>{['Etc/GMT+12','Pacific/Midway','America/Los_Angeles','America/Chicago','America/New_York','Etc/GMT','Europe/London','Europe/Paris','Asia/Dubai','Asia/Karachi','Asia/Calcutta','Asia/Kolkata','Asia/Bangkok','Asia/Singapore','Asia/Tokyo','Australia/Sydney','Pacific/Auckland'].map((value) => <option key={value} value={value}>{value === 'Asia/Calcutta' ? '(GMT+5:30) Asia/Calcutta' : value}</option>)}</select>
           </div>

@@ -1,0 +1,14 @@
+{
+  "sku": "BANA-KDTS-PO1-2-3",
+  "damaged": 0,
+  "on_hand": 100,
+  "reserved": 0,
+  "available": 100,
+  "committed": 0,
+  "safety_stock": 0,
+  "quality_control": 0,
+  "shop": "jxz0p8-sj.myshopify.com",
+  "locationId": "gid://shopify/Location/112118530328",
+  "observedAt": "2026-09-24T12:30:27.964Z",
+  "readbackVerified": true
+}

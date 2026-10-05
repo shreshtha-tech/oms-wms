@@ -1,0 +1,54 @@
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { apiGet } from '../lib/api';
+import CentralInventorySummary from '../components/CentralInventorySummary';
+import { useInventoryConnectionState } from '../hooks/useInventoryLiveUpdates';
+import LiveConnectionStatus from '../components/LiveConnectionStatus';
+import { programName } from './SalesPrograms';
+import programCatalog from '../../inventory/sales-program-catalog.json';
+import { platformRequirements } from './platformRequirements';
+
+type Order={id:string;sales_program:string|null;platform:string;external_account_id:string;external_order_id:string;provider_status:string;work_status:string;ordered_at:string|null;first_seen_at:string;provider_updated_at:string|null;city:string|null;pincode:string|null;amount:string|null;currency:string|null;items:{sku:string;quantity:number;title:string|null}[]};
+type Account={platform:string;external_account_id:string;status:string;connection_state:string;live_connected:boolean};
+type Result={rows:Order[];total:number;page:number;limit:number;accounts:Account[];confirmedAt:string};
+const path='/api/inventory-sync/unified/orders/search';
+const amount=(value:string|null,currency:string|null)=>{if(value===null)return '—';try{return new Intl.NumberFormat('en-IN',{style:'currency',currency:currency||'INR'}).format(Number(value));}catch{return `${currency||''} ${value}`;}};
+
+export default function LiveOrderWorkspace({title='Live orders',dashboard=false}:{title?:string;dashboard?:boolean}){
+ const [query,setQuery]=useState(''),[platform,setPlatform]=useState(''),[status,setStatus]=useState(''),[page,setPage]=useState(1);
+ const [searchQuery,setSearchQuery]=useState(''),[program,setProgram]=useState('');
+ const [data,setData]=useState<Result|null>(null),[error,setError]=useState(''),[loading,setLoading]=useState(true),[selected,setSelected]=useState<string|null>(null);
+ const generation=useRef(0);
+ const root=useRef<HTMLDivElement>(null);
+ const routerNavigate=useNavigate();
+ const connection=useInventoryConnectionState();
+ useEffect(()=>{const timer=setTimeout(()=>setSearchQuery(query),250);return()=>clearTimeout(timer);},[query]);
+ const load=useCallback(async()=>{
+  const current=++generation.current;
+  const params=new URLSearchParams({q:searchQuery,platform,status,program,page:String(page),limit:'25'});
+  try{const result=await apiGet<Result>(`${path}?${params}`,10000);
+   if(current===generation.current){setData(result);setError('');setLoading(false);}
+  }catch(e){if(current===generation.current){setError(e instanceof Error?e.message:'Order request failed');setLoading(false);}}
+ },[searchQuery,platform,status,program,page]);
+ useEffect(()=>{const frame=root.current?.closest('[data-screen-frame]');const run=()=>{if(root.current?.getClientRects().length)void load();};run();const timer=setInterval(run,60000);window.addEventListener('inventory-live-changed',run);const observer=frame?new MutationObserver(run):null;if(frame)observer?.observe(frame,{attributes:true,attributeFilter:['aria-hidden']});return()=>{generation.current++;clearInterval(timer);window.removeEventListener('inventory-live-changed',run);observer?.disconnect();};},[load]);
+ const order=data?.rows.find(row=>row.id===selected);
+ const verified=data?.accounts.filter(account=>account.live_connected)||[];
+ const connectedPlatforms=new Set(verified.map(account=>account.platform));
+ const notLiveConnected=data?platformRequirements.length-connectedPlatforms.size:null;
+ const openChannel=(platform?:string)=>{
+  if(root.current?.closest('[data-central-inventory]'))window.dispatchEvent(new CustomEvent('central-inventory-open-channel',{detail:{platform}}));
+  else routerNavigate(`/app/central-inventory?section=channels${platform?`&platform=${encodeURIComponent(platform)}`:''}`);
+ };
+ return <div ref={root} className="min-w-0 space-y-4 p-4 md:p-6" data-live-orders>
+  <div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-xs uppercase tracking-wider text-slate-500">PostgreSQL seller order service</p><h1 className="text-2xl font-semibold text-slate-800">{title}</h1><p className="text-sm text-slate-600">Seller orders observed through authorized connections. Physical stock changes only after verified counts and mappings.</p></div><div className="flex flex-wrap gap-2"><button className="rounded border border-slate-300 bg-white px-3 py-2" onClick={()=>void load().catch(e=>setError(e.message))}>Refresh</button><Link className="rounded border border-slate-300 bg-white px-3 py-2" to="/app/demo/orders">Demo data</Link></div></div>
+  <p role="status" className="text-sm text-slate-600">{connection==='live'?'API and live stream connected':connection==='offline'?'Offline — showing last confirmed data':connection==='polling'?'Live stream unavailable — timed refresh active':'Reconnecting to live orders'} · Last confirmed: {data?.confirmedAt?new Date(data.confirmedAt).toLocaleString('en-IN'):'Never'}</p>
+  {dashboard&&<><CentralInventorySummary/><div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4"><div className="rounded border bg-white p-4"><small>Matching live orders</small><strong className="block text-2xl">{data?.total??'—'}</strong></div><div className="rounded border bg-white p-4"><small>Verified seller accounts</small><strong className="block text-2xl">{verified.length}</strong></div><div className="rounded border bg-white p-4"><small>Channels without live connection</small><strong className="block text-2xl">{notLiveConnected??'—'}</strong></div></div></>}
+  {error&&<p role="alert" className="rounded border border-red-300 bg-red-50 p-3 text-red-800">{error}. Showing last confirmed result if available.</p>}
+  {data?<LiveConnectionStatus accounts={data.accounts} onConnect={openChannel}/>:<p role="status" className="rounded border border-slate-200 bg-white p-4 text-sm text-slate-600">Checking seller platform connections…</p>}
+  <div className="rounded border border-slate-200 bg-white p-4"><div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4"><label className="text-sm">Order, SKU or product<input className="mt-1 w-full rounded border p-2" value={query} onChange={e=>{setQuery(e.target.value);setPage(1);}}/></label><label className="text-sm">Platform<select className="mt-1 w-full rounded border p-2" value={platform} onChange={e=>{setPlatform(e.target.value);setPage(1);}}><option value="">All connected</option>{[...new Set(data?.accounts.map(account=>account.platform)||[])].map(value=><option key={value}>{value}</option>)}</select></label><label className="text-sm">Programme<select className="mt-1 w-full rounded border p-2" value={program} onChange={e=>{setProgram(e.target.value);setPage(1);}}><option value="">All programmes</option>{programCatalog.map(item=><option key={item.key} value={item.key}>{item.name}</option>)}</select></label><label className="text-sm">Work status<select className="mt-1 w-full rounded border p-2" value={status} onChange={e=>{setStatus(e.target.value);setPage(1);}}><option value="">All</option>{['new','accepted','packed','dispatched','cancelled','returned'].map(value=><option key={value}>{value}</option>)}</select></label></div>
+   <div className="mt-4 overflow-x-auto"><table className="min-w-full text-left text-sm"><thead><tr className="border-b text-slate-600"><th className="p-2">Order</th><th className="p-2">Seller</th><th className="p-2">Received</th><th className="p-2">Items</th><th className="p-2">Value</th><th className="p-2">Provider status</th><th className="p-2">Work status</th></tr></thead><tbody>{data?.rows.map(row=><tr key={row.id} className="border-b"><td className="p-2"><button className="text-blue-700 underline" onClick={()=>setSelected(row.id)}>{row.external_order_id}</button></td><td className="p-2">{row.platform}{row.sales_program&&<small className="block font-medium">{programName(row.sales_program)}</small>}<small className="block">{row.external_account_id}</small></td><td className="p-2">{new Date(row.first_seen_at).toLocaleString('en-IN')}</td><td className="p-2">{row.items.reduce((n,item)=>n+item.quantity,0)}</td><td className="p-2">{amount(row.amount,row.currency)}</td><td className="p-2">{row.provider_status}</td><td className="p-2">{row.work_status}</td></tr>)}</tbody></table>{loading&&<p className="p-3">Loading live orders…</p>}{!loading&&!data?.rows.length&&!error&&<p className="p-3">No live orders match these filters.</p>}</div>
+   <div className="mt-3 flex items-center gap-3"><button className="rounded border px-3 py-1 disabled:opacity-40" disabled={page<=1} onClick={()=>setPage(page-1)}>Previous</button><span>Page {page} · {data?.total??0} matches</span><button className="rounded border px-3 py-1 disabled:opacity-40" disabled={!data||page*25>=data.total} onClick={()=>setPage(page+1)}>Next</button></div>
+  </div>
+  {order&&<section className="rounded border border-slate-200 bg-white p-4"><div className="flex justify-between"><h2 className="font-semibold">Order {order.external_order_id}</h2><button onClick={()=>setSelected(null)}>Close</button></div><p className="text-sm">{order.platform}{order.sales_program?` · ${programName(order.sales_program)}`:''} · {order.city||'City unavailable'} {order.pincode||''} · Provider updated {order.provider_updated_at?new Date(order.provider_updated_at).toLocaleString('en-IN'):'time unavailable'}</p><ul className="mt-2 text-sm">{order.items.map((item,index)=><li key={`${item.sku}:${index}`}>{item.sku} · {item.title||'Untitled'} · {item.quantity} units</li>)}</ul><p className="mt-3 text-sm text-amber-800">Seller fulfillment controls are unavailable until provider scopes and readback are verified.</p></section>}
+ </div>;
+}

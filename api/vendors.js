@@ -1,4 +1,4 @@
-import { find, findOne, insert, update, updateWhere, cors } from './mongo.js';
+import { sendDatabaseUnavailable, find, findOne, insertVendor, updateVendorWithAudit, cors, actor } from './mongo.js';
 
 // Earlier local seeds used simplified names. Present them using the observed
 // Vendor Master vocabulary while retaining backward-compatible records.
@@ -32,18 +32,20 @@ export default async function handler(req, res) {
       const name = String(b.vendor_name || '').trim();
       if (!code || !name) return res.status(400).json({ error: 'Vendor Code and Vendor Name are required' });
       if (await findOne('vendors', { vendor_code: code })) return res.status(409).json({ error: `Vendor Code "${code}" already exists` });
-      const doc = await insert('vendors', {
-        ...b, vendor_code: code, vendor_name: name,
+      // Identity is allocated by storage, never selected by a create request.
+      const { id: ignoredId, _id: ignoredMongoId, ...createFields } = b;
+      const doc = await insertVendor({
+        ...createFields, vendor_code: code, vendor_name: name,
         vendor_type: b.vendor_type || 'Outright purchase', credit_days: b.credit_days ?? '',
         country: b.country || 'INDIA', state: b.state || '', city: b.city || '',
         status: b.status || 'Pending Confirmation',
         // Local audit data is server-owned so the client cannot fabricate history.
-        audit: [{ at: new Date().toISOString(), action: 'Created', by: 'demo-admin' }],
+        audit: [{ at: new Date().toISOString(), action: 'Created', by: actor(req) }],
       });
       return res.status(201).json(doc);
     }
     if (req.method === 'PUT') {
-      const { id, ...fields } = req.body;
+      const { id, _id: ignoredMongoId, ...fields } = req.body;
       const current = await findOne('vendors', { id: Number(id) });
       if (!current) return res.status(404).json({ error: 'Vendor not found' });
       // The reference locks Vendor Code after the first save.
@@ -52,23 +54,26 @@ export default async function handler(req, res) {
       if (!code || !name) return res.status(400).json({ error: 'Vendor Code and Vendor Name are required' });
       const duplicate = (await find('vendors', { vendor_code: code })).find((v) => v.id !== Number(id));
       if (duplicate) return res.status(409).json({ error: `Vendor Code "${code}" already exists` });
-      // Transaction records store the display name. Keep them linked after a rename.
-      if (name !== current.vendor_name) {
-        await updateWhere('purchase_orders', { vendor: current.vendor_name }, { vendor: name });
-        await updateWhere('grn', { vendor: current.vendor_name }, { vendor: name });
-      }
+      // POs and GRNs retain the name recorded when each document was issued.
+      // Their vendor_code remains the stable link to this master record.
       const changedStatus = fields.status && fields.status !== current.status;
-      const audit = [
-        ...(Array.isArray(current.audit) ? current.audit : []),
-        { at: new Date().toISOString(), action: changedStatus ? `Status changed to ${fields.status}` : 'Updated', by: 'demo-admin' },
-      ];
-      const rows = await update('vendors', Number(id), { ...fields, vendor_code: code, vendor_name: name, audit });
-      return res.status(200).json(rows[0]);
+      const auditEntry = { at: new Date().toISOString(), action: changedStatus ? `Status changed to ${fields.status}` : 'Updated', by: actor(req) };
+      const changes = { ...fields, vendor_code: code };
+      // An omitted name is not a rename. Reapplying the pre-read name would
+      // undo a concurrent rename while saving an unrelated field.
+      if (fields.vendor_name != null) changes.vendor_name = name;
+      else delete changes.vendor_name;
+      const row = await updateVendorWithAudit(Number(id), changes, auditEntry);
+      return res.status(200).json(row);
     }
     if (req.method === 'DELETE') {
       // A vendor may be referenced by POs/GRNs; deleting it would break history.
       return res.status(409).json({ error: 'Vendor records cannot be deleted from Vendor Master. Deactivate the vendor instead.' });
     }
     res.status(405).json({ error: 'Method not allowed' });
-  } catch (err) { console.error('vendors error:', err); res.status(500).json({ error: err.message }); }
+  } catch (err) {
+    if (sendDatabaseUnavailable(res, err)) return;
+    if (err.status === 409 || err.status === 503) return res.status(err.status).json({ error: err.message });
+    console.error('vendors error:', { name: err?.name, code: err?.code }); res.status(500).json({ error: err.message });
+  }
 }

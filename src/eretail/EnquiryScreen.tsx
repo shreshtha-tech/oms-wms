@@ -1,3 +1,5 @@
+import { useRequestFailure } from '../lib/requestFailures';
+import RequestErrorState from '../components/RequestErrorState';
 import { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { useGlobalBlocking } from './ScreenContext';
 import {
@@ -31,7 +33,7 @@ export function StatusPill({ active }: { active: boolean }) {
 
 export default function EnquiryScreen({
   breadcrumb, cols, rows, loading, actions = [], fields = [], onRowEdit, onRowInfo, onRowDelete, selectedIds = [], onSelectionChange,
-  emptyText = 'No records to view', onSearch, onReset, remote, pageSizes = [20, 50, 100, 200], sectionTitle, actionsBeforeResetCount = 0, hideActionBar = false, initialFilters = {},
+  error, onRetry, emptyText = 'No records to view', onSearch, onReset, remote, pageSizes = [20, 50, 100, 200], sectionTitle, actionsBeforeResetCount = 0, hideActionBar = false, initialFilters = {},
   textFilterBehavior = 'enter', selectFilterBehavior = 'manual', filterDelay = 500,
 }: {
   breadcrumb: { label: string }[];
@@ -45,6 +47,8 @@ export default function EnquiryScreen({
   onRowDelete?: (r: any) => void;
   selectedIds?: number[];
   onSelectionChange?: (ids: number[]) => void;
+  error?: Error & { status?: number };
+  onRetry?: () => void;
   emptyText?: string;
   onSearch?: (filters: Record<string, string>, page: number, pageSize: number) => void;
   onReset?: () => void;
@@ -58,6 +62,9 @@ export default function EnquiryScreen({
   selectFilterBehavior?: 'change' | 'manual';
   filterDelay?: number;
 }) {
+  const requestFailure = useRequestFailure();
+  error = error || requestFailure?.error;
+  onRetry = onRetry || (requestFailure ? () => { void requestFailure.retry().catch(() => {}); onSearch?.(filters, currentPage, currentPageSize); } : undefined);
   useGlobalBlocking(!!loading);
   const [filters, setFilters] = useState<Record<string, string>>(initialFilters);
   const [applied, setApplied] = useState<Record<string, string>>({});
@@ -95,9 +102,10 @@ export default function EnquiryScreen({
   const currentPage = remote ? remote.page : page;
   const currentPageSize = remote ? remote.pageSize : pageSize;
   const totalRecords = remote ? remote.records : filtered.length;
-  const pageRows = remote ? filtered : filtered.slice((page - 1) * pageSize, page * pageSize);
+  const pageRows = error ? [] : remote ? filtered : filtered.slice((page - 1) * pageSize, page * pageSize);
   const goPage = (value: number, size = currentPageSize) => { setPage(value); if (remote) onSearch?.(filters, value, size); };
   const hasActions = !!(onRowEdit || onRowInfo || onRowDelete);
+  useEffect(() => { const retry = () => onSearch?.(filters, currentPage, currentPageSize); window.addEventListener('api-recovered', retry); return () => window.removeEventListener('api-recovered', retry); }, [onSearch, filters, currentPage, currentPageSize]);
   const selectable = !!onSelectionChange;
 
   const btn = 'flex items-center gap-1.5 rounded px-3.5 py-2 text-sm font-medium transition';
@@ -179,7 +187,7 @@ export default function EnquiryScreen({
             {loading ? (
               <tr><td colSpan={cols.length + (hasActions ? 1 : 0) + (selectable ? 1 : 0)} className="px-4 py-16 text-center text-slate-400"><div className="mx-auto h-7 w-7 animate-spin rounded-full border-2 border-slate-200 border-t-[#2f9e9e]" /><p className="mt-2 text-xs">Loading…</p></td></tr>
             ) : pageRows.length === 0 ? (
-              <tr><td colSpan={cols.length + (hasActions ? 1 : 0) + (selectable ? 1 : 0)} className="px-4 py-16 text-center text-sm text-slate-400">{emptyText}</td></tr>
+              <tr><td colSpan={cols.length + (hasActions ? 1 : 0) + (selectable ? 1 : 0)} className="px-4 py-16 text-center text-sm text-slate-400">{error ? <RequestErrorState error={error} onRetry={onRetry} /> : emptyText}</td></tr>
             ) : pageRows.map((r, i) => (
               <tr key={r.id ?? i} className={`${i % 2 ? 'bg-slate-50/50' : 'bg-white'} hover:bg-[#eef7fb]`}>
                 {selectable && <td className="px-2 text-center"><input aria-label={`Select row ${r.id}`} type="checkbox" checked={selectedIds.includes(Number(r.id))} onChange={(event) => onSelectionChange?.(event.target.checked ? [...selectedIds, Number(r.id)] : selectedIds.filter((id) => id !== Number(r.id)))} /></td>}
@@ -213,7 +221,7 @@ export default function EnquiryScreen({
               {pageSizes.map((n) => <option key={n} value={n}>{n}</option>)}
             </select>
           </div>
-          <span>{totalRecords ? `View ${(currentPage - 1) * currentPageSize + 1} - ${Math.min(currentPage * currentPageSize, totalRecords)} of ${totalRecords}` : 'No records to view'}</span>
+          <span>{error ? 'Data unavailable' : totalRecords ? `View ${(currentPage - 1) * currentPageSize + 1} - ${Math.min(currentPage * currentPageSize, totalRecords)} of ${totalRecords}` : 'No records to view'}</span>
         </div>
       </div>
     </div>

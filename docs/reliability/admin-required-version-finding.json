@@ -1,0 +1,32 @@
+{
+  "id": "ADMIN_MISSING_VERSION_STALE_EDITOR",
+  "date": "2026-10-05",
+  "status": "REPAIRED_CONTROLLED_MEMORY_AND_REAL_LOCAL_MONGO",
+  "attackPath": "An old editor or direct caller omitted version, causing the server to select its latest version and accept stale replacement fields.",
+  "rootCause": "Optional client version allowed server compare-and-set to protect competing writes but not stale editor intent.",
+  "impact": "Older credential/permission metadata can replace newer edits. Historical exploitation UNKNOWN.",
+  "affectedBoundary": [
+    "Generic admin PUT",
+    "Parity api-save existing record"
+  ],
+  "repair": "Existing-record updates require a nonnegative safe integer version; malformed/missing version returns 422 and stale version 409. Views normalize missing legacy version to 0; a supplied 0 matches only a genuinely unversioned row.",
+  "regression": "scripts/verify-admin-version-race.mjs",
+  "negativeTests": [
+    "Missing/null/string/object/array/boolean/negative/fractional/unsafe integer versions rejected without changing row",
+    "Both handler legacy version-0 transitions followed by stale rejection",
+    "Existing generic/parity/mixed 20-way races remain one winner"
+  ],
+  "evidence": {
+    "memory": "admin-version-race-current.log exit 0",
+    "realLocalMongo": "admin-version-required-mongo-current.log exit 0; actual replica set and database readback; daemon/files removed",
+    "compatibility": "Three admin error/key regressions exit 0; parity success fixture now sends returned version",
+    "frontendSource": "Both AdminModule and ManageApiReplica spread the loaded record into update payload"
+  },
+  "remainingLimitations": [
+    "No browser acceptance in this continuation",
+    "Older clients omitting version receive 422 and must reload/update",
+    "Configured Atlas and hosted readiness remain unverified",
+    "Delete/webhook/language and other mutation concurrency not covered",
+    "Separate metadata/audit write crash gap remains"
+  ]
+}

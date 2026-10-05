@@ -1,4 +1,7 @@
-import { cors, find, findOne, insert, update } from './mongo.js';
+import { sendDatabaseUnavailable, cors, find, findOne, insert, update } from './mongo.js';
+import { locationPairs } from './catalogs.js';
+import { currentUser } from './auth-session.js';
+import { listCentralWmsStock } from '../inventory/wms-operations.js';
 
 const trim = (v) => String(v ?? '').trim();
 const today = () => new Date().toISOString().slice(0, 10);
@@ -14,13 +17,19 @@ export default async function handler(req, res) {
         const record = await findOne('returns', { id, kind: 'vendor' });
         return record ? res.json(record) : res.status(404).json({ error: 'Vendor return not found' });
       }
-      const [vendors, purchaseOrders, inventory, grns] = await Promise.all([
+      const [vendors, purchaseOrders, centralStock, skuRows, grns, locations] = await Promise.all([
         find('vendors', {}, { sort: { vendor_code: 1 } }), find('purchase_orders', {}, { sort: { id: -1 } }),
-        find('inventory', {}, { sort: { sku_code: 1 } }), find('grn', {}, { sort: { id: -1 } }).catch(() => []),
+        listCentralWmsStock(), find('skus', {}, { sort: { sku_code: 1 } }),
+        find('grn', {}, { sort: { id: -1 } }).catch(() => []), locationPairs(),
       ]);
+      const inventory = centralStock.map(stock => {
+        const sku = skuRows.find(row => row.sku_code === stock.sku_code) || {};
+        return { ...sku, id: stock.master_sku_id, sku_code: stock.sku_code, name: stock.name || sku.name || stock.sku_code,
+          warehouse: stock.warehouse, available: stock.available, on_hand: stock.on_hand, cost: Number(sku.cost_price || 0) };
+      });
       return res.json({
         sources: [['-1','--- Select ---'],['3','With GRN'],['1','With PO'],['2','Without PO']],
-        locations: [['-1','--- Select ---'],['UWH','JX Karawaci']],
+        locations: [['-1','--- Select ---'], ...locations],
         returnTypes: [['-1','--- Select ---'],['12','Normal Return'],['20','Dispose'],['43','Inbound QC'],['10','Damage Return']],
         processing: [['-1','--- Select ---'],['1','B2B Flow'],['0','B2C Flow']], documentTypes: [['-1','--- Select ---'],['3','OTHERS']],
         transportModes: [['1','Road'],['2','Rail'],['3','Air'],['4','Ship'],['5','Part A'],['6','In Transit']], vendors, purchaseOrders, inventory, grns,
@@ -32,7 +41,7 @@ export default async function handler(req, res) {
       if (!trim(b.comment)) return res.status(400).json({ error: 'Please Enter Some Comments' });
       const row = await findOne('returns', { id: Number(b.id), kind: 'vendor' });
       if (!row) return res.status(404).json({ error: 'Vendor return not found' });
-      const comments = [{ date: today(), added_by: 'sa', status: row.status, comment: trim(b.comment) }, ...(row.comments || [])];
+      const comments = [{ date: today(), added_by: currentUser(req)?.username || 'unknown', status: row.status, comment: trim(b.comment) }, ...(row.comments || [])];
       const [saved] = await update('returns', row.id, { comments }); return res.json(saved);
     }
     if (action === 'tags') {
@@ -60,6 +69,7 @@ export default async function handler(req, res) {
     }
     const source = trim(b.rtv_source);
     if (source === '-1' || trim(b.site_location) === '-1' || trim(b.return_type) === '-1') return res.status(400).json({ error: 'Please fill all mandatory fields' });
+    if (!(await locationPairs()).some(([code]) => code === trim(b.site_location))) return res.status(400).json({ error: 'Please select a configured site location' });
     if (source === '1' && !trim(b.po_no)) return res.status(400).json({ error: 'Please fill all mandatory fields' });
     if (source === '3' && !trim(b.grn_no)) return res.status(400).json({ error: 'Please fill all mandatory fields' });
     if (!validLines(b.lines)) return res.status(400).json({ error: 'Please add at least one SKU' });
@@ -68,11 +78,13 @@ export default async function handler(req, res) {
     const totalQty = b.lines.reduce((s,x)=>s+Number(x.qty||0),0), total = b.lines.reduce((s,x)=>s+Number(x.qty||0)*Number(x.base_cost||0),0);
     const data = { kind:'vendor', rtv_source:source, with_po:source==='1', po_no:trim(b.po_no), grn_no:trim(b.grn_no), remarks:trim(b.remarks), site_location:b.site_location, return_type:b.return_type_label || b.return_type, return_type_code:b.return_type, vendor_code:vendor.vendor_code, vendor_name:vendor.vendor_name, ext_rtv_no:trim(b.ext_rtv_no), order_processing:b.order_processing || '0', lines:b.lines, udf:(b.udf||Array(10).fill('')).slice(0,10), shipping:b.shipping||[], rtv_qty:totalQty, rtv_amount:total, on_hold:false };
     let saved;
-    if (b.id) [saved] = await update('returns', Number(b.id), data); else saved = await insert('returns', { ...data, rtv_no:number(), rma_no:number(), rtv_date:today(), status:'Created', comments:[], attachments:[], tags:[], activity:[{date:today(),added_by:'sa',status:'Created',remark:'RTV created'}] });
+    if (b.id) [saved] = await update('returns', Number(b.id), data); else saved = await insert('returns', { ...data, rtv_no:number(), rma_no:number(), rtv_date:today(), status:'Created', comments:[], attachments:[], tags:[], activity:[{date:today(),added_by:currentUser(req)?.username || 'unknown',status:'Created',remark:'RTV created'}] });
     if (action === 'confirm') {
       if (totalQty <= 0) return res.status(400).json({ error: 'Cannot confirm as Total Return Qty is zero. Please update Return Qty in at least one SKU.' });
-      [saved] = await update('returns', saved.id, { status:'Confirmed', activity:[...(saved.activity||[]),{date:today(),added_by:'sa',status:'Confirmed',remark:'confirm'}] });
+      [saved] = await update('returns', saved.id, { status:'Confirmed', activity:[...(saved.activity||[]),{date:today(),added_by:currentUser(req)?.username || 'unknown',status:'Confirmed',remark:'confirm'}] });
+      saved.workflowNotice = 'Vendor return record confirmed. No stock was reserved, removed, or shipped.';
     }
     return res.status(b.id ? 200 : 201).json(saved);
-  } catch (e) { console.error('vendor return editor error:', e); res.status(500).json({ error:e.message }); }
+  } catch (e) {
+    if (sendDatabaseUnavailable(res, e)) return; console.error('vendor return editor error:', { name: e?.name, code: e?.code }); res.status(e.statusCode || e.status || 500).json({ error:e.message }); }
 }

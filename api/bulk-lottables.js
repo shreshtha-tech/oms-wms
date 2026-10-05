@@ -1,1 +1,15 @@
-import{cors,find,update}from'./mongo.js';const t=v=>String(v??'').trim();export default async function handler(req,res){if(cors(req,res))return;try{if(req.method==='GET')return res.json({maxImportRows:1000,pageSizes:[20,50,100,200],templateColumns:['SKU Code','Lot Code','Lottable 01','Lottable 02','Lottable 03','Lottable 04','Lottable 05','Lottable 06']});if(req.method!=='POST')return res.status(405).json({error:'Method not allowed'});const b=req.body||{};if(b.action!=='import')return res.status(400).json({error:'Invalid action'});if(!Array.isArray(b.rows)||!b.rows.length)return res.status(400).json({error:'No file chosen to import.'});if(b.rows.length>1000)return res.status(400).json({error:'Max 1000 rows can be imported in an attempt of Import.'});const inv=await find('inventory'),results=[];for(let i=0;i<b.rows.length;i++){const x=b.rows[i],sku=t(x.skuCode),lot=t(x.lotCode),record=inv.find(r=>t(r.sku_code).toLowerCase()===sku.toLowerCase()&&(!lot||t(r.lot_no).toLowerCase()===lot.toLowerCase()));let error='';if(!sku)error='SKU Code is mandatory';else if(!lot)error='Lot Code is mandatory';else if(!record)error='SKU/Lot inventory not found';else await update('inventory',record.id,{lottable1:t(x.lottable1),lottable2:t(x.lottable2),lottable3:t(x.lottable3),lottable4:t(x.lottable4),lottable5:t(x.lottable5),lottable6:t(x.lottable6)});results.push({seqNo:i+1,skuCode:sku,lotCode:lot,errorDescription:error})}return res.json({jsonMessage:'Bulk lottable import completed',batchNo:`BLT${Date.now().toString().slice(-9)}`,rows:results,totalItems:results.length,successItems:results.filter(x=>!x.errorDescription).length,failedItems:results.filter(x=>x.errorDescription).length});}catch(e){res.status(500).json({error:e.message})}}
+import { cors } from './mongo.js';
+
+export default async function handler(req, res) {
+  if (cors(req, res)) return;
+  if (req.method === 'GET') return res.json({
+    maxImportRows: 1000,
+    pageSizes: [20, 50, 100, 200],
+    templateColumns: ['SKU Code', 'Lot Code', 'Lottable 01', 'Lottable 02', 'Lottable 03', 'Lottable 04', 'Lottable 05', 'Lottable 06'],
+    available: false,
+    message: 'Bulk lottable import is paused until lot and lottable identities are mapped to Central Inventory.',
+  });
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+  if (req.body?.action !== 'import') return res.status(400).json({ error: 'Invalid action' });
+  return res.status(501).json({ error: 'Bulk lottable import is paused until lot and lottable identities are mapped to Central Inventory.' });
+}

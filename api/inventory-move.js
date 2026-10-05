@@ -1,6 +1,40 @@
-import{cors,find,findOne,insert,update}from'./mongo.js';const t=v=>String(v??'').trim(),has=(v,q)=>!t(q)||t(v).toLowerCase().includes(t(q).toLowerCase()),reasons=['Test1','Test2','Test3','Test4'];const row=x=>({id:x.id,locCode:x.warehouse||'JX Karawaci',skuCode:x.sku_code||'',skuDesc:x.name||'',zone:x.zone||'',fromBin:x.bin||'',toBin:'',allocatedQty:Number(x.reserved||0),fromQty:Number(x.available||0),toQty:0,fromLPN:x.lpn||'',toLPN:'',lot:x.lot_no||'',lottable1:x.lottable1||'',lottable2:x.lottable2||'',lottable3:x.lottable3||'',lottable4:x.lottable4||'',lottable5:x.lottable5||'',lottable6:x.lottable6||'',isUnique:!!x.is_unique,remarks:'',reason:'-1'});
-export default async function handler(req,res){if(cors(req,res))return;try{const b=req.body||{},inventory=await find('inventory');if(req.method==='GET'){const products=await find('products'),zoneRows=await find('generic_records',{module:'wms-zone'}),zones=[...new Map([...zoneRows.map(x=>[x.code||x.zone_code,x.name||x.description||'']),...inventory.filter(x=>x.zone).map(x=>[x.zone,''])]).entries()].filter(x=>x[0]);return res.json({zones:[['-1','--- Select ---'],...zones],reasons:[['-1','--- Select ---'],...reasons.map(x=>[x,x])],products:products.map(x=>({id:x.id,code:x.sku_code,name:x.product_name||x.sku_name})),bins:[...new Set(inventory.map(x=>x.bin).filter(Boolean))],pageSizes:[20,50,100,200],maxImportRows:200})}if(req.method!=='POST')return res.status(405).json({error:'Method not allowed'});
- if(b.action==='search'){let list=inventory.filter(x=>has(x.sku_code,b.skuCode)&&has(x.name,b.SKUDesc)&&(t(b.zone)==='-1'||has(x.zone,b.zone))&&has(x.bin,b.fromBin)&&has(x.lpn,b.fromId)&&has(x.lottable1,b.lottable1)&&has(x.lottable2,b.lottable2)&&has(x.lottable3,b.lottable3)&&has(x.lottable4,b.lottable4)&&has(x.lottable5,b.lottable5)&&has(x.lottable6,b.lottable6)).map(row);const size=[20,50,100,200].includes(+b.rows)?+b.rows:20,page=Math.max(1,+b.page||1),records=list.length,total=Math.ceil(records/size);return res.json({rows:list.slice((page-1)*size,page*size),page,total,records,sidx:b.sidx||'skuCode',sord:b.sord||'asc'})}
- if(b.action==='execute'){if(!Array.isArray(b.rows)||!b.rows.length)return res.status(400).json({error:'Please select a row to perform Execute Move of that inventory'});const results=[];for(const m of b.rows){if(!t(m.toBin))return res.status(400).json({error:'To Bin is mandatory'});if(t(m.toBin).toLowerCase()===t(m.fromBin).toLowerCase())return res.status(400).json({error:'TO BIN and TO ID both cannot be same as FROM BIN and FROM ID'});const qty=Number(m.toQty);if(!Number.isFinite(qty)||qty<=0)return res.status(400).json({error:'To Quantity should be greater than zero.'});if(qty>Number(m.fromQty))return res.status(400).json({error:'To Quantity cannot be greater than From Quantity.'});const source=await findOne('inventory',{id:+m.id});if(!source||Number(source.available)<qty)return res.status(409).json({error:'Insufficient available inventory'});await update('inventory',source.id,{available:Number(source.available)-qty,on_hand:Number(source.on_hand||0)-qty});let target=inventory.find(x=>x.sku_code===source.sku_code&&x.warehouse===source.warehouse&&x.bin===m.toBin);if(target)await update('inventory',target.id,{available:Number(target.available)+qty,on_hand:Number(target.on_hand||0)+qty});else target=await insert('inventory',{...source,id:undefined,bin:m.toBin,available:qty,reserved:0,on_hand:qty});results.push(await insert('inventory_moves',{operation:'moves',sku_code:source.sku_code,sku_desc:source.name,from_warehouse:source.warehouse,to_warehouse:source.warehouse,from_zone:source.zone||'',to_zone:target.zone||source.zone||'',from_bin:source.bin,to_bin:m.toBin,quantity:qty,lpn:m.toLPN||m.fromLPN||'',lot_no:m.lot||'',remarks:t(m.remarks),reason:m.reason==='-1'?'':m.reason,status:'Completed',created_at:new Date().toISOString()}))}return res.json({jsonMessage:'Inventory Move executed successfully',rows:results})}
- if(b.action==='import'){if(!Array.isArray(b.rows)||!b.rows.length)return res.status(400).json({error:'No file chosen to import.'});if(b.rows.length>200)return res.status(400).json({error:'Max 200 rows should be imported in an attempt of Import.'});return res.json({jsonMessage:'Inventory Move import validated successfully',totalItems:b.rows.length,successItems:b.rows.filter(x=>t(x.skuCode)&&t(x.toBin)&&Number(x.toQty)>0).length,failedItems:b.rows.filter(x=>!t(x.skuCode)||!t(x.toBin)||Number(x.toQty)<=0).length,rows:b.rows.map((x,i)=>({...x,seqNo:i+1,status:t(x.skuCode)&&t(x.toBin)&&Number(x.toQty)>0?'Success':'Failed'}))})}
- return res.status(400).json({error:'Invalid action'});}catch(e){console.error('Inventory Move error:',e);res.status(500).json({error:e.message})}}
+import { sendDatabaseUnavailable, cors, find, insert } from './mongo.js';
+import { currentUser } from './auth-session.js';
+
+const text = value => String(value ?? '').trim();
+const reasonRows = async () => (await find('generic_records', { module: 'inventory-move-reason' }))
+  .filter(row => row.status !== 'Inactive' && text(row.code) && text(row.name));
+
+export default async function handler(req, res) {
+  if (cors(req, res)) return;
+  try {
+    const body = req.body || {};
+    if (req.method === 'GET') {
+      const [zoneRows, reasons] = await Promise.all([
+        find('generic_records', { module: 'wms-zone' }), reasonRows(),
+      ]);
+      const zones = [...new Map(zoneRows.map(row => [row.code || row.zone_code, row.name || row.description || ''])).entries()].filter(([code]) => code);
+      return res.json({ zones: [['-1', '--- Select ---'], ...zones],
+        reasons: [['-1', '--- Select ---'], ...reasons.map(row => [text(row.code), text(row.name)])],
+        products: [], bins: [], pageSizes: [20, 50, 100, 200], maxImportRows: 200,
+        source: 'central-inventory', unavailableReason: 'Central Inventory does not store bin, LPN, or lot balances.' });
+    }
+    if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+    const actor = currentUser(req)?.username || 'unknown';
+    if (body.action === 'create-reason') {
+      const name = text(body.name);
+      if (!name) return res.status(400).json({ error: 'Enter an inventory move reason.' });
+      const reasons = await reasonRows();
+      if (reasons.some(row => text(row.name).toLowerCase() === name.toLowerCase())) return res.status(409).json({ error: 'Reason already exists.' });
+      const code = `IMR${Math.max(0, ...reasons.map(row => Number(text(row.code).replace(/^IMR/, '')) || 0)) + 1}`;
+      await insert('generic_records', { module: 'inventory-move-reason', code, name, status: 'Active', created_by: actor });
+      return res.status(201).json({ code, name });
+    }
+    if (['search', 'execute', 'import'].includes(body.action)) return res.status(501).json({ error: 'Bin-level inventory moves are disabled until bin, lot, and LPN balances are mapped to Central Inventory.' });
+    return res.status(400).json({ error: 'Invalid action' });
+  } catch (error) {
+    if (sendDatabaseUnavailable(res, error)) return;
+    console.error('Inventory Move error:', { name: error?.name, code: error?.code });
+    return res.status(500).json({ error: error.message });
+  }
+}

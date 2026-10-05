@@ -1,0 +1,7 @@
+# 005 Customer Group — source contract and bypass proof
+
+Dedicated api/customer-groups.js stores generic_records module customer-group, with memberships on Customer partners.customer_group_code. Counts are derived from customers. Create validates name/selected ids, generates a group, applies membership with compare-and-set and compensates failures. Update validates name/status/customer ids, prevents inactive groups accepting new assignments, claims additions then clears removals. Delete always rejects 409; assigned groups specifically instruct inactivation. No complete multi-document atomicity, ownership or runtime concurrency claim follows from this source review.
+
+Fresh memory scripts/verify-customer-group-bypass.mjs reproduced generic DELETE removing an assigned group after dedicated DELETE rejected it. api/generic.js now rejects customer-group writes with 501 using both requested/stored module and extra.module. Regression covers generic create/update/delete and conversion of another record into a protected group; assigned group remains. No configured Mongo/browser/LIVE proof.
+
+Remaining: membership failure/crash compensation, simultaneous group edits, case-insensitive uniqueness, generated-code atomicity, assignment via Customer Master/shared partners, owner/role scope, generic reads and full workflow parity. Business owner unspecified. Module UNVERIFIED; production NOT READY.

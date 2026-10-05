@@ -1,2 +1,88 @@
-import assert from'node:assert/strict';import{chromium}from'playwright';const base=process.env.ERETAIL_BASE_URL||'http://127.0.0.1:3011',send=async b=>{const r=await fetch(base+'/api/mp-inventory-log',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(b)});return{r,j:await r.json()}},fmt=d=>`${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;const meta=await(await fetch(base+'/api/mp-inventory-log')).json();assert.deepEqual(meta.statuses.map(x=>x[1]),['--- Select ---','In Process','success','Error','Submitted']);assert.deepEqual(meta.pageSizes,[20,50,100,200]);assert.equal(meta.channelTypes.length,314);assert.equal(meta.channels.length,485);assert.equal(meta.brands.length,1115);assert.equal(meta.manualChannels.length,43);let x=await send({REQ_SEARCH_FLAG:true});assert.equal(x.j.error,'interface is mandatory.');x=await send({REQ_SEARCH_FLAG:true,intFace:'1'});assert.equal(x.j.error,'Either Channel Type or Channel Code is mandatory');x=await send({REQ_SEARCH_FLAG:true,intFace:'1',channelType:'0'});assert.equal(x.j.error,'Date is mandatory');x=await send({REQ_SEARCH_FLAG:true,intFace:'1',channelType:'0',crtDate:'01/01/2025 - 10/05/2025',date:'01/01/2025 - 10/05/2025'});assert.equal(x.j.error,'Entered Dispatch date is not in 3 months range');x=await send({action:'force-push',ids:[]});assert.equal(x.j.error,'Please select a record');x=await send({action:'retransmit',ids:[]});assert.equal(x.j.error,'Please select a record');x=await send({action:'manual-push',skuPushData:'A'});assert.equal(x.j.error,'Either Channel Type or Channel Code is mandatory');x=await send({action:'manual-push',channelType:'0',skuPushData:''});assert.equal(x.j.error,'Please Enter SKU Code');x=await send({action:'manual-push',channelType:'0',skuPushData:'A,a'});assert.equal(x.j.error,'Duplicate SKU. Please enter another SKU Code. :a');x=await send({action:'manual-push',channelType:'0',skuPushData:Array.from({length:101},(_,i)=>`SKU${i}`).join(',')});assert.equal(x.j.error,'Max 100 Records Can Be Entered :');const now=new Date(),from=new Date(now);from.setDate(from.getDate()-14);const range=`${fmt(from)} - ${fmt(now)}`;x=await send({action:'ingest',sku:'SKU-MP-VERIFY',channelSku:'CH-SKU',channelProductId:'PID-1',channelType:'0',channelCode:'ABR',brand:'ajio',inventory:7,status:'Submitted',requestJson:'{"request":1}',responseJson:'{"response":1}'});const row=x.j.row;x=await send({REQ_SEARCH_FLAG:true,intFace:'1',channelType:'0',crtDate:range,date:range,rows:20,page:1});assert.ok(x.j.gridModel.some(r=>r.id===row.id));x=await send({action:'force-push',ids:[row.id]});assert.equal(x.j.jsonMessage,'Sku Pushed Successfully');x=await send({action:'retransmit',ids:[row.id]});assert.equal(x.j.jsonMessage,'Skus Retransmitted Successfully');x=await send({action:'export',searchType:'1'});assert.match(x.j.reportId,/^MPI-/);
-const b=await chromium.launch({headless:true}),p=await b.newPage({viewport:{width:1600,height:1050}}),errors=[];p.on('pageerror',e=>errors.push(e.message));p.on('console',m=>m.type()==='error'&&errors.push(m.text()));try{await p.goto(base);const c=(await p.locator('.font-mono').textContent()).trim();await p.getByPlaceholder('Username').fill('mp');await p.getByPlaceholder('Password').fill('local');await p.getByPlaceholder('Enter captcha').fill(c);await p.getByRole('button',{name:'Login'}).click();await p.waitForURL('**/app/dashboard');await p.goto(base+'/app/r/mr-inventory-log');for(const a of['Search','Reset','Force Push','ReTransmit','Manual Inv Push','Export'])await p.getByRole('button',{name:a,exact:true}).waitFor();for(const h of['SKU','Channel SKU Code','Channel ProductId','Channel Type','Channel','Brand','Inventory','Request Date','Date','Status','Error Description','Details'])await p.getByRole('columnheader',{name:h,exact:true}).waitFor();assert.deepEqual(await p.getByLabel('Page size').locator('option').allTextContents(),['20','50','100','200']);await p.getByRole('button',{name:'Reset'}).click();await p.getByRole('button',{name:'Search'}).click();await p.getByText('Either Channel Type or Channel Code is mandatory').waitFor();await p.getByRole('button',{name:'Force Push'}).click();await p.getByText('Please select a record').waitFor();await p.getByRole('button',{name:'ReTransmit'}).click();await p.getByText('Please select a record').waitFor();await p.getByRole('button',{name:'Manual Inv Push'}).click();const m=p.getByRole('dialog',{name:'Manual Inv Push'});await m.getByRole('button',{name:'OK'}).click();await p.getByText('Either Channel Type or Channel Code is mandatory').waitFor();await m.getByLabel('Manual Channel Type').selectOption('0');await m.getByRole('button',{name:'OK'}).click();await p.getByText('Please Enter SKU Code').waitFor();await m.getByLabel('SKU Code').fill('A,a');await m.getByRole('button',{name:'OK'}).click();await p.getByText('Duplicate SKU. Please enter another SKU Code. :a').waitFor();await m.getByRole('button',{name:'Close'}).click();await p.getByLabel('Channel Type').selectOption('0');await p.getByRole('button',{name:'Search'}).click();await p.getByText('SKU-MP-VERIFY',{exact:true}).first().waitFor();await p.getByRole('button',{name:'Details'}).first().click();const d=p.getByRole('dialog',{name:'Details'});await d.getByLabel('Request').waitFor();await d.getByLabel('Response').waitFor();await d.getByRole('button',{name:'Close'}).click();await p.getByLabel('Select SKU-MP-VERIFY').first().check();await p.getByRole('button',{name:'Force Push'}).click();await p.getByText('Sku Pushed Successfully').waitFor();await p.getByRole('button',{name:'Export'}).click();await p.getByText(/Pending Report created: MPI-/).waitFor();await p.getByLabel('Archival').check();await p.getByRole('button',{name:'ReTransmit'}).waitFor({state:'detached'});await p.getByRole('button',{name:'Manual Inv Push'}).waitFor({state:'detached'});assert.deepEqual(errors,[]);console.log('PASS MP Inventory Log: exact modes/actions/visible grid/default dates/paging, mandatory and 90-day validations, selection-based force/retransmit persistence, manual push validation, request-response details, Pending Report export, archival control state, and clean console.')}finally{await b.close()}
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+import handler from '../api/mp-inventory-log.js';
+import { find, getMode, insert } from '../api/mongo.js';
+
+if (process.env.MONGODB_URI) throw new Error('Run this verifier without a configured MongoDB database.');
+assert.equal(getMode(), 'memory');
+
+const call = async (method, body = {}, query = {}) => {
+  const response = { code: 200, headers: {}, setHeader(key, value) { this.headers[key] = value; }, status(code) { this.code = code; return this; }, json(value) { this.body = value; return this; } };
+  await handler({ method, body, query }, response);
+  return response;
+};
+
+const metadata = await call('GET');
+assert.equal(metadata.code, 200);
+assert.deepEqual(metadata.body.pageSizes, [20, 50, 100, 200]);
+assert.deepEqual(metadata.body.channelTypes, []);
+assert.deepEqual(metadata.body.channels, []);
+assert.deepEqual(metadata.body.brands, []);
+
+const missingFilters = await call('POST', { REQ_SEARCH_FLAG: true });
+assert.equal(missingFilters.code, 400);
+assert.equal(missingFilters.body.error, 'interface is mandatory.');
+const emptySearch = await call('POST', {
+  REQ_SEARCH_FLAG: true,
+  intFace: '1',
+  channelType: 'marketplace-under-test',
+  crtDate: '01/01/2026 - 10/01/2026',
+  date: '01/01/2026 - 10/01/2026',
+  rows: 20,
+  page: 1,
+});
+assert.equal(emptySearch.code, 200);
+assert.deepEqual(emptySearch.body.gridModel, []);
+
+await insert('generic_records', {
+  module: 'mp-inventory-log', code: 'AUDIT-MP-IN-RANGE', sku_code: 'AUDIT-SKU-1', channel_sku: 'AUDIT-CHANNEL-SKU',
+  channel_product_id: 'AUDIT-PRODUCT-1', channel_type: 'marketplace-under-test', channel_code: 'AUDIT-CHANNEL',
+  inventory: 5, request_date: '2026-01-05T12:00:00.000Z', updated_date: '2026-01-08T14:00:00.000Z', status: 'Success',
+});
+await insert('generic_records', {
+  module: 'mp-inventory-log', code: 'AUDIT-MP-OUT-OF-RANGE', sku_code: 'AUDIT-SKU-2', channel_sku: 'AUDIT-CHANNEL-SKU',
+  channel_product_id: 'AUDIT-PRODUCT-2', channel_type: 'marketplace-under-test', channel_code: 'AUDIT-CHANNEL',
+  inventory: 9, request_date: '2026-03-05T12:00:00.000Z', updated_date: '2026-03-08T14:00:00.000Z', status: 'Success',
+});
+const datedSearch = await call('POST', {
+  REQ_SEARCH_FLAG: true,
+  searchType: '1',
+  intFace: '1',
+  channelType: 'marketplace-under-test',
+  crtDate: '01/01/2026 - 10/01/2026',
+  date: '01/01/2026 - 10/01/2026',
+  rows: 20,
+  page: 1,
+});
+assert.equal(datedSearch.code, 200);
+assert.deepEqual(datedSearch.body.gridModel.map(row => row.code), ['AUDIT-MP-IN-RANGE']);
+const archival = await call('POST', {
+  REQ_SEARCH_FLAG: true,
+  searchType: '2',
+  intFace: '1',
+  channelType: 'marketplace-under-test',
+  crtDate: '01/01/2026 - 10/01/2026',
+  date: '01/01/2026 - 10/01/2026',
+});
+assert.equal(archival.code, 501);
+assert.match(archival.body.error, /archive service is connected/i);
+
+for (const body of [
+  { action: 'ingest' },
+  { action: 'ingest', sku: 'SKU-MP-VERIFY', channelSku: 'CH-SKU', channelProductId: 'PID-1', channelType: 'marketplace-under-test', channelCode: 'CHANNEL-VERIFY', inventory: 7 },
+  { action: 'force-push', ids: [1] },
+  { action: 'retransmit', ids: [1] },
+  { action: 'manual-push', channelType: 'marketplace-under-test', skuPushData: 'SKU-MP-VERIFY' },
+  { action: 'export', searchType: '1' },
+]) {
+  const result = await call('POST', body);
+  assert.equal(result.code, 501, `Expected ${body.action} to fail closed`);
+  assert.match(result.body.error, /unavailable|requires a configured and verified integration/i);
+}
+
+assert.equal((await find('generic_records', { module: 'mp-inventory-log' })).length, 2, 'Only explicit isolated fixtures should exist');
+assert.equal((await find('generic_records', { module: 'pending-report' })).length, 0);
+const ui = await readFile(new URL('../src/eretail/wms/MpInventoryLog.tsx', import.meta.url), 'utf8');
+assert.doesNotMatch(ui, /Pending Report created/);
+assert.match(ui, /Archival \(unavailable\)/);
+console.log('PASS MP Inventory Log: empty configured source stays empty; ingest, push, retransmit and export fail closed without fabricated logs or report jobs.');

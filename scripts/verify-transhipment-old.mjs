@@ -1,2 +1,78 @@
-import assert from'node:assert/strict';import{chromium}from'playwright';const base=process.env.ERETAIL_BASE_URL||'http://127.0.0.1:3011',send=async b=>{const r=await fetch(base+'/api/transhipment-old',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(b)});return{r,j:await r.json()}};const meta=await(await fetch(base+'/api/transhipment-old')).json();assert.deepEqual(meta.tabs.map(x=>x[1]),['Pending To Receive','Received','QC Passed','QC Failed','Packed','Dispatch Completed','All']);assert.deepEqual(meta.pageSizes,[20,50,100,200]);assert.deepEqual(meta.columns.pending,['','Audit','Doc Date','Order No','Sender Name','Receiver Name','Item Name','Item Description','Batch Id','Expected Receive Date']);assert.equal(meta.columns.dispatched.length,19);let x=await send({action:'transition',from:'pending',to:'received',ids:[]});assert.equal(x.j.error,'Select a record to Confirm.');x=await send({action:'transition',from:'dispatched',to:'delivered',ids:[]});assert.equal(x.j.error,'Please Select A Record to Delievered');x=await send({action:'pod'});assert.equal(x.j.error,'Pod Remarks is Blank');x=await send({action:'pod',pod:'ok'});assert.equal(x.j.error,'Delivery Date is Blank');x=await send({action:'scan',orderNo:'',status:'pending'});assert.equal(x.j.error,'Empty data can not scan');x=await send({action:'import',clientId:'-1'});assert.equal(x.j.error,'Please select Client');x=await send({action:'import',clientId:'0'});assert.equal(x.j.error,'No file chosen to import.');x=await send({action:'ingest',orderNo:'OLD-VERIFY',docNo:'DOC-OLD',status:'pending',docDate:'28/08/2026',senderName:'Sender',receiverName:'Receiver',itemName:'SKU',itemDescription:'Item',batchNo:'B1'});const id=x.j.row.id;x=await send({status:'pending',orderNo:'OLD-VERIFY',REQ_SEARCH_FLAG:true,rows:20,page:1});assert.equal(x.j.gridModel[0].id,id);x=await send({action:'transition',from:'pending',to:'received',ids:[id]});assert.equal(x.j.updated,1);x=await send({status:'received',orderNo:'OLD-VERIFY',rows:20,page:1});assert.equal(x.j.gridModel[0].status,'received');x=await send({action:'transition',from:'received',to:'qcPass',ids:[id],qcFailedQty:0});assert.equal(x.j.error,'Qc Failed Qty should be greater than zero');x=await send({action:'transition',from:'received',to:'qcPass',ids:[id],qcFailedQty:1});assert.equal(x.j.updated,1);x=await send({action:'transition',from:'qcPass',to:'packed',ids:[id]});assert.equal(x.j.updated,1);x=await send({action:'transition',from:'packed',to:'dispatched',ids:[id]});assert.equal(x.j.updated,1);x=await send({action:'pod',ids:[id],pod:'Delivered',delDate:'28/08/2026'});assert.equal(x.j.updated,1);x=await send({action:'import',clientId:'0',fileName:'old.xlsx'});assert.match(x.j.reportId,/^CROSSDOC-/);
-const b=await chromium.launch({headless:true}),p=await b.newPage({viewport:{width:1700,height:1050}}),errors=[];p.on('pageerror',e=>errors.push(e.message));p.on('console',m=>m.type()==='error'&&errors.push(m.text()));try{await p.goto(base);const cap=(await p.locator('.font-mono').textContent()).trim();await p.getByPlaceholder('Username').fill('old-trans');await p.getByPlaceholder('Password').fill('local');await p.getByPlaceholder('Enter captcha').fill(cap);await p.getByRole('button',{name:'Login'}).click();await p.waitForURL('**/app/dashboard');await p.goto(base+'/app/r/transhipment-old');for(const t of meta.tabs.map(x=>x[1]))await p.getByRole('button',{name:new RegExp('^'+t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'))}).waitFor();assert.deepEqual(await p.getByLabel('Records per Page').locator('option').allTextContents(),['20','50','100','200']);await p.getByRole('button',{name:'Mark Received'}).click();await p.getByText('Select a record to Confirm.').waitFor();await p.getByLabel('Scan Order No').fill('');await p.getByRole('button',{name:'Scan Order'}).click();await p.getByText('Empty data can not scan').waitFor();await p.getByRole('button',{name:'Import'}).click();let d=p.getByRole('dialog',{name:'Transhipment Import'});await d.getByLabel('Client').selectOption('-1');await d.getByRole('button',{name:'Import'}).click();await d.getByText('Please select Client').waitFor();await d.getByLabel('Client').selectOption('0');await d.getByRole('button',{name:'Import'}).click();await d.getByText('No file chosen to import.').waitFor();await d.getByRole('button',{name:'Close'}).click();await p.getByRole('button',{name:/^Dispatch Completed/}).click();await p.getByRole('button',{name:'Mark Delivered'}).click();await p.getByText('Please Select A Record to Delievered').waitFor();assert.deepEqual(errors,[]);console.log('PASS Transhipment Old: seven exact tabs, per-state grids, 20/50/100/200 paging, scans, confirmations, QC constraint, packing/shipping/POD transitions, import validations/pending persistence, export contract, and clean browser console.')}finally{await b.close()}
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+import handler from '../api/transhipment-old.js';
+import { find, getMode, insert } from '../api/mongo.js';
+
+if (process.env.MONGODB_URI) throw new Error('Run this verifier without a configured MongoDB database.');
+assert.equal(getMode(), 'memory');
+
+const call = async (method, body = {}) => {
+  const response = {
+    code: 200,
+    headers: {},
+    setHeader(key, value) { this.headers[key] = value; },
+    status(code) { this.code = code; return this; },
+    json(value) { this.body = value; return this; },
+  };
+  await handler({ method, body }, response);
+  return response;
+};
+
+const metadata = await call('GET');
+assert.equal(metadata.code, 200);
+assert.deepEqual(metadata.body.tabs.map(([, label]) => label), [
+  'Pending To Receive', 'Received', 'QC Passed', 'QC Failed', 'Packed', 'Dispatch Completed', 'All',
+]);
+assert.deepEqual(metadata.body.pageSizes, [20, 50, 100, 200]);
+assert.deepEqual(metadata.body.importFields, [
+  'orderNo', 'docNo', 'docDate', 'senderName', 'receiverName', 'itemName', 'itemDescription', 'batchNo', 'expectedReceiveDate',
+]);
+
+const clientId = 'AUDIT-TRANS-CLIENT';
+await insert('partners', { type: 'Client', client_id: clientId, client_name: 'Isolated verifier', status: 'Active', is_active: true });
+const csv = [
+  'orderNo,docNo,senderName,receiverName,itemName,batchNo',
+  'AUDIT-TRANS-ORDER,DOC-AUDIT,Sender,Receiver,SKU-AUDIT,BATCH-AUDIT',
+].join('\n');
+const imported = await call('POST', {
+  action: 'import', clientId, fileName: 'audit-transhipment.csv', fileContent: csv,
+});
+assert.equal(imported.code, 201);
+assert.equal(imported.body.imported, 1);
+
+const listing = await call('POST', { status: 'pending', orderNo: 'AUDIT-TRANS-ORDER', page: 1, rows: 20 });
+assert.equal(listing.code, 200);
+assert.equal(listing.body.records, 1);
+const row = listing.body.gridModel[0];
+assert.equal(row.orderNo, 'AUDIT-TRANS-ORDER');
+assert.equal(row.status, 'pending');
+
+const duplicate = await call('POST', {
+  action: 'import', clientId, fileName: 'audit-transhipment.csv', fileContent: csv,
+});
+assert.equal(duplicate.code, 409);
+
+for (const body of [
+  { action: 'ingest', orderNo: 'MUST-NOT-BE-CREATED' },
+  { action: 'transition', from: 'pending', to: 'received', ids: [row.id] },
+  { action: 'transition', from: 'received', to: 'qcPass', ids: [row.id], qcFailedQty: 1 },
+  { action: 'transition', from: 'packed', to: 'dispatched', ids: [row.id] },
+  { action: 'pod', ids: [row.id], pod: 'delivered', delDate: '2026-09-29' },
+]) {
+  const result = await call('POST', body);
+  assert.equal(result.code, 501, `${body.action} must stay unavailable without Central Inventory lifecycle integration`);
+  assert.match(result.body.error, /Central Inventory/i);
+}
+
+const exported = await call('POST', { action: 'export', status: 'pending' });
+assert.equal(exported.code, 200, 'CSV export is based on recorded logistics rows');
+assert.equal(exported.body.rows.length, 1);
+assert.equal(exported.body.rows[0].orderNo, 'AUDIT-TRANS-ORDER');
+
+const stored = await find('generic_records', { module: 'transhipment-old' });
+assert.equal(stored.length, 1, 'Only the explicit isolated CSV row should exist');
+assert.equal(stored[0].status, 'pending', 'Blocked transitions and POD must not mutate imported status');
+const ui = await readFile(new URL('../src/eretail/wms/TranshipmentOld.tsx', import.meta.url), 'utf8');
+assert.match(ui, /CSV import and export manage logistics records only/);
+assert.doesNotMatch(ui, /qcFailedQty:\s*1/);
+console.log('PASS Transhipment Old: explicit CSV import/search/export work in isolated memory; direct fake ingest and stock lifecycle transitions fail closed without changing status.');

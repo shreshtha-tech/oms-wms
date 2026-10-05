@@ -1,4 +1,4 @@
-import { find, findOne, insert, update, cors } from './mongo.js';
+import { sendDatabaseUnavailable, find, findOne, insert, update, cors } from './mongo.js';
 
 const STATUS = { '1': 'Pending', '4': 'Confirmed', '7': 'Cancelled' };
 const clean = (value) => String(value ?? '').trim();
@@ -57,5 +57,6 @@ export default async function handler(req, res) {
       return res.status(201).json(await insert('vendor_promotions', { ...data, discKey: String(next) }));
     }
     return res.status(405).json({ error: 'Method not allowed' });
-  } catch (error) { console.error('Vendor Promotions API error:', error); return res.status(500).json({ error: error.message || 'Unable to process vendor promotion' }); }
+  } catch (error) {
+    if (sendDatabaseUnavailable(res, error)) return; console.error('Vendor Promotions API error:', { name: error?.name, code: error?.code }); return res.status(500).json({ error: error.message || 'Unable to process vendor promotion' }); }
 }

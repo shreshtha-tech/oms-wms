@@ -1,4 +1,4 @@
-import { find, findOne, insert, update, cors } from './mongo.js';
+import { sendDatabaseUnavailable, find, findOne, insert, update, cors } from './mongo.js';
 
 function normalizeAdditionalCharges(charges, poAmount) {
   return charges.map((charge) => {
@@ -27,16 +27,13 @@ async function matchingOtb({ vendor_code, warehouse, po_date, line_items }) {
   });
 }
 
-async function enforceAndConsumeOtb(po, consume = false) {
+async function enforceOtbAvailability(po) {
   const budgets = await matchingOtb(po);
   for (const budget of budgets) {
     const remaining = Number(budget.open_to_buy ?? Number(budget.total_budget) - Number(budget.consumed || 0));
     if (Number(po.amount) > remaining) throw Object.assign(new Error(`Budget exceeded for OTB ${budget.otb_id}. Remaining OpenToBuy is ${remaining.toFixed(2)}.`), { statusCode: 409 });
-    if (consume) {
-      const consumed = Number(budget.consumed || 0) + Number(po.amount);
-      await update('otb_budgets', budget.id, { consumed, open_to_buy: Number(budget.total_budget) - consumed, updated_by: 'super admin', updated_date: new Date().toISOString().slice(0, 10) });
-    }
   }
+  return budgets.length;
 }
 
 export default async function handler(req, res) {
@@ -57,6 +54,7 @@ export default async function handler(req, res) {
       if (!po_no || !vendor || !warehouse || !po_date || !buyer_name || !recv_validation_code || !expected_date || !Number.isFinite(Number(qty)) || Number(qty) <= 0 || !Number.isFinite(Number(amount)) || Number(amount) < 0) {
         return res.status(400).json({ error: 'Vendor, buyer, receiving validation code, expected delivery date, quantity and amount are required.' });
       }
+      if (typeof po_no !== 'string' || !po_no.trim() || po_no.length > 100) return res.status(400).json({ error: 'Purchase Order number must be a nonempty string of at most 100 characters.' });
       if (reference_no && /[^a-zA-Z0-9 _-]/.test(reference_no)) return res.status(400).json({ error: 'Special characters are not allowed in Reference No.' });
       if (additional_charges && (!Array.isArray(additional_charges) || additional_charges.some((charge) => !Number.isFinite(Number(charge.operand)) || Number(charge.operand) < 0))) {
         return res.status(400).json({ error: 'Additional charge Amount must be zero or greater.' });
@@ -66,7 +64,7 @@ export default async function handler(req, res) {
       }
       const normalizedUdf = Array.from({ length: 10 }, (_, index) => String(udf?.[index] ?? '').trim());
       const payload = {
-        po_no, vendor, vendor_code: vendor_code || '', warehouse, po_date, expected_date, items, qty: Number(qty), amount: Number(amount), status: status || 'Pending Confirmation',
+        po_no: po_no.trim(), vendor, vendor_code: vendor_code || '', warehouse, po_date, expected_date, items, qty: Number(qty), amount: Number(amount), status: 'Pending Confirmation',
         buyer_name: buyer_name || 'System Buyer', po_type: po_type || 'Outright', po_mode: po_mode || '', source_location: source_location || '', release_date: release_date || po_date,
         recv_validation_code, external_po_no: external_po_no || '', reference_no: reference_no || '', notes: notes || '',
         discount_type: discount_type || 'Amount', discount_value: Number(discount_value || 0), currency_code: currency_code || 'INR',
@@ -76,12 +74,18 @@ export default async function handler(req, res) {
         additional_charges: Array.isArray(additional_charges) ? normalizeAdditionalCharges(additional_charges, amount) : [],
         revision_no: 0, revisions: [],
       };
-      await enforceAndConsumeOtb(payload);
+      payload.otb_guarded = Boolean(await enforceOtbAvailability(payload));
       return res.status(201).json(await insert('purchase_orders', payload));
     }
     if (req.method === 'PUT') {
       const { id, action, ...fields } = req.body;
       const current = await findOne('purchase_orders', { id: Number(id) }); if (!current) return res.status(404).json({ error: 'Purchase Order not found' });
+      if ('po_no' in fields && fields.po_no !== current.po_no) return res.status(409).json({ error: 'Purchase Order number is immutable.' });
+      delete fields.otb_guarded;
+      if ('status' in fields) {
+        if (fields.status !== current.status) return res.status(409).json({ error: 'PO status can only change through a supported action.' });
+        delete fields.status;
+      }
       if ('udf' in fields) {
         if (!Array.isArray(fields.udf) || fields.udf.some((value) => String(value ?? '').length > 50)) {
           return res.status(400).json({ error: 'Each PO UDF value must be 50 characters or fewer.' });
@@ -102,7 +106,9 @@ export default async function handler(req, res) {
         };
         const next = { confirm: 'Confirmed', release: 'Released', reopen: 'ReOpen', reconfirm: 'ReConfirmed', cancel: 'Cancelled', close: 'Closed' };
         if (!allowed[action]?.includes(current.status)) return res.status(409).json({ error: `Cannot ${action} a Purchase Order in ${current.status} status.` });
-        if (action === 'confirm' || action === 'reconfirm') await enforceAndConsumeOtb(current, true);
+        if ((action === 'confirm' || action === 'reconfirm') && (current.otb_guarded || await enforceOtbAvailability(current))) {
+          return res.status(501).json({ error: 'OTB-backed PO confirmation requires an atomic budget reservation and PO status transaction.' });
+        }
         fields.status = next[action];
         if (action === 'release') fields.release_date = new Date().toISOString().slice(0, 10);
       }
@@ -126,6 +132,9 @@ export default async function handler(req, res) {
         fields.revision_date = revision.revised_at.slice(0, 10);
         fields.revisions = [...(current.revisions || []), revision];
       }
+      if (!action && current.status === 'Pending Confirmation') {
+        fields.otb_guarded = Boolean(current.otb_guarded || await enforceOtbAvailability({ ...current, ...fields }));
+      }
       const rows = await update('purchase_orders', id, fields);
       return res.status(200).json(rows[0]);
     }
@@ -133,5 +142,7 @@ export default async function handler(req, res) {
       return res.status(409).json({ error: 'Purchase Orders are preserved for audit and cannot be deleted.' });
     }
     res.status(405).json({ error: 'Method not allowed' });
-  } catch (err) { console.error('API error:', err); res.status(500).json({ error: err.message }); }
+  } catch (err) {
+    if (err.code === 11000) return res.status(409).json({ error: 'Purchase Order number already exists.' });
+    if (sendDatabaseUnavailable(res, err)) return; if (!err.statusCode || err.statusCode >= 500) console.error('API error:', { name: err?.name, code: err?.code }); res.status(err.statusCode || 500).json({ error: err.message }); }
 }

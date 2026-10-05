@@ -1,0 +1,50 @@
+[
+  {
+    "key": "myntra_mnow", "name": "Myntra M-Now", "parents": ["myntra"],
+    "access": "Myntra programme enrollment and the account-specific MMIP/OMS integration contract. PPMP access alone does not establish M-Now coverage.",
+    "identity": "Myntra order and line IDs, seller SKU, and an explicit M-Now identifier in the approved feed or programme-only report.",
+    "stock": "Confirm the fulfillment facility and whether stock is shared, dedicated, or held in partner custody. Confirm the programme quantity formula before any publication.",
+    "source": "https://partners.myntrainfo.com/",
+    "apiSource": "https://mmip.myntrainfo.com/documentation/myntra-ppmp-api-v4"
+  },
+  {
+    "key": "amazon_now", "name": "Amazon Now", "parents": ["amazon", "amazon_fba"],
+    "access": "Amazon Now seller enrollment and confirmation of the supported order, inventory and reconciliation interface. Normal SP-API authorization does not prove Now coverage.",
+    "identity": "Amazon order ID, seller SKU and a provider-confirmed Now programme identifier; do not infer Now from delivery speed or postcode.",
+    "stock": "Identify the micro/urban fulfillment centre and stock ownership. Do not publish merchant warehouse quantities into fulfillment-centre custody or assume FBA totals are Now stock.",
+    "source": "https://www.aboutamazon.in/news/retail/amazon-now-10-minute-delivery-launch",
+    "apiSource": "https://developer-docs.amazon.com/sp-api/docs/welcome"
+  },
+  {
+    "key": "amazon_fresh", "name": "Amazon Fresh", "parents": ["amazon", "amazon_fba"],
+    "access": "Fresh enrollment and the merchant-specific integration contract, including the applicable fulfillment model.",
+    "identity": "Amazon order ID and seller SKU with a confirmed Fresh programme field or programme-only report.",
+    "stock": "Confirm the physical facility, custody, units and expiry-sensitive availability. Fresh must not reuse a Now or MFN stock pool by assumption.",
+    "source": "https://www.aboutamazon.in/impact/economy/growth/ways-amazon-shapes-india-digital-growth",
+    "apiSource": "https://developer-docs.amazon.com/sp-api/docs/welcome"
+  },
+  {
+    "key": "flipkart_minutes", "name": "Flipkart Minutes", "parents": ["flipkart"],
+    "access": "Minutes onboarding and partner-confirmed access to its seller order and facility inventory data. Standard Flipkart listing access is not evidence of Minutes access.",
+    "identity": "Canonical Flipkart order ID, seller SKU and the Minutes identifier from the approved feed or programme-only report.",
+    "stock": "Map the micro-fulfillment centre and declared custody. Do not combine its quantities with warehouse sellable stock.",
+    "source": "https://stories.flipkart.com/announcement/flipkart-minutes-marks-two-years-with-4x-growth-reaches-over-150-cities",
+    "apiSource": "https://seller.flipkart.com/api-docs/"
+  },
+  {
+    "key": "shopsy", "name": "Shopsy", "parents": ["flipkart"],
+    "access": "Shopsy seller enrollment and confirmation of which Seller Hub account, listing interface and order discriminator cover Shopsy.",
+    "identity": "Use the existing Flipkart order identity if the provider confirms it is shared; verify the Shopsy order discriminator before classification.",
+    "stock": "Confirm whether the listing shares Flipkart inventory or has a dedicated allocation. Never count a shared offer quantity twice.",
+    "source": "https://seller.flipkart.com/shopsy",
+    "apiSource": "https://seller.flipkart.com/api-docs/"
+  },
+  {
+    "key": "bbnow", "name": "bigbasket bbnow", "parents": ["bigbasket"],
+    "access": "bigbasket supplier enrollment and an approved bbnow inventory/order report or machine-feed contract. A consumer app is not a seller API.",
+    "identity": "Contracted supplier item, order and facility identifiers; confirm whether the feed contains consumer orders or supplier purchase orders.",
+    "stock": "Separate supplied/partner-held stock from your physical warehouse balance. A supplier purchase order must not be treated as a consumer sale.",
+    "source": "https://www.bigbasket.com/bb-now-56897/",
+    "apiSource": "https://www.bigbasket.com/"
+  }
+]

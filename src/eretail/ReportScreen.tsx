@@ -1,14 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FileBarChart, Download, Printer, Play, Calendar } from 'lucide-react';
 import Shell from './Shell';
 import { Panel, Btn, Toast } from './parts';
 import { apiGet } from '../lib/api';
 import { useDownload } from '../context/DownloadContext';
+import { useActiveLocations } from '../hooks/useActiveLocations';
+import { reportPrintHtml } from '../lib/reportPrint';
 
-const WAREHOUSES = ['All', 'Delhi NCR', 'Mumbai WH', 'Bengaluru WH', 'Kolkata WH'];
 // numeric-looking columns get right-aligned + money formatting where sensible
 const MONEY_KEYWORDS = ['Amount', 'Revenue', 'Value', 'Price', 'MRP', 'Cost'];
 const isMoneyCol = (col: string) => MONEY_KEYWORDS.some((k) => col.includes(k));
+type ReportResult = {
+  reportKey: string; title: string;
+  filters: { warehouse: string; from: string; to: string };
+  data: { columns: string[]; rows: any[][] };
+};
 
 export default function ReportScreen({
   reportKey, title, crumb,
@@ -16,41 +22,55 @@ export default function ReportScreen({
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const [warehouse, setWarehouse] = useState('All');
-  const [data, setData] = useState<{ columns: string[]; rows: any[][] } | null>(null);
+  const [result, setResult] = useState<ReportResult | null>(null);
+  const requestVersion = useRef(0);
+  const data = result?.reportKey === reportKey ? result.data : null;
+  const filtersChanged = Boolean(data && result && (result.filters.warehouse !== warehouse
+    || result.filters.from !== from || result.filters.to !== to));
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const [toast, setToast] = useState<{ msg: string; type: 'ok' | 'err' } | null>(null);
   const { requestDownload } = useDownload();
+  const { locations, loading: locationsLoading, error: locationsError } = useActiveLocations();
 
   const run = () => {
+    const version = ++requestVersion.current;
+    const filters = { warehouse, from, to };
     setLoading(true);
+    setError('');
+    setToast(null);
+    setResult(null);
     const params = new URLSearchParams({ type: reportKey, warehouse, from, to });
     apiGet(`/api/reports?${params.toString()}`)
-      .then((d) => { setData(d); if (!d.rows.length) setToast({ msg: 'No records for the selected filters', type: 'ok' }); })
-      .catch(() => setToast({ msg: 'Failed to generate report', type: 'err' }))
-      .finally(() => setLoading(false));
+      .then((d) => {
+        if (version !== requestVersion.current) return;
+        setResult({ reportKey, title, filters, data: d });
+        if (!d.rows.length) setToast({ msg: 'No records for the selected filters', type: 'ok' });
+      })
+      .catch((cause) => {
+        if (version !== requestVersion.current) return;
+        const message = cause instanceof Error ? cause.message : 'Failed to generate report';
+        setError(message); setToast({ msg: message, type: 'err' });
+      })
+      .finally(() => { if (version === requestVersion.current) setLoading(false); });
   };
   // auto-run on first load
-  useEffect(() => { run(); /* eslint-disable-next-line */ }, [reportKey]);
+  useEffect(() => {
+    run();
+    return () => { requestVersion.current += 1; };
+    /* eslint-disable-next-line */
+  }, [reportKey]);
 
   const exportCsv = () => {
-    if (!data) return;
-    requestDownload({ title, module: reportKey, baseName: reportKey, data });
+    if (!data || !result || filtersChanged || loading) return;
+    requestDownload({ title: result.title, module: result.reportKey, baseName: result.reportKey, data });
   };
 
   const printReport = () => {
-    if (!data) return;
+    if (!data || !result || filtersChanged || loading) return;
     const w = window.open('', '_blank');
     if (!w) return;
-    w.document.write(`<html><head><title>${title}</title>
-      <style>body{font-family:Manrope,Arial,sans-serif;padding:24px;color:#1e293b}
-      h1{font-size:18px;border-bottom:2px solid #2f9e9e;padding-bottom:8px}
-      table{width:100%;border-collapse:collapse;font-size:12px;margin-top:12px}
-      th{background:#2f3b57;color:#fff;padding:8px;text-align:left}
-      td{padding:6px 8px;border-bottom:1px solid #e2e8f0}</style></head><body>
-      <h1>${title}</h1><p style="font-size:11px;color:#64748b">Warehouse: ${warehouse} ${from ? '· From ' + from : ''} ${to ? '· To ' + to : ''}</p>
-      <table><thead><tr>${data.columns.map((c) => `<th>${c}</th>`).join('')}</tr></thead>
-      <tbody>${data.rows.map((r) => `<tr>${r.map((c) => `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table>
-      </body></html>`);
+    w.document.write(reportPrintHtml({ title: result.title, ...result.filters, data }));
     w.document.close(); w.print();
   };
 
@@ -68,34 +88,39 @@ export default function ReportScreen({
             <label className="lbl">From Date</label>
             <div className="flex items-center gap-2 rounded-lg border border-slate-300 px-3 py-2">
               <Calendar size={14} className="text-slate-400" />
-              <input type="date" value={from} onChange={(e) => setFrom(e.target.value)} className="text-sm outline-none" />
+              <input aria-label="From Date" type="date" value={from} onChange={(e) => setFrom(e.target.value)} className="text-sm outline-none" />
             </div>
           </div>
           <div>
             <label className="lbl">To Date</label>
             <div className="flex items-center gap-2 rounded-lg border border-slate-300 px-3 py-2">
               <Calendar size={14} className="text-slate-400" />
-              <input type="date" value={to} onChange={(e) => setTo(e.target.value)} className="text-sm outline-none" />
+              <input aria-label="To Date" type="date" value={to} onChange={(e) => setTo(e.target.value)} className="text-sm outline-none" />
             </div>
           </div>
           <div>
             <label className="lbl">Warehouse</label>
-            <select value={warehouse} onChange={(e) => setWarehouse(e.target.value)} className="inp min-w-[150px]">
-              {WAREHOUSES.map((w) => <option key={w}>{w}</option>)}
+            <select aria-label="Warehouse" value={warehouse} onChange={(e) => setWarehouse(e.target.value)} className="inp min-w-[150px]" disabled={locationsLoading}>
+              <option value="All">All</option>
+              {locations.map((location) => <option key={location.location_code} value={location.location_name}>{location.location_name}</option>)}
             </select>
           </div>
           <Btn onClick={run} disabled={loading}><Play size={14} /> {loading ? 'Generating…' : 'Generate'}</Btn>
           <div className="ml-auto flex items-end gap-2">
-            <Btn variant="ghost" onClick={exportCsv} disabled={!data || !data.rows.length}><Download size={14} /> Export</Btn>
-            <Btn variant="ghost" onClick={printReport} disabled={!data || !data.rows.length}><Printer size={14} /> Print</Btn>
+            <Btn variant="ghost" onClick={exportCsv} disabled={loading || filtersChanged || !data || !data.rows.length}><Download size={14} /> Export</Btn>
+            <Btn variant="ghost" onClick={printReport} disabled={loading || filtersChanged || !data || !data.rows.length}><Printer size={14} /> Print</Btn>
           </div>
         </div>
       </div>
+      {locationsError && <p role="alert" className="mb-3 text-sm text-rose-600">{locationsError}</p>}
+      {error && <p role="alert" className="mb-3 text-sm text-rose-600">{error}</p>}
+      {filtersChanged && <p role="status" className="mb-3 text-sm text-amber-700">Filters changed. Select Generate to update the results before exporting or printing.</p>}
 
       <Panel title={title}>
         <div className="mb-2 flex items-center gap-2 text-xs text-slate-500">
           <FileBarChart size={14} className="text-[#2f9e9e]" />
-          {data ? `${data.rows.length} row(s)` : 'Ready'} {warehouse !== 'All' ? `· ${warehouse}` : ''}
+          {loading ? 'Generating…' : error ? 'Report unavailable' : data ? `${data.rows.length} row(s)` : 'Ready'}
+          {data && result && ` · Warehouse: ${result.filters.warehouse}${result.filters.from ? ` · From ${result.filters.from}` : ''}${result.filters.to ? ` · To ${result.filters.to}` : ''}`}
         </div>
         <div className="overflow-x-auto rounded-xl border border-slate-200">
           <table className="min-w-full text-sm">
@@ -110,7 +135,7 @@ export default function ReportScreen({
                   <div className="mx-auto h-7 w-7 animate-spin rounded-full border-2 border-slate-200 border-t-[#2f9e9e]" /><p className="mt-2 text-xs">Generating report…</p>
                 </td></tr>
               ) : !data || data.rows.length === 0 ? (
-                <tr><td colSpan={data?.columns.length || 6} className="px-4 py-16 text-center text-sm text-slate-400">No records found for the selected filters</td></tr>
+                <tr><td colSpan={data?.columns.length || 6} className="px-4 py-16 text-center text-sm text-slate-400">{error || 'No records found for the selected filters'}</td></tr>
               ) : data.rows.map((r, i) => (
                 <tr key={i} className="transition-colors hover:bg-[#f0fafa]">
                   {r.map((cell, j) => (

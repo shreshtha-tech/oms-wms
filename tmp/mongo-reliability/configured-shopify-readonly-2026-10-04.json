@@ -1,0 +1,90 @@
+{
+  "at": "2026-10-04T14:36:22.163Z",
+  "readOnly": true,
+  "scope": "Private client-credential token issuance in memory followed by identity/scope read only; no token refresh, DB persistence, activation, webhook, order or stock writes",
+  "accounts": [
+    {
+      "accountReference": "e9110f03c916",
+      "storedStatus": "inactive",
+      "storedConnectionState": "not_connected",
+      "storedVerificationAt": null,
+      "authenticated": true,
+      "identityMatched": true,
+      "scopeReadProven": true,
+      "inventoryWriteProven": false,
+      "providerReadbackProven": false,
+      "vaultDecrypted": true,
+      "credentialTypesPresent": [
+        "clientId",
+        "clientSecret"
+      ],
+      "authenticationMechanism": "client_credentials",
+      "scopeHandles": [
+        "write_inventory",
+        "read_inventory",
+        "read_inventory_purchase_orders",
+        "write_inventory_shipments",
+        "read_inventory_shipments",
+        "write_inventory_shipments_received_items",
+        "read_inventory_shipments_received_items",
+        "write_inventory_transfers",
+        "read_inventory_transfers",
+        "read_orders",
+        "write_orders",
+        "read_products",
+        "write_products"
+      ],
+      "result": "AUTHENTICATED_READ_IDENTITY_MATCHED",
+      "locationReadProven": false,
+      "locationReadFailure": {
+        "name": "Error",
+        "providerStatus": 200
+      }
+    },
+    {
+      "accountReference": "ab8f836e3c61",
+      "storedStatus": "inactive",
+      "storedConnectionState": "verified",
+      "storedVerificationAt": "2026-09-24T19:22:13.420Z",
+      "authenticated": true,
+      "identityMatched": true,
+      "scopeReadProven": true,
+      "inventoryWriteProven": false,
+      "providerReadbackProven": false,
+      "vaultDecrypted": true,
+      "credentialTypesPresent": [
+        "clientId",
+        "clientSecret"
+      ],
+      "authenticationMechanism": "client_credentials",
+      "scopeHandles": [
+        "read_all_orders",
+        "read_channels",
+        "write_channels",
+        "write_checkouts",
+        "read_checkouts",
+        "write_inventory",
+        "read_inventory",
+        "read_inventory_purchase_orders",
+        "write_inventory_shipments",
+        "read_inventory_shipments",
+        "write_inventory_shipments_received_items",
+        "read_inventory_shipments_received_items",
+        "write_inventory_transfers",
+        "read_inventory_transfers",
+        "read_orders",
+        "write_orders",
+        "read_products",
+        "write_products",
+        "customer_read_orders",
+        "customer_write_orders"
+      ],
+      "result": "AUTHENTICATED_READ_IDENTITY_MATCHED",
+      "locationReadProven": false,
+      "locationReadFailure": {
+        "name": "Error",
+        "providerStatus": 200
+      }
+    }
+  ]
+}

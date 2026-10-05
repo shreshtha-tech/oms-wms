@@ -5,8 +5,8 @@ import EnquiryScreen from '../EnquiryScreen';
 import Shell from '../Shell';
 import { Btn, Panel, Toast } from '../parts';
 
-const fresh: any = { id: null, siteLocCode: 'UWH', transporterCode: '-1', orderTypeCode: '-1', courierTypeCode: '-1', pinCode: '', embargoStart: '', embargoEnd: '', areaCode: '', slaDays: '' };
-const initialFilters = { siteLocName: 'UWH - JX Karawaci' };
+const fresh: any = { id: null, siteLocCode: '-1', transporterCode: '-1', orderTypeCode: '-1', courierTypeCode: '-1', pinCode: '', embargoStart: '', embargoEnd: '', areaCode: '', slaDays: '' };
+const initialFilters = { siteLocName: '' };
 
 export default function ServicePinCodes() {
   const [rows, setRows] = useState<any[]>([]), [meta, setMeta] = useState<any>({});
@@ -71,7 +71,7 @@ export default function ServicePinCodes() {
         { label: 'Delete', icon: Trash2, onClick: () => void del() }, { label: 'Add New', icon: Plus, onClick: () => open() }]} /> : <>
       <div className="mb-3 flex justify-end gap-2"><Btn onClick={() => void save()}>Save</Btn><Btn variant="ghost" onClick={() => setForm({ ...fresh })}>Reset</Btn><Btn variant="ghost" onClick={() => setEditor(false)}>Close</Btn></div>
       <Panel title="Pin Code Add"><div className="grid gap-3 md:grid-cols-3">
-        <Sel l="Location" v={form.siteLocCode} o={meta.locations} set={(v: any) => setForm({ ...form, siteLocCode: v })} />
+        <Sel l="Location" v={form.siteLocCode} o={[["-1", "--- Select ---"], ...(meta.locations || [])]} set={(v: any) => setForm({ ...form, siteLocCode: v })} />
         <Sel l="Courier Type*" v={form.courierTypeCode} o={meta.courierTypes} set={(v: any) => setForm({ ...form, courierTypeCode: v })} />
         <Sel l="Transporter*" v={form.transporterCode} o={meta.transporters} set={(v: any) => setForm({ ...form, transporterCode: v })} />
         <Sel l="Order Type*" v={form.orderTypeCode} o={meta.orderTypes} set={(v: any) => setForm({ ...form, orderTypeCode: v })} />

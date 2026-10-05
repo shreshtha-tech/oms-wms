@@ -1,0 +1,25 @@
+import assert from 'node:assert/strict';
+import { randomBytes, scryptSync } from 'node:crypto';
+import { spawn } from 'node:child_process';
+import { chromium } from 'playwright';
+
+const port=3127,base=`http://127.0.0.1:${port}`,username='parity-test',password=randomBytes(16).toString('hex'),salt=randomBytes(16).toString('hex');
+const env={...process.env,PORT:String(port),MONGODB_URI:'',DMILLS_ADMIN_USER:username,DMILLS_ADMIN_PASSWORD_HASH:`${salt}:${scryptSync(password,salt,64).toString('hex')}`};
+const server=spawn(process.execPath,['scripts/fixtures/start-admin-parity-server.mjs'],{env,stdio:['ignore','pipe','pipe']});
+let serverOutput='';server.stdout.on('data',d=>serverOutput+=d);server.stderr.on('data',d=>serverOutput+=d);
+const waitServer=async()=>{for(let i=0;i<80;i++){if(server.exitCode!==null)throw Error(serverOutput||`Server exited ${server.exitCode}`);try{const r=await fetch(`${base}/api/auth/session`);if(r.status===200)return;}catch{}await new Promise(r=>setTimeout(r,250));}throw Error('Server did not start: '+serverOutput);};
+let browser;
+try {
+  await waitServer();browser=await chromium.launch({headless:true});const page=await browser.newPage({viewport:{width:1200,height:623}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
+  await page.goto(base);await page.getByRole('textbox',{name:'Login Id'}).fill(username);await page.getByRole('textbox',{name:'Password'}).fill(password);await page.getByRole('button',{name:'Login',exact:true}).click();await page.waitForURL('**/app/dashboard');
+  const go=async screen=>{await page.goto(`${base}/app/admin/${screen}`,{waitUntil:'domcontentloaded'});await page.getByRole('main').waitFor();};
+  await go('force-order-pull');await page.getByRole('button',{name:'Save'}).last().click();await page.getByRole('alert').getByText('Location is Mandatory').waitFor();await page.getByRole('textbox',{name:'Order Number'}).fill('TEST-ORDER');await page.getByRole('button',{name:'Reset'}).last().click();assert.equal(await page.getByRole('textbox',{name:'Order Number'}).inputValue(),'');
+  await go('language-setting');await page.getByRole('button',{name:'Search'}).last().click();await page.getByRole('cell',{name:'TEST_LABEL',exact:true}).waitFor();await page.getByRole('button',{name:'Edit TEST_LABEL'}).click();await page.getByRole('textbox',{name:'Override Value'}).fill('Updated test label');await page.getByRole('dialog',{name:'Edit Language Property'}).getByRole('button',{name:'Save'}).click();await page.reload();await page.getByRole('button',{name:'Search'}).last().click();await page.getByRole('cell',{name:'Updated test label',exact:true}).waitFor();
+  await go('accounting-log');await page.getByRole('main').getByRole('button',{name:'Search'}).last().click();await page.getByRole('cell',{name:'TEST-DOC-1'}).waitFor();await page.getByRole('main').getByRole('button',{name:'Reset'}).last().click();await page.getByText('No records to view').last().waitFor();
+  await go('user-audit-logs');await page.getByRole('main').getByRole('button',{name:'Download'}).last().click();await page.getByRole('alert').getByText('Please fill all mandatory fields').waitFor();const date=new Date().toLocaleDateString('en-GB');await page.getByRole('textbox',{name:'From Date'}).fill(date);await page.getByRole('textbox',{name:'To Date'}).fill(date);await page.getByRole('combobox',{name:'Logs'}).selectOption('Role');await page.getByRole('main').getByRole('button',{name:'Download'}).last().click();await page.waitForURL('**/app/admin/exports');await page.getByRole('columnheader',{name:'Report ID'}).waitFor();await page.getByText('User Audit Logs - Role').waitFor();
+  await go('manage-api');await page.getByRole('main').getByRole('button',{name:'Add',exact:true}).click();await page.waitForURL('**/app/admin/manage-api-edit');await page.getByRole('button',{name:'Save'}).last().click();await page.getByText('Configuration saved successfully').waitFor();await go('manage-api');await page.getByRole('columnheader',{name:'API Key'}).waitFor();assert.ok(await page.locator('.admin-api-status').count()>0);
+  await page.getByRole('main').getByRole('button',{name:'Register Webhook'}).click();await page.waitForURL('**/app/admin/manage-api-webhook');await page.getByRole('combobox',{name:'API Category'}).first().selectOption('ORDER');await page.getByPlaceholder('Webhook URL').fill('https://example.test/webhook');await page.getByRole('button',{name:'Save'}).last().click();await page.getByRole('cell',{name:'https://example.test/webhook'}).waitFor();
+  await go('api-dashboard');await page.getByText('Execution Time By Hits').waitFor();await page.getByText('Hit Count By Execution Time').waitFor();
+  await go('repush-log');await page.getByRole('button',{name:'Repush',exact:true}).last().click();await page.getByRole('alert').getByText('Please Select Grid Row For Repush').waitFor();
+  assert.deepEqual(errors,[]);console.log('PASS Admin parity: authenticated UI, field validation, translation persistence, log search/reset, audit report, API editor/webhook, dashboard, repush validation');
+} finally {await browser?.close();server.kill('SIGTERM');}

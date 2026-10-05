@@ -1,0 +1,52 @@
+{
+  "at": "2026-10-04T14:32:33.037Z",
+  "readOnly": true,
+  "postgresReachable": true,
+  "tenantConfigured": true,
+  "counts": {
+    "ci_master_sku": 3243,
+    "ci_location": 0,
+    "ci_inventory_balance": 0,
+    "ci_inventory_event": 0,
+    "ci_reservation": 0,
+    "ci_channel_account": 2,
+    "ci_channel_mapping": 636,
+    "ci_outbox": 0
+  },
+  "configuredTenantCounts": {
+    "ci_master_sku": 3243,
+    "ci_location": 0,
+    "ci_inventory_balance": 0,
+    "ci_inventory_event": 0,
+    "ci_reservation": 0,
+    "ci_channel_account": 2,
+    "ci_channel_mapping": 636,
+    "ci_outbox": 0
+  },
+  "accounts": [
+    {
+      "accountReference": "e9110f03c916",
+      "tenantReference": "d8511ffee3a6",
+      "matchesConfiguredTenant": true,
+      "provider": "shopify",
+      "storedStatus": "inactive",
+      "storedConnectionState": "not_connected",
+      "storedVerificationAt": null,
+      "credentialStored": true,
+      "liveAuthenticationProvenThisRun": false,
+      "liveAuthorizationProvenThisRun": false
+    },
+    {
+      "accountReference": "ab8f836e3c61",
+      "tenantReference": "d8511ffee3a6",
+      "matchesConfiguredTenant": true,
+      "provider": "shopify",
+      "storedStatus": "inactive",
+      "storedConnectionState": "verified",
+      "storedVerificationAt": "2026-09-24T19:22:13.420Z",
+      "credentialStored": true,
+      "liveAuthenticationProvenThisRun": false,
+      "liveAuthorizationProvenThisRun": false
+    }
+  ]
+}

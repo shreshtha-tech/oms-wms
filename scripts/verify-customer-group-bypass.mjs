@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+process.env.MONGODB_URI='';process.env.NODE_ENV='test';process.env.DMILLS_REQUIRE_PERSISTENCE='false';
+const store=await import('../api/mongo.js');assert.equal(await store.waitForDataReady(),'memory');
+const generic=(await import('../api/generic.js')).default;
+const dedicated=(await import('../api/customer-groups.js')).default;
+const call=async(handler,method,body)=>{const res={statusCode:200,status(code){this.statusCode=code;return this;},json(value){this.value=value;return this;},setHeader(){}};await handler({method,body,user:{username:'fixture'}},res);return res;};
+const group=await store.insert('generic_records',{module:'customer-group',code:'FIXTURE-GROUP',name:'Fixture',status:'Active'});
+await store.insert('partners',{type:'Customer',name:'Assigned',customer_group_code:group.code});
+assert.equal((await call(dedicated,'DELETE',{id:group.id})).statusCode,409);
+assert.equal((await call(generic,'DELETE',{id:group.id,module:'unprotected'})).statusCode,501,'Generic API must not bypass group reference guard');
+assert.ok(await store.findOne('generic_records',{id:group.id}));
+assert.equal((await call(generic,'PUT',{id:group.id,module:'unprotected',name:'Forged'})).statusCode,501);
+assert.equal((await call(generic,'POST',{module:'customer-group',name:'Bypass'})).statusCode,501);
+const other=await store.insert('generic_records',{module:'fixture-other',name:'Other'});
+assert.equal((await call(generic,'PUT',{id:other.id,extra:{module:'customer-group'}})).statusCode,501);
+assert.equal((await store.findOne('generic_records',{id:other.id})).module,'fixture-other');
+console.log('PASS: generic group create/edit/delete/module-conversion bypasses blocked; assigned group preserved. Memory only.');

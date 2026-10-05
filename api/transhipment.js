@@ -1,10 +1,69 @@
-import{cors,find,insert,update}from'./mongo.js';
-const txt=v=>String(v??'').trim(),labels={pending:'Pending',received:'Received',qcPass:'QC Passed',qcFail:'QC Failed',shipped:'Shipped'},norm=x=>({...x,lpn:x.lpn||x.code,docNo:x.docNo||x.doc_no||'',docNo2:x.docNo2||x.doc_no2||'',status:x.status||'pending',statusLabel:labels[x.status]||x.status,priority:x.priority||'Normal',fragile:x.fragile?'Yes':'No',shipTogether:x.shipTogether?'Yes':'No',originLocation:x.originLocation||'',destLocation:x.destLocation||'',transhipmentType:x.transhipmentType==='1'?'Return':'Order'}),all=async()=>(await find('generic_records',{module:'transhipment'})).map(norm),page=(xs,b)=>{const size=[15,50,100,200,500,1000].includes(+b.rows)?+b.rows:15,p=Math.max(1,+b.page||1),records=xs.length;return{gridModel:xs.slice((p-1)*size,p*size),page:p,total:Math.ceil(records/size),records}};
-export default async function handler(req,res){if(cors(req,res))return;try{if(req.method==='GET')return res.json({tabs:[['pending','Pending'],['received','Received'],['qcPass','QC Passed'],['qcFail','QC Failed'],['shipped','Dispatched'],['displayAll','All']],durations:[['30','1 Month'],['365','1 Year'],['90','3 Month'],['180','6 Month'],['0','ALL']],pageSizes:[15,50,100,200,500,1000],qcReasons:[['-1','--- Select ---'],['1','Damaged'],['3','LPN not found'],['2','Seal Broken']],printTypes:[['-1','--- Select ---'],['1','Doc No'],['2','Doc No2'],['3','LPN']],scanStatuses:[['-1','--- Select ---'],['7','Cancelled'],['9','Deleted'],['1','Pending'],['25','QC Failed'],['20','QC Passed'],['10','Received'],['30','Shipped']]});if(req.method!=='POST')return res.status(405).json({error:'Method not allowed'});const b=req.body||{},xs=await all();
-if(b.action==='ingest'){const row=await insert('generic_records',{module:'transhipment',code:txt(b.lpn),...b});return res.status(201).json({row:norm(row)})}
-if(['receive','qc','undo-qc','reverse-receiving'].includes(b.action)){const lpns=txt(b.lpn).split(',').map(txt).filter(Boolean);if(!lpns.length)return res.status(400).json({error:'LPN is Mandatory'});if((b.action==='receive'||b.action==='qc')&&b.pass===false&&txt(b.reason)==='-1')return res.status(400).json({error:'Please Choose QC Fail Reason'});const target=b.action==='receive'?'received':b.action==='qc'?(b.pass===false?'qcFail':'qcPass'):'pending',chosen=xs.filter(x=>lpns.includes(x.lpn));for(const x of chosen)await update('generic_records',x.id,{status:target,qc_reason:txt(b.reason),updated_date:new Date().toISOString()});const verb=b.action==='receive'?'LPN Received':b.action==='qc'?'LPN QC Done':b.action==='undo-qc'?'LPN Undo QC Done':'LPN Reverse Received';return res.json({jsonMessage:null,updated:chosen.length,message:`${chosen.length} ${verb} ${lpns.length-chosen.length} LPN Failed`})}
-if(b.action==='scan-manifest'){if(!txt(b.manifestNo))return res.status(400).json({error:'ManifestNo is mandatory'});if(!txt(b.status)||txt(b.status)==='-1')return res.status(400).json({error:'Please select status'});const row=await insert('generic_records',{module:'transhipment',code:`TRANS-${Date.now()}`,lpn:`TRANS-${Date.now()}`,manifest_no:txt(b.manifestNo),status:({'1':'pending','10':'received','20':'qcPass','25':'qcFail','30':'shipped'}[txt(b.status)]||'pending')});return res.status(201).json({jsonMessage:null,row:norm(row),message:'Tanshipment successfully created.'})}
-if(b.action==='print'){if(!txt(b.docType)||txt(b.docType)==='-1'||!txt(b.docOrLpnNo))return res.status(400).json({error:'Please fill in all required fields'});const hit=xs.some(x=>x.lpn===txt(b.docOrLpnNo)||x.docNo===txt(b.docOrLpnNo)||x.docNo2===txt(b.docOrLpnNo));if(!hit)return res.status(404).json({error:'No data found.'});return res.json({jsonMessage:null,report:'RPT078'})}
-if(b.action==='udf'){const row=xs.find(x=>x.id===+b.id);if(!row)return res.status(404).json({error:'No data found.'});await update('generic_records',row.id,Object.fromEntries(Array.from({length:15},(_,i)=>[`udf${i+1}`,txt(b[`udf${i+1}`])])));return res.json({jsonMessage:null})}
-if(b.action==='export'){const reportId=`TRANS-${Date.now()}`;await insert('generic_records',{module:'pending-report',code:reportId,name:'Transhipment Export',status:'Pending',filters:b.filters||{}});return res.json({reportId})}
-let rows=xs.filter(x=>(b.status==='displayAll'||!b.status||x.status===b.status)&&(!txt(b.lpn)||x.lpn.toLowerCase().includes(txt(b.lpn).toLowerCase()))&&(!txt(b.docNo)||x.docNo.toLowerCase().includes(txt(b.docNo).toLowerCase()))&&(!txt(b.docNo2)||x.docNo2.toLowerCase().includes(txt(b.docNo2).toLowerCase())));return res.json(page(rows,b))}catch(e){console.error('transhipment error:',e);res.status(500).json({error:e.message})}}
+import { sendDatabaseUnavailable, cors, find, update } from './mongo.js';
+
+const text = value => String(value ?? '').trim();
+const labels = { pending: 'Pending', received: 'Received', qcPass: 'QC Passed', qcFail: 'QC Failed', shipped: 'Shipped' };
+const normalize = row => ({
+  ...row,
+  lpn: row.lpn || row.code || '',
+  docNo: row.docNo || row.doc_no || '',
+  docNo2: row.docNo2 || row.doc_no2 || '',
+  status: row.status || '',
+  statusLabel: labels[row.status] || row.status || '',
+  priority: row.priority || '',
+  fragile: row.fragile == null ? '' : row.fragile ? 'Yes' : 'No',
+  shipTogether: row.shipTogether == null ? '' : row.shipTogether ? 'Yes' : 'No',
+  originLocation: row.originLocation || '',
+  destLocation: row.destLocation || '',
+  transhipmentType: row.transhipmentType === '1' ? 'Return' : row.transhipmentType === '0' ? 'Order' : '',
+});
+const all = async () => (await find('generic_records', { module: 'transhipment' })).map(normalize);
+const page = (rows, body) => {
+  const size = [15, 50, 100, 200, 500, 1000].includes(Number(body.rows)) ? Number(body.rows) : 15;
+  const current = Math.max(1, Number(body.page) || 1);
+  const records = rows.length;
+  return { gridModel: rows.slice((current - 1) * size, current * size), page: current, total: Math.ceil(records / size), records };
+};
+const unavailable = res => res.status(501).json({ error: 'Transhipment stock, manifest, print, and export actions are unavailable until their Central Inventory and document services are connected.' });
+
+export default async function handler(req, res) {
+  if (cors(req, res)) return;
+  try {
+    if (req.method === 'GET') {
+      return res.json({
+        tabs: [['pending', 'Pending'], ['received', 'Received'], ['qcPass', 'QC Passed'], ['qcFail', 'QC Failed'], ['shipped', 'Dispatched'], ['displayAll', 'All']],
+        durations: [['30', '1 Month'], ['365', '1 Year'], ['90', '3 Month'], ['180', '6 Month'], ['0', 'ALL']],
+        pageSizes: [15, 50, 100, 200, 500, 1000],
+        qcReasons: [['-1', '--- Select ---'], ['1', 'Damaged'], ['3', 'LPN not found'], ['2', 'Seal Broken']],
+        printTypes: [['-1', '--- Select ---'], ['1', 'Doc No'], ['2', 'Doc No2'], ['3', 'LPN']],
+        scanStatuses: [['-1', '--- Select ---'], ['7', 'Cancelled'], ['9', 'Deleted'], ['1', 'Pending'], ['25', 'QC Failed'], ['20', 'QC Passed'], ['10', 'Received'], ['30', 'Shipped']],
+      });
+    }
+    if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+    const body = req.body || {};
+    if (body.action && body.action !== 'udf') {
+      return unavailable(res);
+    }
+
+    const rows = await all();
+    if (body.action === 'udf') {
+      const row = rows.find(item => item.id === Number(body.id));
+      if (!row) return res.status(404).json({ error: 'No data found.' });
+      const fields = Object.fromEntries(Array.from({ length: 15 }, (_, index) => [`udf${index + 1}`, text(body[`udf${index + 1}`])]));
+      await update('generic_records', row.id, fields);
+      return res.json({ message: 'User-defined fields saved.', jsonMessage: null });
+    }
+
+    const filtered = rows.filter(row =>
+      (body.status === 'displayAll' || !body.status || row.status === body.status) &&
+      (!text(body.lpn) || row.lpn.toLowerCase().includes(text(body.lpn).toLowerCase())) &&
+      (!text(body.docNo) || row.docNo.toLowerCase().includes(text(body.docNo).toLowerCase())) &&
+      (!text(body.docNo2) || row.docNo2.toLowerCase().includes(text(body.docNo2).toLowerCase())),
+    );
+    return res.json(page(filtered, body));
+  } catch (error) {
+    if (sendDatabaseUnavailable(res, error)) return;
+    console.error('transhipment error:', { name: error?.name, code: error?.code });
+    return res.status(500).json({ error: error.message });
+  }
+}

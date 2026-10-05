@@ -1,60 +1,81 @@
-import { find, findOne, insert, update, remove, cors } from './mongo.js';
+import { sendDatabaseUnavailable, find, findOne, insert, update, cors } from './mongo.js';
+import { locationPairs, channelRows } from './catalogs.js';
+import { centralSkuExists, listCentralWmsStock } from '../inventory/wms-operations.js';
+import { searchCentralInventoryRows, summarizeCentralInventory, toLegacyInventoryRows } from '../inventory/legacy-stock-view.js';
+
+const clean = value => String(value ?? '').trim();
 
 export default async function handler(req, res) {
   if (cors(req, res)) return;
   try {
     if (req.method === 'GET') {
+      if (String(req.query?.summary) === 'true') {
+        const [stock, policies] = await Promise.all([listCentralWmsStock(), find('inventory_policies')]);
+        const summary = summarizeCentralInventory(toLegacyInventoryRows(stock), policies);
+        return res.status(200).json({ summary, low_stock: summary.filter(row => row.low_stock) });
+      }
+      if (req.query?.policy !== undefined) {
+        const policy = await findOne('inventory_policies', { master_sku_code: clean(req.query.policy) });
+        return res.status(200).json(policy || { master_sku_code: clean(req.query.policy), reorder_point: 0 });
+      }
       if (String(req.query?.meta) === 'true') {
-        const [products, partners] = await Promise.all([find('products'), find('partners')]);
+        const [products, partners, locations, channels] = await Promise.all([find('products'), find('partners'), locationPairs(), channelRows()]);
         return res.status(200).json({
           pageSizes: [20, 50, 100, 200],
           buckets: [['10', 'Good'], ['20', 'Damaged'], ['30', 'Hold']],
           zones: [['-1', '--- Select ---'], ['PICK', 'PICK'], ['STORAGE', 'STORAGE']],
-          locations: [['UWH', 'UWH-JX Karawaci']],
+          locations,
           imeiStatuses: [['-1', '--- Select ---'], ['1', 'In Stock'], ['2', 'Out']],
           usnStatuses: [['-1', '--- Select ---'], ['1', 'Available'], ['2', 'Consumed']],
-          channels: [['-1', '--- Select ---'], ['AMAZON_IN', 'Amazon IN'], ['FLIPKART', 'Flipkart']],
+          channels: [['-1', '--- Select ---'], ...channels.map(row => [String(row.channel_code), String(row.channel_name)])],
           inventoryTypes: [['-1', '--- Select ---'], ['FG', 'Finished Good'], ['RM', 'Raw Material']],
           products: products.map(x => ({ id: x.id, code: x.sku_code, name: x.product_name || x.sku_name, barcode: x.barcode || x.primary_upc || '', hierarchy: x.category || x.department || '', brand: x.brand || '' })),
           vendors: partners.filter(x => x.partner_type === 'Vendor').map(x => ({ id: x.id, code: x.vendor_code || String(x.id), name: x.name })),
         });
       }
       const { warehouse } = req.query;
-      const q = warehouse ? { warehouse } : {};
-      return res.status(200).json(await find('inventory', q, { sort: { id: 1 } }));
+      const stock = toLegacyInventoryRows(await listCentralWmsStock());
+      return res.status(200).json(warehouse ? stock.filter(row => row.warehouse === warehouse) : stock);
     }
     if (req.method === 'POST') {
+      if (req.body?.action === 'save-policy') {
+        const master = clean(req.body.master_sku_code);
+        const reorderPoint = Number(req.body.reorder_point);
+        if (!master) return res.status(400).json({ error: 'Master SKU is required.' });
+        if (!Number.isInteger(reorderPoint) || reorderPoint < 0) return res.status(400).json({ error: 'Reorder point must be a whole number of zero or more.' });
+        if (!(await centralSkuExists(master))) return res.status(404).json({ error: 'SKU must match a Central Inventory SKU code.' });
+        const current = await findOne('inventory_policies', { master_sku_code: master });
+        if (current) return res.status(200).json((await update('inventory_policies', current.id, { reorder_point: reorderPoint, updated_at: new Date().toISOString() }))[0]);
+        return res.status(201).json(await insert('inventory_policies', { master_sku_code: master, reorder_point: reorderPoint, updated_at: new Date().toISOString() }));
+      }
       if (req.body?.action === 'search' || req.body?.REQ_SEARCH_FLAG) {
-        const b = req.body || {}, tab = b.tab || 'sku', term = v => String(v ?? '').trim().toLowerCase();
-        const has = (v, q) => !term(q) || term(v).includes(term(q));
-        const source = await find('inventory');
-        let items = source.filter(x => has(x.sku_code, b.skuCode) && has(x.name, b.skuDesc) && has(x.bin, b.binCode) && has(x.warehouse, b.siteCode) && has(x.lot_no, b.lotCode) && has(x.imei, b.imei) && has(x.unique_no, b.uniqueNo) && has(x.vendor_code, b.vendorCode));
-        const map = x => ({
-          id: x.id, skuCode: x.sku_code || '', style: x.style || '', mfgSkuCode: x.mfg_sku_code || '', hierarchyCode: x.hierarchy_code || '', size: x.size || '', zone: x.zone || '', bin: x.bin || '', lotNo: x.lot_no || '', invBucket: x.inv_bucket || 'Good', totalQty: Number(x.on_hand || 0), availableQty: Number(x.available || 0), commitedQty: Number(x.reserved || 0), pickedQty: Number(x.picked || 0), transitQty: Number(x.transit || 0), openQty: Number(x.open_qty || 0), brandCode: x.brand_code || '', vendorCode: x.vendor_code || '', siteLocation: x.warehouse || '', onHold: Number(x.on_hold || 0), wac: Number(x.wac || 0), primaryUpc: x.barcode || x.primary_upc || '', blockedQty: Number(x.blocked || 0), mrp: Number(x.mrp || 0), expiryDate: x.expiry_date || '', mfgDate: x.mfg_date || '', lottable04: x.lottable04 || '', batchNo: x.batch_no || '', lottable06: x.lottable06 || '', lottable07: x.lottable07 || '', imei: x.imei || '', status: x.status || 'In Stock', inTransactionDate: x.in_transaction_date || '', outTransactionDate: x.out_transaction_date || '', inTransactionNo: x.in_transaction_no || '', outTransactionNo: x.out_transaction_no || '', uniqueNo: x.unique_no || '', extUniqueNo: x.ext_unique_no || '', subStatus: x.sub_status || '', inDate: x.in_date || '', inReferenceNo: x.in_reference_no || '', outDate: x.out_date || '', outReferenceNo: x.out_reference_no || '', channelSkuCode: x.channel_sku_code || '', remarks: x.remarks || '', lastUpdateDate: x.modified_date || '', inventory: Number(x.available || 0), inventoryType: x.inventory_type || 'FG', tab,
-        });
-        items = items.map(map);
+        const b = req.body || {}, tab = b.tab || 'sku';
+        if (tab !== 'sku') return res.status(501).json({ error: 'Central Inventory currently records SKU and physical-location balances only; bin, lot, serial, BOM, and marketplace inventory views are unavailable.' });
+        const unsupported = ['mfgSkuCode', 'hierarchyCode', 'brandCode', 'vendorCode', 'binCode', 'bucket', 'zone', 'lotCode', 'imei', 'uniqueNo', 'channelCode', 'channelSkuCode', 'mpInventory', 'inventoryType', 'siteCode', 'status', 'subStatus', 'poNo', 'uploadDate']
+          .find(key => clean(b[key]) && clean(b[key]) !== '-1' && clean(b[key]) !== '10');
+        if (unsupported) return res.status(501).json({ error: `${unsupported} is not stored in Central Inventory and cannot be used as an inventory filter.` });
+        const source = toLegacyInventoryRows(await listCentralWmsStock());
+        const items = searchCentralInventoryRows(source, b).map(row => ({
+          id: row.id,
+          skuCode: row.sku_code,
+          skuDesc: row.name,
+          totalQty: row.on_hand,
+          availableQty: row.available,
+          commitedQty: row.reserved,
+          siteLocation: row.warehouse,
+        }));
         const rows = [20, 50, 100, 200].includes(+b.rows) ? +b.rows : 20, page = Math.max(1, +b.page || 1), records = items.length, total = Math.ceil(records / rows);
         return res.status(200).json({ rows: items.slice((page - 1) * rows, page * rows), page, total, records, sidx: b.sidx || 'sku', sord: b.sord || 'desc' });
       }
-      const { sku_code, name, warehouse, bin, available, reserved, on_hand } = req.body;
-      return res.status(201).json(await insert('inventory', { sku_code, name, warehouse, bin, available, reserved, on_hand }));
+      return res.status(501).json({ error: 'Inventory balances can only be changed through Central Inventory workflows.' });
     }
     if (req.method === 'PUT') {
-      const { id, adjustment, ...fields } = req.body;
-      if (adjustment !== undefined) {
-        const row = await findOne('inventory', { id });
-        const newAvail = (row.available || 0) + Number(adjustment);
-        const newOnHand = (row.on_hand || 0) + Number(adjustment);
-        const rows = await update('inventory', id, { available: newAvail, on_hand: newOnHand });
-        return res.status(200).json(rows[0]);
-      }
-      const rows = await update('inventory', id, fields);
-      return res.status(200).json(rows[0]);
+      return res.status(501).json({ error: 'Inventory balances can only be changed through Central Inventory workflows.' });
     }
     if (req.method === 'DELETE') {
-      const { id } = req.body;
-      return res.status(200).json(await remove('inventory', id));
+      return res.status(501).json({ error: 'Inventory balances can only be changed through Central Inventory workflows.' });
     }
     res.status(405).json({ error: 'Method not allowed' });
-  } catch (err) { console.error('API error:', err); res.status(500).json({ error: err.message }); }
+  } catch (err) {
+    if (sendDatabaseUnavailable(res, err)) return; console.error('API error:', { name: err?.name, code: err?.code }); res.status(err.statusCode || err.status || (err.code || /database|connection/i.test(err.message || '') ? 503 : 500)).json({ error: err.message || 'Inventory request failed.' }); }
 }

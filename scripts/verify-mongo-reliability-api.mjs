@@ -1,0 +1,23 @@
+import assert from 'node:assert/strict';
+import { waitForDataReady, insert, find, closeDataStore, dataStoreStatus } from '../api/mongo.js';
+import skuGroups from '../api/sku-groups.js';
+assert.equal(await waitForDataReady(), 'mongo');
+assert.equal(dataStoreStatus().state, 'READY');
+assert.deepEqual(await find('generic_records'), []);
+const invoke = async body => {
+  const res = { statusCode: 200, status(code) { this.statusCode = code; return this; }, json(value) { this.value = value; return this; }, setHeader() {} };
+  await skuGroups({ method: 'POST', body: { REQ_SEARCH_FLAG: true, ...body }, headers: {}, user: { username: 'isolated-admin' } }, res);
+  return res;
+};
+assert.equal((await invoke({})).value.records, 0);
+for (let i = 0; i < 25; i++) await insert('generic_records', { module: 'sku-group', code: `A${String(i).padStart(2,'0')}`, name: `Group ${i}`, client: i % 2 ? 'A' : 'B', status: 'Active' });
+assert.equal((await invoke({ rows: 20, page: 1 })).value.rows.length, 20);
+assert.equal((await invoke({ rows: 20, page: 2 })).value.rows.length, 5);
+assert.equal((await invoke({ skuGrpCode: 'A01' })).value.records, 1);
+assert.equal((await invoke({ skuGrpName: 'Group 24' })).value.records, 1);
+assert.equal((await invoke({ clientId: 'A' })).value.records, 12);
+await closeDataStore();
+const unavailable = await invoke({});
+assert.equal(unavailable.statusCode, 503); assert.equal(unavailable.value.error, 'DATABASE_UNAVAILABLE');
+assert.ok(!('rows' in unavailable.value));
+console.log('PASS isolated real Mongo: empty result, SKU Group list, code/name/client filtering, pagination, structured 503');

@@ -1,0 +1,105 @@
+--- a/inventory/connection-provider.js
++++ b/inventory/connection-provider.js
+@@ -8,7 +8,13 @@
+  if(platform==='shopify'&&!fields.refreshToken)return fields;
+  let url,body,headers={'Content-Type':'application/x-www-form-urlencoded'};
+  if(platform==='shopify'){url=`https://${fields.shop}/admin/oauth/access_token`;body={grant_type:'refresh_token',refresh_token:fields.refreshToken,client_id:fields.clientId,client_secret:fields.clientSecret};}
+- else if(platform==='flipkart'){url='https://api.flipkart.net/oauth-service/oauth/token';headers.Authorization=`Basic ${Buffer.from(`${fields.clientId}:${fields.clientSecret}`).toString('base64')}`;body=fields.refreshToken?{grant_type:'refresh_token',refresh_token:fields.refreshToken}:{grant_type:'client_credentials',scope:'Seller_Api'};}
++ else if(platform==='flipkart'){
++  // Official self-access flow: GET with Basic authentication, no form body.
++  const response=await fetcher('https://api.flipkart.net/oauth-service/oauth/token?grant_type=client_credentials&scope=Seller_Api',{method:'GET',headers:{Authorization:`Basic ${Buffer.from(`${fields.clientId}:${fields.clientSecret}`).toString('base64')}`}});
++  const data=await jsonResponse(response,platform);
++  if(!data.access_token)throw Object.assign(new Error('Provider did not issue an access token'),{providerStatus:401});
++  return {...fields,accessToken:data.access_token,expiresAt:Date.now()+Number(data.expires_in||3600)*1000};
++ }
+  else if(platform==='zoho_pos'){url=`https://accounts.zoho.${fields.region}/oauth/v2/token`;body={grant_type:'refresh_token',refresh_token:fields.refreshToken,client_id:fields.clientId,client_secret:fields.clientSecret};}
+  else return fields;
+  const data=await jsonResponse(await fetcher(url,{method:'POST',headers,body:new URLSearchParams(body).toString()}),platform);
+--- a/inventory/connection-setup.js
++++ b/inventory/connection-setup.js
+@@ -3,7 +3,7 @@
+ import { shopifyClient, refreshProviderToken, wooRequest } from './connection-provider.js';
+ import { tryLogSyncAttempt } from './sync-attempts.js';
+ 
+-export async function currentCredentials(account){
++export async function currentCredentials(account,{forceRefresh=false,fetcher}={}){
+  const old=openCredential(account);
+  // Serialize rotating refresh tokens across web/worker processes.
+  return transaction(async db=>{
+@@ -11,7 +11,8 @@
+   if(!row)throw new Error('Connection no longer exists');
+   const previous=openCredential(row);
+   if(account.platform==='shopify'){previous.shop=row.external_account_id;previous.apiVersion||='2026-07';}
+-  const fields=await refreshProviderToken(account.platform,previous);
++  if(forceRefresh)previous.expiresAt=1;
++  const fields=await refreshProviderToken(account.platform,previous,fetcher);
+   if(fields!==previous){const sealed=sealCredential(fields);await db.query('UPDATE ci_channel_account SET encrypted_credentials=$3,credential_iv=$4,credential_tag=$5 WHERE tenant_id=$1 AND id=$2',[account.tenant_id,account.id,sealed.encrypted,sealed.iv,sealed.tag]);}
+   return fields||old;
+  });
+--- a/package.json
++++ b/package.json
+@@ -7,6 +7,7 @@
+     "node": ">=20.19.0"
+   },
+   "scripts": {
++    "flipkart:probe-orders": "node scripts/flipkart-probe-orders.mjs",
+     "dev": "concurrently -n web,api,inventory -c cyan,magenta,yellow \"vite\" \"node server.js\" \"node scripts/inventory-worker-supervisor.mjs\"",
+     "predev": "npm run inventory:migrate",
+     "dev:server": "node server.js",
+--- /dev/null
++++ b/scripts/flipkart-probe-orders.mjs
+@@ -0,0 +1,54 @@
++import dotenv from 'dotenv';
++import { pathToFileURL } from 'node:url';
++import { inventoryPool } from '../inventory/db.js';
++import { currentCredentials } from '../inventory/connection-setup.js';
++import { providerFetch } from '../inventory/connection-security.js';
++
++// Verified: https://seller.flipkart.com/api-docs/order-api-docs/v3/PostShipmentSearch.html
++// This bounded probe reads one page only. Pagination belongs to Step 2.
++const api={url:'https://api.flipkart.net/sellers/v3/shipments/filter/',type:'preDispatch',states:['APPROVED','PACKED','READY_TO_DISPATCH'],pageSize:5,lookbackDays:7,
++ // UNVERIFIED: live field presence, nested buyer/address/title/currency/payment
++ // fields, modified-date filtering, and cancelled-filter casing. No mappings assumed.
++ unverified:['live response shape','buyer/address/title/currency/payment fields','modified-date filter','cancelled-filter casing']};
++
++const keys=value=>value&&typeof value==='object'&&!Array.isArray(value)?Object.keys(value).sort():[];
++export async function probeFlipkartOrders(account,{credentials=currentCredentials,fetcher=providerFetch,now=Date.now()}={}){
++ const result={tokenHttpStatus:null,tokenCallWorked:false,shipmentsHttpStatus:null,ordersPermission:'not_checked',shipmentKeys:[],orderItemKeys:[],priceComponentKeys:[],subShipmentKeys:[]};
++ try{
++  const fields=await credentials(account,{forceRefresh:true,fetcher:async(url,options)=>{
++   const response=await fetcher(url,options);result.tokenHttpStatus=response.status;return response;
++  }});
++  result.tokenCallWorked=Boolean(fields?.accessToken);
++  if(!result.tokenCallWorked)return result;
++  const body={filter:{type:api.type,states:api.states,orderDate:{from:new Date(now-api.lookbackDays*86400000).toISOString(),to:new Date(now).toISOString()}},pagination:{pageSize:api.pageSize}};
++  const response=await fetcher(api.url,{method:'POST',headers:{Authorization:`Bearer ${fields.accessToken}`,'Content-Type':'application/json'},body:JSON.stringify(body)});
++  result.shipmentsHttpStatus=response.status;
++  result.ordersPermission=response.status===401?'401':response.status===403?'403':response.ok?'OK':'not_confirmed';
++  if(response.ok){
++   const data=await response.json();const shipment=Array.isArray(data?.shipments)?data.shipments[0]:null;
++   result.shipmentKeys=keys(shipment);result.orderItemKeys=keys(shipment?.orderItems?.[0]);
++   result.priceComponentKeys=keys(shipment?.orderItems?.[0]?.priceComponents);result.subShipmentKeys=keys(shipment?.subShipments?.[0]);
++  }
++ }catch{
++  // Provider bodies/errors may contain credentials or buyer data. Emit no text from them.
++ }
++ return result;
++}
++
++async function main(){
++ dotenv.config({quiet:true});
++ let db;
++ try{
++  const tenant=process.env.INVENTORY_ALLOWED_TENANT_ID,accountId=process.argv[2]||process.env.INVENTORY_FLIPKART_ACCOUNT_ID;
++  if(!tenant)throw new Error('configuration');
++  db=inventoryPool();
++  const {rows}=await db.query(`SELECT * FROM ci_channel_account WHERE tenant_id=$1 AND platform='flipkart'${accountId?' AND id=$2':''} LIMIT 2`,accountId?[tenant,accountId]:[tenant]);
++  if(rows.length!==1)throw new Error('account_selection');
++  const result=await probeFlipkartOrders(rows[0]);
++  process.stdout.write(`${JSON.stringify(result)}\n`);
++  if(!result.tokenCallWorked||result.ordersPermission!=='OK'||!result.shipmentKeys.length)process.exitCode=1;
++ }catch{
++  process.stdout.write(`${JSON.stringify({tokenHttpStatus:null,tokenCallWorked:false,shipmentsHttpStatus:null,ordersPermission:'not_checked',shipmentKeys:[]})}\n`);process.exitCode=1;
++ }finally{if(db)await db.end();}
++}
++if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href)main();

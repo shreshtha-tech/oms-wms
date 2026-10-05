@@ -1,0 +1,1791 @@
+{
+  "date": "2026-10-04",
+  "rule": "Only identified exact script runs and their covered wrappers are marked PASS; focused branches need independent evidence. No live provider proof.",
+  "counts": {
+    "NOT INDEPENDENTLY VERIFIED": 107,
+    "PASS": 54
+  },
+  "commands": [
+    {
+      "name": "test:seller-connections-ui",
+      "command": "node scripts/verify-seller-connections-ui.mjs",
+      "files": [
+        "scripts/verify-seller-connections-ui.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:unified-orders",
+      "command": "node scripts/verify-unified-orders.mjs",
+      "files": [
+        "scripts/verify-unified-orders.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/unified-orders-public-tenant-current.log"
+      ]
+    },
+    {
+      "name": "test:unified-orders-isolated",
+      "command": "node scripts/run-isolated-unified-orders.mjs",
+      "files": [
+        "scripts/run-isolated-unified-orders.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/unified-orders-public-tenant-current.log"
+      ]
+    },
+    {
+      "name": "test:seller-connections",
+      "command": "node scripts/verify-seller-connections.mjs",
+      "files": [
+        "scripts/verify-seller-connections.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/seller-connections-public-tenant-current.log"
+      ]
+    },
+    {
+      "name": "test:connection-readiness",
+      "command": "node scripts/verify-connection-readiness.mjs",
+      "files": [
+        "scripts/verify-connection-readiness.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/unit-gates/verify-connection-readiness.log"
+      ]
+    },
+    {
+      "name": "test:connection-authorization",
+      "command": "node scripts/verify-connection-authorization.mjs",
+      "files": [
+        "scripts/verify-connection-authorization.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/unit-gates/verify-connection-authorization.log"
+      ]
+    },
+    {
+      "name": "test:sales-programs",
+      "command": "node scripts/verify-sales-programs.mjs",
+      "files": [
+        "scripts/verify-sales-programs.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/sales-programs-current.log"
+      ]
+    },
+    {
+      "name": "test:central-inventory",
+      "command": "node scripts/verify-central-inventory.mjs",
+      "files": [
+        "scripts/verify-central-inventory.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/central-inventory-lts.log"
+      ]
+    },
+    {
+      "name": "test:central-inventory-api",
+      "command": "node scripts/verify-central-inventory-api.mjs",
+      "files": [
+        "scripts/verify-central-inventory-api.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/central-inventory-api-current.log"
+      ]
+    },
+    {
+      "name": "test:inventory-publish-order",
+      "command": "node scripts/verify-inventory-publish-order.mjs",
+      "files": [
+        "scripts/verify-inventory-publish-order.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/inventory-publish-order-latest.log"
+      ]
+    },
+    {
+      "name": "test:vendor-master",
+      "command": "node scripts/verify-vendor-master.mjs",
+      "files": [
+        "scripts/verify-vendor-master.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:vendor-integrity",
+      "command": "node scripts/verify-vendor-integrity.mjs",
+      "files": [
+        "scripts/verify-vendor-integrity.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/verify-vendor-integrity.log"
+      ]
+    },
+    {
+      "name": "test:isolated-browser-workflow",
+      "command": "node scripts/verify-isolated-browser-workflow.mjs",
+      "files": [
+        "scripts/verify-isolated-browser-workflow.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/browser-full.log"
+      ]
+    },
+    {
+      "name": "test:tax-application-workflow",
+      "command": "node scripts/verify-tax-application-workflow.mjs",
+      "files": [
+        "scripts/verify-tax-application-workflow.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:tax-code-workflow",
+      "command": "node scripts/verify-tax-code-workflow.mjs",
+      "files": [
+        "scripts/verify-tax-code-workflow.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:customer-integrity",
+      "command": "node scripts/verify-customer-integrity.mjs",
+      "files": [
+        "scripts/verify-customer-integrity.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/verify-customer-integrity.log"
+      ]
+    },
+    {
+      "name": "test:transporter-integrity",
+      "command": "node scripts/verify-transporter-integrity.mjs",
+      "files": [
+        "scripts/verify-transporter-integrity.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/verify-transporter-integrity.log"
+      ]
+    },
+    {
+      "name": "test:vendor-enquiry-parity",
+      "command": "node scripts/verify-vendor-enquiry-parity.mjs",
+      "files": [
+        "scripts/verify-vendor-enquiry-parity.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:customer-enquiry-parity",
+      "command": "node scripts/verify-customer-enquiry-parity.mjs",
+      "files": [
+        "scripts/verify-customer-enquiry-parity.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:common-import",
+      "command": "node scripts/verify-common-import.mjs",
+      "files": [
+        "scripts/verify-common-import.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/extended-gates/verify-common-import.log"
+      ]
+    },
+    {
+      "name": "test:global-screen-shell",
+      "command": "node scripts/verify-global-screen-shell.mjs",
+      "files": [
+        "scripts/verify-global-screen-shell.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:global-responsive-shell",
+      "command": "node scripts/verify-global-responsive-shell.mjs",
+      "files": [
+        "scripts/verify-global-responsive-shell.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:global-feedback-shell",
+      "command": "node scripts/verify-global-feedback-shell.mjs",
+      "files": [
+        "scripts/verify-global-feedback-shell.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:global-grid-loading",
+      "command": "node scripts/verify-global-grid-loading.mjs",
+      "files": [
+        "scripts/verify-global-grid-loading.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:global-dialog-navigation",
+      "command": "node scripts/verify-global-dialog-navigation.mjs",
+      "files": [
+        "scripts/verify-global-dialog-navigation.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:global-controls-keyboard",
+      "command": "node scripts/verify-global-controls-keyboard.mjs",
+      "files": [
+        "scripts/verify-global-controls-keyboard.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:global-menu",
+      "command": "node scripts/verify-global-menu.mjs",
+      "files": [
+        "scripts/verify-global-menu.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:global-login",
+      "command": "node scripts/verify-global-login-contract.mjs",
+      "files": [
+        "scripts/verify-global-login-contract.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:global-header-search",
+      "command": "node scripts/verify-global-header-search.mjs",
+      "files": [
+        "scripts/verify-global-header-search.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:global-header-dialogs",
+      "command": "node scripts/verify-global-header-dialogs.mjs",
+      "files": [
+        "scripts/verify-global-header-dialogs.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:seller-panel-dashboard",
+      "command": "node scripts/verify-seller-panel-dashboard.mjs",
+      "files": [
+        "scripts/verify-seller-panel-dashboard.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:eretail-dashboard",
+      "command": "node scripts/verify-eretail-dashboard.mjs",
+      "files": [
+        "scripts/verify-eretail-dashboard.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:customer-master",
+      "command": "node scripts/verify-customer-master.mjs",
+      "files": [
+        "scripts/verify-customer-master.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:transporter-master",
+      "command": "node scripts/verify-transporter-master.mjs",
+      "files": [
+        "scripts/verify-transporter-master.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:transporter-enquiry-parity",
+      "command": "node scripts/verify-transporter-enquiry-parity.mjs",
+      "files": [
+        "scripts/verify-transporter-enquiry-parity.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:client-master",
+      "command": "node scripts/verify-client-master.mjs",
+      "files": [
+        "scripts/verify-client-master.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:client-master-workflow",
+      "command": "node scripts/verify-client-master-workflow.mjs",
+      "files": [
+        "scripts/verify-client-master-workflow.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:customer-group",
+      "command": "node scripts/verify-customer-group.mjs",
+      "files": [
+        "scripts/verify-customer-group.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:customer-group-workflow",
+      "command": "node scripts/verify-customer-group-workflow.mjs",
+      "files": [
+        "scripts/verify-customer-group-workflow.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:manage-coupons",
+      "command": "node scripts/verify-manage-coupons.mjs",
+      "files": [
+        "scripts/verify-manage-coupons.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:tax-group",
+      "command": "node scripts/verify-tax-group.mjs",
+      "files": [
+        "scripts/verify-tax-group.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:tax-group-workflow",
+      "command": "node scripts/verify-tax-group-workflow.mjs",
+      "files": [
+        "scripts/verify-tax-group-workflow.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:tax-category",
+      "command": "node scripts/verify-tax-category.mjs",
+      "files": [
+        "scripts/verify-tax-category.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:tax-category-workflow",
+      "command": "node scripts/verify-tax-category-workflow.mjs",
+      "files": [
+        "scripts/verify-tax-category-workflow.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:tax-application",
+      "command": "node scripts/verify-tax-application.mjs",
+      "files": [
+        "scripts/verify-tax-application.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:tax-code",
+      "command": "node scripts/verify-tax-code.mjs",
+      "files": [
+        "scripts/verify-tax-code.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:tax-zone",
+      "command": "node scripts/verify-tax-zone.mjs",
+      "files": [
+        "scripts/verify-tax-zone.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:tax-zone-workflow",
+      "command": "node scripts/verify-tax-zone-workflow.mjs",
+      "files": [
+        "scripts/verify-tax-zone-workflow.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:sku-master-workflow",
+      "command": "node scripts/verify-sku-master-workflow.mjs",
+      "files": [
+        "scripts/verify-sku-master-workflow.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:sku-master",
+      "command": "node scripts/verify-sku-master.mjs",
+      "files": [
+        "scripts/verify-sku-master.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:sku-import",
+      "command": "node scripts/verify-sku-import.mjs",
+      "files": [
+        "scripts/verify-sku-import.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:sku-company-link",
+      "command": "ISOLATED_BROWSER_FOCUS=sku-company-link node scripts/verify-isolated-browser-workflow.mjs",
+      "files": [
+        "scripts/verify-isolated-browser-workflow.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "Focused browser branch requires its own result; broad workflow suite coverage does not automatically verify this command."
+    },
+    {
+      "name": "test:merchandising-hierarchy",
+      "command": "node scripts/verify-merchandising-hierarchy.mjs",
+      "files": [
+        "scripts/verify-merchandising-hierarchy.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:manage-attribute",
+      "command": "node scripts/verify-manage-attribute.mjs",
+      "files": [
+        "scripts/verify-manage-attribute.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:attribute-set",
+      "command": "node scripts/verify-attribute-set.mjs",
+      "files": [
+        "scripts/verify-attribute-set.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:vendor-sku-catalog",
+      "command": "node scripts/verify-vendor-sku-catalog.mjs",
+      "files": [
+        "scripts/verify-vendor-sku-catalog.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:vendor-sku-loc-catalog",
+      "command": "node scripts/verify-vendor-sku-loc-catalog.mjs",
+      "files": [
+        "scripts/verify-vendor-sku-loc-catalog.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:generate-vouchers",
+      "command": "npm run test:voucher-guard",
+      "files": [],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:organization-hierarchy",
+      "command": "node scripts/verify-organization-hierarchy.mjs",
+      "files": [
+        "scripts/verify-organization-hierarchy.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:location",
+      "command": "node scripts/verify-location.mjs",
+      "files": [
+        "scripts/verify-location.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:store-group",
+      "command": "node scripts/verify-store-group.mjs",
+      "files": [
+        "scripts/verify-store-group.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:other-masters",
+      "command": "ISOLATED_BROWSER_FOCUS=other-masters node scripts/verify-isolated-browser-workflow.mjs",
+      "files": [
+        "scripts/verify-isolated-browser-workflow.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "Focused browser branch requires its own result; broad workflow suite coverage does not automatically verify this command."
+    },
+    {
+      "name": "test:sales-promotion-guard",
+      "command": "ISOLATED_BROWSER_FOCUS=sales-promotion node scripts/verify-isolated-browser-workflow.mjs",
+      "files": [
+        "scripts/verify-isolated-browser-workflow.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "Focused browser branch requires its own result; broad workflow suite coverage does not automatically verify this command."
+    },
+    {
+      "name": "test:coupon-guard",
+      "command": "ISOLATED_BROWSER_FOCUS=coupons node scripts/verify-isolated-browser-workflow.mjs",
+      "files": [
+        "scripts/verify-isolated-browser-workflow.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "Focused browser branch requires its own result; broad workflow suite coverage does not automatically verify this command."
+    },
+    {
+      "name": "test:tally-configuration",
+      "command": "node scripts/verify-tally-configuration.mjs",
+      "files": [
+        "scripts/verify-tally-configuration.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:pricing-event",
+      "command": "node scripts/verify-pricing-event.mjs",
+      "files": [
+        "scripts/verify-pricing-event.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:price-zone",
+      "command": "node scripts/verify-price-zone.mjs",
+      "files": [
+        "scripts/verify-price-zone.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:external-apps",
+      "command": "node scripts/verify-external-apps.mjs",
+      "files": [
+        "scripts/verify-external-apps.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:external-apps-more-configuration",
+      "command": "node scripts/verify-external-apps-more-configuration.mjs",
+      "files": [
+        "scripts/verify-external-apps-more-configuration.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:order-refund",
+      "command": "node scripts/verify-order-refund.mjs",
+      "files": [
+        "scripts/verify-order-refund.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/extended-gates/verify-order-refund.log"
+      ]
+    },
+    {
+      "name": "test:oms-rules",
+      "command": "ISOLATED_BROWSER_FOCUS=oms-rules node scripts/verify-isolated-browser-workflow.mjs",
+      "files": [
+        "scripts/verify-isolated-browser-workflow.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "Focused browser branch requires its own result; broad workflow suite coverage does not automatically verify this command."
+    },
+    {
+      "name": "test:master-order-enquiry",
+      "command": "node scripts/verify-master-order-enquiry.mjs",
+      "files": [
+        "scripts/verify-master-order-enquiry.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:global-order-search",
+      "command": "node scripts/verify-global-order-search.mjs",
+      "files": [
+        "scripts/verify-global-order-search.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:cod-reconciliation",
+      "command": "ISOLATED_BROWSER_FOCUS=cod-reconciliation node scripts/verify-isolated-browser-workflow.mjs",
+      "files": [
+        "scripts/verify-isolated-browser-workflow.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "Focused browser branch requires its own result; broad workflow suite coverage does not automatically verify this command."
+    },
+    {
+      "name": "test:sku-moderation",
+      "command": "ISOLATED_BROWSER_FOCUS=sku-moderation node scripts/verify-isolated-browser-workflow.mjs",
+      "files": [
+        "scripts/verify-isolated-browser-workflow.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "Focused browser branch requires its own result; broad workflow suite coverage does not automatically verify this command."
+    },
+    {
+      "name": "test:wms-zone",
+      "command": "node scripts/verify-wms-zone.mjs",
+      "files": [
+        "scripts/verify-wms-zone.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:picker-zone-preference",
+      "command": "node scripts/verify-picker-zone-preference.mjs",
+      "files": [
+        "scripts/verify-picker-zone-preference.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:bin-enquiry",
+      "command": "node scripts/verify-bin-enquiry.mjs",
+      "files": [
+        "scripts/verify-bin-enquiry.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:bin-editor",
+      "command": "node scripts/verify-bin-editor.mjs",
+      "files": [
+        "scripts/verify-bin-editor.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:lottable-validation",
+      "command": "node scripts/verify-lottable-validation.mjs",
+      "files": [
+        "scripts/verify-lottable-validation.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:receipt-validation",
+      "command": "node scripts/verify-receipt-validation.mjs",
+      "files": [
+        "scripts/verify-receipt-validation.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:putaway-enquiry",
+      "command": "node scripts/verify-putaway-enquiry.mjs",
+      "files": [
+        "scripts/verify-putaway-enquiry.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:sku-label-print",
+      "command": "node scripts/verify-sku-label-print.mjs",
+      "files": [
+        "scripts/verify-sku-label-print.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:putaway-rules",
+      "command": "node scripts/verify-putaway-rules.mjs",
+      "files": [
+        "scripts/verify-putaway-rules.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:allocation-strategies",
+      "command": "node scripts/verify-allocation-strategies.mjs",
+      "files": [
+        "scripts/verify-allocation-strategies.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:cycle-count-waves",
+      "command": "node scripts/verify-cycle-count-waves.mjs",
+      "files": [
+        "scripts/verify-cycle-count-waves.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:manage-awb",
+      "command": "node scripts/verify-manage-awb.mjs",
+      "files": [
+        "scripts/verify-manage-awb.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:transporter-preferences",
+      "command": "node scripts/verify-transporter-preferences.mjs",
+      "files": [
+        "scripts/verify-transporter-preferences.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:service-pin-codes",
+      "command": "node scripts/verify-service-pin-codes.mjs",
+      "files": [
+        "scripts/verify-service-pin-codes.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:order-allocation",
+      "command": "node scripts/verify-order-allocation.mjs",
+      "files": [
+        "scripts/verify-order-allocation.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/extended-gates/verify-order-allocation.log"
+      ]
+    },
+    {
+      "name": "test:manage-manifests",
+      "command": "node scripts/verify-manage-manifests.mjs",
+      "files": [
+        "scripts/verify-manage-manifests.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/extended-gates/verify-manage-manifests.log"
+      ]
+    },
+    {
+      "name": "test:sku-grading",
+      "command": "node scripts/verify-sku-grading.mjs",
+      "files": [
+        "scripts/verify-sku-grading.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:delivery-shipping",
+      "command": "node scripts/verify-delivery-shipping.mjs",
+      "files": [
+        "scripts/verify-delivery-shipping.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/extended-gates/verify-delivery-shipping.log"
+      ]
+    },
+    {
+      "name": "test:bulk-order-update",
+      "command": "node scripts/verify-bulk-order-update.mjs",
+      "files": [
+        "scripts/verify-bulk-order-update.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/extended-gates/verify-bulk-order-update.log"
+      ]
+    },
+    {
+      "name": "test:manage-picklists",
+      "command": "node scripts/verify-manage-picklists.mjs",
+      "files": [
+        "scripts/verify-manage-picklists.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/extended-gates/verify-manage-picklists.log"
+      ]
+    },
+    {
+      "name": "test:manage-picking",
+      "command": "node scripts/verify-manage-picking.mjs",
+      "files": [
+        "scripts/verify-manage-picking.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/extended-gates/verify-manage-picking.log"
+      ]
+    },
+    {
+      "name": "test:delivery-split",
+      "command": "node scripts/verify-delivery-split.mjs",
+      "files": [
+        "scripts/verify-delivery-split.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/extended-gates/verify-delivery-split.log"
+      ]
+    },
+    {
+      "name": "test:shipment-handover",
+      "command": "node scripts/verify-shipment-handover.mjs",
+      "files": [
+        "scripts/verify-shipment-handover.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/extended-gates/verify-shipment-handover.log"
+      ]
+    },
+    {
+      "name": "test:return-without-order",
+      "command": "node scripts/verify-return-without-order.mjs",
+      "files": [
+        "scripts/verify-return-without-order.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:order-acknowledgement",
+      "command": "node scripts/verify-order-acknowledgement.mjs",
+      "files": [
+        "scripts/verify-order-acknowledgement.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/extended-gates/verify-order-acknowledgement.log"
+      ]
+    },
+    {
+      "name": "test:consolidate-ewb",
+      "command": "node scripts/verify-consolidate-ewb.mjs",
+      "files": [
+        "scripts/verify-consolidate-ewb.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/extended-gates/verify-consolidate-ewb.log"
+      ]
+    },
+    {
+      "name": "test:sort-to-box",
+      "command": "node scripts/verify-sort-to-box.mjs",
+      "files": [
+        "scripts/verify-sort-to-box.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/extended-gates/verify-sort-to-box.log"
+      ]
+    },
+    {
+      "name": "test:inbound-gate-pass",
+      "command": "node scripts/verify-inbound-gate-pass.mjs",
+      "files": [
+        "scripts/verify-inbound-gate-pass.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:inbound-enquiry",
+      "command": "node scripts/verify-inbound-enquiry.mjs",
+      "files": [
+        "scripts/verify-inbound-enquiry.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:inbound-create-edit",
+      "command": "node scripts/verify-inbound-create-edit.mjs",
+      "files": [
+        "scripts/verify-inbound-create-edit.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:inbound-realtime",
+      "command": "node scripts/verify-inbound-realtime.mjs",
+      "files": [
+        "scripts/verify-inbound-realtime.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:inbound-qc",
+      "command": "node scripts/verify-inbound-qc.mjs",
+      "files": [
+        "scripts/verify-inbound-qc.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:inventory-view",
+      "command": "node scripts/verify-inventory-view.mjs",
+      "files": [
+        "scripts/verify-inventory-view.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:inventory-move-history",
+      "command": "node scripts/verify-inventory-move-history.mjs",
+      "files": [
+        "scripts/verify-inventory-move-history.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:inventory-move",
+      "command": "node scripts/verify-inventory-move.mjs",
+      "files": [
+        "scripts/verify-inventory-move.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/extended-gates/verify-inventory-move.log"
+      ]
+    },
+    {
+      "name": "test:inventory-move-scan",
+      "command": "node scripts/verify-inventory-move-scan.mjs",
+      "files": [
+        "scripts/verify-inventory-move-scan.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:cycle-count",
+      "command": "node scripts/verify-cycle-count.mjs",
+      "files": [
+        "scripts/verify-cycle-count.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:legacy-stock-write-blocks",
+      "command": "node scripts/verify-legacy-stock-write-blocks.mjs",
+      "files": [
+        "scripts/verify-legacy-stock-write-blocks.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/unit-gates/verify-legacy-stock-write-blocks.log"
+      ]
+    },
+    {
+      "name": "test:bin-audit",
+      "command": "node scripts/verify-bin-audit.mjs",
+      "files": [
+        "scripts/verify-bin-audit.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:bulk-lottables",
+      "command": "node scripts/verify-bulk-lottables.mjs",
+      "files": [
+        "scripts/verify-bulk-lottables.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:wms-dedicated-menu-routing",
+      "command": "node scripts/verify-wms-dedicated-menu-routing.mjs",
+      "files": [
+        "scripts/verify-wms-dedicated-menu-routing.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:order-enquiry",
+      "command": "node scripts/verify-order-enquiry.mjs",
+      "files": [
+        "scripts/verify-order-enquiry.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:order-maintenance",
+      "command": "node scripts/verify-order-maintenance.mjs",
+      "files": [
+        "scripts/verify-order-maintenance.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/extended-gates/verify-order-maintenance.log"
+      ]
+    },
+    {
+      "name": "test:market-order-view",
+      "command": "node scripts/verify-market-order-view.mjs",
+      "files": [
+        "scripts/verify-market-order-view.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:kitting-order",
+      "command": "node scripts/verify-kitting-order.mjs",
+      "files": [
+        "scripts/verify-kitting-order.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:single-location",
+      "command": "node scripts/verify-single-location.mjs",
+      "files": [
+        "scripts/verify-single-location.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:po-enquiry",
+      "command": "ISOLATED_BROWSER_FOCUS=po-enquiry node scripts/verify-isolated-browser-workflow.mjs",
+      "files": [
+        "scripts/verify-isolated-browser-workflow.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "Focused browser branch requires its own result; broad workflow suite coverage does not automatically verify this command."
+    },
+    {
+      "name": "test:po-revision",
+      "command": "ISOLATED_BROWSER_FOCUS=po-revision node scripts/verify-isolated-browser-workflow.mjs",
+      "files": [
+        "scripts/verify-isolated-browser-workflow.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "Focused browser branch requires its own result; broad workflow suite coverage does not automatically verify this command."
+    },
+    {
+      "name": "test:voucher-guard",
+      "command": "ISOLATED_BROWSER_FOCUS=vouchers node scripts/verify-isolated-browser-workflow.mjs",
+      "files": [
+        "scripts/verify-isolated-browser-workflow.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "Focused browser branch requires its own result; broad workflow suite coverage does not automatically verify this command."
+    },
+    {
+      "name": "test:back-order-integrity",
+      "command": "node scripts/verify-back-order-integrity.mjs",
+      "files": [
+        "scripts/verify-back-order-integrity.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/extended-gates/verify-back-order-integrity.log"
+      ]
+    },
+    {
+      "name": "test:po-otb-integrity",
+      "command": "node scripts/verify-po-otb-integrity.mjs",
+      "files": [
+        "scripts/verify-po-otb-integrity.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/po-otb-integrity-current.log"
+      ]
+    },
+    {
+      "name": "test:order-enquiry-integrity",
+      "command": "node scripts/verify-order-enquiry-integrity.mjs",
+      "files": [
+        "scripts/verify-order-enquiry-integrity.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/order-enquiry-integrity-current.log"
+      ]
+    },
+    {
+      "name": "test:mongo-isolated-workflows",
+      "command": "node scripts/verify-mongo-isolated-workflows.mjs",
+      "files": [
+        "scripts/verify-mongo-isolated-workflows.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/verify-mongo-isolated-workflows.log"
+      ]
+    },
+    {
+      "name": "test:manage-asn",
+      "command": "node scripts/verify-manage-asn.mjs",
+      "files": [
+        "scripts/verify-manage-asn.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:vendor-promotions",
+      "command": "node scripts/verify-vendor-promotions.mjs",
+      "files": [
+        "scripts/verify-vendor-promotions.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:purchase-charge-masters",
+      "command": "node scripts/verify-purchase-charge-masters.mjs",
+      "files": [
+        "scripts/verify-purchase-charge-masters.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:category-buyers",
+      "command": "node scripts/verify-category-buyers.mjs",
+      "files": [
+        "scripts/verify-category-buyers.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:ars-sku-location",
+      "command": "node scripts/verify-ars-sku-location.mjs",
+      "files": [
+        "scripts/verify-ars-sku-location.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:ars-rules",
+      "command": "node scripts/verify-ars-rules.mjs",
+      "files": [
+        "scripts/verify-ars-rules.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:ars-integrity",
+      "command": "node scripts/verify-ars-integrity.mjs",
+      "files": [
+        "scripts/verify-ars-integrity.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/extended-gates/verify-ars-integrity.log"
+      ]
+    },
+    {
+      "name": "test:ars-execution-log",
+      "command": "node scripts/verify-ars-execution-log.mjs",
+      "files": [
+        "scripts/verify-ars-execution-log.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:ars-settings",
+      "command": "node scripts/verify-ars-settings.mjs",
+      "files": [
+        "scripts/verify-ars-settings.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:manage-channels",
+      "command": "node scripts/verify-manage-channels.mjs",
+      "files": [
+        "scripts/verify-manage-channels.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:sku-channel-listing",
+      "command": "ISOLATED_BROWSER_FOCUS=sku-channel-listing node scripts/verify-isolated-browser-workflow.mjs",
+      "files": [
+        "scripts/verify-isolated-browser-workflow.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "Focused browser branch requires its own result; broad workflow suite coverage does not automatically verify this command."
+    },
+    {
+      "name": "test:sku-barcode",
+      "command": "node scripts/verify-sku-barcode.mjs",
+      "files": [
+        "scripts/verify-sku-barcode.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:sku-group",
+      "command": "ISOLATED_BROWSER_FOCUS=sku-group node scripts/verify-isolated-browser-workflow.mjs",
+      "files": [
+        "scripts/verify-isolated-browser-workflow.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "reason": "Focused browser branch requires its own result; broad workflow suite coverage does not automatically verify this command.",
+      "layer": "isolated real databases and signed-in browser",
+      "evidence": [
+        "tmp/mongo-reliability/sku-group-browser.log"
+      ]
+    },
+    {
+      "name": "test:central-inventory-files",
+      "command": "node scripts/verify-central-inventory-files.mjs",
+      "files": [
+        "scripts/verify-central-inventory-files.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/inventory-files-current.log"
+      ]
+    },
+    {
+      "name": "test:central-inventory-ui",
+      "command": "node scripts/verify-central-inventory-ui.mjs",
+      "files": [
+        "scripts/verify-central-inventory-ui.mjs"
+      ],
+      "missing": [],
+      "execution": "NOT INDEPENDENTLY VERIFIED",
+      "reason": "No exact command result is recorded. Check its fixture, reference-session, authentication and provider prerequisites before execution; overlapping acceptance evidence is not a blanket pass."
+    },
+    {
+      "name": "test:download-pdf",
+      "command": "node scripts/verify-download-pdf.mjs",
+      "files": [
+        "scripts/verify-download-pdf.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/extended-gates/verify-download-pdf.log"
+      ]
+    },
+    {
+      "name": "test:download-workbook",
+      "command": "node scripts/verify-download-workbook.mjs",
+      "files": [
+        "scripts/verify-download-workbook.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/extended-gates/verify-download-workbook.log"
+      ]
+    },
+    {
+      "name": "test:inbound-realtime-integrity",
+      "command": "node scripts/verify-inbound-realtime-integrity.mjs",
+      "files": [
+        "scripts/verify-inbound-realtime-integrity.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/extended-gates/verify-inbound-realtime-integrity.log"
+      ]
+    },
+    {
+      "name": "test:mp-inventory-log",
+      "command": "node scripts/verify-mp-inventory-log.mjs",
+      "files": [
+        "scripts/verify-mp-inventory-log.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/extended-gates/verify-mp-inventory-log.log"
+      ]
+    },
+    {
+      "name": "test:amazon-mfn-integrity",
+      "command": "node scripts/verify-amazon-mfn-api.mjs",
+      "files": [
+        "scripts/verify-amazon-mfn-api.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/extended-gates/verify-amazon-mfn-api.log"
+      ]
+    },
+    {
+      "name": "test:transhipment-integrity",
+      "command": "node scripts/verify-transhipment.mjs",
+      "files": [
+        "scripts/verify-transhipment.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/extended-gates/verify-transhipment.log"
+      ]
+    },
+    {
+      "name": "test:transhipment-old-integrity",
+      "command": "node scripts/verify-transhipment-old.mjs",
+      "files": [
+        "scripts/verify-transhipment-old.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/extended-gates/verify-transhipment-old.log"
+      ]
+    },
+    {
+      "name": "test:ajio-integrity",
+      "command": "node scripts/verify-ajio-api.mjs",
+      "files": [
+        "scripts/verify-ajio-api.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/extended-gates/verify-ajio-api.log"
+      ]
+    },
+    {
+      "name": "test:returns-integrity",
+      "command": "node scripts/verify-returns-integrity.mjs",
+      "files": [
+        "scripts/verify-returns-integrity.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/extended-gates/verify-returns-integrity.log"
+      ]
+    },
+    {
+      "name": "test:dispatch-checkpoint",
+      "command": "node scripts/verify-dispatch-checkpoint.mjs",
+      "files": [
+        "scripts/verify-dispatch-checkpoint.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/extended-gates/verify-dispatch-checkpoint.log"
+      ]
+    },
+    {
+      "name": "test:legacy-fulfillment-write-blocks",
+      "command": "node scripts/verify-legacy-fulfillment-write-blocks.mjs",
+      "files": [
+        "scripts/verify-legacy-fulfillment-write-blocks.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/unit-gates/verify-legacy-fulfillment-write-blocks.log"
+      ]
+    },
+    {
+      "name": "test:reliability",
+      "command": "node scripts/verify-mongo-reliability.mjs && node scripts/verify-postgres-reliability.mjs && node scripts/verify-provider-reliability.mjs",
+      "files": [
+        "scripts/verify-mongo-reliability.mjs",
+        "scripts/verify-postgres-reliability.mjs",
+        "scripts/verify-provider-reliability.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/unit-gates/verify-mongo-reliability.log",
+        "tmp/mongo-reliability/unit-gates/verify-postgres-reliability.log",
+        "tmp/mongo-reliability/unit-gates/verify-provider-reliability.log"
+      ]
+    },
+    {
+      "name": "test:reliability-mongo-isolated",
+      "command": "node scripts/run-isolated-mongo-reliability.mjs",
+      "files": [
+        "scripts/run-isolated-mongo-reliability.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/mongo-api-current.log"
+      ]
+    },
+    {
+      "name": "test:reliability-extended",
+      "command": "node scripts/run-reliability-extended-gates.mjs",
+      "files": [
+        "scripts/run-reliability-extended-gates.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/extended-gates.log"
+      ]
+    },
+    {
+      "name": "test:reliability-postgres-failures",
+      "command": "node scripts/verify-postgres-failure-injection.mjs",
+      "files": [
+        "scripts/verify-postgres-failure-injection.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/postgres-failure-injection-current.log"
+      ]
+    },
+    {
+      "name": "test:reliability-mongo-startup",
+      "command": "node scripts/run-isolated-mongo-reliability.mjs scripts/verify-mongo-startup-recovery.mjs",
+      "files": [
+        "scripts/run-isolated-mongo-reliability.mjs",
+        "scripts/verify-mongo-startup-recovery.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/mongo-api-current.log",
+        "tmp/mongo-reliability/mongo-startup-recovery.log"
+      ]
+    },
+    {
+      "name": "test:reliability-mongo-timeout",
+      "command": "node scripts/run-isolated-mongo-reliability.mjs scripts/verify-mongo-timeout-fixture.mjs",
+      "files": [
+        "scripts/run-isolated-mongo-reliability.mjs",
+        "scripts/verify-mongo-timeout-fixture.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/mongo-api-current.log",
+        "tmp/mongo-reliability/mongo-timeout-fixture.log"
+      ]
+    },
+    {
+      "name": "test:reliability-purchase-orders",
+      "command": "node scripts/run-isolated-mongo-reliability.mjs scripts/verify-purchase-order-reliability.mjs",
+      "files": [
+        "scripts/run-isolated-mongo-reliability.mjs",
+        "scripts/verify-purchase-order-reliability.mjs"
+      ],
+      "missing": [],
+      "execution": "PASS",
+      "layer": "controlled local evidence",
+      "evidence": [
+        "tmp/mongo-reliability/mongo-api-current.log",
+        "tmp/mongo-reliability/purchase-order-reliability.log"
+      ]
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-import { find, cors } from './mongo.js';
+import { sendDatabaseUnavailable, find, cors } from './mongo.js';
 
 // Dynamic platform/channel list for the dashboard filter (from channels + known brands).
 export default async function handler(req, res) {
@@ -14,7 +14,8 @@ export default async function handler(req, res) {
     const locations = ['All', ...[...new Set(channels.map((c) => c.location).filter((l) => l && l !== 'View Location(s)'))]];
     return res.status(200).json({ platforms, locations });
   } catch (err) {
-    console.error('platforms error:', err);
+    if (sendDatabaseUnavailable(res, err)) return;
+    console.error('platforms error:', { name: err?.name, code: err?.code });
     res.status(500).json({ error: err.message });
   }
 }

@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+process.env.MONGODB_URI='';process.env.NODE_ENV='test';process.env.DMILLS_REQUIRE_PERSISTENCE='false';
+const store=await import('../api/mongo.js');assert.equal(await store.waitForDataReady(),'memory');
+const handler=(await import('../api/clients.js')).default;
+const call=async(method,body)=>{const res={statusCode:200,status(code){this.statusCode=code;return this;},json(value){this.value=value;return this;},setHeader(){}};await handler({method,body,user:{username:'fixture-actor'}},res);return res;};
+const fields={client_short_name:'Fixture',client_currency:'INR',address1:'Fixture address',phone:'fixture-phone',country:'INDIA',state:'Fixture State',city:'Fixture City',pincode:'123456',status:'Active'};
+const first=await call('POST',{...fields,client_id:'101',client_name:'First'});assert.equal(first.statusCode,201);
+const second=await call('POST',{...fields,id:first.value.id,client_id:'102',client_name:'Second'});assert.equal(second.statusCode,201);
+assert.notEqual(first.value.id,second.value.id,'Client create cannot select existing numeric identity');
+const changed=await call('PUT',{id:first.value.id,client_name:'Renamed',created_by:'FORGED',created_date:'FORGED'});assert.equal(changed.statusCode,200);
+assert.equal(changed.value.created_by,first.value.created_by);assert.equal(changed.value.created_date,first.value.created_date);
+assert.equal(changed.value.modified_by,'fixture-actor');
+assert.equal((await call('DELETE',{id:first.value.id})).statusCode,409);
+console.log('PASS: isolated memory client identity, creation metadata ownership, modification actor and deletion guard.');

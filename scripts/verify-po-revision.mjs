@@ -1,7 +1,22 @@
+import assert from 'node:assert/strict';
 import { chromium } from 'playwright';
+import { MongoClient } from 'mongodb';
 
-const baseUrl = process.env.ERETAIL_BASE_URL || 'http://127.0.0.1:3011';
-const browser = await chromium.launch({ headless: true });
+const baseUrl = process.env.ERETAIL_BASE_URL || '';
+const username = process.env.ERETAIL_TEST_USERNAME || '';
+const password = process.env.ERETAIL_TEST_PASSWORD || '';
+const mongoUri = process.env.MONGODB_URI || '';
+const dbName = process.env.MONGODB_DB || '';
+if (!username || !password) throw new Error('PO Revision verification requires the generated administrator login.');
+if (!/^codexqa_[a-z0-9_]+$/i.test(dbName)) throw new Error('PO Revision verification requires a generated codexqa MongoDB database.');
+if (!['localhost', '127.0.0.1', '::1'].includes(new URL(baseUrl).hostname)) throw new Error('PO Revision verification only permits a local app.');
+const mongoUrl = new URL(mongoUri);
+if (mongoUrl.protocol !== 'mongodb:' || !['localhost', '127.0.0.1', '::1'].includes(mongoUrl.hostname)) throw new Error('PO Revision verification only permits a loopback MongoDB server.');
+const mongo = new MongoClient(mongoUri, { serverSelectionTimeoutMS: 8000 });
+await mongo.connect();
+const db = mongo.db(dbName);
+const browser = await chromium.launch({ headless: true, ...(process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE ? { executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE } : {}) });
+const anonymous = await browser.newContext();
 const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
 const runtimeErrors = [];
 const apiErrors = [];
@@ -11,12 +26,20 @@ page.on('console', (message) => { if (!expectedApiError && message.type() === 'e
 page.on('response', (response) => { if (!expectedApiError && response.url().includes('/api/') && response.status() >= 400) apiErrors.push(`${response.status()} ${response.url()}`); });
 
 try {
+  assert.equal((await anonymous.request.get(`${baseUrl}/api/purchase-orders`)).status(), 401, 'Purchase-order API must require a session.');
   await page.goto(baseUrl, { waitUntil: 'domcontentloaded' });
-  await page.evaluate(() => localStorage.setItem('vin_user', JSON.stringify({ username: 'po-revision-verifier' })));
+  await page.getByLabel('Login Id').fill(username);
+  await page.getByLabel('Password').fill(password);
+  await page.getByRole('button', { name: 'Login', exact: true }).click();
+  await page.waitForURL('**/app/dashboard');
   const suffix = Date.now().toString().slice(-8);
   const poNo = `POREV${suffix}`;
+  const vendorCode = `QA-V-${suffix}`;
+  const vendorName = `QA PO Revision Vendor ${suffix}`;
+  const vendorResponse = await page.request.post(`${baseUrl}/api/vendors`, { data: { vendor_code: vendorCode, vendor_name: vendorName, vendor_type: 'Outright purchase', status: 'Confirmed' } });
+  if (vendorResponse.status() !== 201) throw new Error(`Generated vendor fixture failed: ${vendorResponse.status()} ${await vendorResponse.text()}`);
   const createdResponse = await page.request.post(`${baseUrl}/api/purchase-orders`, { data: {
-    po_no: poNo, vendor: 'Apex Apparel Mfg Pvt Ltd', vendor_code: 'VEN001', warehouse: 'Delhi NCR', source_location: 'Mumbai WH',
+    po_no: poNo, vendor: vendorName, vendor_code: vendorCode, warehouse: 'Delhi NCR', source_location: 'Mumbai WH',
     po_date: '2026-08-24', expected_date: '2026-08-30', items: 1, qty: 10, amount: 1000, buyer_name: 'System Buyer',
     recv_validation_code: 'Standard', po_type: 'Outright', po_mode: 'Manual', status: 'Pending Confirmation',
   }});
@@ -24,6 +47,8 @@ try {
   const created = await createdResponse.json();
   const revisedResponse = await page.request.put(`${baseUrl}/api/purchase-orders`, { data: { id: created.id, qty: 12, amount: 1200, expected_date: '2026-09-01', revision_reason: 'Parity verification' } });
   if (!revisedResponse.ok()) throw new Error(`Fixture revision failed: ${revisedResponse.status()} ${await revisedResponse.text()}`);
+  const persisted = await db.collection('purchase_orders').findOne({ po_no: poNo });
+  if (persisted?.revision_no !== 1 || persisted?.revisions?.[0]?.reason !== 'Parity verification') throw new Error('PO revision did not persist to the generated MongoDB database.');
 
   for (const size of [20, 50, 100, 200]) {
     const response = await page.request.post(`${baseUrl}/api/po-revision`, { data: { rows: size, page: 1, sidx: 'id.POCode', sord: 'asc', REQ_SEARCH_FLAG: true, 'id.POCode': poNo } });
@@ -52,9 +77,10 @@ try {
   await page.locator('#gs_poDate').fill('2026-08-24');
   await page.locator('#gs_poRevisionDate').fill(new Date().toISOString().slice(0, 10));
   await page.locator('#gs_poCode').fill(poNo);
-  const requestPromise = page.waitForRequest((request) => request.url().endsWith('/api/po-revision') && request.method() === 'POST');
-  await page.getByRole('button', { name: 'Search', exact: true }).click();
-  const request = await requestPromise;
+  const [request] = await Promise.all([
+    page.waitForRequest((request) => request.url().endsWith('/api/po-revision') && request.method() === 'POST', { timeout: 12000 }),
+    page.locator('#SearchBtn').click(),
+  ]);
   const payload = request.postDataJSON();
   if (payload.rows !== 20 || payload.page !== 1 || payload.sidx !== 'id.POCode' || payload.sord !== 'asc' || payload.REQ_SEARCH_FLAG !== true || payload['id.POCode'] !== poNo || payload.podate !== '2026-08-24' || !payload.poRevisionDate || payload.sourceLocation !== 'Mumbai WH' || payload.createdBy !== '' || payload.updatedDate !== '' || payload.fromPORevisionCode !== `${poNo}-R1` || payload.toPOCode !== poNo) throw new Error(`Search payload mismatch: ${JSON.stringify(payload)}`);
   await page.getByText(`${poNo}-R1`, { exact: true }).waitFor();
@@ -62,8 +88,8 @@ try {
 
   await page.getByRole('button', { name: 'Open vendor picker' }).click();
   await page.getByText('Vendor Picker', { exact: true }).waitFor();
-  await page.getByRole('textbox', { name: 'Search vendors' }).fill('Apex');
-  const vendor = page.getByRole('button').filter({ hasText: /Apex Apparel/ }).first();
+  await page.getByRole('textbox', { name: 'Search vendors' }).fill(vendorName);
+  const vendor = page.getByRole('button').filter({ hasText: vendorName }).first();
   await vendor.click();
   if (!await page.locator('#gs_vendorCode').inputValue()) throw new Error('Vendor picker did not populate Vendor Code.');
 
@@ -76,7 +102,7 @@ try {
     await new Promise((resolve) => setTimeout(resolve, 150));
     await route.fulfill({ status: 500, contentType: 'application/json', body: JSON.stringify({ error: 'Verification failure' }) });
   });
-  await page.getByRole('button', { name: 'Search', exact: true }).click();
+  await page.locator('#SearchBtn').click();
   await page.getByText('Loading records…', { exact: true }).waitFor();
   await page.getByRole('alert').getByText('Verification failure', { exact: true }).waitFor();
   await page.unroute('**/api/po-revision');
@@ -85,5 +111,7 @@ try {
   if (runtimeErrors.length || apiErrors.length) throw new Error(`Browser errors: ${[...runtimeErrors, ...apiErrors].join(' | ')}`);
   console.log('PASS PO Revision: API-backed search, response model, filters, advanced search, vendor picker, pagination sizes, grid, and reset.');
 } finally {
+  await anonymous.close();
   await browser.close();
+  await mongo.close();
 }

@@ -54,7 +54,14 @@ export default function TaxApplication() {
     if (!form.tax_category.trim()) e.tax_category = 'Tax Category is required';
     if (!form.tax_group_code.trim()) e.tax_group_code = 'Tax Group Code is required';
     if (!form.tax_zone.trim()) e.tax_zone = 'Please Select Tax Zone';
-    if (form.from_mrp !== '' && form.to_mrp !== '' && Number(form.to_mrp) > 0 && Number(form.from_mrp) > Number(form.to_mrp)) e.to_mrp = 'To MRP must be ≥ From MRP';
+    if (!TAX_TYPES.includes(form.tax_type)) e.tax_type = 'Please Select Tax Type';
+    if (!DIRECTIONS.includes(form.goods_direction)) e.goods_direction = 'Please Select Goods Direction';
+    const date = String(form.start_date || '');
+    const parsedDate = /^\d{4}-\d{2}-\d{2}$/.test(date) ? new Date(`${date}T00:00:00.000Z`) : null;
+    if (!parsedDate || Number.isNaN(parsedDate.getTime()) || parsedDate.toISOString().slice(0, 10) !== date) e.start_date = 'Please Select a valid Start Date';
+    if (form.from_mrp === '' || !Number.isFinite(Number(form.from_mrp)) || Number(form.from_mrp) < 0) e.from_mrp = 'Please Enter a valid From MRP';
+    if (form.to_mrp === '' || !Number.isFinite(Number(form.to_mrp)) || Number(form.to_mrp) < 0) e.to_mrp = 'Please Enter a valid To MRP';
+    if (!e.from_mrp && !e.to_mrp && Number(form.to_mrp) > 0 && Number(form.from_mrp) > Number(form.to_mrp)) e.to_mrp = 'To MRP must be ≥ From MRP';
     setErrors(e); return Object.keys(e).length === 0;
   };
 
@@ -65,7 +72,7 @@ export default function TaxApplication() {
       const payload = { ...form, from_mrp: Number(form.from_mrp), to_mrp: Number(form.to_mrp) };
       if (edit) await apiSend('/api/taxapp', 'PUT', { id: edit.id, ...payload });
       else await apiSend('/api/taxapp', 'POST', payload);
-      setToast({ msg: edit ? 'Tax Application updated' : 'Tax Application created', type: 'ok' }); setShow(false); load();
+      setToast({ msg: edit ? 'Tax Application updated' : 'Tax Application created', type: 'ok' }); setShow(false); await search({}, 1, pageModel.pageSize);
     } catch (e: any) { setToast({ msg: e.message || 'Save failed', type: 'err' }); } finally { setBusy(false); }
   };
 
@@ -107,21 +114,21 @@ export default function TaxApplication() {
       <Modal title={edit ? 'Edit Tax Application' : 'Add New Tax Application'} open={show} onClose={() => setShow(false)} wide>
         <div className="grid grid-cols-2 gap-3">
           <div><label className="lbl">Tax Category<span className="text-rose-500"> *</span></label>
-            <select value={form.tax_category} onChange={(e) => setForm({ ...form, tax_category: e.target.value })} className={`inp ${errors.tax_category ? 'border-rose-400 ring-1 ring-rose-300' : ''}`}><option value="">--- Select ---</option>{categories.filter((category) => category.status === 'Active' || category.code === form.tax_category).map((category) => <option key={category.id} value={category.code}>{category.code} — {category.name}</option>)}</select>
+            <select aria-label="Tax Category" value={form.tax_category} onChange={(e) => setForm({ ...form, tax_category: e.target.value })} className={`inp ${errors.tax_category ? 'border-rose-400 ring-1 ring-rose-300' : ''}`}><option value="">--- Select ---</option>{categories.filter((category) => category.status === 'Active' || category.code === form.tax_category).map((category) => <option key={category.id} value={category.code}>{category.code} — {category.name}</option>)}</select>
             {errors.tax_category && <p className="mt-0.5 text-xs text-rose-500">{errors.tax_category}</p>}</div>
-          <div><label className="lbl">Tax Type</label><select value={form.tax_type} onChange={(e) => setForm({ ...form, tax_type: e.target.value })} className="inp"><option value="">--- Select ---</option>{TAX_TYPES.map((t) => <option key={t}>{t}</option>)}</select></div>
+          <div><label className="lbl">Tax Type</label><select aria-label="Tax Type" value={form.tax_type} onChange={(e) => setForm({ ...form, tax_type: e.target.value })} className={`inp ${errors.tax_type ? 'border-rose-400 ring-1 ring-rose-300' : ''}`}><option value="">--- Select ---</option>{TAX_TYPES.map((t) => <option key={t}>{t}</option>)}</select>{errors.tax_type && <p className="mt-0.5 text-xs text-rose-500">{errors.tax_type}</p>}</div>
           <div><label className="lbl">Tax Group Code<span className="text-rose-500"> *</span></label>
-            <select value={form.tax_group_code} onChange={(e) => setForm({ ...form, tax_group_code: e.target.value })} className={`inp ${errors.tax_group_code ? 'border-rose-400 ring-1 ring-rose-300' : ''}`}><option value="">--- Select ---</option>{taxGroups.filter((group) => group.status === 'Active' || group.code === form.tax_group_code).map((group) => <option key={group.id} value={group.code}>{group.code} — {group.name}</option>)}</select>
+            <select aria-label="Tax Group Code" value={form.tax_group_code} onChange={(e) => setForm({ ...form, tax_group_code: e.target.value })} className={`inp ${errors.tax_group_code ? 'border-rose-400 ring-1 ring-rose-300' : ''}`}><option value="">--- Select ---</option>{taxGroups.filter((group) => group.status === 'Active' || group.code === form.tax_group_code).map((group) => <option key={group.id} value={group.code}>{group.code} — {group.name}</option>)}</select>
             {errors.tax_group_code && <p className="mt-0.5 text-xs text-rose-500">{errors.tax_group_code}</p>}</div>
-          <div><label className="lbl">Goods Direction</label><select value={form.goods_direction} onChange={(e) => setForm({ ...form, goods_direction: e.target.value })} className="inp"><option value="">--- Select ---</option>{DIRECTIONS.map((t) => <option key={t}>{t}</option>)}</select></div>
-          <div><label className="lbl">Tax Authority</label><input value={form.tax_authority} onChange={(e) => setForm({ ...form, tax_authority: e.target.value })} className="inp" /></div>
-          <div><label className="lbl">Tax Zone<span className="text-rose-500"> *</span></label><select value={form.tax_zone} onChange={(e) => setForm({ ...form, tax_zone: e.target.value })} className={`inp ${errors.tax_zone ? 'border-rose-400 ring-1 ring-rose-300' : ''}`}><option value="">--- Select ---</option>{taxZones.filter((zone) => zone.status === 'Active' || zone.code === form.tax_zone).map((zone) => <option key={zone.id} value={zone.code}>{zone.code} — {zone.name}</option>)}</select>{errors.tax_zone && <p className="mt-0.5 text-xs text-rose-500">{errors.tax_zone}</p>}</div>
-          <div><label className="lbl">Start Date</label><input type="date" value={form.start_date} onChange={(e) => setForm({ ...form, start_date: e.target.value })} className="inp" /></div>
-          <div><label className="lbl">From MRP</label><input type="number" step="0.01" value={form.from_mrp} onChange={(e) => setForm({ ...form, from_mrp: e.target.value })} className="inp" /></div>
+          <div><label className="lbl">Goods Direction</label><select aria-label="Goods Direction" value={form.goods_direction} onChange={(e) => setForm({ ...form, goods_direction: e.target.value })} className={`inp ${errors.goods_direction ? 'border-rose-400 ring-1 ring-rose-300' : ''}`}><option value="">--- Select ---</option>{DIRECTIONS.map((t) => <option key={t}>{t}</option>)}</select>{errors.goods_direction && <p className="mt-0.5 text-xs text-rose-500">{errors.goods_direction}</p>}</div>
+          <div><label className="lbl">Tax Authority</label><input aria-label="Tax Authority" value={form.tax_authority} onChange={(e) => setForm({ ...form, tax_authority: e.target.value })} className="inp" /></div>
+          <div><label className="lbl">Tax Zone<span className="text-rose-500"> *</span></label><select aria-label="Tax Zone" value={form.tax_zone} onChange={(e) => setForm({ ...form, tax_zone: e.target.value })} className={`inp ${errors.tax_zone ? 'border-rose-400 ring-1 ring-rose-300' : ''}`}><option value="">--- Select ---</option>{taxZones.filter((zone) => zone.status === 'Active' || zone.code === form.tax_zone).map((zone) => <option key={zone.id} value={zone.code}>{zone.code} — {zone.name}</option>)}</select>{errors.tax_zone && <p className="mt-0.5 text-xs text-rose-500">{errors.tax_zone}</p>}</div>
+          <div><label className="lbl">Start Date</label><input aria-label="Start Date" type="date" value={form.start_date} onChange={(e) => setForm({ ...form, start_date: e.target.value })} className={`inp ${errors.start_date ? 'border-rose-400 ring-1 ring-rose-300' : ''}`} />{errors.start_date && <p className="mt-0.5 text-xs text-rose-500">{errors.start_date}</p>}</div>
+          <div><label className="lbl">From MRP</label><input aria-label="From MRP" type="number" min="0" step="0.01" value={form.from_mrp} onChange={(e) => setForm({ ...form, from_mrp: e.target.value })} className={`inp ${errors.from_mrp ? 'border-rose-400 ring-1 ring-rose-300' : ''}`} />{errors.from_mrp && <p className="mt-0.5 text-xs text-rose-500">{errors.from_mrp}</p>}</div>
           <div><label className="lbl">To MRP</label>
-            <input type="number" step="0.01" value={form.to_mrp} onChange={(e) => setForm({ ...form, to_mrp: e.target.value })} className={`inp ${errors.to_mrp ? 'border-rose-400 ring-1 ring-rose-300' : ''}`} />
+            <input aria-label="To MRP" type="number" min="0" step="0.01" value={form.to_mrp} onChange={(e) => setForm({ ...form, to_mrp: e.target.value })} className={`inp ${errors.to_mrp ? 'border-rose-400 ring-1 ring-rose-300' : ''}`} />
             {errors.to_mrp && <p className="mt-0.5 text-xs text-rose-500">{errors.to_mrp}</p>}</div>
-          <div><label className="lbl">Is Active</label><select value={form.is_active} onChange={(e) => setForm({ ...form, is_active: e.target.value })} className="inp"><option>Active</option><option>Inactive</option></select></div>
+          <div><label className="lbl">Is Active</label><select aria-label="Is Active" value={form.is_active} onChange={(e) => setForm({ ...form, is_active: e.target.value })} className="inp"><option>Active</option><option>Inactive</option></select></div>
           <label className="flex items-center gap-2 text-sm text-slate-700"><input type="checkbox" checked={form.is_form_c_tax} onChange={(e) => setForm({ ...form, is_form_c_tax: e.target.checked })} /> Is Form C Tax</label>
           <label className="flex items-center gap-2 text-sm text-slate-700"><input type="checkbox" checked={form.is_form_h_tax} onChange={(e) => setForm({ ...form, is_form_h_tax: e.target.checked })} /> Is Form H Tax</label>
         </div>

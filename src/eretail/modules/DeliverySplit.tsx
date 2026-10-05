@@ -1,3 +1,129 @@
-import{useEffect,useState}from'react';import{Search}from'lucide-react';import Shell from'../Shell';import{Btn,Panel,Toast}from'../parts';import OrderGrid,{GCol}from'../OrderGrid';import Modal from'../../components/Modal';import{apiGet,apiSend}from'../../lib/api';
-const fresh={barCode:'',skuCode:'',qty:'',fromId:'',toId:'',fromBinCode:'',lotCode:'',skuDesc:'',uomDesc:''};
-export default function DeliverySplit(){const[meta,setMeta]=useState<any>({deliveries:[]}),[outDelNo,setOutDelNo]=useState(''),[status,setStatus]=useState(''),[newDelivery,setNewDelivery]=useState(''),[rows,setRows]=useState<any[]>([]),[form,setForm]=useState<any>({...fresh}),[bins,setBins]=useState<string[]>([]),[lots,setLots]=useState<string[]>([]),[pager,setPager]=useState({page:0,total:0,records:0,pageSize:20}),[loading,setLoading]=useState(false),[picker,setPicker]=useState(false),[audit,setAudit]=useState<any[]|null>(null),[toast,setToast]=useState<any>(null);useEffect(()=>{apiGet('/api/delivery-split').then(setMeta).catch(()=>setToast({msg:'Unable to load Delivery Split',type:'err'}))},[]);async function search(page=1,size=pager.pageSize){setLoading(true);try{const r:any=await apiSend('/api/delivery-split','POST',{action:'search',outDelNo,rows:size,page,sidx:'orderNo',sord:'asc'});setRows(r.rowDTOListFromUpdate);setStatus(r.outboundP.status);setNewDelivery(r.outboundP.newOutDelNo||'');setPager({page:r.page,total:r.total,records:r.records,pageSize:size})}catch(e:any){setRows([]);setToast({msg:e.message,type:'err'})}finally{setLoading(false)}}async function lookup(){try{const r:any=await apiSend('/api/delivery-split','POST',{action:'sku-lookup',outDelNo,skuCode:form.barCode});setForm({...form,skuCode:r.skuCode,skuDesc:r.skuDesc,uomDesc:r.uomDesc,qty:'1'});setBins(r.binList||[]);setLots(r.lotList||[])}catch(e:any){setToast({msg:e.message,type:'err'})}}async function add(){try{const r:any=await apiSend('/api/delivery-split','POST',{action:'add-sku',outDelNo,skuCode:form.skuCode,uomCode:'EA',uQty:form.qty,uFromId:form.fromId,uToId:form.toId,fromBinCode:form.fromBinCode,lotCode:form.lotCode});setRows([...rows.filter(x=>x.statusCode!=='7'),...r.rowDTOListFromUpdate]);setForm({...fresh});setBins([]);setLots([])}catch(e:any){setToast({msg:e.message,type:'err'})}}async function confirm(){try{const r:any=await apiSend('/api/delivery-split','POST',{action:'confirm',outDelNo,lines:rows});setRows([...rows.filter(x=>x.statusCode!=='7'),...r.rowDTOListFromUpdate]);setNewDelivery(r.outboundP.newOutDelNo);setStatus(r.outboundP.status);setToast({msg:'Outbound Delivery Splitted successfully.',type:'ok'});setMeta(await apiGet('/api/delivery-split'))}catch(e:any){setToast({msg:e.message,type:'err'})}}async function showAudit(){try{const r:any=await apiSend('/api/delivery-split','POST',{action:'audit',outDelNo});setAudit(r.rows)}catch(e:any){setToast({msg:e.message,type:'err'})}}function reset(){setOutDelNo('');setStatus('');setNewDelivery('');setRows([]);setForm({...fresh});setBins([]);setLots([]);setPager({page:0,total:0,records:0,pageSize:20});setToast(null)}const cols:GCol[]=[['obCode','Outbound Del No'],['orderNo','Order No'],['externOrderNo','Ext Order No'],['orderTypeText','Order Type'],['orderTypeCode','orderTypeCode'],['sku','SKU Code'],['displaySku','SKU Code'],['uomCode','uomCode'],['skuDesc','SKU Desc'],['uomDesc','Uom'],['qty','Quantity'],['fromId','FromId'],['toId','ToId'],['statusText','Status'],['statusCode','statusCode'],['lineno','lineno'],['uniqueLineNo','uniqueLineNo'],['hasDecimal','hasDecimal'],['fromBin','From Bin'],['lot','Lot'],['scannedUniqueNo','Scanned Unique'],['selectedSerialNo','IMEI No'],['inDate','In Date'],['serialLineNo','Serail Line No'],['sortationBy','sortationBy'],['sortationDate','sortationDate'],['cntRowAs1Qty','cntRowAs1Qty']].map(([key,label])=>({key,label}));const auditCols:GCol[]=[{key:'source_delivery',label:'Outbound Delivery'},{key:'new_delivery',label:'New Outbound Delivery'},{key:'order_no',label:'Order No'},{key:'sku_code',label:'SKU Code'},{key:'split_qty',label:'Split Qty'},{key:'remaining_qty',label:'Remaining Qty'},{key:'modified_by',label:'Modified By'},{key:'modified_date',label:'Modified Date'}];return <Shell active="wms" breadcrumb="WMS > Order Processing > Delivery Split" openScreens={[{label:'Delivery Split',to:'#'}]}><div className="mb-2 flex justify-end"><Btn variant="ghost" onClick={()=>void showAudit()}>Audit</Btn></div><Panel title="Delivery Split"><div className="grid items-end gap-3 md:grid-cols-[minmax(260px,1fr)_auto_auto_auto]"><label className="text-xs text-slate-600">Outbound Del No<input aria-label="Outbound Del No" className="inp mt-1" value={outDelNo} onChange={e=>setOutDelNo(e.target.value)} onKeyDown={e=>e.key==='Enter'&&void search()}/></label><Btn variant="ghost" onClick={()=>setPicker(true)}>...</Btn><Btn onClick={()=>void search()}><Search size={14}/> Search</Btn><Btn variant="ghost" onClick={reset}>Reset</Btn></div>{status&&<div className="mt-4 grid gap-3 rounded border bg-slate-50 p-3 text-sm md:grid-cols-4"><span>Outbound Del No<br/><b>{outDelNo}</b></span><span>Status<br/><b>{status}</b></span><span>New OutBound Delivery<br/><b>{newDelivery||'—'}</b></span><span>Status<br/><b>{newDelivery?status:'—'}</b></span></div>}{status&&<><div className="mt-4 grid items-end gap-3 md:grid-cols-5"><label className="text-xs text-slate-600">Scan SKU<input aria-label="Scan SKU" className="inp mt-1" value={form.barCode} onChange={e=>setForm({...form,barCode:e.target.value})} onBlur={()=>form.barCode&&void lookup()} onKeyDown={e=>e.key==='Enter'&&void lookup()}/></label><label className="text-xs text-slate-600">Quantity<input aria-label="Quantity" type="number" min="1" className="inp mt-1" value={form.qty} onChange={e=>setForm({...form,qty:e.target.value})}/></label><label className="text-xs text-slate-600">From Bin*<select aria-label="From Bin" className="inp mt-1" value={form.fromBinCode} onChange={e=>setForm({...form,fromBinCode:e.target.value})}><option value="">--- Select ---</option>{bins.map(x=><option key={x}>{x}</option>)}</select></label><label className="text-xs text-slate-600">Lot<select aria-label="Lot" className="inp mt-1" value={form.lotCode} onChange={e=>setForm({...form,lotCode:e.target.value})}><option value="">--- Select ---</option>{lots.map(x=><option key={x}>{x}</option>)}</select></label><div className="text-xs text-slate-600">SKU Desc<br/><b>{form.skuDesc||'—'}</b><br/>UOM <b>{form.uomDesc||'—'}</b></div></div><div className="my-3 flex gap-2"><Btn onClick={()=>void add()}>Add</Btn><Btn variant="ghost" onClick={()=>{setForm({...fresh});setBins([]);setLots([])}}>Reset Added SKU</Btn><Btn onClick={()=>void confirm()} disabled={!rows.some(x=>x.statusCode==='7')}>Confirm Splitting</Btn></div></>}<OrderGrid cols={cols} rows={rows} loading={loading} empty="No records to view"/><div className="mt-3 flex items-center justify-between text-sm text-slate-600"><span>{pager.records?`View ${(pager.page-1)*pager.pageSize+1} - ${Math.min(pager.page*pager.pageSize,pager.records)} of ${pager.records}`:'No records to view'}</span><label>Records per Page <select aria-label="Records per Page" value={pager.pageSize} onChange={e=>void search(1,+e.target.value)} className="rounded border px-2 py-1">{[20,50,100,200].map(x=><option key={x}>{x}</option>)}</select></label></div></Panel><Modal title="Select Outbound Delivery" open={picker} onClose={()=>setPicker(false)} wide><OrderGrid cols={[{key:'outDelNo',label:'Outbound Del No'},{key:'orderNo',label:'Order No'},{key:'status',label:'Status'},{key:'skuCode',label:'SKU Code'},{key:'qty',label:'Quantity'},{key:'pick',label:'',render:(r:any)=><Btn onClick={()=>{setOutDelNo(r.outDelNo);setPicker(false)}}>Select</Btn>}]} rows={meta.deliveries||[]} empty="No outbound deliveries"/></Modal><Modal title="Delivery Split Audit" open={audit!==null} onClose={()=>setAudit(null)} wide><OrderGrid cols={auditCols} rows={audit||[]} empty="No audit records"/></Modal>{toast&&<Toast {...toast} onClose={()=>setToast(null)}/>}</Shell>}
+import { useEffect, useState } from 'react';
+import { Search } from 'lucide-react';
+import Shell from '../Shell';
+import { Btn, Panel, Toast } from '../parts';
+import OrderGrid, { GCol } from '../OrderGrid';
+import Modal from '../../components/Modal';
+import { apiGet, apiSend } from '../../lib/api';
+
+const auditCols: GCol[] = [
+  { key: 'source_delivery', label: 'Outbound Delivery' },
+  { key: 'new_delivery', label: 'New Outbound Delivery' },
+  { key: 'order_no', label: 'Order No' },
+  { key: 'sku_code', label: 'SKU Code' },
+  { key: 'split_qty', label: 'Split Qty' },
+  { key: 'remaining_qty', label: 'Remaining Qty' },
+  { key: 'modified_by', label: 'Modified By' },
+  { key: 'modified_date', label: 'Modified Date' },
+  { key: 'trust', label: 'Record Trust' },
+];
+
+export default function DeliverySplit() {
+  const [meta, setMeta] = useState<any>({ deliveries: [] });
+  const [outDelNo, setOutDelNo] = useState('');
+  const [status, setStatus] = useState('');
+  const [rows, setRows] = useState<any[]>([]);
+  const [pager, setPager] = useState({ page: 0, total: 0, records: 0, pageSize: 20 });
+  const [loading, setLoading] = useState(false);
+  const [picker, setPicker] = useState(false);
+  const [audit, setAudit] = useState<any[] | null>(null);
+  const [toast, setToast] = useState<any>(null);
+
+  useEffect(() => {
+    apiGet('/api/delivery-split')
+      .then(setMeta)
+      .catch(() => setToast({ msg: 'Unable to load Delivery Split', type: 'err' }));
+  }, []);
+
+  async function search(page = 1, size = pager.pageSize) {
+    setLoading(true);
+    try {
+      const result: any = await apiSend('/api/delivery-split', 'POST', {
+        action: 'search', outDelNo, rows: size, page, sidx: 'orderNo', sord: 'asc',
+      });
+      setRows(result.rowDTOListFromUpdate);
+      setStatus(result.outboundP.status);
+      setPager({ page: result.page, total: result.total, records: result.records, pageSize: size });
+    } catch (error: any) {
+      setRows([]);
+      setStatus('');
+      setToast({ msg: error.message, type: 'err' });
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function showAudit() {
+    try {
+      const result: any = await apiSend('/api/delivery-split', 'POST', { action: 'audit', outDelNo });
+      setAudit(result.rows);
+    } catch (error: any) {
+      setToast({ msg: error.message, type: 'err' });
+    }
+  }
+
+  function reset() {
+    setOutDelNo('');
+    setStatus('');
+    setRows([]);
+    setPager({ page: 0, total: 0, records: 0, pageSize: 20 });
+    setToast(null);
+  }
+
+  const cols: GCol[] = [
+    ['obCode', 'Outbound Del No'], ['orderNo', 'Order No'], ['externOrderNo', 'Ext Order No'],
+    ['orderTypeText', 'Order Type'], ['orderTypeCode', 'orderTypeCode'], ['sku', 'SKU Code'],
+    ['displaySku', 'SKU Code'], ['uomCode', 'uomCode'], ['skuDesc', 'SKU Desc'], ['uomDesc', 'Uom'],
+    ['qty', 'Quantity'], ['fromId', 'FromId'], ['toId', 'ToId'], ['statusText', 'Status'],
+    ['statusCode', 'statusCode'], ['lineno', 'lineno'], ['uniqueLineNo', 'uniqueLineNo'],
+    ['hasDecimal', 'hasDecimal'], ['fromBin', 'From Bin'], ['lot', 'Lot'],
+    ['scannedUniqueNo', 'Scanned Unique'], ['selectedSerialNo', 'IMEI No'], ['inDate', 'In Date'],
+    ['serialLineNo', 'Serail Line No'], ['sortationBy', 'sortationBy'], ['sortationDate', 'sortationDate'],
+    ['cntRowAs1Qty', 'cntRowAs1Qty'],
+  ].map(([key, label]) => ({ key, label }));
+
+  return (
+    <Shell active="wms" breadcrumb="WMS > Order Processing > Delivery Split" openScreens={[{ label: 'Delivery Split', to: '#' }]}>
+      <div className="mb-2 flex justify-end">
+        <Btn variant="ghost" onClick={() => void showAudit()}>Audit</Btn>
+      </div>
+      <Panel title="Delivery Split">
+        <div role="status" className="mb-4 rounded border border-amber-300 bg-amber-50 p-3 text-sm text-amber-950">
+          Delivery splitting is unavailable until Central Inventory supports an atomic order-line split and fulfillment reservation. This screen is read-only; it will not change order quantities or create a new delivery. Search results come from legacy fulfillment records, not authoritative inventory balances.
+        </div>
+        <div className="grid items-end gap-3 md:grid-cols-[minmax(260px,1fr)_auto_auto_auto]">
+          <label className="text-xs text-slate-600">
+            Outbound Del No
+            <input aria-label="Outbound Del No" className="inp mt-1" value={outDelNo} onChange={event => setOutDelNo(event.target.value)} onKeyDown={event => event.key === 'Enter' && void search()} />
+          </label>
+          <Btn variant="ghost" onClick={() => setPicker(true)}>...</Btn>
+          <Btn onClick={() => void search()}><Search size={14} /> Search</Btn>
+          <Btn variant="ghost" onClick={reset}>Reset</Btn>
+        </div>
+        {status && (
+          <div className="mt-4 grid gap-3 rounded border bg-slate-50 p-3 text-sm md:grid-cols-2">
+            <span>Outbound Del No<br /><b>{outDelNo}</b></span>
+            <span>Current status<br /><b>{status}</b></span>
+          </div>
+        )}
+        <OrderGrid cols={cols} rows={rows} loading={loading} empty="No records to view" />
+        <div className="mt-3 flex items-center justify-between text-sm text-slate-600">
+          <span>{pager.records ? `View ${(pager.page - 1) * pager.pageSize + 1} - ${Math.min(pager.page * pager.pageSize, pager.records)} of ${pager.records}` : 'No records to view'}</span>
+          <label>Records per Page <select aria-label="Records per Page" value={pager.pageSize} onChange={event => void search(1, +event.target.value)} className="rounded border px-2 py-1">{[20, 50, 100, 200].map(size => <option key={size}>{size}</option>)}</select></label>
+        </div>
+      </Panel>
+      <Modal title="Select Outbound Delivery" open={picker} onClose={() => setPicker(false)} wide>
+        <OrderGrid cols={[
+          { key: 'outDelNo', label: 'Outbound Del No' }, { key: 'orderNo', label: 'Order No' },
+          { key: 'status', label: 'Status' }, { key: 'skuCode', label: 'SKU Code' }, { key: 'qty', label: 'Quantity' },
+          { key: 'pick', label: '', render: (row: any) => <Btn onClick={() => { setOutDelNo(row.outDelNo); setPicker(false); }}>Select</Btn> },
+        ]} rows={meta.deliveries || []} empty="No outbound deliveries" />
+      </Modal>
+      <Modal title="Delivery Split Audit" open={audit !== null} onClose={() => setAudit(null)} wide>
+        <p className="mb-3 rounded border border-amber-300 bg-amber-50 p-3 text-sm text-amber-950">Legacy split audit rows are unverified and do not prove a Central Inventory transaction or physical stock movement.</p>
+        <OrderGrid cols={auditCols} rows={audit || []} empty="No audit records" />
+      </Modal>
+      {toast && <Toast {...toast} onClose={() => setToast(null)} />}
+    </Shell>
+  );
+}

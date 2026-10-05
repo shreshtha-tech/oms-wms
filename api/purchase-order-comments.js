@@ -1,4 +1,4 @@
-import { findOne, update, cors } from './mongo.js';
+import { sendDatabaseUnavailable, findOne, update, cors } from './mongo.js';
 
 function commentDate() {
   const parts = new Intl.DateTimeFormat('en-GB', {
@@ -28,7 +28,8 @@ export default async function handler(req, res) {
       commentsOrderList: comments,
     });
   } catch (error) {
-    console.error('API error:', error);
+    if (sendDatabaseUnavailable(res, error)) return;
+    console.error('API error:', { name: error?.name, code: error?.code });
     return res.status(500).json({ error: error.message });
   }
 }

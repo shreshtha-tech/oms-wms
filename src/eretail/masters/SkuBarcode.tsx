@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, react-hooks/set-state-in-effect */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState, useMemo } from 'react';
 import {
   Search, X, Plus, Download, HelpCircle, Home, ChevronRight, Pencil,
@@ -10,6 +10,7 @@ import { Toast } from '../parts';
 import { StatusPill as Pill } from '../EnquiryScreen';
 import { apiGet, apiSend } from '../../lib/api';
 import { useDownload } from '../../context/DownloadContext';
+import { parse } from 'csv-parse/browser/esm/sync';
 
 const UOMS = ['Each', 'Pair', 'Set', 'Box', 'Pack'];
 const BARCODE_TYPES = ['AJIOBusiness', 'AJIOJIT', 'Default'];
@@ -35,11 +36,14 @@ export default function SkuBarcode() {
   const [filters, setFilters] = useState<any>({ sku_code: '', sku_name: '', sku_barcode: '', uom: 'Each', barcode_type: '', is_active: 'Active', is_default: 'Yes' });
   const [applied, setApplied] = useState(filters);
 
-  const empty = { client:'0-DummyClient',sku_code: '', sku_name: '', sku_barcode: '', uom: 'Each', barcode_type: 'Default', is_active: 'Active', is_default: 'Yes', modified_date: new Date().toISOString().slice(0, 10), case_size: 1, sale_price: 0, is_purchasable:'Yes',is_saleable: 'Yes',additional_uom:'',length:'',breath:'',height:'',weight:'',cube:'' };
+  const empty = { client:'',sku_code: '', sku_name: '', sku_barcode: '', uom: 'Each', barcode_type: 'Default', is_active: 'Active', is_default: 'Yes', modified_date: new Date().toISOString().slice(0, 10), case_size: 1, sale_price: 0, is_purchasable:'Yes',is_saleable: 'Yes',additional_uom:'',length:'',breath:'',height:'',weight:'',cube:'' };
   const [form, setForm] = useState<any>(empty);
 
-  const load = async(nextPage=page,nextSize=pageSize) => { setLoading(true); try{const result:any=await apiSend('/api/skubarcode','POST',{rows:nextSize,page:nextPage,sidx:'skuCode',sord:'desc',client:'-1',skuCode:filters.sku_code,skuName:filters.sku_name,skuBarcode:filters.sku_barcode,uom:filters.uom||'-1',barcodeType:filters.barcode_type||'-1',isActive:filters.is_active||'-1',isDefault:filters.is_default||'-1',REQ_SEARCH_FLAG:true});setRows(result.rows);setRecords(result.records);setTotal(result.total);setPage(result.page)}catch{setToast({msg:'Failed to load SKU barcodes',type:'err'})}finally{setLoading(false)}};
-  useEffect(()=>{apiGet<any[]>('/api/skus').then(setSkus).finally(()=>setLoading(false))},[]);
+  const load = async(nextPage=page,nextSize=pageSize,filterValues=filters) => { setLoading(true); try{const result:any=await apiSend('/api/skubarcode','POST',{rows:nextSize,page:nextPage,sidx:'skuCode',sord:'desc',client:'-1',skuCode:filterValues.sku_code,skuName:filterValues.sku_name,skuBarcode:filterValues.sku_barcode,uom:filterValues.uom||'-1',barcodeType:filterValues.barcode_type||'-1',isActive:filterValues.is_active||'-1',isDefault:filterValues.is_default||'-1',REQ_SEARCH_FLAG:true});setRows(result.rows||result.gridModel||[]);setRecords(result.records||0);setTotal(result.total||0);setPage(result.page||nextPage)}catch(error:any){setToast({msg:error.message||'Failed to load SKU barcodes',type:'err'})}finally{setLoading(false)}};
+  useEffect(()=>{
+    void load(1,20,filters);
+    apiGet<any[]>('/api/skus').then(setSkus).catch((error:any)=>setToast({msg:error.message||'Failed to load Master SKUs',type:'err'}));
+  },[]);
 
   const filtered = useMemo(() => rows.filter((r) =>
     (!applied.sku_code || r.sku_code.toLowerCase().includes(applied.sku_code.toLowerCase())) &&
@@ -52,8 +56,8 @@ export default function SkuBarcode() {
 
   const totalPages = Math.max(1,total); const pageRows = filtered;
 
-  const doSearch = () => { setApplied(filters); load(1,pageSize); };
-  const doReset = () => { const c = { sku_code: '', sku_name: '', sku_barcode: '', uom: 'Each', barcode_type: '', is_active: 'Active', is_default: 'Yes' }; setFilters(c); setApplied(c); setRows([]);setRecords(0);setTotal(0);setPage(1); };
+  const doSearch = () => { setApplied(filters); void load(1,pageSize,filters); };
+  const doReset = () => { const c = { sku_code: '', sku_name: '', sku_barcode: '', uom: 'Each', barcode_type: '', is_active: 'Active', is_default: 'Yes' }; setFilters(c); setApplied(c); void load(1,pageSize,c); };
 
   const openNew = () => { setEdit(null); setForm(empty); setErrors({}); setShow(true); };
   const openEdit = (r: any) => { setEdit(r); setForm({ ...empty, ...r }); setErrors({}); setShow(true); };
@@ -76,7 +80,7 @@ export default function SkuBarcode() {
       const payload = { ...form, case_size: Number(form.case_size), sale_price: Number(form.sale_price) };
       if (edit) await apiSend('/api/skubarcode', 'PUT', { id: edit.id, ...payload });
       else await apiSend('/api/skubarcode', 'POST', payload);
-      setToast({ msg: edit ? 'SKU Barcode updated' : 'SKU Barcode created', type: 'ok' }); setShow(false); load();
+      setToast({ msg: edit ? 'SKU Barcode updated' : 'SKU Barcode created', type: 'ok' }); setShow(false); await load(1,pageSize,applied);
     } catch { setToast({ msg: 'Save failed', type: 'err' }); } finally { setBusy(false); }
   };
 
@@ -86,10 +90,13 @@ export default function SkuBarcode() {
     if (!importFile.name.toLowerCase().endsWith('.csv')) return setToast({ msg: 'CSV is required for validated local processing', type: 'err' });
     setBusy(true); const preview:any[]=[];
     try {
-      const lines=(await importFile.text()).split(/\r?\n/).filter(Boolean); if(lines.length-1>1000) throw new Error('Max 1000 rows can be imported in an attempt of Import.');
-      const headers=lines[0].split(',').map(x=>x.trim());
-      for(let i=1;i<lines.length;i++){const values=lines[i].split(',');const row:any=Object.fromEntries(headers.map((h,j)=>[h,values[j]?.trim()||'']));const sku=skus.find(x=>x.sku_code?.toLowerCase()===row.sku_code?.toLowerCase());try{if(!sku)throw new Error('SKU Code does not exist in Master SKU');await apiSend('/api/skubarcode','POST',{...row,sku_name:sku.name,uom:row.uom||sku.uom||'Each',sale_price:Number(row.sale_price||sku.mrp||0),is_active:row.is_active||'Active',is_default:row.is_default||'Yes',is_saleable:row.is_saleable||'Yes'});preview.push({seq:i,...row,status:'Success',error:''})}catch(e:any){preview.push({seq:i,...row,status:'Failed',error:e.message})}}
-      setImportRows(preview); setImportBatch(`BC-${Date.now()}`); setToast({msg:`Import completed: ${preview.filter(x=>x.status==='Success').length} successful, ${preview.filter(x=>x.status==='Failed').length} failed`,type:preview.some(x=>x.status==='Failed')?'err':'ok'}); load();
+      const parsed = parse(await importFile.text(), { columns: true, skip_empty_lines: true, trim: true, bom: true }) as Record<string, string>[];
+      if (!parsed.length) throw new Error('CSV contains no barcode rows.');
+      if (parsed.length > 1000) throw new Error('Max 1000 rows can be imported in an attempt of Import.');
+      if (!parsed.every((row) => Object.hasOwn(row, 'sku_barcode') && Object.hasOwn(row, 'sku_code'))) throw new Error('CSV must contain sku_barcode and sku_code columns.');
+      const batch = `BC-${Date.now()}`;
+      for (let i=0;i<parsed.length;i++) { const row:any=parsed[i]; const sku=skus.find(x=>x.sku_code?.toLowerCase()===row.sku_code?.toLowerCase()); try { if(!sku)throw new Error('SKU Code does not exist in Master SKU'); await apiSend('/api/skubarcode','POST',{...row,import_batch_no:batch,sku_name:sku.name,uom:row.uom||sku.uom||'Each',sale_price:Number(row.sale_price||sku.mrp||0),is_active:row.is_active||'Active',is_default:row.is_default||'Yes',is_saleable:row.is_saleable||'Yes'}); preview.push({seq:i+1,...row,status:'Success',error:''}); } catch(e:any) { preview.push({seq:i+1,...row,status:'Failed',error:e.message}); } }
+      setImportRows(preview); setImportBatch(batch); setToast({msg:`Import completed: ${preview.filter(x=>x.status==='Success').length} successful, ${preview.filter(x=>x.status==='Failed').length} failed`,type:preview.some(x=>x.status==='Failed')?'err':'ok'}); void load(1,pageSize,applied);
     } catch(e:any){setToast({msg:e.message,type:'err'})} finally{setBusy(false)}
   };
 
@@ -125,7 +132,7 @@ export default function SkuBarcode() {
 
       {tab === 'import' ? (
         <div className="rounded-b-lg border border-t-0 border-slate-200 bg-white">
-          <div className="flex items-center justify-between border-b p-4"><div className="flex items-center gap-8 text-sm"><span>Download Template <button onClick={downloadTemplate} className="font-semibold text-[#2f8eb8] hover:underline">BarCode_Template.xls</button></span><label>Upload Template <input type="file" accept=".csv,.xlsx" onChange={(e)=>setImportFile(e.target.files?.[0]||null)} className="ml-2 border p-1"/></label><label>Import Batch No <input value={importBatch} readOnly className="ml-2 border p-1"/></label></div><div className="flex gap-2"><button onClick={importBarcodes} disabled={busy} className="rounded bg-[#ef9d18] px-4 py-2 text-white">Import</button><button onClick={()=>{setImportFile(null);setImportRows([]);setImportBatch('')}} className="rounded border px-4 py-2">Reset</button></div></div>
+          <div className="flex items-center justify-between border-b p-4"><div className="flex items-center gap-8 text-sm"><span>Download Template <button onClick={downloadTemplate} className="font-semibold text-[#2f8eb8] hover:underline">BarCode_Template.csv</button></span><label>Upload Template <input aria-label="Upload Barcode Template" type="file" accept=".csv" onChange={(e)=>setImportFile(e.target.files?.[0]||null)} className="ml-2 border p-1"/></label><label>Import Batch No <input aria-label="Import Batch No" value={importBatch} readOnly className="ml-2 border p-1"/></label></div><div className="flex gap-2"><button onClick={importBarcodes} disabled={busy} className="rounded bg-[#ef9d18] px-4 py-2 text-white">Import</button><button onClick={()=>{setImportFile(null);setImportRows([]);setImportBatch('')}} className="rounded border px-4 py-2">Reset</button></div></div>
           <p className="px-4 py-2 text-sm font-semibold italic">*Note: Max 1000 rows can be imported in an attempt of Import.</p>
           <table className="w-full text-sm"><thead className="bg-slate-100"><tr>{['Seq No','SKU Barcode','SKU Code','BarCode Type','Is Active','Status','Error Description'].map(x=><th key={x} className="border p-2">{x}</th>)}</tr></thead><tbody>{importRows.map(r=><tr key={r.seq} className="border-t text-center"><td>{r.seq}</td><td>{r.sku_barcode}</td><td>{r.sku_code}</td><td>{r.barcode_type}</td><td>{r.is_active}</td><td>{r.status}</td><td>{r.error}</td></tr>)}</tbody></table><div className="h-56 border-t"/>
         </div>
@@ -140,13 +147,13 @@ export default function SkuBarcode() {
               </tr>
               <tr className="border-b-2 border-slate-200 bg-slate-50">
                 <th className="px-2 pb-2" />
-                <th className="px-2 pb-2"><input value={filters.sku_code} onChange={(e) => setFilters({ ...filters, sku_code: e.target.value })} onKeyDown={(e) => e.key === 'Enter' && doSearch()} className={hf} /></th>
-                <th className="px-2 pb-2"><input value={filters.sku_name} onChange={(e) => setFilters({ ...filters, sku_name: e.target.value })} className={hf} /></th>
-                <th className="px-2 pb-2"><input value={filters.sku_barcode} onChange={(e) => setFilters({ ...filters, sku_barcode: e.target.value })} className={hf} /></th>
-                <th className="px-2 pb-2"><select value={filters.uom} onChange={(e) => setFilters({ ...filters, uom: e.target.value })} className={hf}>{UOMS.map((u) => <option key={u}>{u}</option>)}</select></th>
-                <th className="px-2 pb-2"><select value={filters.barcode_type} onChange={(e) => setFilters({ ...filters, barcode_type: e.target.value })} className={hf}><option value="">--- Select ---</option>{BARCODE_TYPES.map((b) => <option key={b}>{b}</option>)}</select></th>
-                <th className="px-2 pb-2"><select value={filters.is_active} onChange={(e) => setFilters({ ...filters, is_active: e.target.value })} className={hf}><option>Active</option><option>Inactive</option></select></th>
-                <th className="px-2 pb-2"><select value={filters.is_default} onChange={(e) => setFilters({ ...filters, is_default: e.target.value })} className={hf}><option>Yes</option><option>No</option></select></th>
+                <th className="px-2 pb-2"><input aria-label="Filter SKU Code" value={filters.sku_code} onChange={(e) => setFilters({ ...filters, sku_code: e.target.value })} onKeyDown={(e) => e.key === 'Enter' && doSearch()} className={hf} /></th>
+                <th className="px-2 pb-2"><input aria-label="Filter SKU Name" value={filters.sku_name} onChange={(e) => setFilters({ ...filters, sku_name: e.target.value })} className={hf} /></th>
+                <th className="px-2 pb-2"><input aria-label="Filter SKU Barcode" value={filters.sku_barcode} onChange={(e) => setFilters({ ...filters, sku_barcode: e.target.value })} className={hf} /></th>
+                <th className="px-2 pb-2"><select aria-label="Filter UOM" value={filters.uom} onChange={(e) => setFilters({ ...filters, uom: e.target.value })} className={hf}>{UOMS.map((u) => <option key={u}>{u}</option>)}</select></th>
+                <th className="px-2 pb-2"><select aria-label="Filter Barcode Type" value={filters.barcode_type} onChange={(e) => setFilters({ ...filters, barcode_type: e.target.value })} className={hf}><option value="">--- Select ---</option>{BARCODE_TYPES.map((b) => <option key={b}>{b}</option>)}</select></th>
+                <th className="px-2 pb-2"><select aria-label="Filter Is Active" value={filters.is_active} onChange={(e) => setFilters({ ...filters, is_active: e.target.value })} className={hf}><option>Active</option><option>Inactive</option></select></th>
+                <th className="px-2 pb-2"><select aria-label="Filter Is Default" value={filters.is_default} onChange={(e) => setFilters({ ...filters, is_default: e.target.value })} className={hf}><option>Yes</option><option>No</option></select></th>
                 <th className="px-2 pb-2" />
                 <th className="px-2 pb-2" />
                 <th className="px-2 pb-2" />
@@ -178,12 +185,12 @@ export default function SkuBarcode() {
           </table>
           <div className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-600">
             <div className="flex items-center gap-1">
-              <Pg onClick={() => load(1,pageSize)} disabled={page === 1}><ChevronsLeft size={15} /></Pg>
-              <Pg onClick={() => load(Math.max(1,page-1),pageSize)} disabled={page === 1}><ChevronLeft size={15} /></Pg>
-              <span className="mx-2 flex items-center gap-1">Page <input value={filtered.length ? page : 0} onChange={(e) => setPage(Math.min(totalPages, Math.max(1, Number(e.target.value) || 1)))} className="w-12 rounded border border-slate-300 px-2 py-1 text-center" /> of {filtered.length ? totalPages : 0}</span>
-              <Pg onClick={() => load(Math.min(totalPages,page+1),pageSize)} disabled={page >= totalPages}><ChevronRight size={15} /></Pg>
-              <Pg onClick={() => load(totalPages,pageSize)} disabled={page >= totalPages}><ChevronsRight size={15} /></Pg>
-              <select aria-label="Records per Page" value={pageSize} onChange={(e) => { const n=Number(e.target.value);setPageSize(n);load(1,n); }} className="ml-2 rounded border border-slate-300 px-2 py-1">{[20, 50, 100,200].map((n) => <option key={n} value={n}>{n}</option>)}</select>
+              <Pg onClick={() => load(1,pageSize,applied)} disabled={page === 1}><ChevronsLeft size={15} /></Pg>
+              <Pg onClick={() => load(Math.max(1,page-1),pageSize,applied)} disabled={page === 1}><ChevronLeft size={15} /></Pg>
+              <span className="mx-2 flex items-center gap-1">Page <input aria-label="Current Page" value={filtered.length ? page : 0} onChange={(e) => setPage(Math.min(totalPages, Math.max(1, Number(e.target.value) || 1)))} className="w-12 rounded border border-slate-300 px-2 py-1 text-center" /> of {filtered.length ? totalPages : 0}</span>
+              <Pg onClick={() => load(Math.min(totalPages,page+1),pageSize,applied)} disabled={page >= totalPages}><ChevronRight size={15} /></Pg>
+              <Pg onClick={() => load(totalPages,pageSize,applied)} disabled={page >= totalPages}><ChevronsRight size={15} /></Pg>
+              <select aria-label="Records per Page" value={pageSize} onChange={(e) => { const n=Number(e.target.value);setPageSize(n);void load(1,n,applied); }} className="ml-2 rounded border border-slate-300 px-2 py-1">{[20, 50, 100,200].map((n) => <option key={n} value={n}>{n}</option>)}</select>
             </div>
             <span>{records ? `View ${(page - 1) * pageSize + 1} - ${Math.min(page * pageSize, records)} of ${records}` : 'No records to view'}</span>
           </div>
@@ -193,23 +200,23 @@ export default function SkuBarcode() {
       <Modal title={edit ? 'Edit SKU Barcode' : 'Add New SKU Barcode'} open={show} onClose={() => setShow(false)} wide>
         <div className="grid grid-cols-2 gap-3">
           <div><label className="lbl">SKU Code<span className="text-rose-500"> *</span></label>
-            <input list="master-sku-codes" value={form.sku_code} onChange={(e) => { const sku=skus.find(x=>x.sku_code===e.target.value); setForm({ ...form, sku_code:e.target.value, sku_name:sku?.name||form.sku_name, uom:sku?.uom||form.uom, sale_price:sku?.mrp??form.sale_price }); }} className={`inp ${errors.sku_code ? 'border-rose-400 ring-1 ring-rose-300' : ''}`} /><datalist id="master-sku-codes">{skus.map(s=><option key={s.id} value={s.sku_code}>{s.name}</option>)}</datalist>
+            <input aria-label="SKU Code" list="master-sku-codes" value={form.sku_code} onChange={(e) => { const sku=skus.find(x=>x.sku_code===e.target.value); setForm({ ...form, sku_code:e.target.value, sku_name:sku?.name||form.sku_name, uom:sku?.uom||form.uom, sale_price:sku?.mrp??form.sale_price }); }} className={`inp ${errors.sku_code ? 'border-rose-400 ring-1 ring-rose-300' : ''}`} /><datalist id="master-sku-codes">{skus.map(s=><option key={s.id} value={s.sku_code}>{s.name}</option>)}</datalist>
             {errors.sku_code && <p className="mt-0.5 text-xs text-rose-500">{errors.sku_code}</p>}</div>
-          <div><label className="lbl">SKU Name</label><input value={form.sku_name} onChange={(e) => setForm({ ...form, sku_name: e.target.value })} className="inp" /></div>
+          <div><label className="lbl">SKU Name</label><input aria-label="SKU Name" value={form.sku_name} onChange={(e) => setForm({ ...form, sku_name: e.target.value })} className="inp" /></div>
           <div><label className="lbl">SKU Barcode<span className="text-rose-500"> *</span></label>
-            <input value={form.sku_barcode} onChange={(e) => setForm({ ...form, sku_barcode: e.target.value })} className={`inp ${errors.sku_barcode ? 'border-rose-400 ring-1 ring-rose-300' : ''}`} />
+            <input aria-label="SKU Barcode" value={form.sku_barcode} onChange={(e) => setForm({ ...form, sku_barcode: e.target.value })} className={`inp ${errors.sku_barcode ? 'border-rose-400 ring-1 ring-rose-300' : ''}`} />
             {errors.sku_barcode && <p className="mt-0.5 text-xs text-rose-500">{errors.sku_barcode}</p>}</div>
-          <div><label className="lbl">UOM</label><select value={form.uom} onChange={(e) => setForm({ ...form, uom: e.target.value })} className="inp">{UOMS.map((u) => <option key={u}>{u}</option>)}</select></div>
-          <div><label className="lbl">BarCode Type</label><select value={form.barcode_type} onChange={(e) => setForm({ ...form, barcode_type: e.target.value })} className="inp">{BARCODE_TYPES.map((b) => <option key={b}>{b}</option>)}</select></div>
+          <div><label className="lbl">UOM</label><select aria-label="UOM" value={form.uom} onChange={(e) => setForm({ ...form, uom: e.target.value })} className="inp">{UOMS.map((u) => <option key={u}>{u}</option>)}</select></div>
+          <div><label className="lbl">BarCode Type</label><select aria-label="BarCode Type" value={form.barcode_type} onChange={(e) => setForm({ ...form, barcode_type: e.target.value })} className="inp">{BARCODE_TYPES.map((b) => <option key={b}>{b}</option>)}</select></div>
           <div><label className="lbl">Case Size</label>
-            <input type="number" min={1} value={form.case_size} onChange={(e) => setForm({ ...form, case_size: e.target.value })} className={`inp ${errors.case_size ? 'border-rose-400 ring-1 ring-rose-300' : ''}`} />
+            <input aria-label="Case Size" type="number" min={1} value={form.case_size} onChange={(e) => setForm({ ...form, case_size: e.target.value })} className={`inp ${errors.case_size ? 'border-rose-400 ring-1 ring-rose-300' : ''}`} />
             {errors.case_size && <p className="mt-0.5 text-xs text-rose-500">{errors.case_size}</p>}</div>
           <div><label className="lbl">Sale Price (₹)</label>
-            <input type="number" value={form.sale_price} onChange={(e) => setForm({ ...form, sale_price: e.target.value })} className={`inp ${errors.sale_price ? 'border-rose-400 ring-1 ring-rose-300' : ''}`} />
+            <input aria-label="Sale Price" type="number" min={0} value={form.sale_price} onChange={(e) => setForm({ ...form, sale_price: e.target.value })} className={`inp ${errors.sale_price ? 'border-rose-400 ring-1 ring-rose-300' : ''}`} />
             {errors.sale_price && <p className="mt-0.5 text-xs text-rose-500">{errors.sale_price}</p>}</div>
-          <div><label className="lbl">Is Active</label><select value={form.is_active} onChange={(e) => setForm({ ...form, is_active: e.target.value })} className="inp"><option>Active</option><option>Inactive</option></select></div>
-          <div><label className="lbl">Is Default</label><select value={form.is_default} onChange={(e) => setForm({ ...form, is_default: e.target.value })} className="inp"><option>Yes</option><option>No</option></select></div>
-          <div><label className="lbl">Is Saleable</label><select value={form.is_saleable} onChange={(e) => setForm({ ...form, is_saleable: e.target.value })} className="inp"><option>Yes</option><option>No</option></select></div>
+          <div><label className="lbl">Is Active</label><select aria-label="Is Active" value={form.is_active} onChange={(e) => setForm({ ...form, is_active: e.target.value })} className="inp"><option>Active</option><option>Inactive</option></select></div>
+          <div><label className="lbl">Is Default</label><select aria-label="Is Default" value={form.is_default} onChange={(e) => setForm({ ...form, is_default: e.target.value })} className="inp"><option>Yes</option><option>No</option></select></div>
+          <div><label className="lbl">Is Saleable</label><select aria-label="Is Saleable" value={form.is_saleable} onChange={(e) => setForm({ ...form, is_saleable: e.target.value })} className="inp"><option>Yes</option><option>No</option></select></div>
         </div>
         <div className="mt-5 flex justify-end gap-2">
           <button onClick={() => setShow(false)} className="rounded-md border border-slate-300 px-4 py-2 text-sm text-slate-600 hover:bg-slate-50">Cancel</button>

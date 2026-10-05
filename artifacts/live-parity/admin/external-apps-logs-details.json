@@ -1,0 +1,360 @@
+{
+  "grids": [
+    {
+      "id": "extAppsFailedOrderGrid",
+      "url": "populateExtAppsFailedOrderGrid?REQ_SEARCH_FLAG=true",
+      "datatype": "json",
+      "rowNum": 20,
+      "multiselect": true,
+      "height": "auto",
+      "colModel": [
+        {
+          "name": "cb",
+          "width": 35,
+          "hidden": false,
+          "search": false,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "transmitdetKey",
+          "label": "extappsFailed.mainGrid.lbl.orderNO",
+          "width": 90,
+          "hidden": true,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "invoiceNumber",
+          "label": "Document Number",
+          "width": 132,
+          "hidden": false,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "orderNo",
+          "label": "Reference Number",
+          "width": 132,
+          "hidden": false,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "channelCode",
+          "label": "ExtApp Desc",
+          "width": 146,
+          "hidden": false,
+          "search": true,
+          "stype": "select",
+          "searchoptions": {
+            "value": ":",
+            "searchOperMenu": true
+          },
+          "formatter": "function AppTypeFormatLink(cellvalue, options, rowObject){\n\t\n\tvar MasterData = extappMap;\n\tvar vals4Cmb = new Array;\n\tif (MasterData != null) {\n\t\tfor ( var i in MasterData) {\n\t\t\tif(MasterData.hasOwnProperty(i))\n\t\t\t\tif(i==rowObject[\"channelType\"]){\n\t\t\t\t\trowObject[\"channelCode\"]=MasterData[i];\n\t\t\t\t}\n\t\t}\n\t\t\n\t}\n\t\n\treturn rowObject[\"channelCode\"];\n}"
+        },
+        {
+          "name": "channelType",
+          "label": "ExtApp Id",
+          "width": 95,
+          "hidden": true,
+          "search": false,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "createdDate",
+          "label": "Created Date",
+          "width": 146,
+          "hidden": false,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          },
+          "formatter": "date"
+        },
+        {
+          "name": "updateDate",
+          "label": "Updated Date",
+          "width": 146,
+          "hidden": false,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          },
+          "formatter": "date"
+        },
+        {
+          "name": "status",
+          "label": "Status",
+          "width": 50,
+          "hidden": true,
+          "search": true,
+          "stype": "select",
+          "searchoptions": {
+            "value": ":",
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "statusdesc",
+          "label": "Status",
+          "width": 102,
+          "hidden": false,
+          "search": true,
+          "stype": "select",
+          "searchoptions": {
+            "value": ":",
+            "searchOperMenu": true
+          },
+          "formatter": "function statusFormatLink(cellvalue, options, rowObject){\n\t\n\t\n\tif(rowObject[\"status\"]=='9') {\n\t\t\n\t\trowObject[\"statusdesc\"]='Error';\n    }\n\tif(rowObject[\"status\"]=='0') {\n\t\t\n\t\trowObject[\"statusdesc\"]='Pending';\n    }\n\tif(rowObject[\"status\"]=='1') {\n\t\n\trowObject[\"statusdesc\"]='Success';\n\t\n\t}\n\tif(rowObject[\"status\"]=='10') {\n\t\t\n\t\trowObject[\"statusdesc\"]='Recon Pending';\n\t}\n\t\n\treturn rowObject[\"statusdesc\"];\n}"
+        },
+        {
+          "name": "issueDescription",
+          "label": "Message",
+          "width": 293,
+          "hidden": false,
+          "search": false,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        }
+      ],
+      "colNames": [
+        "<input role='checkbox' id='cb_extAppsFailedOrderGrid' class='cbox' type='checkbox'/>",
+        "extappsFailed.mainGrid.lbl.orderNO",
+        "Document Number",
+        "Reference Number",
+        "ExtApp Desc",
+        "ExtApp Id",
+        "Created Date",
+        "Updated Date",
+        "Status",
+        "Status",
+        "Message"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "",
+      "text": "",
+      "event": "mouseover",
+      "handlers": [
+        "function(){La.addClass(o)}"
+      ]
+    },
+    {
+      "id": "",
+      "text": "",
+      "event": "mouseout",
+      "handlers": [
+        "function(){La.removeClass(o)}"
+      ]
+    },
+    {
+      "id": "cb_extAppsFailedOrderGrid",
+      "text": "",
+      "event": "click",
+      "handlers": [
+        "function(e){var t,n,r=Y.get(this,i);if(1&e.isTrigger&&this[i]){if(r.length)(S.event.special[i]||{}).delegateType&&e.stopPropagation();else if(r=s.call(arguments),Y.set(this,i,r),t=o(this,i),this[i](),r!==(n=Y.get(this,i))||t?Y.set(this,i,!1):n={},r!==n)return e.stopImmediatePropagation(),e.preventDefault(),n.value}else r.length&&(Y.set(this,i,{value:S.event.trigger(S.extend(r[0],S.Event.prototype),r.slice(1),this)}),e.stopImmediatePropagation())}"
+      ]
+    },
+    {
+      "id": "gs_transmitdetKey",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "gs_invoiceNumber",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "gs_orderNo",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "gs_channelCode",
+      "text": "--- Select ---paytmtestFreecharge011011E-Invoicetest1Wondersoftlogic newwold wsd",
+      "event": "change",
+      "handlers": [
+        "function(){return k(),!1}"
+      ]
+    },
+    {
+      "id": "gs_createdDate",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "gs_createdDate",
+      "text": "",
+      "event": "click",
+      "handlers": [
+        "function(){return e.apply(t||this,r.concat(s.call(arguments)))}"
+      ]
+    },
+    {
+      "id": "gs_createdDate",
+      "text": "",
+      "event": "focus",
+      "handlers": [
+        "function(e){var t,n,r=Y.get(this,i);if(1&e.isTrigger&&this[i]){if(r.length)(S.event.special[i]||{}).delegateType&&e.stopPropagation();else if(r=s.call(arguments),Y.set(this,i,r),t=o(this,i),this[i](),r!==(n=Y.get(this,i))||t?Y.set(this,i,!1):n={},r!==n)return e.stopImmediatePropagation(),e.preventDefault(),n.value}else r.length&&(Y.set(this,i,{value:S.event.trigger(S.extend(r[0],S.Event.prototype),r.slice(1),this)}),e.stopImmediatePropagation())}",
+        "function(){return e.apply(t||this,r.concat(s.call(arguments)))}"
+      ]
+    },
+    {
+      "id": "gs_createdDate",
+      "text": "",
+      "event": "keyup",
+      "handlers": [
+        "function(){return e.apply(t||this,r.concat(s.call(arguments)))}"
+      ]
+    },
+    {
+      "id": "gs_createdDate",
+      "text": "",
+      "event": "keydown",
+      "handlers": [
+        "function(){return e.apply(t||this,r.concat(s.call(arguments)))}"
+      ]
+    },
+    {
+      "id": "gs_createdDate",
+      "text": "",
+      "event": "apply",
+      "handlers": [
+        "function(ev, picker) {\r\n\t\t\tchangeDateRangeData(ctrlId,hdnFrom,hdnTo);\r\n\t\t}"
+      ]
+    },
+    {
+      "id": "gs_updateDate",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "gs_updateDate",
+      "text": "",
+      "event": "click",
+      "handlers": [
+        "function(){return e.apply(t||this,r.concat(s.call(arguments)))}"
+      ]
+    },
+    {
+      "id": "gs_updateDate",
+      "text": "",
+      "event": "focus",
+      "handlers": [
+        "function(e){var t,n,r=Y.get(this,i);if(1&e.isTrigger&&this[i]){if(r.length)(S.event.special[i]||{}).delegateType&&e.stopPropagation();else if(r=s.call(arguments),Y.set(this,i,r),t=o(this,i),this[i](),r!==(n=Y.get(this,i))||t?Y.set(this,i,!1):n={},r!==n)return e.stopImmediatePropagation(),e.preventDefault(),n.value}else r.length&&(Y.set(this,i,{value:S.event.trigger(S.extend(r[0],S.Event.prototype),r.slice(1),this)}),e.stopImmediatePropagation())}",
+        "function(){return e.apply(t||this,r.concat(s.call(arguments)))}"
+      ]
+    },
+    {
+      "id": "gs_updateDate",
+      "text": "",
+      "event": "keyup",
+      "handlers": [
+        "function(){return e.apply(t||this,r.concat(s.call(arguments)))}"
+      ]
+    },
+    {
+      "id": "gs_updateDate",
+      "text": "",
+      "event": "keydown",
+      "handlers": [
+        "function(){return e.apply(t||this,r.concat(s.call(arguments)))}"
+      ]
+    },
+    {
+      "id": "gs_updateDate",
+      "text": "",
+      "event": "apply",
+      "handlers": [
+        "function(ev, picker) {\r\n\t\t\tchangeDateRangeData(ctrlId,hdnFrom,hdnTo);\r\n\t\t}"
+      ]
+    },
+    {
+      "id": "gs_status",
+      "text": "",
+      "event": "change",
+      "handlers": [
+        "function(){return k(),!1}"
+      ]
+    },
+    {
+      "id": "gs_statusdesc",
+      "text": "--- Select ---PendingsuccessErrorRecon Pending",
+      "event": "change",
+      "handlers": [
+        "function(){return k(),!1}"
+      ]
+    },
+    {
+      "id": "",
+      "text": "2050100200",
+      "event": "change",
+      "handlers": [
+        "function(){return u(\"records\",this)?(d.p.page=Math.round(d.p.rowNum*(d.p.page-1)/this.value-.5)+1,d.p.rowNum=this.value,d.p.pager&&$(\".ui-pg-selbox\",d.p.pager).val(this.value),d.p.toppager&&$(\".ui-pg-selbox\",d.p.toppager).val(this.value),S(),!1):!1}"
+      ]
+    }
+  ],
+  "functions": {
+    "encryptPasswordRSAUsingPubKey": "function encryptPasswordRSAUsingPubKey(password) {\n\tconst crypt = new JSEncrypt();\n\n\tconst publicKeyRSA = `-----BEGIN PUBLIC KEY-----\n\t\tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwByF8BbfSm98Vf5IsUsW\n\t\tpgCLPYEbYm8AFKIuVnteGA7PmBTJS3Mx1sYv6E8httGIFoPCu+p87nDrKYz1eK3n\n\t\tnJPxQOkxOaigpgejWRL9QCtkzNTbwKDWWGmoLxRgUKQMfLqX6Imwp/TdqOIGZEed\n\t\t206ISr8ENXVrfeW0Roi6yfSXgsOPS+LU+7oaGgaYRWGKDUsIKysKimhiIspGBvLa\n\t\tSG5urTI5bIEQkOqspzFWL/USBgd41mUdNm7LzFQi3CH3WySOdv2+gobRofsH5I4e\n\t\t/iUBGx5JuC+WUNhjwi4+P0QgOwbfDBnCv4VC1skVjBkkxs53M01xPiCNDhcmJbND\n\t\tQQIDAQAB\n\t\t-----END PUBLIC KEY-----`;\n\n\tcrypt.setPublicKey(publicKeyRSA);\n\n\tconst encryptedData = crypt.encrypt(password);\n\n\treturn encryptedData;\n}",
+    "gtag": "function gtag(){dataLayer.push(arguments);}",
+    "alignModal": "function alignModal() {\n\t    \t $(\".modal-dialog\").css(\"margin-top\", $(parent.document).scrollTop()+20);\n\t     }",
+    "showProgressBar": "function showProgressBar() {\n\t\ttry {\n\t\t\tif (typeof blockUIStart === 'function') {\n\t\t\t\tblockUIStart();\n\t\t\t} else if (typeof window.parent.blockUIStart === 'function') {\n\t\t\t\twindow.parent.blockUIStart();\n\t\t\t} else if (typeof window.parent.parent.blockUIStart === 'function') {\n\t\t\t\twindow.parent.parent.blockUIStart();\n\t\t\t} else if (typeof window.parent.parent.parent.blockUIStart === 'function') {\n\t\t\t\twindow.parent.parent.parent.blockUIStart();\n\t\t\t}\n\t\t} catch (e) {\n\t\t  console.log(e.message);\n\t\t}\n\t}",
+    "hideProgressBar": "function hideProgressBar() {\n\t\ttry {\n\t\t\tif (typeof blockUIEnd === 'function') {\n\t\t\t\tblockUIEnd();\n\t\t\t} else if (typeof window.parent.blockUIEnd === 'function') {\n\t\t\t\twindow.parent.blockUIEnd();\n\t\t\t} else if (typeof window.parent.parent.blockUIEnd === 'function') {\n\t\t\t\twindow.parent.parent.blockUIEnd();\n\t\t\t} else if (typeof window.parent.parent.parent.blockUIEnd === 'function') {\n\t\t\t\twindow.parent.parent.parent.blockUIEnd();\n\t\t\t}\n\t\t} catch (e) {\n\t\t\tconsole.log(e.message);\n\t\t}\n\t}",
+    "getGridWidth": "function getGridWidth() {\n\t\ttry {\n\t\t\tvar w = window.parent.$(\"#screensWrapper\").width();\n\t\t\tif(w>100)\n\t\t\t\treturn window.parent.$(\"#screensWrapper\").width()-10;\n\t\t\telse\n\t\t\t\treturn $(window).width()-10;\n\t\t} catch (e) {\n\t\t\tconsole.log(e.message);\n\t\t\treturn $(window).width()-10;\n\t\t}\n\t}",
+    "shortcutKey": "function shortcutKey(){ \t\t\n    \t$(document).bind('keydown', function(e) {\n    \t\tvar keyCode = (e.keyCode) ? e.keyCode : ((e.charCode) ? e.charCode : e.which);\n    \t\tif (e.originalEvent.altKey) {\n    \t\t\t// ALT + S     Search                   \n    \t\t\tif (keyCode === 83) {\n    \t\t\t\treloadSearchGrid();\n    \t\t\t\te.preventDefault();\n    \t\t\t\treturn false;\n    \t\t\t\t\n    \t\t\t}\n    \t\t\t// ALT + N      Reset                 \n    \t\t\tif (keyCode == 78) {\n    \t\t\t\tresetAll();\n    \t\t\t\te.preventDefault();\n    \t\t\t\treturn false;\n    \t\t\t}\n    \t\t\t// ALT + F    Add New\n    \t\t\tif (keyCode == 70){\n    \t\t\t\taddnew();\n    \t\t\t\te.preventDefault();\n    \t\t\t\treturn false;\n    \t\t\t}\n    \t\t\t\n    \t\t}\n    \t});\n    }",
+    "AppTypeFormatLink": "function AppTypeFormatLink(cellvalue, options, rowObject){\n\t\n\tvar MasterData = extappMap;\n\tvar vals4Cmb = new Array;\n\tif (MasterData != null) {\n\t\tfor ( var i in MasterData) {\n\t\t\tif(MasterData.hasOwnProperty(i))\n\t\t\t\tif(i==rowObject[\"channelType\"]){\n\t\t\t\t\trowObject[\"channelCode\"]=MasterData[i];\n\t\t\t\t}\n\t\t}\n\t\t\n\t}\n\t\n\treturn rowObject[\"channelCode\"];\n}",
+    "statusFormatLink": "function statusFormatLink(cellvalue, options, rowObject){\n\t\n\t\n\tif(rowObject[\"status\"]=='9') {\n\t\t\n\t\trowObject[\"statusdesc\"]='Error';\n    }\n\tif(rowObject[\"status\"]=='0') {\n\t\t\n\t\trowObject[\"statusdesc\"]='Pending';\n    }\n\tif(rowObject[\"status\"]=='1') {\n\t\n\trowObject[\"statusdesc\"]='Success';\n\t\n\t}\n\tif(rowObject[\"status\"]=='10') {\n\t\t\n\t\trowObject[\"statusdesc\"]='Recon Pending';\n\t}\n\t\n\treturn rowObject[\"statusdesc\"];\n}",
+    "rowSelect": "function rowSelect(){\n\tvar rowIds = $(\"#extAppsFailedOrderGrid\").jqGrid('getDataIDs');\n\tvar gridObj=$(\"#extAppsFailedOrderGrid\");\n\tfor(var i = 0; i < rowIds.length; i++) {\n\t\tvar operationFlag=$(\"#extAppsFailedOrderGrid\").jqGrid('getCell', rowIds[i], 'transmitdetKey');\n\t\tvar selectedRowId = gridObj.jqGrid('getGridParam', 'selrow');\n\t\tif( operationFlag==0){\n\t\t\tgridObj.jqGrid('setSelection', rowIds[i], true);\n\t\t}\n\t}\n}",
+    "rowSelectfunction": "function rowSelectfunction() {\n\tvar sel_id = $(\"#extAppsFailedOrderGrid\").jqGrid('getGridParam', 'selrow');\n\tvar operationFlag=$(\"#extAppsFailedOrderGrid\").jqGrid('getCell', sel_id, 'transmitdetKey');\n\tif(operationFlag != null && operationFlag != ''  &&  operationFlag == 0){\n\t\tgrid.jqGrid('setSelection', sel_id, false);\n\t}\n}",
+    "OrderPush": "function OrderPush(){\n\tvar gridObj = $(\"#extAppsFailedOrderGrid\");\n\tvar rowIds =  gridObj.jqGrid('getGridParam', 'selarrrow');\n\n\tif(rowIds==0){\n\t\twindow.parent.showAlert('Please select atleast one row to proceed');\n\t\treturn false;\n\t}\n\t\n\tvar transmitdetailkeys='';\n\tvar n=rowIds.length;\n\tfor (var i = 0; i<n; i++) {\n\t\ttransmitdetailkeys+=gridObj.jqGrid(\"getCell\", rowIds[i], \"transmitdetKey\")+',';\n\t}\n\t\n\n\twindow.parent.blockUIStart();\n\twindow.setTimeout(function(){\n\t\tvar retVal = $.ajax({\n\t\t\turl : \"orderPushextApps\",\n\t\t\t\n\t\t\ttype : \"POST\",\n\t\t\tdata : {\n\t\t\t\ttransmitdetailkey:transmitdetailkeys,\n\t\t\t\tflag:\"orderPush\"\n\t\t\t\t\t\t},\n\t\t\t\n\t\t\tdataType : \"json\",\n\t\t\tasync : false\n\t\t}).responseText;\n\t\t\n\t\tretVal = jQuery.parseJSON(retVal);\n\t\t\n\t\tif(retVal != null){\n\t\t\tif(retVal.jsonMessage == null){\n\t\t\t\trewardDTO = retVal.searchDTO;\n\t\t\t\tif(rewardDTO != null){\n\t\t\t\t        window.parent.blockUIEnd();\n\t\t\t\t\t\twindow.parent.showAlert(rewardDTO.jsonMessage);\n\t\t\t\t\t\tcallSearch();\n\t\t\t\t\t}else{\n\t\t\t\t\t\t window.parent.blockUIEnd();\n\t\t\t\t\t\twindow.parent.showAlert(rewardDTO.jsonMessage);\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\n\t\t}\n\t\t},2000);\n\n\t\n}",
+    "fetchRewardMasterData": "function fetchRewardMasterData(rewardType){\n\t\n\t\n\tvar retVal = $.ajax({\n\t\turl : \"populateExtAppsFailedOrderGrid?REQ_SEARCH_FLAG=true\",\n\t\t\n\t\ttype : \"POST\",\n\t\tdata : {\n\t\t\trewardType : '',\n\t\t},\n\t\tdataType : \"json\",\n\t\tasync : false\n\t}).responseText;\n\tvar typetempmap=new Object();\n\tretVal = jQuery.parseJSON(retVal);\n\tsourceMap=retVal.extAppdescMap;\n\textappMap=sourceMap;\n\tstatusMap=retVal.statusMap;\n\tvar MasterData = sourceMap;\n\tvar vals4Cmb = new Array;\n\tif (MasterData != null) {\n\t\tvar counter = 0;\n\t\tvals4Cmb[counter++] = new CodeValueStruct(\"-1\",'--- Select ---');\n\t\tfor ( var i in MasterData) {\n\t\t\tif(MasterData.hasOwnProperty(i))\n\t\t\t\ttypetempmap[i]=MasterData[i];\n\t\t\tvals4Cmb[counter++] = new CodeValueStruct(\n\t\t\t\t\ti, MasterData[i]);\n\t\t}\n\t\t\n\t}fillCombo('gs_channelCode', vals4Cmb);\n\tif(statusMap!=null){\n\t\tvar typetempmap=new Object();\n\t\tvar MasterData = statusMap;\n\t\tvar vals4Cmb = new Array;\n\t\tif (MasterData != null) {\n\t\t\tvar counter = 0;\n\t\t\tvals4Cmb[counter++] = new CodeValueStruct(\"-1\",'--- Select ---');\n\t\t\tfor ( var i in MasterData) {\n\t\t\t\tif(MasterData.hasOwnProperty(i))\n\t\t\t\t\ttypetempmap[i]=MasterData[i];\n\t\t\t\tvals4Cmb[counter++] = new CodeValueStruct(\n\t\t\t\t\t\ti, MasterData[i]);\n\t\t\t}\n\t\t\t\n\t\t}\n\t\tfillCombo('gs_statusdesc', vals4Cmb);\n\n\t}\n\t\n\t\t\n\t\t\n\t\n}",
+    "PushRecon": "function PushRecon(){\n\tvar gridObj = $(\"#extAppsFailedOrderGrid\");\n\tvar rowIds =  gridObj.jqGrid('getGridParam', 'selarrrow');\n\n\tif(rowIds==0){\n\t\twindow.parent.showAlert('Please select atleast one row to proceed');\n\t\treturn false;\n\t}\n\t\n\tvar transmitdetailkeys='';\n\tvar n=rowIds.length;\n\tfor (var i = 0; i<n; i++) {\n\t\ttransmitdetailkeys+=gridObj.jqGrid(\"getCell\", rowIds[i], \"transmitdetKey\")+',';\n\t}\n\n\twindow.parent.blockUIStart();\n\twindow.setTimeout(function(){\n\t\tvar retVal = $.ajax({\n\t\t\turl : \"orderPushextApps\",\n\t\t\t\n\t\t\ttype : \"POST\",\n\t\t\tdata : {\n\t\t\t\ttransmitdetailkey:transmitdetailkeys,\n\t\t\t\tflag:\"reconPush\"\n\t\t\t\t\t\t},\n\t\t\t\n\t\t\tdataType : \"json\",\n\t\t\tasync : false\n\t\t}).responseText;\n\t\t\n\t\tretVal = jQuery.parseJSON(retVal);\n\t\t\n\t\tif(retVal != null){\n\t\t\tif(retVal.jsonMessage == null){\n\t\t\t\trewardDTO = retVal.searchDTO;\n\t\t\t\tif(rewardDTO != null){\n\t\t\t\t        window.parent.blockUIEnd();\n\t\t\t\t\t\twindow.parent.showAlert(rewardDTO.jsonMessage);\n\t\t\t\t\t\tcallSearch();\n\t\t\t\t\t}else{\n\t\t\t\t\t\t window.parent.blockUIEnd();\n\t\t\t\t\t\t \n\t\t\t\t\t\twindow.parent.showAlert(rewardDTO.jsonMessage);\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\n\t\t}\n\t\t},2000);\n}",
+    "callSearch": "function callSearch() {\n\t\t\n\t\t$(\"#extAppsFailedOrderGrid\").jqGrid('setGridParam', {\n\t\t\tdatatype : 'json',\n\t\t\tpage : 1\n\t\t});\n\t\t$(\"#extAppsFailedOrderGrid\").jqGrid('setGridParam', {\n\t\t\tpostData : {\n\t\t\t\torderNumber : $(\"#gs_orderNo\").val(),\n\t\t\t\tfromInvoiceDate : $(\"#fromCreateDate\").val(),\n\t\t\t\ttoInvoiceDate : $(\"#toCreateDate\").val(),\n\t\t\t\tchannelCode :$(\"#gs_channelCode\").val(),\n\t\t\t\tfromUpdateDate: $(\"#fromUpdateDate\").val(),\n\t\t\t\ttoUpdateDate: $(\"#toUpdateDate\").val(),\n\t\t\t\tstatus:$(\"#gs_statusdesc\").val(),\n\t\t\t\tinvoiceNumber:$(\"#gs_invoiceNumber\").val(),\n\t\t\t\tREQ_SEARCH_FLAG : true,\n\t\t\t\tdoFetchCount : false\n\t\t\t},\n\t\t\turl : \"populateExtAppsFailedOrderGrid\",\n\t\t\tsearch : true\n\t\t}).trigger('reloadGrid');\n\t}",
+    "resetVIS": "function resetVIS() {\n\t\t\n\t\t$(\"#fromCreateDate\").val('');\n\t\t$(\"#toCreateDate\").val('');\n\t\t$(\"#gs_orderNo\").val('');\n\t\t$(\"#gs_channelcode\").val('-1');\n\t\t$(\"#gs_createdDate\").val('');\n\t\t$(\"#gs_statusdesc\").val('-1');\n\t\t$(\"#fromUpdateDate\").val('');\n\t\t$(\"#toUpdateDate\").val('');\n\t\t$(\"#gs_updateDate\").val('');\n\t\tcallSearch();\n\t\t\n\t}",
+    "formatLink": "function formatLink(cellvalue, options, rowObject) {\n\t\tvar htm = \"<div title='' style='margin-top:3px;margin-bottom:2px;'>\";\n\t\thtm+= \"<div class='col-xs-12 col-md-4' style='text-align:left; '><span class='gCtrl' onclick='javascript:editInvoice(\\\"\" + rowObject.docInvNo\t+ \"\\\",event); return false;' style='color: #2179d0; font-weight:bold; font-family:Arial;cursor:pointer;cursor:hand;'>\" + cellvalue + \"</span></div>\";\n\t\thtm+=\"</div>\";\n\t\treturn htm;\n\t}",
+    "editInvoice": "function editInvoice(docInvNo, event) {\n\n\t\tif(\"JQ\"==window.parent.getUiType()) {\n\t\t\twindow.parent.openScreen(\"Manage Vendor Invoice\",\"searchVendorInvoiceBS?operation=5&docInvNo=\"+ docInvNo, \"fa fa-fw fa-list-ol\");\n\t\t} else {\n\t\t\twindow.parent.openScreen(\"Manage Vendor Invoice\",\"searchVendorInvoiceBS?operation=5&docInvNo=\"+ docInvNo, \"fa fa-fw fa-list-ol\");\n\t\t}\n\t\tevent.preventDefault();\n\t\tevent.stopPropagation();\n\t\treturn false;\n\t}",
+    "pageHeight": "function pageHeight() {\n\t\treturn $(\"#mainBody\").height();\n\t}",
+    "pageResized": "function pageResized() {\n\t\tgenricSearchGridResized();\t\t\n\t}",
+    "pageScrolled": "function pageScrolled() {\n\t\t\n\t\tvar window_top = $(parent.document).scrollTop();\n\t\t$('#vendorDialog').css( \"top\", (window_top+25)+\"px\");\n\t}",
+    "genricSearchGridResized": "function genricSearchGridResized() {\n\t\tvar gridObj = $(\"#extAppsFailedOrderGrid\");\n\t\t\n\t\tvar gridHeight = window.parent.getParentHeight()-128;\t\t\n\t\t\n\t\tvar gridWidth = $(window).width()-18;\n\t\tif(gridWidth<270)\n\t\t\tgridWidth=270;\n\t\t\n\t\n\t\tgridObj.jqGrid('setGridParam', { shrinkToFit: $(window).width()<992 ? false : true });\n\t\ttry {\n\t\t\tif($(window).width()<992) {\n\t\t\t\tif(oldWidth>992) {\n\t\t\t\t\tgridObj.trigger('reloadGrid');\n\t\t\t\t}\n\t\t\t\t//gridObj.jqGrid('hideCol','status');\n\t\t\t} else {\n\t\t\t\tif(oldWidth<992) {\n\t\t\t\t\tgridObj.trigger('reloadGrid');\n\t\t\t\t}\n\t\t\t\t//gridObj.jqGrid('showCol','status');\n\t\t\t}\n\t\t} catch (e) {}\n\t\t\n\t\t\n\t\tgridObj.jqGrid('setGridWidth',gridWidth);\t\t\n\t\t$(\"#gbox_\"+gridObj[0].id+\" .ui-jqgrid-bdiv\").css(\"height\",gridHeight+\"px\").css('overflow-x',($(window).width()<992 ?'auto':'hidden'));\n\t\t  oldWidth=gridWidth;\n\t\n\t}",
+    "openOldScreen": "function openOldScreen(){\n\t\twindow.parent.closeAndOpenTab(\"Vendor_Invoice_Enquiry\", \"../loadVendorInvoiceSearch\",\"Vendor_Invoice_Enquiry\");\n\t}"
+  },
+  "dialogs": []
+}

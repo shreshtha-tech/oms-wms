@@ -1,0 +1,178 @@
+{
+  "grids": [
+    {
+      "id": "apiKeysTable",
+      "url": "jsonGetApiKeys",
+      "datatype": "json",
+      "rowNum": 20,
+      "multiselect": false,
+      "height": "auto",
+      "colModel": [
+        {
+          "name": "seqNo",
+          "label": "Settings",
+          "width": 100,
+          "hidden": true,
+          "search": false,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "apiKey",
+          "label": "API Key",
+          "width": 407,
+          "hidden": false,
+          "search": false,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "clientStr",
+          "label": "Client",
+          "width": 125,
+          "hidden": true,
+          "search": true,
+          "stype": "select",
+          "searchoptions": {
+            "value": ":",
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "apiOwnerId",
+          "label": "API Owner",
+          "width": 163,
+          "hidden": false,
+          "search": false,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "createdDate",
+          "label": "Created Date",
+          "width": 116,
+          "hidden": false,
+          "search": false,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          },
+          "formatter": "date"
+        },
+        {
+          "name": "expiryDate",
+          "label": "Expiry Date",
+          "width": 186,
+          "hidden": false,
+          "search": false,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          },
+          "formatter": "date"
+        },
+        {
+          "name": "status",
+          "label": "Status",
+          "width": 146,
+          "hidden": false,
+          "search": true,
+          "stype": "select",
+          "searchoptions": {
+            "value": ":",
+            "searchOperMenu": true
+          },
+          "formatter": "function statusFormatLink(cellvalue, options, rowObject) {\n\t\t\tvar cssString = \"shape-flag-green\";\n\t\t\tif(rowObject[\"status\"]==0)\n\t\t\t\tcssString = \"shape-flag-magenta\";\n\t        return \"<span class='shape-flag \"+cssString+\" btn' style='min-width:60px; display: inline-block;cursor:pointer;' onclick='javascript:changeStatus(\"+rowObject[\"seqNo\"]+\", \"+rowObject[\"clientId\"]+\", \"+rowObject[\"status\"]+\");' >\"+(rowObject[\"status\"]==0 ? \"InActive\" : \"Active\")+\"</span>\";    /* VE-56507 S,E */                                           \n\t\t}"
+        },
+        {
+          "name": "",
+          "label": "Actions",
+          "width": 116,
+          "hidden": false,
+          "search": false,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          },
+          "formatter": "function formatEditLink(cellvalue, options, rowObject) {\n\t\t\tvar htm = \"<div class='col-xs-12' style='text-align:center;' data-toggle='tooltip' data-placement='left' title='Edit'><a href='javascript:void(0);' onclick='javascript:openConfiguration(event, \\\"\"\n\t\t\t\t\t+ rowObject.seqNo\t+ \"\\\");' class='gridIcon gridEditIcon'><i class='fa fa-pencil'></i></a></div>\";\n\t\t\t\t\t//\"<div class='col-xs-6' style='text-align:left;' data-toggle='tooltip' data-placement='left' title='Register Webhook'><a href='javascript:void(0);' onclick='javascript:openWhConfiguration(event, \\\"\"\n\t\t\t\t\t//+ rowObject.seqNo\t+ \"\\\");' class='gridIcon gridEditIcon'><i class='fa fa-pencil'></i></a></div>\";\n\t\t\treturn htm;\n\t\t}"
+        }
+      ],
+      "colNames": [
+        "Settings",
+        "API Key",
+        "Client",
+        "API Owner",
+        "Created Date",
+        "Expiry Date",
+        "Status",
+        "Actions"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "",
+      "text": "",
+      "event": "mouseover",
+      "handlers": [
+        "function(){La.addClass(o)}"
+      ]
+    },
+    {
+      "id": "",
+      "text": "",
+      "event": "mouseout",
+      "handlers": [
+        "function(){La.removeClass(o)}"
+      ]
+    },
+    {
+      "id": "gs_clientStr",
+      "text": "--- Select ---0-DummyClient",
+      "event": "change",
+      "handlers": [
+        "function(){return k(),!1}"
+      ]
+    },
+    {
+      "id": "gs_status",
+      "text": "--- Select ---InActiveActive",
+      "event": "change",
+      "handlers": [
+        "function(){return k(),!1}"
+      ]
+    },
+    {
+      "id": "",
+      "text": "2050100200",
+      "event": "change",
+      "handlers": [
+        "function(){return u(\"records\",this)?(d.p.page=Math.round(d.p.rowNum*(d.p.page-1)/this.value-.5)+1,d.p.rowNum=this.value,d.p.pager&&$(\".ui-pg-selbox\",d.p.pager).val(this.value),d.p.toppager&&$(\".ui-pg-selbox\",d.p.toppager).val(this.value),S(),!1):!1}"
+      ]
+    }
+  ],
+  "functions": {
+    "encryptPasswordRSAUsingPubKey": "function encryptPasswordRSAUsingPubKey(password) {\n\tconst crypt = new JSEncrypt();\n\n\tconst publicKeyRSA = `-----BEGIN PUBLIC KEY-----\n\t\tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwByF8BbfSm98Vf5IsUsW\n\t\tpgCLPYEbYm8AFKIuVnteGA7PmBTJS3Mx1sYv6E8httGIFoPCu+p87nDrKYz1eK3n\n\t\tnJPxQOkxOaigpgejWRL9QCtkzNTbwKDWWGmoLxRgUKQMfLqX6Imwp/TdqOIGZEed\n\t\t206ISr8ENXVrfeW0Roi6yfSXgsOPS+LU+7oaGgaYRWGKDUsIKysKimhiIspGBvLa\n\t\tSG5urTI5bIEQkOqspzFWL/USBgd41mUdNm7LzFQi3CH3WySOdv2+gobRofsH5I4e\n\t\t/iUBGx5JuC+WUNhjwi4+P0QgOwbfDBnCv4VC1skVjBkkxs53M01xPiCNDhcmJbND\n\t\tQQIDAQAB\n\t\t-----END PUBLIC KEY-----`;\n\n\tcrypt.setPublicKey(publicKeyRSA);\n\n\tconst encryptedData = crypt.encrypt(password);\n\n\treturn encryptedData;\n}",
+    "gtag": "function gtag(){dataLayer.push(arguments);}",
+    "alignModal": "function alignModal() {\n\t    \t $(\".modal-dialog\").css(\"margin-top\", $(parent.document).scrollTop()+20);\n\t     }",
+    "showProgressBar": "function showProgressBar() {\n\t\ttry {\n\t\t\tif (typeof blockUIStart === 'function') {\n\t\t\t\tblockUIStart();\n\t\t\t} else if (typeof window.parent.blockUIStart === 'function') {\n\t\t\t\twindow.parent.blockUIStart();\n\t\t\t} else if (typeof window.parent.parent.blockUIStart === 'function') {\n\t\t\t\twindow.parent.parent.blockUIStart();\n\t\t\t} else if (typeof window.parent.parent.parent.blockUIStart === 'function') {\n\t\t\t\twindow.parent.parent.parent.blockUIStart();\n\t\t\t}\n\t\t} catch (e) {\n\t\t  console.log(e.message);\n\t\t}\n\t}",
+    "hideProgressBar": "function hideProgressBar() {\n\t\ttry {\n\t\t\tif (typeof blockUIEnd === 'function') {\n\t\t\t\tblockUIEnd();\n\t\t\t} else if (typeof window.parent.blockUIEnd === 'function') {\n\t\t\t\twindow.parent.blockUIEnd();\n\t\t\t} else if (typeof window.parent.parent.blockUIEnd === 'function') {\n\t\t\t\twindow.parent.parent.blockUIEnd();\n\t\t\t} else if (typeof window.parent.parent.parent.blockUIEnd === 'function') {\n\t\t\t\twindow.parent.parent.parent.blockUIEnd();\n\t\t\t}\n\t\t} catch (e) {\n\t\t\tconsole.log(e.message);\n\t\t}\n\t}",
+    "getGridWidth": "function getGridWidth() {\n\t\ttry {\n\t\t\tvar w = window.parent.$(\"#screensWrapper\").width();\n\t\t\tif(w>100)\n\t\t\t\treturn window.parent.$(\"#screensWrapper\").width()-10;\n\t\t\telse\n\t\t\t\treturn $(window).width()-10;\n\t\t} catch (e) {\n\t\t\tconsole.log(e.message);\n\t\t\treturn $(window).width()-10;\n\t\t}\n\t}",
+    "shortcutKey": "function shortcutKey(){ \t\t\n    \t$(document).bind('keydown', function(e) {\n    \t\tvar keyCode = (e.keyCode) ? e.keyCode : ((e.charCode) ? e.charCode : e.which);\n    \t\tif (e.originalEvent.altKey) {\n    \t\t\t// ALT + S     Search                   \n    \t\t\tif (keyCode === 83) {\n    \t\t\t\treloadSearchGrid();\n    \t\t\t\te.preventDefault();\n    \t\t\t\treturn false;\n    \t\t\t\t\n    \t\t\t}\n    \t\t\t// ALT + N      Reset                 \n    \t\t\tif (keyCode == 78) {\n    \t\t\t\tresetAll();\n    \t\t\t\te.preventDefault();\n    \t\t\t\treturn false;\n    \t\t\t}\n    \t\t\t// ALT + F    Add New\n    \t\t\tif (keyCode == 70){\n    \t\t\t\taddnew();\n    \t\t\t\te.preventDefault();\n    \t\t\t\treturn false;\n    \t\t\t}\n    \t\t\t\n    \t\t}\n    \t});\n    }",
+    "changeStatus": "function changeStatus(seqId, clientId, status){\n\n\t\t\tif(seqId == undefined || status == undefined || (clientId == undefined && false)){\n\t\t\t\twindow.parent.showAlert('Something Went Wrong');\n\t\t\t\treturn false;\n\t\t\t} \n\t\t\telse if(status == 0){\n\t\t\t\t\n\t\t\t\tif (confirm(\"Do You Want To Activate this API?\")) {\n\t\t\t\t\tvar statusResponse = $.ajax({\n\t\t\t\t\t\turl : \"generateApiKey?seqId=\"+seqId+\"&clientId=\"+clientId,\n\t\t\t\t\t\t\n\t\t\t\t\t\ttype : \"POST\",\n\t\t\t\t\t\tdataType : \"json\",\n\t\t\t\t\t\tasync : false\n\t\t\t\t\t}).responseText;\n\t\n\t\t\t\t\tstatusResponse = jQuery.parseJSON(statusResponse);\n\t\t\t\n\t\t\t\t\tif (statusResponse.status) {\n\t\t\t\t\t\treloadSearchGrid();\n\t\t\t\t\t\twindow.parent.showAlert(statusResponse.jsonMessage);\n\t\t\t\n\t\t\t\t\t} else {\n\t\t\t\t\t\t$(\"#apikey\").html(\"\");\n\t\t\t\t\t\twindow.parent.showAlert(statusResponse.jsonMessage);\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t\telse if(status == 1){\n\t\t\t\tif (confirm(\"admin.deapiactivate\")) {\n\t\t\t\t\tvar statusResponse = $.ajax({\n\t\t\t\t\t\turl : \"deactivateApiKey?seqId=\"+seqId+\"&clientId=\"+clientId,\n\t\t\t\t\t\t\n\t\t\t\t\t\ttype : \"POST\",\n\t\t\t\t\t\tdataType : \"json\",\n\t\t\t\t\t\tasync : false\n\t\t\t\t\t}).responseText;\n\t\n\t\t\t\t\tstatusResponse = jQuery.parseJSON(statusResponse);\n\t\n\t\t\t\t\tif (statusResponse.status) {\n\t\t\t\t\t\treloadSearchGrid();\n\t\t\t\t\t\twindow.parent.showAlert(statusResponse.jsonMessage);\n\t\t\t\t\t} else {\n\t\t\t\t\t\t$(\"#apikey\").html(\"\");\n\t\t\t\t\t\twindow.parent.showAlert(statusResponse.jsonMessage);\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\t\t\n\t\t}",
+    "refreshConfiguration": "function refreshConfiguration(event){\n\t\t\treloadSearchGrid(event);\n\t\t}",
+    "reloadSearchGrid": "function reloadSearchGrid(event) {\n\t\t\tvar clientId \t= $(\"#gs_clientStr\").val();\n\t\t\tvar status \t\t= $(\"#gs_status\").val();\n\n\t\t\t$(\"#apiKeysTable\").jqGrid('setGridParam', {\n\t\t\t\tdatatype : 'json',\n\t\t\t\tpage : 1,\n\t\t\t\tpostData : {\n\t\t\t\t\tclientId\t\t:clientId,\n\t\t\t\t\tstatus\t\t\t:status,\n\t\t\t\t\tREQ_SEARCH_FLAG : true\n\t\t\t\t},\n\t\t\t\turl : \"jsonGetApiKeys\",\n\t\t\t\tsearch : true\t\t\t\t\n\t\t\t}).trigger('reloadGrid');\t\t\t\t\t\n\t\t}",
+    "statusFormatLink": "function statusFormatLink(cellvalue, options, rowObject) {\n\t\t\tvar cssString = \"shape-flag-green\";\n\t\t\tif(rowObject[\"status\"]==0)\n\t\t\t\tcssString = \"shape-flag-magenta\";\n\t        return \"<span class='shape-flag \"+cssString+\" btn' style='min-width:60px; display: inline-block;cursor:pointer;' onclick='javascript:changeStatus(\"+rowObject[\"seqNo\"]+\", \"+rowObject[\"clientId\"]+\", \"+rowObject[\"status\"]+\");' >\"+(rowObject[\"status\"]==0 ? \"InActive\" : \"Active\")+\"</span>\";    /* VE-56507 S,E */                                           \n\t\t}",
+    "formatEditLink": "function formatEditLink(cellvalue, options, rowObject) {\n\t\t\tvar htm = \"<div class='col-xs-12' style='text-align:center;' data-toggle='tooltip' data-placement='left' title='Edit'><a href='javascript:void(0);' onclick='javascript:openConfiguration(event, \\\"\"\n\t\t\t\t\t+ rowObject.seqNo\t+ \"\\\");' class='gridIcon gridEditIcon'><i class='fa fa-pencil'></i></a></div>\";\n\t\t\t\t\t//\"<div class='col-xs-6' style='text-align:left;' data-toggle='tooltip' data-placement='left' title='Register Webhook'><a href='javascript:void(0);' onclick='javascript:openWhConfiguration(event, \\\"\"\n\t\t\t\t\t//+ rowObject.seqNo\t+ \"\\\");' class='gridIcon gridEditIcon'><i class='fa fa-pencil'></i></a></div>\";\n\t\t\treturn htm;\n\t\t}",
+    "genricSearchGridResized": "function genricSearchGridResized() {\n\t\t\tvar gridObj = $(\"#apiKeysTable\");\t    \t\t\t\n\t\t\tvar gridHeight = window.parent.getParentHeight()-131;\t\n\n\t\t\tvar gridWidth = $(window).width()-15;\n\t\t\tif(gridWidth<270)\n\t\t\t\tgridWidth=270;\n\t\t\t\n\t\t\tgridObj.jqGrid('setGridWidth',gridWidth);\n\t\t\t\n\t\t\t$(\"#gbox_\"+gridObj[0].id+\" .ui-jqgrid-bdiv\").css(\"height\",gridHeight+\"px\").css('overflow-x',($(window).width()<992 ?'auto':'hidden'));\n\t\t\toldWidth=gridWidth;\n\t\t}",
+    "openConfiguration": "function openConfiguration(thisObj, slectedSeqId) {\n\t\t\t\n\t\t\n\t\t\tif (slectedSeqId != undefined) {\n\t\t\t\twindow.parent.openScreen(\"Manage Api Add/Edit\", 'manageApiKeyEdit?seqId='+slectedSeqId, \"fa fa-fw fa-list-ol\");\n\t\t\t\treturn false;\t\n\t\t\t} else {\n\t\t\t\twindow.parent.showAlert('Something Went Wrong');\n\t\t\t\treturn false;\n\t\t\t}\n\t\t}",
+    "openWhConfiguration": "function openWhConfiguration() {\n\t\t\twindow.parent.openScreen(\"Register Webhook\", 'manageApiWebhook', \"fa fa-fw fa-list-ol\");\n\t\t\treturn false;\t\t\t\n\t\t}"
+  },
+  "dialogs": []
+}

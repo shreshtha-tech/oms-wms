@@ -1,0 +1,4391 @@
+{
+  "generatedAt": "2026-09-24T17:07:33.705Z",
+  "mode": "isolated local server, MongoDB disabled, ephemeral admin",
+  "results": [
+    {
+      "route": "/app/dashboard",
+      "http": 200,
+      "navigated": "/app/dashboard",
+      "text": "e\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n1\nD-Mills Global Private Limited\nCentral Inventory\nManage inventory\n\nLoading central inventory…\n\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/seller-panel-dashboard",
+      "http": 200,
+      "navigated": "/app/seller-panel-dashboard",
+      "text": "e\nSeller Panel Dashboard\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nSeller Panel Dashboard\nDrop Ship\nMall Oneship\nVendor Self Delivery\n?\n0\n\nConfirmed\n\n0\n\nReady For Ship\n\n0\n\nShipped\n\n0\n\nReturned\n\n0\n\nCancelled\n\nOrder Flow - Last 7 Days\nConfirmed\nReady For Ship\nShipped\nReturned\nCancelled\nSKU For Replenishment - Top 5\nSKU ID\tSKU Name\tInventory\nNo Records Found.\nTop 5 SKUs Sold - Last 90 Days\nSKU ID\tSKU Name\tInventory\nNo Records Found.\nShipment VS Transporter - Last 30 Days\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/vendors",
+      "http": 200,
+      "navigated": "/app/vendors",
+      "text": "e\nVendor Enquiry\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nSearch\nReset\nImport\nExport\nAdd New\nVendor Code ↑\tVendor Name\tVendor Type\tCredit Days\tCountry\tState\tCity\tStatus\n\n\t\n\t\n--- Select ---\nB2S2\nJIT\nMarketplace\nOutright purchase\n\t\n--- Select ---\n1\n120\n120 days from the date of receipt of goods\n35 Days\n50 Days\n7 days\n7 Days\n75 DAYS\nLetter of Credit\n30 Days\n45 Days\n60 Days\n90 Days\nAdvance\n\t\n--- Select ---\nAFGHANISTAN\nALAND ISLANDS\nALBANIA\nALDERNEY\nALGERIA El Djazair\nAMERICAN SAMOA\nANDORRA\nANGOLA\nANGUILLA\nANTARCTICA\nANTIGUA AND BARBUDA\nARGENTINA\nARMENIA\nARUBA\nASCENSION ISLAND\nAUSTRALIA\nAUSTRIA\nAZERBAIJAN\nBAHAMAS\nBAHRAIN\nBANGLADESH\nBARBADOS\nBE",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/customers",
+      "http": 200,
+      "navigated": "/app/customers",
+      "text": "e\nCustomer Enquiry\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nSearch\nReset\nImport\nExport\nAdd New\nCustomer Code ↑\tCustomer Name\tExt. Customer Code\tType\tStatus\tGSTIN/TIN\tPrimary Contact\tPrimary Email\tCreated Date\n\n\t\n\t\n\t\n--- Select ---\n0 - Last\n1 - B2C\n2 - B2B\n\t\n- Select -\nInActive\nActive\n\t\n\t\n\t\n\t\n\nNo records to view\nPage  of 0\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/transporters",
+      "http": 200,
+      "navigated": "/app/transporters",
+      "text": "e\nTransporter Enquiry\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nSearch\nReset\nDownload\nAdd New\nTransporter Code ↑\tTransporter Name\tTransporter Company\tType\tCountry\tState\tCity\tStatus\n\n\t\n\t\n\t\n--- Select ---\nCourier\nOwn Fleet\n\t\n--- Select ---\nAFGHANISTAN\nALAND ISLANDS\nALBANIA\nALDERNEY\nALGERIA El Djazair\nAMERICAN SAMOA\nANDORRA\nANGOLA\nANGUILLA\nANTARCTICA\nANTIGUA AND BARBUDA\nARGENTINA\nARMENIA\nARUBA\nASCENSION ISLAND\nAUSTRALIA\nAUSTRIA\nAZERBAIJAN\nBAHAMAS\nBAHRAIN\nBANGLADESH\nBARBADOS\nBELARUS\nBELGIUM\nBELIZE\nBENIN\nBERMUDA\nBHUTAN\nBOLIVIA\nBONAIRE ST EUSTATIUS AND SABA\nBOSNIA AND HERZEGOVINA\nBOTSWANA\nBOUVET ISLAND\nBRAZIL\nBRITISH INDIAN OCEAN TERRITORY\nBrune",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/clients",
+      "http": 200,
+      "navigated": "/app/clients",
+      "text": "e\nClient Master\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nSearch\nReset\nAdd New\nDownload\nClient ID\tClient Name\tClient Short Name\tStatus\tCountry\tState\tCity\n\n--- Select ---\n\t\t\t\n--- Select ---\nInActive\nActive\n\t\n--- Select ---\nAFGHANISTAN\nALAND ISLANDS\nALBANIA\nALDERNEY\nALGERIA El Djazair\nAMERICAN SAMOA\nANDORRA\nANGOLA\nANGUILLA\nANTARCTICA\nANTIGUA AND BARBUDA\nARGENTINA\nARMENIA\nARUBA\nASCENSION ISLAND\nAUSTRALIA\nAUSTRIA\nAZERBAIJAN\nBAHAMAS\nBAHRAIN\nBANGLADESH\nBARBADOS\nBELARUS\nBELGIUM\nBELIZE\nBENIN\nBERMUDA\nBHUTAN\nBOLIVIA\nBONAIRE ST EUSTATIUS AND SABA\nBOSNIA AND HERZEGOVINA\nBOTSWANA\nBOUVET ISLAND\nBRAZIL\nBRITISH INDIAN OCEAN TERRITORY\nBrunei\nBRUNEI DARUSSA",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/customer-groups",
+      "http": 200,
+      "navigated": "/app/customer-groups",
+      "text": "e\nCustomer Group\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nMaster\nTrading Partner\nCustomerGroup Create/Edit\nSearch\nReset\nDownload\nAdd New\nCustomerGroup Code\n\tCustomerGroup Name\n\tStatus\n\tNo. of Customer\n\n\n\t\n\t\n--- Select ---\nActive\nInActive\n\t\nNo records to view\nPage\nof 0\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/customers",
+          "status": 200
+        },
+        {
+          "path": "/api/customers",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/coupons",
+      "http": 200,
+      "navigated": "/app/coupons",
+      "text": "e\nManage Coupons\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nMaster\nCoupon Management\nCoupon Enquiry\nSearch\nAdvance Search\nReset\nAdd New\nDownload\nCoupon Key\tDescription\tCoupon Type\tStatus\tCoupon Code\tStart Date\tEnd Date\tActive Date\tCreated By\n\n\t\n\t\n--- Select ---\nLine\nBill\n\t\n--- Select ---\nCancelled\nConfirmed\nPending Confirmation\n\t\n\t\t\t\n\t\nNo records to view\nPage\nof 0\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/m/vouchers",
+      "http": 200,
+      "navigated": "/app/m/vouchers",
+      "text": "e\nGenerate Vouchers\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nVOUCHER PREFIX\nVOUCHER VALUE\nVOUCHER COUNT\nVOUCHER TYPE\n--- Select ---\nAbsolute\nPercentage\nMAX CAP\nSTARTDATE\nEND DATE\nLOCATION\nReset\nGenerate Vouchers\nVoucher Code\tVoucher Value\tVoucher Type\tMax Cap\tStartDate\tEnd Date\tLocation\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/generic?module=vouchers",
+          "status": 200
+        },
+        {
+          "path": "/api/generic?module=vouchers",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/tax-categories",
+      "http": 200,
+      "navigated": "/app/tax-categories",
+      "text": "e\nTax Category (HSN/SAC)\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nMaster\nTax Management\nTax Category (HSN/SAC)\nSearch\nReset\nAdd New\nTax Category (HSN/SAC)\n\tDescription\n\tStatus\n\tActions\n\n\t\n\t\n--- Select ---\nActive\nInactive\n\t\nNo records to view\nPage\nof 0\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/tax-categories",
+          "status": 200
+        },
+        {
+          "path": "/api/tax-categories",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/tax-code",
+      "http": 200,
+      "navigated": "/app/tax-code",
+      "text": "e\nTax Code\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nMaster\nTax Management\nTax Code\nSearch\nReset\nAdd New\nTax Code\n\tTax Code Type\tStart Date\tPercentage\tDescription\tIs Active\tActions\n\n\t\n--- Select ---\nGST\nCESS\nVAT\nOTHERS\n\t\n\t\n\t\n\t\n--- Select ---\nActive\nInactive\n\t\nNo records to view\nPage\nof 0\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/taxcodes",
+          "status": 200
+        },
+        {
+          "path": "/api/taxcodes",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/tax-groups",
+      "http": 200,
+      "navigated": "/app/tax-groups",
+      "text": "e\nTax Group\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nTax Group\nSearch\nSave\nReset\nTAX GROUP CODE *\nAPPLIED ON *\n--- Select ---\nCost\nMRP\nRSP\nSTART DATE *\nIs Active\nTAX CODE *\n--- Select ---\nTAX LEVEL\n--- Select ---\n1\n2\n3\n4\n5\nAdd\nReset\nShow\n20\n50\n100\n200\nView 0 - 0 of 0\nTax Code Id\tTax Level\nNo records to view\nTax Group Enquiry\nShow\n20\n50\n100\n200\nView 0 - 0 of 0\nTax Group Code\tApplied On\tStart Date\tIs Active\tAudit\nNo records to view\nPrevious\nView 0 - 0 of 0\nNext\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/tax-groups",
+          "status": 200
+        },
+        {
+          "path": "/api/taxcodes",
+          "status": 200
+        },
+        {
+          "path": "/api/tax-groups",
+          "status": 200
+        },
+        {
+          "path": "/api/taxcodes",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/tax-zones",
+      "http": 200,
+      "navigated": "/app/tax-zones",
+      "text": "e\nTax Zone\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nSearch\nReset\nAdd New\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/tax-application",
+      "http": 200,
+      "navigated": "/app/tax-application",
+      "text": "e\nTax Application\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nMasters\nMaster\nTax Application\nSearch\nReset\nDownload\nAdd New\nBulk Import\nTax Category\n\tTax Type\tTax Group Code\tGoods Direction\tTax Authority\tTax Zone\tStart Date\tIs Active\tIs Form C Tax\tIs Form H Tax\tFrom MRP\tTo MRP\tActions\n\n--- Select ---\n\t\n--- Select ---\nPurchase\nSales\n\t\n--- Select ---\n\t\n--- Select ---\nALL\nIN\nOUT\nWith In\n\t\n\t\n--- Select ---\n\t\n\t\n--- Select ---\nActive\nInactive\n\t\n--- Select ---\nYes\nNo\n\t\n--- Select ---\nYes\nNo\n\t\t\t\nNo records to view\nPage\nof 0\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/tax-categories",
+          "status": 200
+        },
+        {
+          "path": "/api/tax-groups",
+          "status": 200
+        },
+        {
+          "path": "/api/tax-zones",
+          "status": 200
+        },
+        {
+          "path": "/api/tax-categories",
+          "status": 200
+        },
+        {
+          "path": "/api/tax-groups",
+          "status": 200
+        },
+        {
+          "path": "/api/tax-zones",
+          "status": 200
+        },
+        {
+          "path": "/api/taxapp",
+          "status": 200
+        },
+        {
+          "path": "/api/taxapp",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/m/org-hierarchy",
+      "http": 200,
+      "navigated": "/app/m/org-hierarchy",
+      "text": "e\nOrganization Hierarchy\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nSave\nReset\nMaster\nOrganization Management\nOrganization Hierarchy\nOrganisation Hierarchy\nOrganization Hierarchy\nHierarchy Type* :\n--- Select ---\nCompany\nHierarchy Code* :\nHierarchy Name* :\nDescription* :\nParent Hierarchy Code :\n--- Select ---\nParent Hierarchy Desc :\nOrg Country :\n--- Select ---\nINDIA\nINDONESIA\nMALAYSIA\nSINGAPORE\nTHAILAND\nUNITED ARAB EMIRATES\nUNITED KINGDOM\nUNITED STATES\nBase Currency :\n--- Select ---\nTHB\nINR\nUSD\nSGD\nCAD\nEUR\nHKD\nJPY\nMYR\nPHP\nGBP\nRUB\nSAR\nCHF\nTWD\nAED\nIDR\nVND\nOMR\nJOD\nLBP\nBHD\nKWD\nCNY\nEGP\nBase Language :\n--- Select ---\nEnglish\nThai/ไทย\nBahasa\nSimpl",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/org-hierarchy",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        },
+        {
+          "path": "/api/org-hierarchy",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/m/location",
+      "http": 200,
+      "navigated": "/app/m/location",
+      "text": "e\nLocation Enquiry\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nLocation Tag\nMaster\nOrganization Management\nLocation Enquiry\nSearch\nReset\nAdvance Search\nExport\nAdd New\nLocation Code\n\tLocation Name\tShort Name\tLocation Type\tSource Warehouse\tHierarchy Code\tHierarchy Type\tStatus\tActions\n\n\t\n\t\n\t\n--- Select ---\nFranchise\nHead Office\nStore\nWH\n\t\n--- Select ---\n\t\n--- Select ---\n\t\n--- Select ---\nCompany\nRegion\nZone\nSubZone\n\t\n--- Select ---\nActive\nDeleted\nInActive\n\t\nNo records to view\nPage\nof 0\n15\n25\n50\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/m/location-create",
+      "http": 200,
+      "navigated": "/app/m/location-create",
+      "text": "e\nLocation Create/Edit\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nSave\nReset\nAdd New\nAudit\nLocation Create\nLocation Contact\nUser Defined Fields\nARS\nLocation Tags\nLocation Details\nLocation Code *\nLocation Name *\nLocation Short Name *\nLocation Type *\n--- Select ---\nFranchise\nHead Office\nStore\nWH\nSource Warehouse\n--- Select ---\nStatus\n--- Select ---\nActive\nDeleted\nInActive\nVendor Name\nCustomer Name\nPO Code\nVAT No\nCST No\nTIN No\nGST TIN No\nExternal Location\nSKU Link Location\n--- Select ---\nDefault\nManual\nNever\nDefault-BrandWise\nBrand\nARS\nE-Waybill Mandatory in Manifest\nIdentification\n--- Select ---\nCRN\nMLS\nMOM\nOTH\nSAG\nIdentification Code\nPAN Num",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/m/store-group",
+      "http": 200,
+      "navigated": "/app/m/store-group",
+      "text": "e\nManage Store Group\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nMaster\nOrganization Management\nManage Store Group\nSearch\nReset\nExport\nAdd New\nStore Group Code\n\tStore Group Name\tNo of Locations\tParent Store\tCreated By\tCreated Date\tUpdated By\tUpdated Date\tStatus\tActions\n\n\t\n\t\t\n--- Select ---\n\t\t\t\t\t\n--- Select ---\nActive\nInActive\n\t\nNo records to view\nPage\nof 0\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/store-groups",
+          "status": 200
+        },
+        {
+          "path": "/api/store-groups",
+          "status": 200
+        },
+        {
+          "path": "/api/store-groups",
+          "status": 200
+        },
+        {
+          "path": "/api/store-groups",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/skus",
+      "http": 200,
+      "navigated": "/app/skus",
+      "text": "e\nSKU Master\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nSKU Enquiry\n\nMaster / SKU Management / SKU Master\n\nSearch\nReset\nAdvance Search\nExport\nMetaData Export\nImport\nAdd New\nSKU CODE\tMASTER SKU\tSTYLE\tSKU NAME\tCLASSIFICATION\tSIZE/COLOR\tMRP\tBASE COST\tSALE PRICE\tSKU MFG CODE\tPRIMARY VENDOR\tBRAND CODE\tHIERARCHY CODE\tATTRIBUTE SET\tSTATUS\tCREATED BY\tCREATED DATE\tUPDATED BY\tUPDATED DATE\tBACK ORDER\tTAX CATEGORY (HSN/SAC)\tACTIONS\nNo SKUs found\n‹\nPage 0 of 0\n›\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/tax-categories",
+          "status": 200
+        },
+        {
+          "path": "/api/tax-categories",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/sku-import",
+      "http": 200,
+      "navigated": "/app/sku-import",
+      "text": "e\nSku Import\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\n\nThe screen will be deprecated on 17th March 2026. Please use Admin > Common Import > SKU Import\n\nImport\nReset\nImport\nDownload\nImport Type\nCreateUpdate\nCostPriceUpdate\nBomLink\nAttribute Set *\n--- Select ---\nArvind_Attribute\nDefault\nMOBILE\ntest12345\nmhsdgfjdhf\nWaterbag_NHGV\n24 attribute\nleather strap\ntest\nTest2\nUpload Template\n**Note: Max 500 rows can be imported in an attempt of Import.\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/sku-imports",
+          "status": 200
+        },
+        {
+          "path": "/api/sku-imports",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/sku-company-link",
+      "http": 200,
+      "navigated": "/app/sku-company-link",
+      "text": "e\nSKU Company Link\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nReset\nCompany\n--- Select ---\nLocation\n--- Select ---\nSKU Code\nSKU Name\nView\nAdd\nRemove\nNon Range Products\n\tSKU Code\tDisplay SKU\tSKU Desc\tMFG SKU Code\tBrand\tStatus\nNo records to view\nPage of 0\n20\n50\n100\n200\nNo records to view\nRange Products\n\tSKU Code\tDisplay SKU\tSKU Desc\tMFG SKU Code\tBrand\tStatus\nNo records to view\nPage of 0\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/sku-company-links",
+          "status": 200
+        },
+        {
+          "path": "/api/sku-company-links",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/sku-barcode",
+      "http": 200,
+      "navigated": "/app/sku-barcode",
+      "text": "e\nSKU Barcode\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nMaster\nSku Management\nSKU Bar Code Create/Edit\nSearch\nReset\nDownload\nAdd New\nSKU BarCode Create/Edit\nSKU BarCode Import\nActions\tSKU Code\tSKU Name\tSKU Barcode\tUOM\tBarCode Type\tIs Active\tIs Default\tModified Date\tCase Size\tSale Price\tIs Saleable\n\t\t\t\t\nEach\nPair\nSet\nBox\nPack\n\t\n--- Select ---\nAJIOBusiness\nAJIOJIT\nDefault\n\t\nActive\nInactive\n\t\nYes\nNo\n\t\t\t\t\nNo records to view\nPage\nof 0\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/skus",
+          "status": 200
+        },
+        {
+          "path": "/api/skus",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/m/sku-group",
+      "http": 200,
+      "navigated": "/app/m/sku-group",
+      "text": "e\nManage SKU Group\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nMaster\nSku Management\nSKU Group Enquiry\nSearch\nReset\nExport\nAdd New\nClient\tSKU Group code\tSKU Group Name\tNo of SKU\tCreated By\tCreated Date\tUpdated By\tUpdated Date\tStatus\tActions\n\n--- Select ---\n\t\n\t\n\t\t\t\t\t\t\n--- Select ---\nActive\nInActive\n\t\nNo records to view\nPage\nof 0\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/sku-groups",
+          "status": 200
+        },
+        {
+          "path": "/api/sku-groups",
+          "status": 200
+        },
+        {
+          "path": "/api/sku-groups",
+          "status": 200
+        },
+        {
+          "path": "/api/sku-groups",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/m/merch-hierarchy",
+      "http": 200,
+      "navigated": "/app/m/merch-hierarchy",
+      "text": "e\nMerchandising Hierarchy\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nSave\nReset\nImport\nExport\nAudit\nMerchandising Hierarchy\nMerchandising Hierarchy\nUser Defined Fields\nOther Settings\nMerch. Hierarchy Type *\n--- Select ---\nDepartment\nCategory\nSub Category\nMerchandising Code *\nExt. Merchandising Code\nMerchandising Name *\nMerchandising Desc *\nParent Merch Code\n--- Select ---\nIs Active\nOutbound Packaging Type\n--- Select ---\nSmall Box\nBig Box\nMedium Box\nFEDEX_BOX\nFEDEX_ENVELOPE\nNormal\nInbound Packaging Type\n--- Select ---\nSmall Box\nBig Box\nMedium Box\nNormal\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/merch-hierarchy",
+          "status": 200
+        },
+        {
+          "path": "/api/merch-hierarchy",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/m/manage-attribute",
+      "http": 200,
+      "navigated": "/app/m/manage-attribute",
+      "text": "e\nAttribute Enquiry\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nMaster\nSKU Management\nAttribute Enquiry\nSearch\nReset\nAdd New\nAttribute Code\nDescription\nMandatory\n--- Select ---\nYes\nNo\nVisible\n--- Select ---\nYes\nNo\nScope\n--- Select ---\nSeller Panel\nCompany\nEnterprise\nSearchable\n--- Select ---\nYes\nNo\nisActive\n--- Select ---\nYes\nNo\nAttribute Code\tDescription\tMandatory\tInput Type\tVisible\tScope\tSearchable\n\n\t\n\t\n\t\n\t\n\t\n\t\n\nNo records to view\nPage\nof 0\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/m/other-masters",
+      "http": 200,
+      "navigated": "/app/m/other-masters",
+      "text": "e\nOther Masters\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nSubscribe HSN code\nBrands\nMaterials\nSize Group\nSize\nColor\nState\nReasons\nTags\nPayment Terms\nPigeon Hole Master\nExcise Category\nSKU Case Size\nPackaging Type\nSKU Fulfillment Type\nChannel Configuration\nManage Currency\nUOM\nFnV Channel Master\nPick/Ship Instructions\nTranspoter PickUp Location Mapping\nPermanent LPN\nDevice Master\nStore Promotion\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/pricing-events",
+      "http": 200,
+      "navigated": "/app/pricing-events",
+      "text": "e\nPricing Event\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nMaster\nPricing Event\nPricing Event Enquiry\nSearch\nReset\nAdvanced Search\nExport\nDetail Export\nAdd New\nStart Date\nOrganisation Hierarchy\nOwner\n--- Select ---\nVendor\n--- Select ---\nBrand\nPricing Event Code\tPricing Event Name\tLocation Code\tCustomer\tStart Date\tEnd Date\tPricing Event\tStatus\tIsActive\n\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\nNo records to view\nPage\nof 0\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/pricing-events",
+          "status": 200
+        },
+        {
+          "path": "/api/pricing-events",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/tally-configuration",
+      "http": 200,
+      "navigated": "/app/tally-configuration",
+      "text": "e\nTally Configuration\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nSave\nReset\nAudit\nCompany\n*\n--- Default ---\nSales And Sales Return\nPurchase And Purchase Returns\nSales Details\nVoucher Type\nVoucher Number\n*\nExternal Invoice Number\nInvoice Number\nExternal Order Number\nReference Number\n*\nInvoice Number\nExternal Order Number\nExtern orderno\nDate\n*\nInvoice Date\nOrder Date\nShipping Date\nSales Return Details\nVoucher Type\nVoucher Number\n*\nReturn Number\nReference Number\n*\nInvoice Number\nReturn Number\nExternal Order Number\nExtern orderno\nDate\n*\nReturn Date\nReceived Date\nSales Ledger Name\nSales Ledger Type\n*\nItem wise\nLocal/Interstate\nWith Tax Percent\nF",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/tally-config",
+          "status": 200
+        },
+        {
+          "path": "/api/tally-config",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/m/price-zone",
+      "http": 200,
+      "navigated": "/app/m/price-zone",
+      "text": "e\nPrice Zone Master\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nPrice Zone\nPrice Zone Policy\nPrice Zone Master\nSearch\nReset\nAdd New\nPrice Zone Code\tPrice Zone\tExternal Price Zone\tMargin Percent\tPrice Zone Group\tStatus\tCreated By\tCreated Date\tUpdated By\tUpdated Date\tActions\n\n\t\n\t\n\t\n\t\n--- Select ---\nPrice Zone Group One\nPrice Zone Group Three\nPrice Zone Group Two\n\t\n--- Select ---\nActive\nInactive\n\t\t\t\t\t\nNo records to view\nPage\nof 0\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/price-zones",
+          "status": 200
+        },
+        {
+          "path": "/api/price-zones",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/m/external-apps",
+      "http": 200,
+      "navigated": "/app/m/external-apps",
+      "text": "e\nExternal Apps\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nMaster\nMiscellaneous\nExternal Apps Enquiry\nSearch\nReset\nAdd New\nExtApps Type\n--- Select ---\nDigital Payment\nAccounting\nGift Card\nSMS/Email\nPayment Gateway\nDevice Tracking\nReward\nPoint of Sale\nWallet\nRobotics Integration\nPackaging Video\nGeocoding\nCustom App\nE-Filling\nCRM\nExtApps Name\n--- Select ---\nPaytm\nMobikwik\nEasy Rewards\nFreeCharge\nQwikcilver\nAmazon Pay\nOVO Pay\nFreeCharge NAPI\nFreeCharge NAPI\nTALLY\nQuickBooksDesktop\nPayU\nSales Interface\nXero\nAvalara\nClear(India)\nLogic Erp\nWondersoft\nSuperTax\nLogic Erp (Using Logic WMS)\nWondersoft (Using Wondersoft WMS)\nPinelabs\nZohoBooks\nZenoti\n",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/m/order-refund",
+      "http": 200,
+      "navigated": "/app/m/order-refund",
+      "text": "e\nOrder Refund\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nApprove\nSearch\nReset\nExport\nClient\n--- Select ---\nPayment Pending\n0\nPayment In Process\n0\nPayment Processed\n0\nPayment Failed\n0\n\tPayment Type\tCreated date\tOrder No\tCustomer Details\tCustomer Phone\tCustomer Email\tDelivery No\tInvoice No\tAction\tStatus\tAmount\tLast Attempt Date\nNo records to view\nFirst\nPrevious\nPage 0 of 0\nNext\nLast\n15\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/order-refunds",
+          "status": 200
+        },
+        {
+          "path": "/api/order-refunds",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/m/sales-rep",
+      "http": 200,
+      "navigated": "/app/dashboard",
+      "text": "e\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n1\nD-Mills Global Private Limited\nCentral Inventory\nManage inventory\n\nCatalog SKUs\n\n3,243\n\nCounted SKUs\n\n0\n\nCentral sellable\n\n0\n\nLow-stock alerts\n\n0\n\n0 accounts with active mappings. Uncounted SKUs are excluded from physical totals.\n\nUpload Excel\nRecord physical stock\nLow-stock alerts\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/procurement/po/single",
+      "http": 200,
+      "navigated": "/app/procurement/po/single",
+      "text": "e\nSingle Location\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nSave\nRelease\nSend Mail\nReSend Mail\nConfirm\nAdd New\nBack to Enqiry\nToggle Dropdown\nPurchase OrderAdditional ChargesUser Defined FieldsTerms and ConditionsComment HistoryPO TagsPO InboundASNImportAttached Document\nVendor Code *\nSelect...\nDelivery Location\n--- Select ---\nFranchise\nAmazon Warehouse\nWarehouse-Nation\nATL Warehouse\nWest Coast Warehouse\nPO Type\nOutright\nARS\nCIF\nConsignment\nFNV\nBlanket\nSOR\nOutright-Direct Inbound\nAggregate\nBuyer Code *\nRecv Valid. Code *\n--- Select ---\nNo Excess Receiving\nForm C\nExternal PO No\nReference No\nNotes\nCustomer Code\nSelect...\nDiscount Type\n--- Se",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/vendors",
+          "status": 200
+        },
+        {
+          "path": "/api/skus",
+          "status": 200
+        },
+        {
+          "path": "/api/vendors",
+          "status": 200
+        },
+        {
+          "path": "/api/skus",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/procurement/po/multiple",
+      "http": 200,
+      "navigated": "/app/procurement/po/multiple",
+      "text": "e\nMultiple Location\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nSave\nRelease\nSend Mail\nReSend Mail\nConfirm\nAdd New\nBack to Enqiry\nToggle Dropdown\nPurchase OrderAdditional ChargesUser Defined FieldsTerms and ConditionsComment HistoryPO TagsPO InboundASNImportAttached Document\nVendor Code *\nSelect...\nDelivery Location\n--- Select ---\nFranchise\nAmazon Warehouse\nWarehouse-Nation\nATL Warehouse\nWest Coast Warehouse\nPO Type\nOutright\nARS\nCIF\nConsignment\nFNV\nBlanket\nSOR\nOutright-Direct Inbound\nAggregate\nBuyer Code *\nRecv Valid. Code *\n--- Select ---\nNo Excess Receiving\nForm C\nExternal PO No\nReference No\nNotes\nCustomer Code\nSelect...\nDiscount Type\n--- ",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/vendors",
+          "status": 200
+        },
+        {
+          "path": "/api/skus",
+          "status": 200
+        },
+        {
+          "path": "/api/vendors",
+          "status": 200
+        },
+        {
+          "path": "/api/skus",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/procurement/po/back-orders",
+      "http": 200,
+      "navigated": "/app/procurement/po/back-orders",
+      "text": "e\nFrom Back Orders\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nSearch\nReset\nAdvanced Search\nDownload\nCreate PO\nOrder Date\nSKU Code\nBrand\nVendor\nOrder Type\nShip by date\n\tSKU Code\tVendor\tMRP\tUnit Cost\tsuggested Qty\tTo Order Qty\tInventory\tBack Order Qty\tPO Qty\tPending STO Qty\nNo records to view\nPage 0 of 0\n20\n50\n100\n200\nPrevious\nNext\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/procurement/po-enquiry",
+      "http": 200,
+      "navigated": "/app/procurement/po-enquiry",
+      "text": "e\nPO Enquiry\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nSearch\nReset\nAdvance Search\nPrint\nToggle Dropdown\nAdd New\nPO Code\nExt PO No\nPO Date\nExpiry Date\nVendor\nPO Type\n--- Select ---\nCIF\nOutright-Direct Inbound\nOutright\nARS\nFNV\nConsignment\nBlanket\nSOR\nAggregate\nStatus\n--- Select ---\nCancelled\nClosed\nConfirmed\nExpired\nPartially Received\nPending Confirmation\nReceived\nReConfirmed\nReleased\nReopen\nShort Closed\nError In Releasing\nRelease In Process\nDelivery Location\n--- Select ---\nMaster PO Code\nPO Code\tExt PO No\tPO Date\tExpiry Date\tVendor Name\tVendor Code\tBuyer Name\tPO Type\tPO Mode\tStatus\tPO Amount\tPO Qty\tDelivery Location\tPO Release Date\tMaster ",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/purchase-orders",
+          "status": 200
+        },
+        {
+          "path": "/api/purchase-orders",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/purchase-orders",
+      "http": 200,
+      "navigated": "/app/purchase-orders",
+      "text": "e\nPO Revision\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nPO Revision\n\nProcurement / PO Revision\n\nPO CODE\nPO REVISION CODE\nPO REVISION DATE\nPO DATE\nVENDOR CODE\nPO TYPE\nCIF\nOutright-Direct Inbound\nOutright\nARS\nFNV\nConsignment\nBlanket\nSOR\nAggregate\nDELIVERY LOCATION\n--- Select ---\nPO RELEASE DATE\nCREATED BY\nCREATED DATE\nUPDATED BY\nUPDATED DATE\nSearch\nAdvanced Search\nReset\nPO CODE\tPO REVISION CODE\tBUYER NAME\tPO REVISION DATE\tSTATUS\tPO DATE\tVENDOR CODE\tVENDOR NAME\tPO TYPE\tPO AMOUNT\tDELIVERY LOCATION\tPO RELEASE DATE\tCREATED BY\tCREATED DATE\tMODIFIED BY\tMODIFIED DATE\nSearch to view PO revisions\nNo records to view\nRecords per Page \n20\n50\n100\n200\nPag",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/vendors",
+          "status": 200
+        },
+        {
+          "path": "/api/purchase-orders",
+          "status": 200
+        },
+        {
+          "path": "/api/vendors",
+          "status": 200
+        },
+        {
+          "path": "/api/purchase-orders",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/grn",
+      "http": 200,
+      "navigated": "/app/grn",
+      "text": "e\nInbound Create/Edit\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nManage ASN\n\nProcurement / Manage ASN\n\nSearch\nReset\nAdd New\nExport\nAdvanced Search\nCLIENT\n--- Select ---\nASN NO.\nEXT ASN NO\nASN DATE\nSTATUS\n--- Select ---\nCancelled\nClosed\nPart received\nPending Confirmation\nShort Closed\nConfirmed\nASN TYPE\n--- Select ---\nPO\nVendor\nCustomer\nMarketplace\nOther\nDOCUMENT NO\nDELIVERY LOCATION\n--- Select ---\nINVOICE NO\nASN TAG\nASN NO.\tEXT ASN NO\tASN DATE\tSTATUS\tASN TYPE\tDOCUMENT NO\tDELIVERY LOCATION\tINVOICE NO\tASN TAG\nNo records to view\nPage 0 of 0\n50\n100\n200\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/clients",
+          "status": 200
+        },
+        {
+          "path": "/api/manage-asn?meta=tags",
+          "status": 200
+        },
+        {
+          "path": "/api/purchase-orders",
+          "status": 200
+        },
+        {
+          "path": "/api/customers",
+          "status": 200
+        },
+        {
+          "path": "/api/vendors",
+          "status": 200
+        },
+        {
+          "path": "/api/clients",
+          "status": 200
+        },
+        {
+          "path": "/api/manage-asn?meta=tags",
+          "status": 200
+        },
+        {
+          "path": "/api/purchase-orders",
+          "status": 200
+        },
+        {
+          "path": "/api/vendors",
+          "status": 200
+        },
+        {
+          "path": "/api/customers",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/m/vendor-promotions",
+      "http": 200,
+      "navigated": "/app/m/vendor-promotions",
+      "text": "e\nVendor Promotions\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nSearch\nReset\nExport\nAdvanced Search\nAdd New\nDelivery Location\n--- Select ---\nVendor Code\nPromo Type\n--- Select ---\nLine Discount\nStatus\n--- Select ---\nPending\nConfirmed\nCancelled\nDisc Key\tVendor Code\tVendor Name\tPromo Type\tStatus\tPromotion Name\tPromotion Code\tStart Date\tEnd Date\nNo records to view\nPage 0 of 0\n20\n50\n100\n200\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/vendors",
+          "status": 200
+        },
+        {
+          "path": "/api/skus",
+          "status": 200
+        },
+        {
+          "path": "/api/purchase-orders",
+          "status": 200
+        },
+        {
+          "path": "/api/vendors",
+          "status": 200
+        },
+        {
+          "path": "/api/skus",
+          "status": 200
+        },
+        {
+          "path": "/api/purchase-orders",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/m/purchase-charge",
+      "http": 200,
+      "navigated": "/app/m/purchase-charge",
+      "text": "e\nPurchase Charge Masters\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nSearch\nReset\nAdd New\nPurchase Charge Master\nPurchase Charge Master\nNo records to view\nPage 0 of 0\n20\n50\n100\n200\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/chargeMasterSearch",
+          "status": 200
+        },
+        {
+          "path": "/api/chargeMasterSearch",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/procurement/category-buyers",
+      "http": 200,
+      "navigated": "/app/procurement/category-buyers",
+      "text": "e\nCategory Buyers\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nSearch\nReset\nAdvanced Search\nAdd New\nBuyer Name\nBuyer Description\nPhone\nAlternate Phone\nEmail\nStatus\n--- Select ---\nActive\nInactive\nBuyer Code\tBuyer Name*\tBuyer Description\tPhone\tEmail\tStatus\tLocation\tCreated by\tActions\nNo records to view\nPage 0 of 0\n20\n50\n100\n200\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/merch-hierarchy",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/categoryBuyerSearch",
+          "status": 200
+        },
+        {
+          "path": "/api/merch-hierarchy",
+          "status": 200
+        },
+        {
+          "path": "/api/categoryBuyerSearch",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/procurement/ars/sku-location",
+      "http": 200,
+      "navigated": "/app/procurement/ars/sku-location",
+      "text": "e\nARS SKU-Location Link\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nSearch\nDownload\nBulk Import\nReset\nAdvance Search\nAdd New\nBulk Update\nLocation\tSKU\tCategory\tBrand\tPrimary Vendor\tFullfillment Method\tFullfillment WH\tWH Lead Time\tStock cover days\tMinimum Transfer Qty\tTransfer Unit Factor\tARS Flag\t\tMaximum SKU Qty\n\t\tSelect...\t\t\t\n--- Select ---\nDirect Store Purchase\nDistribution Center\n\t\n--- Select ---\n\t\t\t\t\t\n--- Select ---\nActive\nInActive\n\t\t\nNo records to view\nPage 0 of 0 \n20\n50\n100\n200\n Previous Next No records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/skus",
+          "status": 200
+        },
+        {
+          "path": "/api/vendors",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/skus",
+          "status": 200
+        },
+        {
+          "path": "/api/vendors",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/procurement/ars/rules",
+      "http": 200,
+      "navigated": "/app/procurement/ars/rules",
+      "text": "e\nARS Rules\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nSearch\nReset\nAdd New\nLocation\n--- Select ---\nProduct Set\n--- Select ---\nBrand\nGroup\nHierarchy\nSKU\nVendor\nRule ID\tDescription\tStatus\tARS Method\tFrequency\tLast Run Date\tNext Run Date\tCreated By\tUpdated By\tUpdated Date\n\t\t\n--- Select ---\nPending\nActive\nInActive\nDiscontinued\n\t\n--- Select ---\nMin-Max\nSales History\n\t\n--- Select ---\nNever\nBimonthly\nMonthly\nBiweekly\nWeekly\nDaily\n\t\t\t\t\t\nNo records to view\nPage 0 of 0\nPrevious \n20\n50\n100\n200\n Next\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/ars?entity=links",
+          "status": 200
+        },
+        {
+          "path": "/api/ars?entity=settings",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/ars?entity=links",
+          "status": 200
+        },
+        {
+          "path": "/api/ars?entity=settings",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/procurement/ars/logs",
+      "http": 200,
+      "navigated": "/app/procurement/ars/logs",
+      "text": "e\nARS Execution Log\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nSearch\nReset\nRule ID\n...\nExecution ID\n...\nLocation\tExecution ID\tExec Time\tRule Name\tFrequency\tVendor Type\tOutput Type\tStatus\n\n--- Select ---\n\t\t\t\t\n--- Select ---\nNever\nBimonthly\nMonthly\nBiweekly\nWeekly\nDaily\n\t\n--- Select ---\nMin Cost\nMin Lead Tim\nPrimary\n\t\n--- Select ---\nConfirmed\nPending\nReport\n\t\n--- Select ---\nPending\nInProcess\nARS Generated\nApproved\nDocument Generated\nZero Qty\nDocument Inprocess\nError\n\nNo records to view\nPage 0 of 0\nPrevious \n20\n50\n100\n200\n Next\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/ars?entity=logs",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/ars?entity=logs",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/channels",
+      "http": 200,
+      "navigated": "/app/channels",
+      "text": "e\nManage Channels\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nChannel Enquiry\nChannel Enquiry\nSearch\nReset\nReconcile Inv\nSynchronize 0 Inv\nImport\nExport\nDetail Export\nAdd New\n\nSearch\n\nChannel Code\nChannel Name\nClient\n--- Select ---\nBrand Code\nLocation\n--- Select ---\nStatus\nAll\nActive\nInActive\nChannel Type\n- - - - - - - - - - -All- - - - - - - - - - -\nAJIO B2C\nAJIO Business\nAJIO JIT\nAmazon FBA India\nAmazon Flex India\nAmazon India\nAmazon SC EasyShip\nAmazon SPAPI IND\nCustom Channel\nCustom Inventory Channel\nFlipkart V3(Multi WH)\nMyntra B2B (JIT/FBM)\nNykaa Fashion\nShopify IN\nFulfilment Status\nAll\nOnline\nOffline\nChannel Group Code\n\tClient\tCHANNEL ",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/channels",
+          "status": 200
+        },
+        {
+          "path": "/api/clients",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/channels",
+          "status": 200
+        },
+        {
+          "path": "/api/clients",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/sku-channel-listing",
+      "http": 200,
+      "navigated": "/app/sku-channel-listing",
+      "text": "e\nSKU Channel Listing\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nAdd new\nSearch\nAdvance Search\nReset\nExport\nSKU/Link Search Channel\nSKU/Channel Link Import\nUnmapped SKU\nChannel\n--- Select ---\nSKU\nSKU Description\nChannel SKU\nChannel Product Id\nClient\tChannel Image\tChannel\tSKU\tSKU Description\tChannel SKU\tChannel Product Id\tChannel Price\tPicking Instructions\tStatus\tBack Order Inventory\tUpd Date\tUpd Button\nNo SKU channel links to view. Add a link after configuring a channel and SKU.\nPage 0 of 0\nPrevious \n20\n50\n100\n200\n Next\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/channels",
+          "status": 200
+        },
+        {
+          "path": "/api/skus",
+          "status": 200
+        },
+        {
+          "path": "/api/clients",
+          "status": 200
+        },
+        {
+          "path": "/api/channels",
+          "status": 200
+        },
+        {
+          "path": "/api/skus",
+          "status": 200
+        },
+        {
+          "path": "/api/clients",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/m/oms-rules",
+      "http": 200,
+      "navigated": "/app/m/oms-rules",
+      "text": "e\nOMS Rules\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nSales OMS Rules\nOrder Validation Rules\nOrder Routing/Split Rules\nReturn Routing Rules\nSeller Panel Order Rules\nShipping Rules\nAllocation Rules\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/master-order-enquiry",
+      "http": 200,
+      "navigated": "/app/master-order-enquiry",
+      "text": "e\nMaster Order Enquiry\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nMaster Order No\nOrder List\nSales\nMaster Order Enquiry\nSearch\nReset\nExport\nMaster Order No\nChannel\n--- Select ---\nOrder Date\nOrderTag\n--- Select ---\nOrder Fulfillment Location\n--- Select ---\nPOD ID\nMaster Order No\tChannel\tOrder Date\tOrder Amount\tOrderTag\tOrder Fulfillment Location\tPOD ID\n\n\t\n\t\n\t\n\t\n\t\n\t\n\nNo records to view\nPage\nof 0\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/master-orders",
+          "status": 200
+        },
+        {
+          "path": "/api/master-orders",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/order-enquiry",
+      "http": 200,
+      "navigated": "/app/order-enquiry",
+      "text": "e\nOrder Enquiry\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nAll\nFailed Orders\nCancelled Picked Orders\nFailed Shipments\nSales\nOrder Enquiry\nSearch\nReset\nAdvance Search\nImport\nPending Orders\n--- Select ---\nStock Pending Orders\nProcessing Orders\nSLA Breaching Today\nSLA Breaching in 24 hrs\nSLA Breaching in 48 hrs\nSLA Breached\nOrder No\nExt Order No\nChannel\n--- Select ---\nOrder Type\nOrder Date\nStatus\n--- Select ---\nAllocated\nCancelled\nClosed\nConfirmed\nDelivered\nDelivery created\nPacked\nPart Allocated\nPart Picked\nPartially Shipped\nPending\nPick complete\nShipped & Returned\nShipped complete\nCustomer\nOrder No\tExt Order No\tChannel\tOrder Type\tOrder Date\tS",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/order-enquiry",
+          "status": 200
+        },
+        {
+          "path": "/api/order-enquiry",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/m/kitting-order",
+      "http": 200,
+      "navigated": "/app/m/kitting-order",
+      "text": "e\nKit Order Enquiry\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nSales\nKit Order Enquiry\nSearch\nReset\nAdvance Search\nExport\nDetail Export\nAdd New\nUnKit\nToggle Dropdown\nKit Order No\nExt. Kit Order No\nCreated Date\nStatus\nAllocated\nCancelled\nClosed\nConfirmed\nPart Allocated\nPartially Completed\nPending\nCompleted\nType\n--- Select ---\nSKU\nOrder\nCreated By\nUpdated By\nError Description\n\tKit Order No\tExt. Kit Order No\tCreated Date\tStatus\tBOM Qty\tChild Qty\tType\tCreated By\tUpdated By\tError Description\tActions\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\nNo records to view\nPage\nof 0\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/kitting-orders",
+          "status": 200
+        },
+        {
+          "path": "/api/kitting-orders",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/global-order-search",
+      "http": 200,
+      "navigated": "/app/global-order-search",
+      "text": "e\nGlobal Order Search\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nFulfillment Mode\nBy Merchant\nBy Marketplace\nSearch\nReset\nDownload\nOrder No\tWeb Order No\tOrder Date\tTimezone\tOrder Type\tCustomer Name\tShip City\tStatus\tOrder Amount\tTax Amt\tDisc Amt\tOrder Tag\tOn Hold\tVendor\tVendor Mode\n\t\t\t\t\n- Select -\nInbound QC\nabhbill\nKitTo\nNormal\nORDERTYPE2\nPackaging Material\nReturn\nTestDemo\ntgeg\nCASH\nCash On Delivery\nB2BGC-COD\nB2CGC-COD\nBOPIS-COD\nBOSS-COD\nBOSSCOIN-COD\nCOD\nEA-COD\nROPIS-COD\nVAR_ORDERTYPE2\nB2BGC-Prepaid\nB2CGC-Prepaid\nBOPIS-Prepaid\nBOSS-Prepaid\nBOSSCOIN-Prepaid\ncheckmo\nCredit\nDamage Return\nDispose\nEA-Prepaid\nJIT\nMTSO\nNormal Return\nnot defined\nPr",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/global-order-search",
+          "status": 200
+        },
+        {
+          "path": "/api/global-order-search",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/cod-reconciliation",
+      "http": 200,
+      "navigated": "/app/cod-reconciliation",
+      "text": "e\nCOD Reconciliation\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nSales COD Reconciliation\nSearch\nReset\nReconcile\nForce Reconcile\nDownload\nUpload tracking No\n\tWeb Order No\tShip Date\tTracking No\tTransporter\tCollectable amount\tPayment reconciled\tCash\tCredit Card\tCoupon\tReceived Amount\tStatus\tSource\n\t\t\t\t\n--- Select ---\nDelhivary India - AWB-101010101\nDelhivery-1107\ndelhivery-2222\nDelhivery-141345\nDelhivery-260511006\nDelhivery (Trell MPS)-100020\nDELHIVERY B2C-764674\nDelhivery Gurugram-8982\nDelhivery Surface-181289\nDelhivery-1-20\nDelhivery-2-123\nDelhivery-3-128\nDelhivery-5-731\nDELKISHAN-2998\nDHEERAJ SAINI-18621\nDI-345678\ndino-6767\ndoasdfoa-3062606",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/cod-reconciliation",
+          "status": 200
+        },
+        {
+          "path": "/api/cod-reconciliation",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/sku-moderation",
+      "http": 200,
+      "navigated": "/app/sku-moderation",
+      "text": "e\nSKU Moderation\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nEnquiry/Create\nImport\n Unlinked\n Linked\nSearch\nReset\nExport\nImage\tSKU Name\tChannel\tSeller SKU\tERetail Sku\tProduct ID\tPricing\tOther Info\tAction\n\t\t\n--- Select ---\n\t\t\t\t\t\t\nNo records to view\n‹\nPage 1 of 0\n›\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/sku-moderation?meta=1",
+          "status": 200
+        },
+        {
+          "path": "/api/sku-moderation?meta=1",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/wms/zone",
+      "http": 200,
+      "navigated": "/app/wms/zone",
+      "text": "e\nZone\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nWMS\nSetup\nZone\nSearch\nAdd New\nReset\nPickerAction\nZone Details\nSite Location\n--- Select ---\nZone Code\tDescription\tPick To Bin\tKit To Bin\tQc Bin\tStatus\tZone Type\tLet Down Bin\tActions\tLinked Pickers\n\n\t\n\t\n--- Select ---\n\t\n--- Select ---\n\t\n--- Select ---\n\t\n--- Select ---\nActive\nInActive\n\t\n--- Select ---\nDrop Zone\nNormal\nPack Station\n\t\n--- Select ---\n\t\t\nNo records to view\nPage\nof 0\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/wms-zones",
+          "status": 200
+        },
+        {
+          "path": "/api/wms-zones",
+          "status": 200
+        },
+        {
+          "path": "/api/wms-zones",
+          "status": 200
+        },
+        {
+          "path": "/api/wms-zones",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/wms/picker-zone-preference",
+      "http": 200,
+      "navigated": "/app/wms/picker-zone-preference",
+      "text": "e\nPicker Zone Preference\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nWMS\nSetup\nPicker Zone Preference\nSearch\nReset\nImport\nPicker Zone Preference\nZone Code\tPicker Id\tZone Preference\tStatus\tActions\n\n\t\n\t\t\n--- Select ---\nActive\nInActive\n\t\nNo records to view\nPage\nof 0\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/picker-zone-preferences",
+          "status": 200
+        },
+        {
+          "path": "/api/picker-zone-preferences",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/wms/bin-enquiry",
+      "http": 200,
+      "navigated": "/app/wms/bin-enquiry",
+      "text": "e\nBin Enquiry\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nWMS\nSetup\nBin Enquiry\nSearch\nReset\nAdvance Search\nDownload\nPrint\nAdd new\nBin Details\nLocation\tBin Code\tZone\tBin Bucket\tBin Location Type\tApprox. No Of Units\tBin Qty\tStatus\tCommingle Lot\tCommingle Item\n\n\t\n\t\n\t\n--- Select ---\nHold\nBad\nGood\nIn Process\n\t\n--- Select ---\nCase\nCASEPACK10\nPALETTE\nPiece\nRegular\nRISHABHCASE\n\t\n\t\n\t\n--- Select ---\nActive\nInActive\n\t\n\t\n\nNo records to view\nPage\nof 0\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/bin-editor",
+          "status": 200
+        },
+        {
+          "path": "/api/bin-editor",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/wms/bin-editor",
+      "http": 200,
+      "navigated": "/app/wms/bin-editor",
+      "text": "e\nBin Create/Edit\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nBin Create/Edit\nAudit\nSave\nReset\nDelete\nBin Details\nUDF\nVideo Capture Configuration\nBin Create/Edit\nSite Location*\n--- Select ---\nBIN Code*\nBIN Type*\n--- Select ---\nCycle Count\nDrop Zone\nLetDown\nPack Station\nGPD\nKit To\nNormal\nOutbound Lane\nPeigon Hole\nPickTo\nQC\nReceiving\nBIN Flag*\n--- Select ---\nHold\nNone\nIs Active\nYes\nNo\nBIN Bucket*\n--- Select ---\nHold\nBad\nGood\nIn Process\nZone*\n--- Select ---\nAisle\nSequence No\nBin Location Type*\n--- Select ---\nCase\nCASEPACK10\nPALETTE\nPiece\nRegular\nRISHABHCASE\nAllowed UOMs\nCase\nRishabhCase\nINNER PACK\nCASEPACK10\npalette\nKGS\nKg\nBin Coordinates\nX Coo",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/bin-editor",
+          "status": 200
+        },
+        {
+          "path": "/api/bin-editor",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/wms/lottable-validation",
+      "http": 200,
+      "navigated": "/app/wms/lottable-validation",
+      "text": "e\nLottable Validation\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nWMS\nSetup\nLottable Validation\nSearch\nReset\nAdd New\nLottable Validation\nLottable Val. Code\tisDefault\tDescription\tUnique Batch Nos\tLottable2\tMfg Date\tLottable 04\tBatch No\tRecv Date\tLottable 07\n\n\t\n--- Select ---\nYes\nNo\n\t\n\t\t\t\t\t\t\t\nNo records to view\nPage\nof 0\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/wms/receipt-validation",
+      "http": 200,
+      "navigated": "/app/wms/receipt-validation",
+      "text": "e\nReceipt Validation\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nSave\nSearch\nReset\nExport\nReceipt Validation\nReceiving Validation Code*\nDescription*\nReceive More Than Doc\nPercentage\nIs Default\nAllow Other Than PO SKUs\nHeader Level Invoice Info\nInvoice Date Mandatory\nInvoice Amount Mandatory\nInvoice Tax Mandatory\nMaterial Receive Date\nAllow Excess Qty\nAllow VBOM\nAttachment Mandatory\nInvoice Amount Validation\nChallan No Mandatory\nLottable01 MRP Validation\nReason Mandatory\nMargin Tolerance\nw/o Margin Tolerance\nRestrict Less Than Doc Qty\nVariance Allowed\nMRP Variance allowed(%)\nMargin Variance Allowed(%)\nWithout Margin Variance Allowed(%)\nLess R",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/receipt-validations",
+          "status": 200
+        },
+        {
+          "path": "/api/receipt-validations",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/wms/sku-label-print",
+      "http": 200,
+      "navigated": "/app/wms/sku-label-print",
+      "text": "e\nSKU Label Print\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nPrint\nReset\nSKU Label Print\nLabel Type\n--- Select ---\nAJIO_BUSINESS\nLABEL\nLabel Data\nFailed SKU\n\nNote: Please enter data as mentioned below:\n\nSKU,Qty,UomCode,SkuBarcode,Param1(optional),Param2(optional),Param3(optional),Param4(optional),Param5(optional) && (Param1,Param2,Param3,Param4,Param5 are static)\n\neg: SKU1,1,uomcode,skubarcode,Param1,Param2,Param3,Param4,Param5\n\nSKU2,2,uomcode,skubarcode,Param1,Param2,Param3,Param4,Param5\n\nNote: Max 100 lines are allowed at a time\n\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/wms/putaway-rules",
+      "http": 200,
+      "navigated": "/app/wms/putaway-rules",
+      "text": "e\nPutAway Rule Enquiry\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nWMS\nSetup\nPutAway Rule Enquiry\nSearch\nReset\nAdvanced Search\nDownload\nAdd New\nPutAway Rule Enquiry\nRule Id\tDescription\tLocation\tPutaway Method\tMerch. Hierarchy\tSKU Code\tBrand\tVendor\tActive\n\n\t\n\t\n\t\n--- Select ---\nApprox Qty\nCubic Volume\n\t\n\t\n\t\n\t\n\t\n\nNo records to view\nPage\nof 0\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/putaway-rules",
+          "status": 200
+        },
+        {
+          "path": "/api/putaway-rules",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/wms/allocation-strategies",
+      "http": 200,
+      "navigated": "/app/wms/allocation-strategies",
+      "text": "e\nManage Allocation Strategies\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nSales\nManage Allocation Strategies\nSearch\nReset\nAdd New\nManage Allocation Strategies\nStrategy ID\tStrategy Name\tLocation\tOverride SKU Rotation\tOverride Shelf Life\tStatus\tSteps Count\n\n\t\n\t\n--- Select ---\n\t\n\t\n\t\n--- Select ---\nConfirmed\nPending\n\t\nNo records to view\nPage\nof 0\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/allocation-strategies",
+          "status": 200
+        },
+        {
+          "path": "/api/allocation-strategies",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/wms/cycle-count-waves",
+      "http": 200,
+      "navigated": "/app/wms/cycle-count-waves",
+      "text": "e\nManage Cycle Count Wave\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nWMS\nSetup\nManage Cycle Count Wave\nSearch\nReset\nAdd New\nManage Cycle Count Wave\nLocation\tWave Id\tWave Description\tType\tScheduling Method\tStart Date\tEnd Date\tLast Run Time\tStatus\tAudit\n\n--- Select ---\n\t\n\t\n\t\n--- Select ---\nBin\n\t\n--- Select ---\nAction Triggered\nPeriodic\n\t\n\t\n\t\t\n--- Select ---\nActive\nInActive\n\t\nNo records to view\nPage\nof 0\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/cycle-count-waves",
+          "status": 200
+        },
+        {
+          "path": "/api/cycle-count-waves",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/wms/manage-awb",
+      "http": 200,
+      "navigated": "/app/wms/manage-awb",
+      "text": "e\nManage AWB\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nDetail\nSummary\nWMS\nLogistics\nManage AWB\nSearch\nReset\nExport\nDelete\nAdd New\nManage AWB\n\tAWB No\tSite Location\tOrder Type\tStatus\tTransporter\n\t\n...\n\t\n--- Select ---\n\t\n--- Select ---\nPrepaid\nNormal\nCOD\n\t\n--- Select ---\nFree\nIssued\n\t\n--- Select ---\n\nNo records to view\nPage\nof 0\n20\n50\n100\n200\nNo records to view\n\nNo AWB records yet. Add an AWB after creating a location and transporter.\n\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/manage-awb",
+          "status": 200
+        },
+        {
+          "path": "/api/manage-awb",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/wms/transporter-preference",
+      "http": 200,
+      "navigated": "/app/wms/transporter-preference",
+      "text": "e\nTransporter Preference\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nWMS\nLogistics\nTransporter Preference\nSearch\nReset\nDownload\nBulk Upload\nTransporter Preference\nFrom Loc\tDest.Pincode\tOrder Type\tTransporter\tCourier Type\tPreference Order\tCreatedBy\tRecord updby\tRecord Update Date\n\n--- Select ---\n\t\n\t\n--- Select ---\nCOD\nPrepaid\n\t\n--- Select ---\n\t\n--- Select ---\nForward\nReverse\n\t\t\t\t\nNo records to view\nPage\nof 0\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/transporter-preferences",
+          "status": 200
+        },
+        {
+          "path": "/api/transporter-preferences",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/wms/service-pin-codes",
+      "http": 200,
+      "navigated": "/app/wms/service-pin-codes",
+      "text": "e\nManage Service Pin Code\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nWMS\nLogistics\nManage Service Pin Code\nSearch\nAdvance Search\nReset\nImport\nExport\nDelete\nAdd New\nManage Service Pin Code\n\tPin Code\tLocation\tEmbargo Start Date\tEmbargo End Date\tArea Code\tOrder Type\tCourier Type\tTransporter\tSLA (in days)\n\t\n\t\n--- Select ---\n\t\n\t\n\t\n\t\n--- Select ---\nCOD\nPrepaid\n\t\n--- Select ---\nForward\nReverse\n\t\n--- Select ---\n\t\n\nNo records to view\nPage\nof 0\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/service-pin-codes",
+          "status": 200
+        },
+        {
+          "path": "/api/service-pin-codes",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/fulfillment/allocate",
+      "http": 200,
+      "navigated": "/app/fulfillment/allocate",
+      "text": "e\nOrder Allocate/Unallocate\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\n SKU Wise\n Show Short Pick Line\n WIP\n UnHold & Process\nWMS\nOrder Processing\nOrder Allocate/Unallocate\nSearch\nAllocate\nUnAllocate\nClose SO\nAdvance Search\nReset\nImport\nExport\nOrder Allocate/Unallocate\n\tClient\tOrder No\tExt Order No\tStatus\tOrder Date\tSKU\tLine Qty\tOpen Qty\tLine Amount\tLine No\tSite Location\tCustomer Name\tOrder Type\tOrder Qty\tOn Hold\tLogs\n\t\n--- Select ---\n\t\n\t\n\t\n--- Select ---\nPart Allocated\nAllocated\nPart Picked\nPick complete\nPartially Shipped\nConfirmed\n\t\n\t\n\t\t\t\t\t\n--- Select ---\n\t\n\t\n--- Select ---\nNormal\nCash On Delivery\nPrepaid\nCOD\n\t\t\n--- Select ---\nYes\nNo\n\t\nNo",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/order-allocation",
+          "status": 200
+        },
+        {
+          "path": "/api/order-allocation",
+          "status": 200
+        },
+        {
+          "path": "/api/order-allocation",
+          "status": 200
+        },
+        {
+          "path": "/api/order-allocation",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/fulfillment/shipment-handover",
+      "http": 200,
+      "navigated": "/app/fulfillment/shipment-handover",
+      "text": "e\nManage Manifest\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nNo locations configured. Add a location before creating a manifest.\nAdd location\nNo transporters configured. Add a transporter before creating a manifest.\nAdd transporter\nWMS\nOrder Processing\nManage Manifest\nSearch\nAdvance Search\nReset\nExport\nDetail Export\nAdd New\nManage Manifest\nManifest No\nManifest Date\nClient\tManifest No\tManifest Date\tTransporter\tExt Transporter Name\tUser\tStatus\tLocation\tOrder Count\tPrint\tHandoverId\tvehicleNo\tRemarks\tOrder Processing\n\n--- Select ---\n\t\n\t\n\t\n--- Select ---\n\t\n\t\n\t\n--- Select ---\nCancelled\nConfirmed\nInvoiced\nInvoiceInProcess\nPending\n\t\n--- Select ---\n",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/manage-manifests",
+          "status": 200
+        },
+        {
+          "path": "/api/manage-manifests",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/fulfillment/delivery-shipping",
+      "http": 200,
+      "navigated": "/app/fulfillment/delivery-shipping",
+      "text": "e\nDelivery Shipping\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nNo locations configured. Add your first location to process deliveries.\nAdd location\nNo channels configured. Add a channel before connecting a marketplace account.\nAdd channel\nWMS\nOrder Processing\nDelivery Shipping\nSearch\nAdvance Search\nReset\nExport\nGenerate Picklist\nPack Order\nRequest Manifest\nBulk Download\nRefetch\nPrint Picklist\nDelivery Shipping\n\tClient\tDelivery Info\tOrder No\tExtern Order No\tOutbound Delivery No\tDelivery Qty\tSite Location\tChannel\tOrder Type\tpaymentMode\tPickList For\tPick-Pack Flag\tOrder Status\tStatus\tTransporter\tExt Transporter Name\tRe-assigned\tOld Tracking No",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/delivery-shipping",
+          "status": 200
+        },
+        {
+          "path": "/api/delivery-shipping",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/fulfillment/bulk-update",
+      "http": 200,
+      "navigated": "/app/fulfillment/bulk-update",
+      "text": "e\nBulk Order Update\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nBulk Order Update\nImport Type*\n--- Select ---\nOrder Cancel\nOrder Pack\nOrder Ship\nOrder UnPack\nSelect File*\nImport\nReset\nDownload Template\n\nNote: Max 500 rows can be imported in an attempt of Import.\n\nSEQ NO\tORDER NO\tOUTBOUND DELIVERY\tTRANSPORTER CODE\tTRACKING NO\tERROR DESCRIPTION\tSTATUS\nNo records found\nView 0 - 0 of 0\nRecords per Page \n20\n50\n100\n200\nPrevious\nPage 0 of 0\nNext\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/fulfillment/manage-picklist",
+      "http": 200,
+      "navigated": "/app/fulfillment/manage-picklist",
+      "text": "e\nManage Picklist\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nEnquiry Picklist\nGenerate SKU Wise Picklist\nManage Wave\nTemplate\nWMS\nOrder Processing\nManage Picklist\nSearch\nReset\nAdvanced Search\nExport\nDetail Export\nPrint SKU Wise Picklist\nPrint Order Wise Picklist\nEnquiry Picklist\nOrder No\n\tClient\tPicklist No\tStatus\tStatus\tPicklist Created Date\tGenerated By\tAssign Picklist User\tAssigned Picker\tDescription\tPicklist Finish Time\tPicklist Qty\tCompletion %\tProcess Qty\tUnlock Picklist\tPrint\tAction\tispicklistlocked\tPrintStatus\tPrefetch Label\tPrintStatus\tLocation Code\tAssigned Picklist Date\tPicklist StartTime\tPickList Print Date\tPicklist Tag\tZones\tSo",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/manage-picklists",
+          "status": 200
+        },
+        {
+          "path": "/api/manage-picklists",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/fulfillment/manage-picking",
+      "http": 200,
+      "navigated": "/app/fulfillment/manage-picking",
+      "text": "e\nManage Picking\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nManage Picking\n By SKU\n By Order\nScan Picklist No\nActions\nReset\nHistory\nMy Last 20 Processed Orders\nProcessed LPN History\nProcessed Orders History\nScanned SKUs History\nPending SKUs\nPack Scanned SKUs\nSort Scanned SKUs\nShow PIP Orders Only\nMy Last 20 Processed LPN\nMy Last 20 Picked SKUs\nMy last 20 Packed SKUs\nMy last 20 Sorted SKUs\nSorting Completed\nSorting In-Process\nSorting Not Started\nPROCESSED DATE\tPICKLIST NO\tORDER NO\tSKU CODE\tQTY\tPROCESS\tLPN\tSTATUS\nNo processed history\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/manage-picking",
+          "status": 200
+        },
+        {
+          "path": "/api/manage-picking",
+          "status": 200
+        },
+        {
+          "path": "/api/manage-picking",
+          "status": 200
+        },
+        {
+          "path": "/api/manage-picking",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/fulfillment/delivery-split",
+      "http": 200,
+      "navigated": "/app/fulfillment/delivery-split",
+      "text": "e\nDelivery Split\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nAudit\nDelivery Split\nOutbound Del No\n...\nSearch\nReset\nOUTBOUND DEL NO\tORDER NO\tEXT ORDER NO\tORDER TYPE\tORDERTYPECODE\tSKU CODE\tSKU CODE\tUOMCODE\tSKU DESC\tUOM\tQUANTITY\tFROMID\tTOID\tSTATUS\tSTATUSCODE\tLINENO\tUNIQUELINENO\tHASDECIMAL\tFROM BIN\tLOT\tSCANNED UNIQUE\tIMEI NO\tIN DATE\tSERAIL LINE NO\tSORTATIONBY\tSORTATIONDATE\tCNTROWAS1QTY\nNo records to view\nNo records to view\nRecords per Page \n20\n50\n100\n200\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/delivery-split",
+          "status": 200
+        },
+        {
+          "path": "/api/delivery-split",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/fulfillment/shipment-receiving",
+      "http": 200,
+      "navigated": "/app/fulfillment/shipment-receiving",
+      "text": "e\nShipment Handover\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nShipment Handover\nPending To Receive (0)\nQC Failed/Expired (0)\nReceived (0)\nAll (0)\nScan Shipment\nQC Status\nQC Passed\nQC Failed\nMark Received\nWMS\nOrder Processing\nShipment Handover\nSearch\nReset\nPending To Receive\nOrder No\nFrom Order Date\nTo Order Date\nShipment No\nFrom Shipment Date\nTo Shipment Date\nTracking No\nAudit\tClient\tOrder No\tOrder No\tOrder Date\tShipment No\tShipment Date\tTracking No\tCustomer\tCustomer Detail\tStatus\tReceived By\tReceived Date\tDelivered By\tDelivery Date\tReturned By\tReturn Date\tExpired Date\tRemarks\tStatusCode\tCreated By\tCreated Date\tModified By\tModified Date\tAc",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/shipment-handover",
+          "status": 200
+        },
+        {
+          "path": "/api/shipment-handover",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/fulfillment/order-acknowledgement",
+      "http": 200,
+      "navigated": "/app/fulfillment/order-acknowledgement",
+      "text": "e\nOrder Acknowledgement\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nPending Acknowledgement (0)\nAcknowledgement History (0)\nWMS\nOrder Processing\nOrder Acknowledgement\nSearch\nReset\nAccept\nReject\nExport\nPending Acknowledgement\n\tExt Order No\tOrder No\tChannel Name\tOrder Type\tOrder Date\tSKU Code\tSKU Desc\tWalkin Location\tFulfillment Location\tOrder Qty\tLine No\tLine Amount\tImage\tCustomer Address\tLot\tUDFs\n\t\n\t\n\t\n--- Select ---\n\t\n--- Select ---\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\t\n\t\n\t\n\nNo records to view\nPage\nof 0\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/order-acknowledgement",
+          "status": 200
+        },
+        {
+          "path": "/api/order-acknowledgement",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/fulfillment/consolidate-ewb",
+      "http": 200,
+      "navigated": "/app/fulfillment/consolidate-ewb",
+      "text": "e\nConsolidate EWB\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nGenerate CEWB\nRe-generate/View CEWB\nWMS\nOrder Processing\nConsolidate EWB\nSearch\nReset\nGenerate CEWB\nGenerate CEWB\n\tIntegration Type\tTxn Date\tInvoice No\tDelivery No\tOrder No\tVehicle No\tE-way Bill\tEWB Validity\tRef Type\tCEWB Generated\tCEWB No\n\t\n--- Select ---\nE-Way Bill\n\t\n\t\n\t\n\t\n\t\n\t\n\t\t\n--- Select ---\nSO\nSTO\nRTV\n\t\n--- Select ---\nYes\nNo\n\t\n\nNo records to view\nPage\nof 0\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/consolidate-ewb",
+          "status": 200
+        },
+        {
+          "path": "/api/consolidate-ewb",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/fulfillment/sort-to-box",
+      "http": 200,
+      "navigated": "/app/fulfillment/sort-to-box",
+      "text": "e\nSort To Box\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nScan SKU\nFrom LPN\nScan SKU\nTo LPN\nQty\nShort Pack\nLPN Close\nOk\nReset\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/inbound-gate-pass",
+      "http": 200,
+      "navigated": "/app/r/inbound-gate-pass",
+      "text": "e\nManage Inbound Gate Pass\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nWMS\nInbound\nManage Inbound Gate Pass\nSearch\nReset\nDownload\nAdd New\nSite Location\tIGP Code\tIGP Date\tStatus\tInward Type\tTransporter\tTracking No\tVehicle No\tReference No\tNo Of Parcels\tMaterial Desc\tPO Code\tInvoice No\tWeight\n\n--- Select ---\n\t\n\t\n\t\n--- Select ---\nCancelled\nClosed\nConfirmed\n\t\n--- Select ---\nASN\nDI\nPO\nReturn\nSTOCK TRANSFER\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\nNo records to view\nPage\nof 0\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/inbound-gate-pass",
+          "status": 200
+        },
+        {
+          "path": "/api/inbound-gate-pass",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/inbound-enquiry",
+      "http": 200,
+      "navigated": "/app/r/inbound-enquiry",
+      "text": "e\nInbound Enquiry\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nWMS\nInbound\nInbound Enquiry\nSearch\nReset\nAdvance Search\nAdd New\nQC\nPutAway\n\tInbound No\tExt Inbound No\tSTO No\tASN No\tPO No\tGRN No\tCreation Date\tInbound Type\tInvoice No\tvendor\tStatus\tQC Status\tInbound Location\tExt Return No\tExt Invoice No\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n--- Select ---\nWith QC\nAgainst ASN\nDelivered Return\nNon Delivered Return\nWith PO\nWith STO\nWithout PO\n\t\n\t\n...\n\t\n--- Select ---\nPending Confirmation\nPending Hold\nGRN In Process\nConfirmed\nCancelled\n\t\n--- Select ---\nin QC\nQC Done\n\t\n--- Select ---\n\t\n\t\n\nNo records to view\nPage\nof 0\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Pr",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/inbound-enquiry",
+          "status": 200
+        },
+        {
+          "path": "/api/inbound-enquiry",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/inbound-create-edit",
+      "http": 200,
+      "navigated": "/app/r/inbound-create-edit",
+      "text": "e\nInbound Create/Edit\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nThe screen will be deprecated on 25th Nov 2025. Please use WMS > Inbound > Inbound RealTime\nAdd New\n▾\nInbound Create/Edit\nImport\nPO No*\n...\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/inbound-create-edit",
+          "status": 200
+        },
+        {
+          "path": "/api/inbound-create-edit",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/inbound-realtime",
+      "http": 200,
+      "navigated": "/app/r/inbound-realtime",
+      "text": "e\nInbound RealTime\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nProcess By Scan\nProcess By Table\nInbound Create/Edit\nImport\nInbound Type\nWith ASN\nDirect Inbound\nWith Gate Pass\nWith PO\nReturn Inbound\nWith STO\nPO\n...\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/inbound-realtime",
+          "status": 200
+        },
+        {
+          "path": "/api/inbound-realtime",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/inbound-qc",
+      "http": 200,
+      "navigated": "/app/r/inbound-qc",
+      "text": "e\nInbound QC\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nConfirm\nCreate RTV\nExport\nInbound No/Reverse AWB No/Return No\n...\nGRN No\n...\nGRN Date\nQC Status\nSearch\nReset\nScan Rejected/Hold SKUs\nScan Type*\nHold\nPass\nReject\nSKU Code\nTo LPN\nReason*\n--- Select ---\nMyntra - Missing Product\nExpired\nNear Expiry\nwrong print\nDamage 1212\nWrong Item\nmay9nehra989\nra989\nMyntra - Different Product\nMyntra - Fake Product\nMyntra - Received in Damaged State\nDamaged Product\nWrong Product\nDelay\nEXPIRY PRODUCT\nBroken Boxes\nTest\nJob Work Required\nasdf\nMyntra - Used and seal Broken\nMyntra - Weight Difference\nRemarks\nImage\nAdd\nReset\nCapture Image\nGRN Summary\nGRN No\tSKU",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/inbound-qc",
+          "status": 200
+        },
+        {
+          "path": "/api/inbound-qc",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/central-inventory",
+      "http": 200,
+      "navigated": "/app/central-inventory",
+      "text": "e\nCentral Inventory\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\n\nD-MILLS · INVENTORY WORKSPACE\n\nCentral Inventory\n\nOne catalog, location counts, sales changes and stock alerts.\n\nRefresh\nDownload Excel\nDownload PDF\n\nDownloads include 3243 matching SKUs. Last loaded: 24/09/2026, 22:37:04.\n\nInventory management\nStock overview\nRecord physical stock\nExcel upload\nLow-stock alerts\nChannel connections\nLedger activity\nCatalog SKUs\n3243\nExcel source SKUs\n2872\nCounted SKUs\n0\nCentral sellable\n0\nLow-stock alerts\n0\nChannel publication is pending. Verified physical counts feed the central ledger.\nMaster SKU balances\n\nWorkbook listed stock is source data. “",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/events",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/events",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/overview",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/overview",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/inventory",
+      "http": 200,
+      "navigated": "/app/inventory",
+      "text": "e\nInventory View\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nMaster SKU low-stock policy\nMaster SKU code\nAlert at available quantity\nLoad\nSave threshold\n\nStock is combined across every SKU variant with this Master SKU code. A dashboard alert appears when total available stock is at or below this threshold.\n\nSearch\nReset\nExport\nBy SKU\nBy SKU BIN\nBy SKU LOT\nBy SKU BIN LOT\nBy SKU IMEI\nBy SKU UNIQUE NO\nMarket Place Inventory\nBy SKU BOM\nSKUCode / BarCode\nSKU Code\n...\nSKU Desc\nMfg SKU Code\nHierarchy Code\n...\nBrand Code\n...\nVendor Code\n...\nSKU Code\tStyle\tMfg SKU Code\tHierarchy Code\tSize\tInv Bucket\tTotal Qty\tAvailable Qty\tCommited Qty\tPicked Qty\tTra",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory?meta=true",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory?meta=true",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/inv-move-history",
+      "http": 200,
+      "navigated": "/app/r/inv-move-history",
+      "text": "e\nInventory Move History\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nSearch\nReset\nAdvance Search\nExport\nAdd New\nSKU Code\n\tSKU Desc\n\tMove Date\n\tSite Location Site Location\tMove Qty\tFrom Zone\n\tTo Zone\n\tFrom Bin\n\tTo Bin\n\tLPN\tUser\tPutaway No\n\tRemarks\tReason Reason\n--- Select ---\n\tCycleID\n\nNo records to view\nPrevious\nPage 0 of 0\nNext\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-move-history",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-move-history",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/inv-move",
+      "http": 200,
+      "navigated": "/app/r/inv-move",
+      "text": "e\nInventory Move\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nExecute Move\nSearch\nReset\nInventory Move\nInventory Move Import\nSearch Criteria\nSKU Code\n...\nSKU Desc\nZone\n-1\nFrom Bin\n...\nFrom LPN\nLottable 01\nLottable 02\nLottable 03\nLottable 04\nLottable 05\nLottable 06\nFrom Qty Same As To Qty\nTo Bin\n...\nApply\nNew inventory move reason\nAdd Reason\nSearch Results\n\tSku\tZone\tFrom Bin\tTo Bin\tAllocated Qty\tFrom Qty\tTo Qty\tFrom LPN\tTo LPN\tLot\tLottable 01\tLottable 02\tLottable 03\tLottable 04\tLottable 05\tLottable 06\tisUnique\tRemarks\tReason\nNo inventory to move. View inventory\nPrevious\nPage 0 of 0\nNext\n20\n50\n100\n200\n© 2026 D-Mills Global Private Limited\nMade ",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-move",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-move",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/inv-move-scan",
+      "http": 200,
+      "navigated": "/app/r/inv-move-scan",
+      "text": "e\nInventory Move By Scan\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nInventory Move By Scan\nLPN Move\nLPN To LPN\nBy SKU\nBy BIN\nBulk\nEach\nFrom Bin\nFrom LPN\nTo Bin*\nTo LPN\nSKU Code*\nSKU Desc\nUOM\nEA\nEA Qty\nReason\n--- Select ---\nTest1\nTest2\nTest3\nTest4\nShow Inventory\nAdd\nReset\nSKUs To Move\nError\tFrom Bin\tFrom LPN\tTo Bin\tTo LPN\tSKU Code\tSKU Desc\tUniqueNo\tQuantity\tLot\tReference No\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-move-scan",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-move-scan",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/cycle-count",
+      "http": 200,
+      "navigated": "/app/r/cycle-count",
+      "text": "e\nCycle count\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nCancel\nSearch\nReset\nPost\nExport\nDetail Export\nCycleCount Enquiry\nCycleCount Create/Edit\n\tCycleID\n\tType\n--- Select ---\nBin\nLPN\n\tStatus\n--- Select ---\nPending\nAdjustment Required\nAwaiting Verification\nCanceled\nClosed\nConfirmed\nError\nPartial Posted\nPending For Post\nRecount Confirmed\nRecount WIP\nWIP\n\tCreate Date\n\tUpdated Date\n\tBin\n\tLPN\n\tUser\n\tScanned Stock\tReason\n\tWave Filter\tTaskId\n\nNo records to view\nPrevious\nPage 0 of 0\nNext\n20\n50\n100\n200\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/cycle-count",
+          "status": 200
+        },
+        {
+          "path": "/api/cycle-count",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/bin-audit",
+      "http": 200,
+      "navigated": "/app/r/bin-audit",
+      "text": "e\nBIN Audit\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nSearch\nReset\nEnd Audit\nStart Audit\n\tLocationLocation\n--- Select ---\n\tBIN\n\tAuditStart\n\tAuditEnd\n\tAuditVaildFrom\n\tBulk BatchId\n\tStatusStatus\n--- Select ---\nCompleted\nStart\nWaiting\n\tStartBy\n\tEndBy\n\nNo records to view\nPrevious\nPage 0 of 0\nNext\n20\n50\n100\n200\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/bin-audit",
+          "status": 200
+        },
+        {
+          "path": "/api/bin-audit",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/bulk-lottables",
+      "http": 200,
+      "navigated": "/app/r/bulk-lottables",
+      "text": "e\nBulk update Lottables\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nImport\nReset\nExport\nImport Batch No\nUpload Template\nDownload Template\nSeq No\tSKU Code\tLot Code\tError Description\nNo records to view\nPrevious\nPage 0 of 0\nNext\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/bulk-lottables",
+          "status": 200
+        },
+        {
+          "path": "/api/bulk-lottables",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/putaway-enquiry",
+      "http": 200,
+      "navigated": "/app/r/putaway-enquiry",
+      "text": "e\nPutAway Enquiry\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nWMS Inbound · PutAway Enquiry\nSearch\nReset\nAdvance Search\nDownload\nDetail Export\nAdd New\nPutAway No.\tStatus\tCreated Date\tConfirmed Date\tPutAway Type\tPutaway Qty\tLocation Code\n\t\n--- Select ---\nCancelled\nClosed\nConfirmed\nOpen\nPart Confirmed\nUndefined\n\t\t\t\n--- Select ---\nCancelled Order\nSelected Inbound\nSelected Inbound RealTime\nUser defined_Cancelled Order\n\t\t\nNo records to view\n‹\nPage of 0\n›\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/putaway-enquiry",
+          "status": 200
+        },
+        {
+          "path": "/api/putaway-enquiry",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/dispatch-checkpoint",
+      "http": 200,
+      "navigated": "/app/r/dispatch-checkpoint",
+      "text": "e\nDispatch Checkpoint Enquiry\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nWMS Dispatch Checkpoint Enquiry\nSearch\nReset\nAdd New\nExport\nLoad Id\tcreated_date\tUpdated Date\tVehicle No\tTransporter\tStatus\tScanned Box\tTotal Box\tProcess Flow\n\t\t\t\t\n- Select -\nDelhivary India - AWB-101010101\nDelhivery-1107\ndelhivery-2222\nDelhivery-141345\nDelhivery-260511006\nDelhivery (Trell MPS)-100020\nDELHIVERY B2C-764674\nDelhivery Gurugram-8982\nDelhivery Surface-181289\nDelhivery-1-20\nDelhivery-2-123\nDelhivery-3-128\nDelhivery-5-731\nDELKISHAN-2998\nDHEERAJ SAINI-18621\nDI-345678\ndino-6767\ndoasdfoa-30626062\nds;lfml-5161661\nGaurav-969031\nGTransporter-12334\nIN Hand Delivery-",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/dispatch-checkpoint",
+          "status": 200
+        },
+        {
+          "path": "/api/dispatch-checkpoint",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/sku-grading",
+      "http": 200,
+      "navigated": "/app/r/sku-grading",
+      "text": "e\nSku Grading\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nWMS Miscellaneous Sku Grading\nSearch\nReset\nExport\nAdd New\nGraded Id\tInbound No\tCreation Date\tStatus\tLocation\n\t\t\t\n--- Select ---\nConfirmed\nPending\n\t\n--- Select ---\nNo SKU grades to view.\nAdd grade\n‹\nPage of 0\n›\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/sku-grading",
+          "status": 200
+        },
+        {
+          "path": "/api/sku-grading",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/discrepancy-enquiry",
+      "http": 200,
+      "navigated": "/app/r/discrepancy-enquiry",
+      "text": "e\nDiscrepancy Enquiry\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nWMS Inbound Discrepancy Enquiry\nSearch\nReset\nAdvance Search\nDelivered\nCancel\nDispose Action ▾\nExport\nDetail Export\nPrint ▾\n\tDiscrepancy Note No\tCreated Date\tQty\tStatus\tInbound No\tGRN No\tParent Doc No\tInbound Type\tInvoice No\tdiscrepancynote.discrepancyType\tDocument Attached\tAudit\n\t\t\t\t\n--- Select ---\nCancelled\nConfirmed\nDelivered\nDisposed\nPending\nRejected\nTo Be Disposed\n\t\t\t\t\n--- Select ---\nWith QC\nAgainst ASN\nDelivered Return\nNon Delivered Return\nWith PO\nWith STO\nWithout PO\n\t\t\n--- Select ---\nQC\nInbound\n\t\t\nNo records to view\n‹\nPage of 0\n›\n20\n50\n100\n200\nNo records to view\n© 2026 D",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/discrepancy-enquiry",
+          "status": 200
+        },
+        {
+          "path": "/api/discrepancy-enquiry",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/bulk-upload",
+      "http": 200,
+      "navigated": "/app/r/bulk-upload",
+      "text": "e\nBulk Upload\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nWMS Bulk Upload\nImport\nReset\n** Select a File Type for Import\n--- Select ---\nHSNCode_Taxpercent\nTax Rate Update 2025\nVendor GSTIN Upload\nASN-EXTUSN Upload\nAWB Import\nB2BInvNo Import\nB2BPrice Import\nBinmaster Import\nBulk SKU Mapping\nColormaster Import\nDedecated Inv Import\nIRN_QRCODE_IMPORT\nLogistic Pickup\nNewLaunches_Import\nPutawaySKuBinLink\nPutawaySKuBinLink\nServiceability Pincode Import\nSizemaster Import\nSKULOCATIONLINK\nTopSeller_Import\nTransporter Location Link Upload\nTransporterPreference Import\nVirtual_Inventory Upload\nzoneorderpriority import\nZoneOrderType Import\nUpload CSV File\n",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/bulk-upload",
+          "status": 200
+        },
+        {
+          "path": "/api/bulk-upload",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/mr-inventory-log",
+      "http": 200,
+      "navigated": "/app/r/mr-inventory-log",
+      "text": "e\nMP Inventory Log\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\n Normal Archival\nSearch\nReset\nForce Push\nReTransmit\nManual Inv Push\nExport\n\tSKU\tChannel SKU Code\tChannel ProductId\tChannel Type\tChannel\tBrand\tInventory\tRequest Date\tDate\tStatus\tError Description\tDetails\n\t\t\t\t\n--- Select ---\n\t\n--- Select ---\n\t\n--- Select ---\n\t\t\t\t\n--- Select ---\nIn Process\nsuccess\nError\nSubmitted\n\t\t\nNo records to view\n‹\nPage of 0\n›\n20\n50\n100\n200\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/mp-inventory-log",
+          "status": 200
+        },
+        {
+          "path": "/api/mp-inventory-log",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/lpn-enquiry",
+      "http": 200,
+      "navigated": "/app/r/lpn-enquiry",
+      "text": "e\nLPN Enquiry\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nLPN Enquiry\nLPN Lifecycle\nSearch\nCanceled LPN\nAdvance Search\nReset\nDownload\nGenerate LPN\nToggle Dropdown\n[Out] Link LPN To Pallete\n[Out] Move to Outbound Lane\n[Inb] Link LPN To Pallete\n[Inb] Move to GPD Lane\nSort To Box\nLPNs Count\n[Inb]QC Movement\nMode\tLPN\tStatus\tPick Start Date\tPick End Date\tPick User\tClosed User\tSortation BY\tTotal Qty\tPallet ID\tManifest No\tOutbound Lane\tLPN Lifecycle\tPackaging Type\n\n--- Select ---\nTemporary\nPermanent\n\t\t\n--- Select ---\nCanceled\nClosed\nHold\nNew\nOpen\nOutbound Lane\nReopen\nShipment in Process\nShipped\nUnAllocate\n\t\t\t\t\t\t\t\t\t\t\t\nNo records to view\nPage of 0\n20",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/lpn-enquiry",
+          "status": 200
+        },
+        {
+          "path": "/api/lpn-enquiry",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/transhipment-old",
+      "http": 200,
+      "navigated": "/app/r/transhipment-old",
+      "text": "e\nTranshipment Old\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nSearch\nReset\nImport\nExport\nPending To Receive (0)\nReceived\nQC Passed\nQC Failed\nPacked\nDispatch Completed\nAll\nOrder No\nDoc No\nScan Order No\nScan Order\nMark Received\n\tAudit\tDoc Date\tOrder No\tSender Name\tReceiver Name\tItem Name\tItem Description\tBatch Id\tExpected Receive Date\nNo records to view. Import transhipment records to get started.\nPrevious\nPage 0 of 0\nNext\nRecords per Page \n20\n50\n100\n200\n0 records\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/transhipment-old",
+          "status": 200
+        },
+        {
+          "path": "/api/transhipment-old",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/transhipment",
+      "http": 200,
+      "navigated": "/app/r/transhipment",
+      "text": "e\nTranshipment\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nPending\nReceived\nQC Passed\nQC Failed\nDispatched\nAll\nSearch\nReset\nScan Manifest\nReceiving\nPrint LPN\nPrint Label\nImport\nExport\nShow data for duration\n1 Month\n1 Year\n3 Month\n6 Month\nALL\nActions\tLPN\tDocNo\tDocNo2\tDoc Date\tPriority\tFragile\tPrintStatus\tShip Together\tWeight\tDimension\tExptd Rcvd Date\tExptd Ship Date\tUDFs\tOrigin\tDestination\tDescription\tHandlingInstruction\tType\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\nNo records to view\nPage of 0\n15\n50\n100\n200\n500\n1000\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/transhipment",
+          "status": 200
+        },
+        {
+          "path": "/api/transhipment",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/qc-params-mapping",
+      "http": 200,
+      "navigated": "/app/r/qc-params-mapping",
+      "text": "e\nQC Params Mapping\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nSearch\nReset\nAdd New\nParams Group\nQC Params\nMapping\nID\tParams Group\tStatus\tAction\tAudit\n\t\t\nActive\nInActive\n\t\t\nNo records to view\nPage of 0\n50\n100\n200\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/qc-params-mapping",
+          "status": 200
+        },
+        {
+          "path": "/api/qc-params-mapping",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/returns/rtv-enquiry",
+      "http": 200,
+      "navigated": "/app/returns/rtv-enquiry",
+      "text": "e\nRTV Enquiry\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nSearch\nReset\nAdvance Search\nExport\nDetail Export\nAdd New\nRTV No\tExt RTV No\tRTV Date\tRTV Type\tPO No\tGRN No.\tVendor\tStatus\tRTV Qty\tRTV Amount\tOn Hold\tRTV Tags\n\nRTV No\n\t\nExt RTV No\n\t\nRTV Date\n\t\n--- Select ---\nInbound QC\nDamage Return\nDispose\nNormal Return\n\t\nPO No\n\t\nGRN No.\n\t\nVendor\n\t\nAllocated\nCancelled\nClosed\nConfirmed\nDelivered\nDelivery created\nPacked\nPart Allocated\nPart Picked\nPartially Shipped\nPending\nPick complete\nShipped & Returned\nShipped complete\n\t\t\t\n--- Select ---\nYes\nNo\n\t\nNo records to view\nPage of 0\n20\n50\n100\n200\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/rtv-enquiry",
+          "status": 200
+        },
+        {
+          "path": "/api/rtv-enquiry",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/returns/vendor-return",
+      "http": 200,
+      "navigated": "/app/returns/vendor-return",
+      "text": "e\nVendor Return Create/Edit\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nAdd New\nSave\nConfirm\nToggle Dropdown\nVendor Details\nUser Defined Fields\nShipment Details\nActivity and Remarks\nImport\nRTV Source*\n--- Select ---\nWith GRN\nWith PO\nWithout PO\nRemarks\nSite Location\n--- Select ---\nReturn Type\n--- Select ---\nNormal Return\nDispose\nInbound QC\nDamage Return\nVendor Code\n...\nVendor Name\nExtern RTV No\nOrder Processing\n--- Select ---\nB2B Flow\nB2C Flow\nStatus\nAdd SKU\nRemove SKU\nImport\nEdit Return Qty\n\tSKU Code\tSKU\tBase Cost\tRTV Qty\tReason\nNo records to view\nRTV No:\nRTV Amount: 0.00\nRTV Quantity: 0\nHold: No\n© 2026 D-Mills Global Private Limited\nMade by",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/vendor-return-editor",
+          "status": 200
+        },
+        {
+          "path": "/api/vendor-return-editor",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/returns/customer-enquiry",
+      "http": 200,
+      "navigated": "/app/returns/customer-enquiry",
+      "text": "e\nReturn Enquiry\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nSearch\nReset\nAdvance Search\nImport\nAdd New\nReturn No\tExt Order No\tOrder Owner\tOrder No\tOrder Type\tOrder Channel\tCustomer Name\tStatus\tReturn Type\tReturn Category\tCredit Coupon\tReturn Date\tCreated User\tConfirm Date\tReturn Close Date\tDelivery No\tExt Invoice No\tCustomer Email\tCustomer Phone\tOrder Date\tAmount\tReturn Amount\tStore Credit\tReverse Tracking No\tDelivery Type\tRefund Status\tRefund Date\tTransporter\tExt Return No\tExt Return Status\torderSrc\tb2bAutoInboundRequest\tprocessId\n\nReturn No\n\t\nExt Order No\n\t\t\nOrder No\n\t\n--- Select ---\nCash On Delivery\nCOD\nCredit\nJIT\nPrepaid\nNot Defined\nONL",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/customer-return-enquiry",
+          "status": 200
+        },
+        {
+          "path": "/api/customer-return-enquiry",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/returns/customer-return",
+      "http": 200,
+      "navigated": "/app/returns/customer-return",
+      "text": "e\nReturn Create/Edit\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nImport\nAdd New\nSave\nConfirm\nMore\nCustomer Return\nCustomer Detail\nUser Defined Field\nComment History\nPayment Details\nRequest Type\n Request\n Request & Inbound\nExtern Order No\n...\nDelivery Location\nANY-Select Any Location\nReturn Type\nReturn Less Return\nDelivered Return\nRTO\nCategory\n--- Select ---\nRefund\nReplacement\nDelivery Type\n--- Select ---\nDelivery\nNo PickUp\nPickUp\nTransporter\n--- Select ---\nTracking No\nExt Reference No\nRemarks *\nReason\n--- Select ---\nBetter price available\nChange my mind\nCustomer Cancelled\nDamage\nDamaged\nOther\nWrong Item\nWrong Size\nDAMAGED PRODUCT\nDelayed Del",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/customer-return-editor",
+          "status": 200
+        },
+        {
+          "path": "/api/customer-return-editor",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/m/return-otc",
+      "http": 200,
+      "navigated": "/app/m/return-otc",
+      "text": "e\nReturn OTC(Flipkart)\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nGenerate OTC\n\nFlipkart Return OTC connector is not configured. No OTC code is generated locally.\n\nType\nOTC\nVendor\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/m/return-otc-new",
+      "http": 200,
+      "navigated": "/app/m/return-otc-new",
+      "text": "e\nReturn OTC(Flipkart) New\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\n\nFlipkart Return OTC connector is not configured. Task generation and repush actions are unavailable.\n\nFrieght Expert\tLogistic Partner\tLOB\tTask ID\tStatus\tCreated At\tStart OTC\tCreated At\tExpiry Time\tEnd OTC\nNo records to view\n20 rows\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/return-otc?page=1&rows=20",
+          "status": 200
+        },
+        {
+          "path": "/api/return-otc?page=1&rows=20",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/returns/global-search",
+      "http": 200,
+      "navigated": "/app/returns/global-search",
+      "text": "e\nGlobal Returns Search\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nSearch\nReset\nExport\nCustomer Return No\tExternal Return No\tWeb Store Order Number\tReturn Date\tReturn Type\tCustomer Name\tEmail Id\tPhone\tTransporter\tForward AWBNo\tReverse AwbNo\tStatus\tReturn Qty\tOrder Source\tReturn Location\n\t\t\t\t\n--- Select ---\nReturn Less Return\nDelivered Return\nRTO\n\t\t\t\t\n--- Select ---\n\t\t\t\n--- Select ---\nDS-Return Delivered\nDS-Cancelled\nDS-Closed\nDS-Confirmed\nDS-Dispute Confirmed\nDS-Dispute Rejected\nDS-Disputed\nDS-Lost InTransit\nDS-Pending\nDS-RETURN_EXPECTED\nDS-Reverse PickUP Done\nLost In Transit\nReverse Pick Up Terminated\nCancelled\nClosed\nConfirmed\nPartially R",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/global-returns-search",
+          "status": 200
+        },
+        {
+          "path": "/api/global-returns-search",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/m/return-wo-order",
+      "http": 200,
+      "navigated": "/app/m/return-wo-order",
+      "text": "e\nReturn Without Order\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nReturn Without Order\nCustomer Code\nFind Customer\n\nEnter a configured customer code. Add customer\n\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/return-without-order",
+          "status": 200
+        },
+        {
+          "path": "/api/return-without-order",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/transfers",
+      "http": 200,
+      "navigated": "/app/transfers",
+      "text": "e\nSTO Order Enquiry\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nSearch\nReset\nAdvance Search\nExport\nDetail Export\nAdd New\nSTO No\tExt.STO No\tSTO Date\tSTO Type\tShip Date\tDelivered Date\tOrigin Site\tDestination Site\tStatus\tSTO Qty\tOn Hold\tShip By Date\tisCrossDock\n\t\t\tSTO Type\n--- Select ---\nNormal\nReturn\nSTOTEST\n\t\t\t\n--- Select ---\n\t\n--- Select ---\n\tStatus\n--- Select ---\nAllocated\nCancelled\nClosed\nConfirmed\nDelivered\nDelivery created\nPacked\nPart Allocated\nPart Picked\nPartially Shipped\nPending\nPick complete\nShipped & Returned\nShipped complete\n\t\tOn Hold\n--- Select ---\nYes\nNo\n\t\tisCrossDock\n--- Select ---\nYes\nNo\nNo records to view\nPrevious\nPage 0 of 0\n",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/sto-enquiry",
+          "status": 200
+        },
+        {
+          "path": "/api/sto-enquiry",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/transfers/create",
+      "http": 200,
+      "navigated": "/app/transfers/create",
+      "text": "e\nSTO Order Create/Edit\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nAdd New\nSave\nConfirm\nSTO Order Detail\nUDF\nOutbound Delivery\nActivity and Remarks\nSTO Order Tag\nImport\nExt.STO No\nSTO Type\n--- Select ---\nNormal\nReturn\nFrom Site\n--- Select ---\nTo Site\n--- Select ---\nReason\n--- Select ---\nSlowSellers\nAnnual Selling Trend Change\nOverstock\nStore Transfer\nPriority\n--- Select ---\nHigh\nMedium\nNormal\nOn Hold Status\nRemarks\nOrder Processing\n--- Select ---\nB2B Flow\nB2C Flow\nStatus\nPending\nAdd SKU\nRemove SKU\nImport\nLN\tSKU Code\tStatus\tTransfer Qty\tExp Qty\tIn Process Qty\tClosed Qty\tCompleted Qty\tUnit Price\tMRP\tLotNo\tBin\tUDF\nNo records to view\nSTO No\nFro",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/sto-editor",
+          "status": 200
+        },
+        {
+          "path": "/api/sto-editor",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/admin/user-enquiry",
+      "http": 200,
+      "navigated": "/app/admin/user-enquiry",
+      "text": "e\nUser Enquiry\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nSearch\nReset\nAdvance Search\nImport\nExport\nAdd New\nUser Name\tFirst Name\tLast Name\tStatus\tEmail\tUser Type\n\n\t\n\t\n\t\n--- Select ---\nActive\nInActive\nLocked\n\t\n\t\n--- Select ---\nAdmin\nDistributor\nNormal\nSeller\nSellerAdmin\nStore\nSearch for users\nPage 0 of 0 \n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/user-enquiry",
+          "status": 200
+        },
+        {
+          "path": "/api/user-enquiry",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/admin/user-create-edit",
+      "http": 200,
+      "navigated": "/app/admin/user-create-edit",
+      "text": "e\nUser Create/Edit\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nAudit\nSave\nReset Password\nReset MFA\nAdd New\nUser Details\nUser Name*\nDesignation\nTitle*\n--- Select ---\nDr.\nMr.\nMrs.\nMs.\nFirst Name*\nMiddle Name\nLast Name*\nDate Of Birth\nStatus\n--- Select ---\nActive\nInActive\nLocked\nUser Type*\n--- Select ---\nAdmin\nDistributor\nNormal\nSeller\nSellerAdmin\nStore\nPurchase Order Limit\nEnable Multifactor Authentication\nView/Update UDF\nContact Details\nAddress 1*\nAddress 2\nAddress 3\nCountry*\n--- Select ---\nINDIA\nINDONESIA\nMALAYSIA\nSINGAPORE\nTHAILAND\nUNITED KINGDOM\nUNITED STATES\nState*\n--- Select ---\nDelhi\nHaryana\nKarnataka\nMaharashtra\nUttar Pradesh\nCity*\nPinC",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/user-editor",
+          "status": 200
+        },
+        {
+          "path": "/api/user-editor",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/admin/role-create-edit",
+      "http": 200,
+      "navigated": "/app/admin/role-create-edit",
+      "text": "e\nRole Create/Edit\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nSearch\nReset\nSave\nAudit\nAdd New\nRole Id\nRole Type*\n--- Select ---\nSeller Panel\nCompany\nEnterprise\nDescription*\nIs Active\nRoles\nProcess Mapping\nRole Id\tRole Type\tDescription\tIs Active\nPage 0 of 0 \n20\n50\n100\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/role-editor",
+          "status": 200
+        },
+        {
+          "path": "/api/role-editor",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/admin/user-audit-logs",
+      "http": 200,
+      "navigated": "/app/admin/user-audit-logs",
+      "text": "e\nUser Audit Logs\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nAdmin\n>\nUser Audit Logs\nDownload\nReset\nAudit\nUser Access Logs\nLogs\n--- Select ---\nLogin Logs\nRole Logs\nUser Edit Logs\nUser Logs\nFrom Date\nTo Date\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/admin/accounting-log",
+      "http": 200,
+      "navigated": "/app/admin/accounting-log",
+      "text": "e\nAccounting Log\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nAdmin\n>\nAccounting Log\nRe Push\nConfirm\nSearch\nReset\nAdd New\nExport\nTransaction Log\nTransaction Type Log\nXero\nZohoBooks\nTally\n\tCompany Name\tDocument Type\tDocument Number\tTxn Date\tStatus\tMessage\n\t\n--- Default ---\n\t\n--- Select ---\nCustomer\nItem\nPurchase\nPurchase Return\nSales\nSales Return\nVendor\n\t\n\t\n\t\n--- Select ---\nError\nPending Acknowledge\nsuccess\nWaiting In Queue\n\t\nPage  of 0\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/admin-parity?action=log-catalog&screen=accounting-log",
+          "status": 200
+        },
+        {
+          "path": "/api/admin-parity?action=log-catalog&screen=accounting-log",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/admin/tax-integration-log",
+      "http": 200,
+      "navigated": "/app/admin/tax-integration-log",
+      "text": "e\nTax Integration Log\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nAdmin\n>\nTax Integration Log\nSearch\nReset\nManual Repush\nRe Push\nCancel\n\tIntegration Type\tTxn Date\tTransaction Type\tDocument Number\tReference No\tRef Number 2\tRef Type\tStatus\tOutput Key\tAction\n\t\n--- Select ---\nAvalara\nClear(India)\nSuperTax\nErnst & Young\nClear(KSA)\nVayana\n\t\n\t\n--- Select ---\nIRN_GET\nIRN_CANCEL\nEWB_GEN\nIRN_CNSLDT\n\t\n\t\n\t\n\t\n--- Select ---\nReturn\nRTV\nSO\nSTO\n\t\n--- Select ---\nPending\nsuccess\nProcessing\nError\n\t\n\t\nPage  of 0\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/admin-parity?action=log-catalog&screen=tax-integration-log",
+          "status": 200
+        },
+        {
+          "path": "/api/admin-parity?action=log-catalog&screen=tax-integration-log",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/admin/device-tracking-log",
+      "http": 200,
+      "navigated": "/app/admin/device-tracking-log",
+      "text": "e\nDevice Tracking Log\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nAdmin\n>\nDevice Tracking Log\nRe Push\nSearch\nReset\n\tIntegration Type\tTxn Date\tDevice ID\tInvoice No\tDelivery No\tReference No\tRef Type\tStatus\tOutput Key\tAction\n\t\n--- Select ---\nIntugine\n\t\n\t\n\t\n\t\n\t\n\t\n--- Select ---\nSO\n\t\n--- Select ---\nPending\nsuccess\nProcessing\nError\n\t\n\t\nPage  of 0\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/admin-parity?action=log-catalog&screen=device-tracking-log",
+          "status": 200
+        },
+        {
+          "path": "/api/admin-parity?action=log-catalog&screen=device-tracking-log",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/admin/external-apps-logs",
+      "http": 200,
+      "navigated": "/app/admin/external-apps-logs",
+      "text": "e\nExternal Apps Logs\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nAdmin\n>\nExternal Apps Logs\nReset\n\tDocument Number\tReference Number\tExtApp Desc\tCreated Date\tUpdated Date\tStatus\tMessage\n\t\n\t\n\t\n--- Select ---\n\t\n\t\n\t\n--- Select ---\nPending\nsuccess\nError\nRecon Pending\n\t\nPage  of 0\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/admin-parity?action=log-catalog&screen=external-apps-logs",
+          "status": 200
+        },
+        {
+          "path": "/api/admin-parity?action=log-catalog&screen=external-apps-logs",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/admin/pos-integration-log",
+      "http": 200,
+      "navigated": "/app/admin/pos-integration-log",
+      "text": "e\nPOS Integration Log\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nAdmin\n>\nPOS Integration Log\nManual Repush\nRe Push\nSearch\nReset\nExport\n\tStore Code\tExt. Loc Code\tStore Name\tInvoice Creation Date\tReturn Closed Date\tOut Reference1\tOut Reference2\tRefChannel OrderNo\tInvoice No\tDoc Type\tTxn Date\tDocument Number\tReference No\tStatus\tExecution Time(ms)\tTxnType\tAction\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n\t\n--- Select ---\nINVOICE\nSO\nRETURN\nCANCEL SO\n\t\n\t\n\t\n\t\n--- Select ---\nPending\nSuccess\nError\n\t\n\t\t\nPage  of 0\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/admin-parity?action=log-catalog&screen=pos-integration-log",
+          "status": 200
+        },
+        {
+          "path": "/api/admin-parity?action=log-catalog&screen=pos-integration-log",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/admin/repush-log",
+      "http": 200,
+      "navigated": "/app/admin/repush-log",
+      "text": "e\nRepush Log\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nAdmin\n>\nRepush Log\nSearch\nRepush\nReset\nWebHook\nEmailTransit\nTransmitDetail\nManifestStatus\n\tWebHookKey\tDoc Id\tCreated Date\tDoc Type\tDoc Status\tResponse Code\tRow Version\tSeller Id\tAction\n\t\t\n\t\n\t\n--- Select ---\nINBOUND\nORDER\nORDER RETURN\nRTV\nTRANSHIPMENT\nPO\n\t\n--- Select ---\nAllocated\nCancelled\nClosed\nConfirmed\nDelivered\nDelivery created\nPacked\nPart Allocated\nPart Picked\nPartially Shipped\nPending\nPick complete\nShipped &amp; Returned\nShipped complete\n\t\n\t\n\t\n\t\nPage  of 0\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/admin-parity?action=log-catalog&screen=repush-log",
+          "status": 200
+        },
+        {
+          "path": "/api/admin-parity?action=log-catalog&screen=repush-log",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/admin/order-import",
+      "http": 200,
+      "navigated": "/app/admin/order-import",
+      "text": "e\nOrder Import\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nImport\nReset\nThe screen will be deprecated on 17th March 2026. Please use Admin > Common Import > Order Import\nImport Type*\n--- Select ---\nNormal Order Import\nOrder Updation\nPOS Order Import\nUpdate logistics detail\nUpload Template\nImport Batch No\n**Note: Max 1000 rows can be imported in an attempt of Import.\nImport Type >Normal Order Import will be deprecated on 17th March 2026. Please use Common Import > Order Import\nSuccess\nFailure\nOrder No\tExtern OrderNo\tImport File Name\tImport Type\tSKU\tStatus\tRemarks\tUploaded Date\nPage 0 of 0 \n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Globa",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/order-import",
+          "status": 200
+        },
+        {
+          "path": "/api/order-import",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/admin/common-import",
+      "http": 200,
+      "navigated": "/app/admin/common-import",
+      "text": "e\nCommon Import\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nImport\nReset\nImport\nDownload\nFile Detail\nImport Type\n--- Select ---\nBulkReturnClose\nCreate_UpdateMerchHierarchy\nPOSTSUPDATE\nBulkUnkit\nAmazon_Order_Import\nSTOSTSUPDATE\nASNImport\nB2B Sort Sequence\nChannel Active/Inactive Import\nBulk Link Picker\nNDR Import\nPoImport\nPoShortCloseImport\nSTOImport\nCustomer Master Import\nPutawayImport\nOrderImport\nSkuLotTransfer\nCreateWaveFilterImport\nExecuteWaveFilterImport\nTranshipment\nARSSkuLocationLinkImport\nBulk Order Allocation/Un-Allocation\nPOS Config Import\nFNVRePackImport\nShiftMasterImport\nInventoryMovement\nStockAdjustment\nInboundImportwithIGP\nSkuUp",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/common-import",
+          "status": 200
+        },
+        {
+          "path": "/api/common-import",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/admin/exports",
+      "http": 200,
+      "navigated": "/app/admin/exports",
+      "text": "e\nExports\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nHome\n>\nPending Report\n* Only last 20 reports generated can be downloaded.\n* Force Pull option will be enabled after 300 seconds.\nReport ID\tStatus\tReport Request Date\tReport Names\tReport Complete Date\tDownload\tError Msg\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/exports",
+          "status": 200
+        },
+        {
+          "path": "/api/exports",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/admin/force-order-pull",
+      "http": 200,
+      "navigated": "/app/admin/force-order-pull",
+      "text": "e\nForce Order Pull\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nAdmin\n>\nForce Order Pull\nSave\nReset\nLocation\n--- Select ---\nAdd WH/HO\nOrder Number\n\n(Enter comma separated order numbers if more than one order numbers, Max 20 order numbers are allowed)\n\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/admin?action=force-pull-catalog",
+          "status": 200
+        },
+        {
+          "path": "/api/admin?action=force-pull-catalog",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/admin/settings",
+      "http": 200,
+      "navigated": "/app/admin/settings",
+      "text": "e\nSettings\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nSave\nMobile Setting\nInventory Configuration\nEway Bill Configuration\nPassword and Account Policy\nPrice Management Configuration\nOTB Setting\nPO Setting\nPO/PutAway/QC/Inbound\nPick Pack Configuration\nARS Configuration\nOmni Configuration\nLoyalty Configuration\nOrders Configuration\nLocation Weighing Configuration\nGST Tax Configuration\nProduct CMS Configuration\nPOS Setting\nB2B Configuration\nSupport Info\nInventory Configuration\nUse Box Id in Outbound PIcking Processes\nMandatory\nNot Required\nOptional\nAllow SKU Mix\nBox ID Reuse\nLPN setting\nPicklist Validation for CycleCount\nbin UNHOLD on cycleCount",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/settings?section=inventory",
+          "status": 200
+        },
+        {
+          "path": "/api/settings?section=inventory",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/admin/manage-api",
+      "http": 200,
+      "navigated": "/app/admin/manage-api",
+      "text": "e\nManage Api\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nAdmin\n>\nApi > Manage Api\nAdd\nRefresh\nRegister Webhook\nAPI Key\tAPI Owner\tCreated Date\tExpiry Date\tStatus\tActions\n\t\t\t\t\n--- Select ---\nInActive\nActive\n\t\nPage  of 0\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/admin-parity?action=api-catalog",
+          "status": 200
+        },
+        {
+          "path": "/api/admin-parity?action=api-catalog",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/admin/api-dashboard",
+      "http": 200,
+      "navigated": "/app/admin/api-dashboard",
+      "text": "e\nAPI Dashboard\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nAdmin\n>\nAPI Dashboard\nDate Range\nAPI Key\n- - - - All - - - -\nWhitelisted IPs\nAPI Name\n- - - - All - - - -\nHttp Resp Code\n- - - - All - - - -\n1XX\n2XX\n3XX\n4XX\n5XX\nExecution Time By Hits\n0\n0\n0\n\nMin\n\n0 ms\n\nAvg\n\n0 ms\n\nMax\n\n0 ms\nHit Count By Execution Time\n\nWithin 500 ms\n\n0\n\n0.5 - 1 Sec\n\n0\n\n1 - 5 Sec\n\n0\n\n5 - 10 Sec\n\n0\n\n10+ Sec\n\n0\nTop APIs by Hits\nHits By Servers\nHits By Time\n1.0\n0.9\n0.8\n0.7\n0.6\n0.5\n0.4\n0.3\n0.2\n0.1\n0.0\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/admin-parity?action=api-catalog",
+          "status": 200
+        },
+        {
+          "path": "/api/admin-parity?action=api-metrics&apiKey=&apiName=&httpCode=&from=2026-09-24T16%3A07%3A00.000Z&to=2026-09-24T17%3A07%3A00.000Z",
+          "status": 200
+        },
+        {
+          "path": "/api/admin-parity?action=api-catalog",
+          "status": 200
+        },
+        {
+          "path": "/api/admin-parity?action=api-metrics&apiKey=&apiName=&httpCode=&from=2026-09-24T16%3A07%3A00.000Z&to=2026-09-24T17%3A07%3A00.000Z",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/admin/language-setting",
+      "http": 200,
+      "navigated": "/app/admin/language-setting",
+      "text": "e\nLanguage Setting\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nAdmin\n>\nLanguage Setting\nSearch\nReset\nLanguage\nEnglish\nThai/ไทย\nBahasa\nSimple Chinese/简单的中文\nVietnamese/Tiếng Việt\nHindi/हिंदी\nArabic (Saudi Arabia)\nType\n--- Select ---\nUser Master UDF\nCustomer UDF\nInbound Charges\nInbound UDF\nLocation UDF\nLottable Validation Lottables\nManage SKU Lot Transfer Lottables\nNormal\nOrder UDF\nPO UDF\nSKU Lot Transfer By Scan Lottables\nSKU UDF\nStock Adjustment Lottables\nTranshipment UDF\nVendor UDF\nVendorReturn UDF\nProperty Key\nProperty Value\nProperty Key\tDefault Value\tEnglish\t\nPage  of 0\n20\n50\n100\n200\nNo records to view\n© 2026 D-Mills Global Private Limited",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/gr-register",
+      "http": 200,
+      "navigated": "/app/r/gr-register",
+      "text": "e\nGR Register\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nFROM DATE\nTO DATE\nWAREHOUSE\nAll\nGenerate\nExport\nPrint\nGR Register\n0 row(s)\nGRN NO\tPO NO\tVENDOR\tWAREHOUSE\tGRN DATE\tRECEIVED QTY\tSTATUS\nNo records found for the selected filters\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=gr-register&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=gr-register&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/po-report",
+      "http": 200,
+      "navigated": "/app/r/po-report",
+      "text": "e\nPO Report\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nFROM DATE\nTO DATE\nWAREHOUSE\nAll\nGenerate\nExport\nPrint\nPO Report\n0 row(s)\nPO NO\tVENDOR\tWAREHOUSE\tPO DATE\tEXPECTED\tQTY\tAMOUNT\tSTATUS\nNo records found for the selected filters\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=po-report&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=po-report&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/inbound-qc-report",
+      "http": 200,
+      "navigated": "/app/r/inbound-qc-report",
+      "text": "e\nInbound QC Report\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nFROM DATE\nTO DATE\nWAREHOUSE\nAll\nGenerate\nExport\nPrint\nInbound QC Report\n0 row(s)\nGRN NO\tPO NO\tVENDOR\tRECEIVED\tACCEPTED\tREJECTED\tQC %\nNo records found for the selected filters\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=inbound-qc-report&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=inbound-qc-report&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/fin-inv-sku",
+      "http": 200,
+      "navigated": "/app/r/fin-inv-sku",
+      "text": "e\nFin Inv Report - By SKU\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nFROM DATE\nTO DATE\nWAREHOUSE\nAll\nGenerate\nExport\nPrint\nFin Inv Report - By SKU\n0 row(s)\nSKU\tPRODUCT\tWAREHOUSE\tAVAILABLE\tRESERVED\tON HAND\tCOST PRICE\tSTOCK VALUE (COST)\tMRP\tSTOCK VALUE (MRP)\nNo records found for the selected filters\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=fin-inv-sku&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=fin-inv-sku&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/fin-inv-sku-bin",
+      "http": 200,
+      "navigated": "/app/r/fin-inv-sku-bin",
+      "text": "e\nFin Inv Report - By SKU BIN\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nFROM DATE\nTO DATE\nWAREHOUSE\nAll\nGenerate\nExport\nPrint\nFin Inv Report - By SKU BIN\n0 row(s)\nSKU\tWAREHOUSE\tBIN\tAVAILABLE\tON HAND\tCOST PRICE\tSTOCK VALUE (COST)\nNo records found for the selected filters\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=fin-inv-sku-bin&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=fin-inv-sku-bin&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/inventory-ageing",
+      "http": 200,
+      "navigated": "/app/r/inventory-ageing",
+      "text": "e\nInventory Ageing\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nFROM DATE\nTO DATE\nWAREHOUSE\nAll\nGenerate\nExport\nPrint\nInventory Ageing\n0 row(s)\nSKU\tWAREHOUSE\tON HAND\t0-30D\t31-60D\t61-90D\t90D+\nNo records found for the selected filters\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=inventory-ageing&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=inventory-ageing&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/inventory-ledger",
+      "http": 200,
+      "navigated": "/app/r/inventory-ledger",
+      "text": "e\nInventory Ledger\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nFROM DATE\nTO DATE\nWAREHOUSE\nAll\nGenerate\nExport\nPrint\nInventory Ledger\n0 row(s)\nSKU\tWAREHOUSE\tOPENING\tINWARD\tOUTWARD\tCLOSING\nNo records found for the selected filters\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=inventory-ledger&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=inventory-ledger&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/sales-register",
+      "http": 200,
+      "navigated": "/app/r/sales-register",
+      "text": "e\nSales Register\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nFROM DATE\nTO DATE\nWAREHOUSE\nAll\nGenerate\nExport\nPrint\nSales Register\n0 row(s)\nORDER NO\tCHANNEL\tCUSTOMER\tCITY\tDATE\tQTY\tAMOUNT\tSTATUS\nNo records found for the selected filters\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=sales-register&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=sales-register&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/purchase-register",
+      "http": 200,
+      "navigated": "/app/r/purchase-register",
+      "text": "e\nPurchase Register\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nFROM DATE\nTO DATE\nWAREHOUSE\nAll\nGenerate\nExport\nPrint\nPurchase Register\n0 row(s)\nPO NO\tVENDOR\tWAREHOUSE\tDATE\tQTY\tAMOUNT\tSTATUS\nNo records found for the selected filters\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=purchase-register&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=purchase-register&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/sales-return-register",
+      "http": 200,
+      "navigated": "/app/r/sales-return-register",
+      "text": "e\nSales Return Register\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nFROM DATE\nTO DATE\nWAREHOUSE\nAll\nGenerate\nExport\nPrint\nSales Return Register\n0 row(s)\nRMA NO\tORDER NO\tCUSTOMER\tSKU\tQTY\tREASON\tDATE\tSTATUS\nNo records found for the selected filters\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=sales-return-register&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=sales-return-register&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/sales-report",
+      "http": 200,
+      "navigated": "/app/r/sales-report",
+      "text": "e\nSales Report\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nFROM DATE\nTO DATE\nWAREHOUSE\nAll\nGenerate\nExport\nPrint\nSales Report\n0 row(s)\nCHANNEL\tORDERS\tUNITS\tREVENUE\nNo records found for the selected filters\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=sales-report&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=sales-report&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/sku-wise-sales",
+      "http": 200,
+      "navigated": "/app/r/sku-wise-sales",
+      "text": "e\nSKU Wise Sales Report\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nFROM DATE\nTO DATE\nWAREHOUSE\nAll\nGenerate\nExport\nPrint\nSKU Wise Sales Report\n0 row(s)\nSKU\tPRODUCT\tCATEGORY\tUNITS SOLD\tREVENUE\nNo records found for the selected filters\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=sku-wise-sales&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=sku-wise-sales&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/order-life-cycle",
+      "http": 200,
+      "navigated": "/app/r/order-life-cycle",
+      "text": "e\nOrder Life Cycle\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nFROM DATE\nTO DATE\nWAREHOUSE\nAll\nGenerate\nExport\nPrint\nOrder Life Cycle\n0 row(s)\nORDER NO\tCHANNEL\tSTATUS\tWAREHOUSE\tPICKLIST\tCOURIER\tAWB\nNo records found for the selected filters\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=order-life-cycle&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=order-life-cycle&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/shipping-label",
+      "http": 200,
+      "navigated": "/app/r/shipping-label",
+      "text": "e\nShip Label/Delivery Challan\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nFROM DATE\nTO DATE\nWAREHOUSE\nAll\nGenerate\nExport\nPrint\nShip Label/Delivery Challan\n0 row(s)\nORDER NO\tCUSTOMER\tCITY\tCOURIER\tAWB\tBOX\tSTATUS\nNo records found for the selected filters\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=shipping-label&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=shipping-label&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/invoice-report",
+      "http": 200,
+      "navigated": "/app/r/invoice-report",
+      "text": "e\nInvoice\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nFROM DATE\nTO DATE\nWAREHOUSE\nAll\nGenerate\nExport\nPrint\nInvoice\n0 row(s)\nINVOICE NO\tORDER NO\tCUSTOMER\tDATE\tQTY\tAMOUNT\tPAYMENT\nNo records found for the selected filters\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=invoice-report&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=invoice-report&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/manifest-report",
+      "http": 200,
+      "navigated": "/app/r/manifest-report",
+      "text": "e\nManifest Report\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nFROM DATE\nTO DATE\nWAREHOUSE\nAll\nGenerate\nExport\nPrint\nManifest Report\n0 row(s)\nMANIFEST NO\tCOURIER\tWAREHOUSE\tSHIPMENTS\tHANDOVER DATE\tSTATUS\nNo records found for the selected filters\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=manifest-report&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=manifest-report&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/dispatch-report",
+      "http": 200,
+      "navigated": "/app/r/dispatch-report",
+      "text": "e\nDispatch Report\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nFROM DATE\nTO DATE\nWAREHOUSE\nAll\nGenerate\nExport\nPrint\nDispatch Report\n0 row(s)\nORDER NO\tCOURIER\tAWB\tWAREHOUSE\tSTATUS\tDATE\nNo records found for the selected filters\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=dispatch-report&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=dispatch-report&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/mis-report",
+      "http": 200,
+      "navigated": "/app/r/mis-report",
+      "text": "e\nMIS reports\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nFROM DATE\nTO DATE\nWAREHOUSE\nAll\nGenerate\nExport\nPrint\nMIS reports\n8 row(s)\nMETRIC\tVALUE\nTotal Sale Orders\t₹0\nTotal Revenue\t₹0\nOpen POs\t₹0\nTotal SKUs\t₹0\nInventory Units\t₹0\nOpen Returns\t₹0\nFulfillment Orders\t₹0\nActive Picklists\t₹0\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=mis-report&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=mis-report&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/pick-pack-report",
+      "http": 200,
+      "navigated": "/app/r/pick-pack-report",
+      "text": "e\nPick Pack Report\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nFROM DATE\nTO DATE\nWAREHOUSE\nAll\nGenerate\nExport\nPrint\nPick Pack Report\n0 row(s)\nPICKLIST NO\tWAREHOUSE\tMODE\tORDERS\tQTY\tPICKER\tSTATUS\nNo records found for the selected filters\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=pick-pack-report&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=pick-pack-report&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/order-unallocation",
+      "http": 200,
+      "navigated": "/app/r/order-unallocation",
+      "text": "e\nOrder Unallocation Log\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nFROM DATE\nTO DATE\nWAREHOUSE\nAll\nGenerate\nExport\nPrint\nOrder Unallocation Log\n0 row(s)\nORDER NO\tCHANNEL\tWAREHOUSE\tSKU\tQTY\tAVAILABLE STOCK\tUNALLOCATION REASON\tTRIGGERED BY\tSTATUS\nNo records found for the selected filters\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=order-unallocation&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=order-unallocation&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "route": "/app/r/mis-report-2",
+      "http": 200,
+      "navigated": "/app/r/mis-report-2",
+      "text": "e\nMIS Report 2.0\nNo location selected\nWeb Order No\nAWB No\nSub Order No\nPO No\nLPN No\nReverse AWB No\nInvoice No\n2\nFROM DATE\nTO DATE\nWAREHOUSE\nAll\nGenerate\nExport\nPrint\nMIS Report 2.0\n0 row(s)\nCHANNEL\tORDERS\tUNITS\tREVENUE\tAVG ORDER VALUE\tFULFILLED %\tCANCELLED\nNo records found for the selected filters\n© 2026 D-Mills Global Private Limited\nMade by Shreshtha Gupta.",
+      "alert": "",
+      "pending": false,
+      "api": [
+        {
+          "path": "/api/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=mis-report-2&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/locations",
+          "status": 200
+        },
+        {
+          "path": "/api/reports?type=mis-report-2&warehouse=All&from=&to=",
+          "status": 200
+        },
+        {
+          "path": "/api/inventory-sync/central/summary",
+          "status": 200
+        }
+      ],
+      "errors": []
+    }
+  ],
+  "unlinked": [
+    {
+      "label": "Manage Voucher Condition",
+      "rail": "Master",
+      "after": "/app/dashboard"
+    },
+    {
+      "label": "ConsolidateVendorReturn",
+      "rail": "Master",
+      "after": "/app/dashboard"
+    },
+    {
+      "label": "Attribute Set",
+      "rail": "Master",
+      "after": "/app/dashboard"
+    },
+    {
+      "label": "Vendor SKU Catalog",
+      "rail": "Master",
+      "after": "/app/dashboard"
+    },
+    {
+      "label": "Vendor SKU Loc Catalog",
+      "rail": "Master",
+      "after": "/app/dashboard"
+    },
+    {
+      "label": "ARS SKU-Location Link",
+      "rail": "Master",
+      "after": "/app/dashboard"
+    },
+    {
+      "label": "Direct Inbound",
+      "rail": "WMS",
+      "after": "/app/dashboard"
+    },
+    {
+      "label": "STO Inbound",
+      "rail": "WMS",
+      "after": "/app/dashboard"
+    },
+    {
+      "label": "Link USN IMEI",
+      "rail": "WMS",
+      "after": "/app/dashboard"
+    },
+    {
+      "label": "Return Inbound Create/Edit",
+      "rail": "WMS",
+      "after": "/app/dashboard"
+    },
+    {
+      "label": "FnV QC Enquiry",
+      "rail": "WMS",
+      "after": "/app/dashboard"
+    },
+    {
+      "label": "FNV Inbound",
+      "rail": "WMS",
+      "after": "/app/dashboard"
+    },
+    {
+      "label": "Inventory Hold",
+      "rail": "WMS",
+      "after": "/app/dashboard"
+    },
+    {
+      "label": "Manage Stock Adjustment",
+      "rail": "WMS",
+      "after": "/app/dashboard"
+    },
+    {
+      "label": "OutBound GatePass",
+      "rail": "WMS",
+      "after": "/app/dashboard"
+    },
+    {
+      "label": "Manage Outbound Memo",
+      "rail": "WMS",
+      "after": "/app/dashboard"
+    },
+    {
+      "label": "SKU Transaction History",
+      "rail": "WMS",
+      "after": "/app/dashboard"
+    },
+    {
+      "label": "Manage SKU Lot Transfer",
+      "rail": "WMS",
+      "after": "/app/dashboard"
+    },
+    {
+      "label": "Manage RePack",
+      "rail": "WMS",
+      "after": "/app/dashboard"
+    },
+    {
+      "label": "SKU Lot Transfer Create/Edit",
+      "rail": "WMS",
+      "after": "/app/dashboard"
+    },
+    {
+      "label": "Manage Inventory Reservation",
+      "rail": "WMS",
+      "after": "/app/dashboard"
+    },
+    {
+      "label": "Inventory Move By Task",
+      "rail": "WMS",
+      "after": "/app/dashboard"
+    },
+    {
+      "label": "Manage Let Down",
+      "rail": "WMS",
+      "after": "/app/dashboard"
+    },
+    {
+      "label": "FnV Repack",
+      "rail": "WMS",
+      "after": "/app/dashboard"
+    }
+  ]
+}

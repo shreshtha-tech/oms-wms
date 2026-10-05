@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import { publishStockTask } from '../inventory/workers.js';
+const original=Object.assign(new Error('Business operation failed'),{code:'PRIMARY_FAILURE'});
+const cleanup=Object.assign(new Error('Connection closed while unlocking'),{code:'DATABASE_UNAVAILABLE'});
+let calls=[],discard;
+const client={async query(sql){calls.push(sql);if(sql.includes('pg_advisory_lock'))return{rows:[],rowCount:1};if(sql.includes('pg_advisory_unlock'))throw cleanup;throw original;},release(value){discard=value;}};
+await assert.rejects(publishStockTask({tenant_id:'qa',mapping_id:'qa',account_id:'qa'},{pool:{connect:async()=>client}}),error=>error===original);
+assert.equal(discard,true);assert.equal(calls.length,3);
+calls=[];discard=undefined;
+client.query=async sql=>{calls.push(sql);throw cleanup;};
+await assert.rejects(publishStockTask({tenant_id:'qa',mapping_id:'qa'},{pool:{connect:async()=>client}}),error=>error===cleanup);
+assert.equal(calls.length,1,'Do not unlock when lock acquisition failed');assert.equal(discard,true);
+console.log('PASS stock lock failures: primary error retained, failed unlock discards client, failed acquisition does not attempt unlock, no provider dispatch');

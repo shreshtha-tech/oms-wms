@@ -1,0 +1,41 @@
+import { createPostgresConnection, postgresUnavailable } from '../reliability/postgres-connection.js';
+import { readFile } from 'node:fs/promises';
+
+let pool;
+let manager;
+export function inventoryDatabaseStatus() { return manager?.status() || { database: 'postgresql', state: 'UNAVAILABLE' }; }
+export function inventoryPool() {
+  if (!process.env.INVENTORY_DATABASE_URL) throw postgresUnavailable();
+  if (!pool) { manager = createPostgresConnection({ connectionString: process.env.INVENTORY_DATABASE_URL, ssl: process.env.INVENTORY_DB_SSL === 'true' ? { rejectUnauthorized: true } : undefined }); pool = manager.pool; }
+  return pool;
+}
+export async function transaction(fn) {
+  const client=await inventoryPool().connect();
+  let discard = false;
+  try {await client.query('BEGIN');const result=await fn(client);await client.query('COMMIT');return result;}
+  catch(error){try { await client.query('ROLLBACK'); } catch { discard = true; } throw error;}
+  finally{client.release(discard);}
+}
+export async function migrateInventory() {
+  const client=await inventoryPool().connect();
+  let locked=false,discard=false;
+  try{
+  // Explicit migration CLI controls the longer DDL deadline.
+  await client.query('SET statement_timeout = 120000');
+  // One session owns the full migration sequence across concurrent startups.
+  // Session loss releases this lock; each SQL file retains its own transaction.
+  await client.query("SELECT pg_advisory_lock(hashtextextended('ci-schema-migrations',0))");
+  locked=true;
+  for(const name of ['001_central_inventory.sql','002_order_line_state.sql','003_stock_alerts.sql','004_catalog_workbook.sql','005_inventory_imports.sql','006_seller_connections.sql','007_unified_orders.sql','008_whatsapp_delivery.sql','009_return_receipts.sql','010_service_heartbeat.sql','011_live_inventory_updates.sql','012_live_order_revisions.sql','013_persistent_sessions.sql','014_sales_programs.sql','015_immediate_order_whatsapp.sql','016_whatsapp_recipient_verification.sql','017_order_alert_teams.sql','018_alert_admin_actions.sql','019_reliability_login.sql','020_domain_event_receipts.sql']){
+    const sql=await readFile(new URL(`../db/migrations/${name}`,import.meta.url),'utf8');
+    await client.query(sql);
+  }
+  }catch(error){
+    try{await client.query('ROLLBACK');}catch{discard=true;}
+    throw error;
+  }finally{
+    if(locked){try{await client.query("SELECT pg_advisory_unlock(hashtextextended('ci-schema-migrations',0))");}catch{discard=true;}}
+    try { await client.query('RESET statement_timeout'); } catch { discard = true; }
+    client.release(discard);
+  }
+}

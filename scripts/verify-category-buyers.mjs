@@ -1,131 +1,64 @@
-import { chromium } from "playwright";
-const baseUrl = process.env.ERETAIL_BASE_URL || "http://127.0.0.1:3011";
-const browser = await chromium.launch({ headless: true });
-const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
-const errors = [];
-page.on("pageerror", (error) => errors.push(error.message));
-page.on("console", (message) => {
-  if (message.type() === "error") errors.push(message.text());
-});
-page.on("response", (response) => {
-  if (response.url().includes("/api/") && response.status() >= 500)
-    errors.push(`${response.status()} ${response.url()}`);
-});
+import assert from 'node:assert/strict';
+import { randomBytes, scryptSync } from 'node:crypto';
+import { chromium } from 'playwright';
+
+const password = 'LocalBuyerCheck123!';
+const salt = randomBytes(16).toString('hex');
+process.env.PORT = process.env.ERETAIL_TEST_PORT || '3024';
+process.env.MONGODB_URI = '';
+process.env.DMILLS_ADMIN_USER = 'buyercheck';
+process.env.DMILLS_ADMIN_PASSWORD_HASH = `${salt}:${scryptSync(password, salt, 64).toString('hex')}`;
+const { insert } = await import('../api/mongo.js');
+await import('../server.js');
+const base = `http://127.0.0.1:${process.env.PORT}`;
+for (let attempt = 0; attempt < 30; attempt++) {
+  try { if ((await fetch(`${base}/api/auth/session`)).ok) break; }
+  catch { /* server is starting */ }
+  await new Promise(resolve => setTimeout(resolve, 200));
+}
+
+let browser;
+let failed = false;
 try {
-  await page.goto(baseUrl);
-  await page.evaluate(() =>
-    localStorage.setItem(
-      "vin_user",
-      JSON.stringify({ username: "category-buyer-verifier" }),
-    ),
-  );
-  await page.goto(`${baseUrl}/app/procurement/category-buyers`, {
-    waitUntil: "domcontentloaded",
-  });
-  const headers = await page.getByRole("columnheader").allTextContents();
-  for (const expected of [
-    "Buyer Code",
-    "Buyer Name*",
-    "Buyer Description",
-    "Phone",
-    "Email",
-    "Status",
-    "Location",
-    "Created by",
-    "Actions",
-  ])
-    if (!headers.includes(expected))
-      throw new Error(`Missing live column ${expected}`);
-  const sizes = await page
-    .getByRole("combobox", { name: "Records per Page" })
-    .locator("option")
-    .allTextContents();
-  if (sizes.join() !== "20,50,100,200") throw new Error("Page sizes mismatch.");
-  await page.locator("#gs_buyerName").fill("Test");
-  await page.locator("#gs_displayIsActive").selectOption("1");
-  const requestPromise = page.waitForRequest(
-    (request) =>
-      request.url().endsWith("/api/categoryBuyerSearch") &&
-      request.method() === "POST",
-  );
-  await page.getByRole("button", { name: "Search", exact: true }).click();
-  const payload = (await requestPromise).postDataJSON();
-  if (
-    payload.rows !== 20 ||
-    payload.page !== 1 ||
-    payload.sidx !== "" ||
-    payload.sord !== "asc" ||
-    payload.buyerName !== "Test" ||
-    payload.isActive !== "1" ||
-    payload.udf1 !== "" ||
-    payload.udf5 !== "" ||
-    payload.linkToCat !== "" ||
-    payload.REQ_SEARCH_FLAG !== true
-  )
-    throw new Error("Search payload mismatch.");
-  await page.getByRole("button", { name: "Advanced Search" }).click();
-  await page.locator("#altPhone1").fill("reset");
-  await page.getByRole("button", { name: "Reset" }).click();
-  if (
-    (await page.locator("#gs_buyerName").inputValue()) ||
-    (await page.locator("#altPhone1").count())
-  )
-    throw new Error("Reset mismatch.");
-  await page.getByRole("button", { name: "Add New" }).click();
-  if (await page.locator("#isActive").isChecked()) throw new Error("New buyer must default inactive.");
-  await page.locator("#saveButton").click();
-  await page.getByText("Buyer Name is Mandatory", { exact: true }).waitFor();
-  const suffix = Date.now().toString().slice(-7);
-  const name = `Buyer ${suffix}`;
-  await page.locator("#buyerName").fill(name);
-  await page.locator("#saveButton").click();
-  await page.getByText("Please fill all the mandatory fields", { exact: true }).waitFor();
-  await page.locator("#email").fill(`buyer${suffix}@example.com`);
-  await page.locator("#phone").fill("9988776655");
-  const categories = page.locator("#categorySelect option");
-  if (await categories.count())
-    await page.locator("#categorySelect").selectOption({ index: 0 });
-  await page.getByRole("button", { name: "User Defined Fields", exact: true }).click();
-  await page.locator("#UDF1").fill("buyer-udf");
-  const savePromise = page.waitForRequest(
-    (request) =>
-      request.url().endsWith("/api/catBuyerSaveBS") &&
-      request.method() === "POST" &&
-      !request.postDataJSON()?.REQ_SEARCH_FLAG,
-  );
-  await page.locator("#saveButton").click();
-  const saved = await (await (await savePromise).response()).json();
-  if (
-    !saved.buyer_code ||
-    saved.buyer_name !== name ||
-    saved.udf[0] !== "buyer-udf"
-  )
-    throw new Error("Save contract mismatch.");
-  await page.locator("#gs_buyerName").fill(name);
-  await page.getByRole("button", { name: "Search", exact: true }).click();
-  await page
-    .getByRole("button", { name: saved.buyer_code, exact: true })
-    .click();
-  if (
-    (await page.locator("#buyerCode").inputValue()) !== saved.buyer_code ||
-    (await page.locator("#buyerName").inputValue()) !== name
-  )
-    throw new Error("Reopen persistence mismatch.");
-  await page.locator("#buyerDesc").fill("Updated buyer");
-  const updatePromise = page.waitForRequest(
-    (request) =>
-      request.url().endsWith("/api/catBuyerSaveBS") &&
-      request.method() === "POST",
-  );
-  await page.locator("#saveButton").click();
-  const updated = await (await (await updatePromise).response()).json();
-  if (updated.description !== "Updated buyer")
-    throw new Error("Update persistence mismatch.");
-  if (errors.length)
-    throw new Error(`Browser/API errors: ${errors.join(" | ")}`);
-  console.log(
-    "PASS Category Buyers: dedicated API search, live filters/columns, pagination, reset, validation, create, reopen, and update persistence.",
-  );
+  browser = await chromium.launch({ headless: true });
+  const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+  await page.goto(`${base}/login`);
+  await page.getByRole('textbox', { name: 'Login Id' }).fill('buyercheck');
+  await page.getByLabel('Password').fill(password);
+  await page.getByRole('button', { name: 'Login' }).click();
+  await page.waitForURL('**/app/dashboard');
+  await page.goto(`${base}/app/procurement/category-buyers`);
+  await page.getByRole('button', { name: 'Add New' }).click();
+  assert.deepEqual(await page.locator('#buyerLocation option').allTextContents(), ['No location selected']);
+  await page.locator('#buyerName').fill('D-Mills Buyer');
+  await page.locator('#email').fill('buyer@example.com');
+  await page.locator('#phone').fill('9988776655');
+  await page.locator('#saveButton').click();
+  await page.getByRole('button', { name: 'Close', exact: true }).first().waitFor({ state: 'hidden' });
+  const request = page.request;
+  const list = await request.post(`${base}/api/categoryBuyerSearch`, { data: { REQ_SEARCH_FLAG: true, rows: 20, page: 1 } });
+  const saved = (await list.json()).gridModel[0];
+  assert.equal(saved.locationCode, '');
+  assert.equal(saved.createdBy, 'buyercheck');
+
+  await insert('generic_records', { module: 'location', code: 'DMWH', name: 'D-Mills Warehouse' });
+  const invalid = await request.post(`${base}/api/catBuyerSaveBS`, { data: { buyer_code: saved.buyerCode, buyer_name: 'D-Mills Buyer', email: 'buyer@example.com', phone: '9988776655', location: 'UNKNOWN' } });
+  assert.equal(invalid.status(), 400);
+  assert.match((await invalid.json()).error, /configured location/);
+  await page.reload();
+  await page.locator('tbody').getByRole('button', { name: String(saved.buyerCode), exact: true }).click();
+  await page.getByText('Category Buyer Create/Edit').waitFor();
+  await page.locator('#buyerLocation').selectOption('DMWH');
+  await page.locator('#saveButton').click();
+  const detail = await request.get(`${base}/api/category-buyers?buyerCode=${saved.buyerCode}`);
+  const updated = await detail.json();
+  assert.equal(updated.location, 'DMWH');
+  assert.equal(updated.updated_by, 'buyercheck');
+  console.log('PASS Category Buyers: empty configured locations, create without copied warehouse, configured location validation and edit persistence');
+} catch (error) {
+  failed = true;
+  console.error(error);
 } finally {
-  await browser.close();
+  await browser?.close();
+  process.exit(failed ? 1 : 0);
 }

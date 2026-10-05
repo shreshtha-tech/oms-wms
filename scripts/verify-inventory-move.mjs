@@ -1,2 +1,52 @@
-import assert from'node:assert/strict';import{chromium}from'playwright';const base=process.env.ERETAIL_BASE_URL||'http://127.0.0.1:3002',post=async body=>{const r=await fetch(`${base}/api/inventory-move`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)});return{r,j:await r.json()}};const meta=await(await fetch(`${base}/api/inventory-move`)).json();assert.deepEqual(meta.pageSizes,[20,50,100,200]);assert.equal(meta.maxImportRows,200);let x=await post({action:'search',REQ_SEARCH_FLAG:true,rows:20,page:1});assert.equal(x.r.status,200);assert.equal(x.j.page,1);x=await post({action:'execute',rows:[]});assert.equal(x.j.error,'Please select a row to perform Execute Move of that inventory');x=await post({action:'import',rows:[]});assert.equal(x.j.error,'No file chosen to import.');x=await post({action:'import',rows:[{skuCode:'X',toBin:'BIN',toQty:1}]});assert.equal(x.j.successItems,1);
-const b=await chromium.launch({headless:true}),p=await b.newPage({viewport:{width:1440,height:1000}}),errors=[];p.on('pageerror',e=>errors.push(e.message));p.on('console',m=>m.type()==='error'&&errors.push(m.text()));try{await p.goto(base);const c=(await p.locator('.font-mono').textContent()).trim();await p.getByPlaceholder('Username').fill('move');await p.getByPlaceholder('Password').fill('local');await p.getByPlaceholder('Enter captcha').fill(c);await p.getByRole('button',{name:'Login'}).click();await p.waitForURL('**/app/dashboard');await p.goto(`${base}/app/r/inv-move`);for(const a of['Execute Move','Search','Reset'])await p.getByRole('button',{name:a,exact:true}).waitFor();for(const l of['SKU Code','SKU Desc','Zone','From Bin','From LPN','Lottable 01','Lottable 02','Lottable 03','Lottable 04','Lottable 05','Lottable 06','From Qty Same As To Qty','To Bin'])await p.getByLabel(l,{exact:true}).waitFor();for(const h of['Sku','Zone','From Bin','To Bin','Allocated Qty','From Qty','To Qty','From LPN','To LPN','Lot','Lottable 01','Lottable 02','Lottable 03','Lottable 04','Lottable 05','Lottable 06','isUnique','Remarks','Reason'])await p.getByRole('columnheader',{name:h,exact:true}).waitFor();assert.deepEqual(await p.getByLabel('Page size').locator('option').allTextContents(),['20','50','100','200']);await p.getByRole('button',{name:'Execute Move',exact:true}).click();await p.getByText('Please select a row to perform Execute Move of that inventory').waitFor();await p.getByRole('button',{name:'Inventory Move Import',exact:true}).click();await p.getByLabel('Upload Template').waitFor();await p.getByText('**Note: Max 200 rows should be imported in an attempt of Import.').waitFor();await p.getByRole('button',{name:'Import',exact:true}).click();await p.getByText('No file chosen to import.').waitFor();assert.equal(await p.locator('vite-error-overlay').count(),0);assert.deepEqual(errors.filter(e=>!e.includes('400')),[]);console.log('PASS Inventory Move: live search/apply/execute surface, validations, exact grid, paging, 200-row import, reset, API contract, and clean browser state.')}finally{await b.close()}
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+
+process.env.MONGODB_URI = '';
+process.env.INVENTORY_DATABASE_URL = '';
+process.env.INVENTORY_ALLOWED_TENANT_ID = '';
+const { insert, find } = await import('../api/mongo.js');
+const moveHandler = (await import('../api/inventory-move.js')).default;
+const scanHandler = (await import('../api/inventory-move-scan.js')).default;
+const invoke = async (handler, method, body = {}, query = {}) => {
+  const res = {
+    statusCode: 200,
+    status(value) { this.statusCode = value; return this; },
+    json(value) { this.payload = value; return this; },
+    setHeader() {},
+  };
+  await handler({ method, body, query, headers: {} }, res);
+  return res;
+};
+
+const source = await insert('inventory', { sku_code: 'DM-SKU', name: 'D-Mills Product', warehouse: 'DMWH', bin: 'BIN-A', available: 10, on_hand: 10 });
+const moveMeta = await invoke(moveHandler, 'GET');
+assert.equal(moveMeta.payload.source, 'central-inventory');
+assert.deepEqual(moveMeta.payload.products, []);
+assert.deepEqual(moveMeta.payload.bins, []);
+for (const action of ['search', 'execute', 'import']) {
+  const response = await invoke(moveHandler, 'POST', { action, rows: [{ id: source.id, toBin: 'BIN-B', toQty: 3 }] });
+  assert.equal(response.statusCode, 501, `inventory-move ${action} must be blocked`);
+}
+
+const scanMeta = await invoke(scanHandler, 'GET');
+assert.equal(scanMeta.payload.source, 'central-inventory');
+assert.deepEqual(scanMeta.payload.bins, []);
+assert.deepEqual(scanMeta.payload.lpns, []);
+for (const action of ['show-inventory', 'add-sku', 'lpn-move', 'lpn-to-lpn']) {
+  const response = await invoke(scanHandler, 'POST', { action, skuCode: 'DM-SKU', fromLPN: 'LPN-A', toBin: 'BIN-B', qty: 3 });
+  assert.equal(response.statusCode, 501, `inventory-move-scan ${action} must be blocked`);
+}
+
+const inventory = await find('inventory');
+assert.equal(inventory.length, 1);
+assert.equal(inventory[0].available, 10);
+assert.equal(inventory[0].on_hand, 10);
+assert.equal((await find('inventory_moves')).length, 0);
+
+const moveUi = await readFile(new URL('../src/eretail/modules/InventoryMove.tsx', import.meta.url), 'utf8');
+const scanUi = await readFile(new URL('../src/eretail/modules/InventoryMoveScan.tsx', import.meta.url), 'utf8');
+assert.match(moveUi, /Bin-level moves are paused/);
+assert.match(moveUi, /Execute Move<\/Btn>/);
+assert.match(scanUi, /Bin and LPN moves are paused/);
+
+console.log('PASS bin/LPN move endpoints return 501, UI identifies the missing mapping, and isolated Mongo stock remains unchanged');

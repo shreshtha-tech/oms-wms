@@ -5,7 +5,6 @@ import {
   Download,
   FileUp,
   History,
-  Play,
   Plus,
   RotateCcw,
   Search,
@@ -18,15 +17,9 @@ import Modal from "../../components/Modal";
 import { Btn, Toast } from "../parts";
 import { apiGet, apiSend } from "../../lib/api";
 import { useDownload } from "../../context/DownloadContext";
+import { useActiveLocations } from "../../hooks/useActiveLocations";
 
 type Notice = { msg: string; type: "ok" | "err" } | null;
-const LOCATIONS = [
-  "Delhi NCR",
-  "Mumbai WH",
-  "Bengaluru WH",
-  "Kolkata WH",
-  "UPSL Warehouse",
-];
 const LOCATION_TYPES = [{ value: "6", label: "Franchise" }, { value: "3", label: "Store" }, { value: "2", label: "WH" }];
 const FULFILMENT = ["Direct Store Purchase", "Distribution Center"];
 const ARS_STATUS = ["Pending", "Active", "InActive", "Discontinued"];
@@ -148,90 +141,13 @@ function HierarchyPicker({
   );
 }
 
-function LocationPicker({
-  open,
-  onClose,
-  selected,
-  onPick,
-}: {
-  open: boolean;
-  onClose: () => void;
-  selected: string[];
-  onPick: (v: string[]) => void;
-}) {
-  const [values, setValues] = useState<string[]>(selected);
-  useEffect(() => {
-    if (open) setValues(selected);
-  }, [open, selected]);
-  const toggle = (location: string) =>
-    setValues((current) =>
-      current.includes(location)
-        ? current.filter((x) => x !== location)
-        : [...current, location],
-    );
-  return (
-    <Modal title="Location Pick List" open={open} onClose={onClose} wide>
-      <div className="grid grid-cols-2 gap-4 text-xs">
-        <section className="border">
-          <b className="block border-b bg-slate-100 p-2">
-            Available Location ({LOCATIONS.length})
-          </b>
-          <div className="max-h-64 overflow-auto p-2">
-            {LOCATIONS.map((location) => (
-              <label key={location} className="block border-b py-2">
-                <input
-                  type="checkbox"
-                  checked={values.includes(location)}
-                  onChange={() => toggle(location)}
-                />{" "}
-                {location}
-              </label>
-            ))}
-          </div>
-        </section>
-        <section className="border">
-          <b className="block border-b bg-slate-100 p-2">
-            Selected Location ({values.length})
-          </b>
-          <div className="max-h-64 overflow-auto p-2">
-            {values.length ? (
-              values.map((location) => (
-                <div key={location} className="border-b py-2">
-                  {location}
-                </div>
-              ))
-            ) : (
-              <p className="p-2 text-slate-400">No location selected.</p>
-            )}
-          </div>
-        </section>
-      </div>
-      <p className="mt-2 text-right text-xs text-slate-500">
-        Total selected: {values.length}
-      </p>
-      <div className="mt-3 flex justify-end gap-2">
-        <Btn
-          onClick={() => {
-            onPick(values);
-            onClose();
-          }}
-        >
-          OK
-        </Btn>
-        <Btn variant="ghost" onClick={onClose}>
-          Close
-        </Btn>
-      </div>
-    </Modal>
-  );
-}
-
 export function ARSSkuLocation() {
   const nav = useNavigate();
+  const { requestDownload } = useDownload();
+  const { locations: activeLocations } = useActiveLocations();
   const [rows, setRows] = useState<any[]>([]);
   const [skus, setSkus] = useState<any[]>([]);
   const [vendors, setVendors] = useState<any[]>([]);
-  const [locations, setLocations] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(20);
@@ -302,16 +218,15 @@ export function ARSSkuLocation() {
     add_new: false,
     checks: {} as Record<string, boolean>,
   });
-  const locationOptions = locations.map((row) => ({
-    value: String(row.location_code || row.code || row.id || row.location || row.name),
-    label: String(row.location_name || row.name || row.location || row.location_code || row.code),
+  const locationOptions = activeLocations.map((row) => ({
+    value: row.location_name,
+    label: `${row.location_name} (${row.location_code})`,
   }));
   const loadMasters = () => {
-    Promise.all([apiGet<any[]>("/api/skus"), apiGet<any[]>("/api/vendors"), apiGet<any>("/api/locations")])
-      .then(([skuRows, vendorRows, locationData]) => {
+    Promise.all([apiGet<any[]>("/api/skus"), apiGet<any[]>("/api/vendors")])
+      .then(([skuRows, vendorRows]) => {
         setSkus(skuRows);
         setVendors(vendorRows);
-        setLocations(locationData.rows || []);
       })
       .catch((e) => setNotice({ msg: e.message, type: "err" }))
   };
@@ -423,12 +338,13 @@ export function ARSSkuLocation() {
     setBulkForm({ location_type: '-1', location: '-1', category: '', sku_group: '-1', primary_vendor: '', brand: '-1', sku_code: '', minimum_transfer_qty: '1.00', transfer_unit_factor: '1.00', ars_flag: '-1', stock_cover_days: '', primary_vendor_update: '', vendor_lead_time: '', fulfilment_method: '-1', fulfilment_wh: '-1', wh_lead_time: '', maximum_order_qty: '0.00', sku_location_tag: '-1', case_size: '', is_cico: false, add_new: false, checks: {} });
     setBulk(true);
   };
-  const exportRows = async () => {
-    if (!records) return setNotice({ msg: "No data in grid to export", type: "err" });
-    try {
-      await apiSend('/api/downloadArsAttribute', 'POST', { clientId: '0', location: filters.location.join("\u0017"), sku: filters.sku_code, skuName: filters.sku_name, category: filters.category, brand: filters.brand, primaryVendor: filters.primary_vendor, fullFillmentMethod: filters.fulfilment_method, fullFillmentWh: filters.fulfilment_wh, fullfillmentWhLeadTime: filters.wh_lead_time, stockCoverDays: filters.stock_cover_days, arsFlag: filters.ars_flag, REQ_SEARCH_FLAG: true });
-      nav('/app/admin/exports');
-    } catch (error: any) { setNotice({ msg: error.message, type: 'err' }); }
+  const exportRows = () => {
+    if (!rows.length) return setNotice({ msg: "No displayed rows to export", type: "err" });
+    const fields = ['location', 'sku_code', 'category', 'brand', 'primary_vendor', 'fulfilment_method', 'fulfilment_wh', 'wh_lead_time', 'stock_cover_days', 'minimum_transfer_qty', 'transfer_unit_factor', 'ars_flag'];
+    requestDownload({ title: 'ARS SKU-Location Link', module: 'ARS SKU-Location Link', baseName: `ars-sku-location-page-${page}`, data: {
+      columns: ['Location', 'SKU', 'Category', 'Brand', 'Primary Vendor', 'Fulfillment Method', 'Fulfillment WH', 'WH Lead Time', 'Stock Cover Days', 'Minimum Transfer Qty', 'Transfer Unit Factor', 'ARS Flag'],
+      rows: rows.map((row) => fields.map((field) => row[field] ?? '')),
+    } });
   };
   return (
     <Shell
@@ -441,9 +357,9 @@ export function ARSSkuLocation() {
           <Search size={13} />
           Search
         </Btn>
-        <Btn variant="ghost" onClick={() => void exportRows()}>
+        <Btn variant="ghost" disabled={!rows.length} onClick={exportRows}>
           <Download size={13} />
-          Download
+          Download visible rows
         </Btn>
         <Btn variant="ghost" onClick={() => nav('/app/admin/common-import?externalImportType=33')}>
           <FileUp size={13} />
@@ -464,6 +380,7 @@ export function ARSSkuLocation() {
           Bulk Update
         </Btn>
       </Bar>
+      <p className="mb-2 text-xs text-slate-600">Download includes only the rows displayed on this page. A full ARS export job is not configured.</p>
       {advanced && <div className="mb-2 border border-slate-300 bg-white p-3"><Field label="SKU Name"><input aria-label="SKU Name search" className={cls} value={filters.sku_name} onChange={(e) => setFilters({ ...filters, sku_name: e.target.value })} /></Field></div>}
       <div className="overflow-auto border border-slate-300 bg-white">
         <table className="min-w-[1500px] w-full">
@@ -489,13 +406,13 @@ export function ARSSkuLocation() {
               ))}
             </tr>
             <tr>
-              <th className="border-r border-t p-1"><select multiple aria-label="Location search" className={`${cls} h-9`} value={filters.location} onChange={(e) => setFilters({ ...filters, location: Array.from(e.target.selectedOptions, (option) => option.value) })}>{(locationOptions.length ? locationOptions : LOCATIONS.map((x) => ({ value: x, label: x }))).map((x) => <option key={x.value} value={x.value}>{x.label}</option>)}</select></th>
+              <th className="border-r border-t p-1"><select multiple aria-label="Location search" className={`${cls} h-9`} value={filters.location} onChange={(e) => setFilters({ ...filters, location: Array.from(e.target.selectedOptions, (option) => option.value) })}>{locationOptions.map((x) => <option key={x.value} value={x.value}>{x.label}</option>)}</select></th>
               <th className="border-r border-t p-1"><input aria-label="SKU search" className={cls} value={filters.sku_code} onChange={(e) => setFilters({ ...filters, sku_code: e.target.value })} /></th>
               <th className="border-r border-t p-1"><button aria-label="Category search" className={`${cls} text-left`} onClick={() => { setHierarchyTarget('search'); setHierarchy(true); }}>{filters.category || "Select..."}</button></th>
               <th className="border-r border-t p-1"><input aria-label="Brand search" className={cls} value={filters.brand} onChange={(e) => setFilters({ ...filters, brand: e.target.value })} /></th>
               <th className="border-r border-t p-1"><input aria-label="Primary Vendor search" className={cls} value={filters.primary_vendor} onChange={(e) => setFilters({ ...filters, primary_vendor: e.target.value })} /></th>
               <th className="border-r border-t p-1"><select aria-label="Fullfillment Method search" className={cls} value={filters.fulfilment_method} onChange={(e) => setFilters({ ...filters, fulfilment_method: e.target.value })}><option value="">--- Select ---</option>{FULFILMENT.map((x) => <option key={x}>{x}</option>)}</select></th>
-              <th className="border-r border-t p-1"><select aria-label="Fullfillment WH search" className={cls} value={filters.fulfilment_wh} onChange={(e) => setFilters({ ...filters, fulfilment_wh: e.target.value })}><option value="">--- Select ---</option>{(locationOptions.length ? locationOptions : LOCATIONS.map((x) => ({ value: x, label: x }))).map((x) => <option key={x.value} value={x.value}>{x.label}</option>)}</select></th>
+              <th className="border-r border-t p-1"><select aria-label="Fullfillment WH search" className={cls} value={filters.fulfilment_wh} onChange={(e) => setFilters({ ...filters, fulfilment_wh: e.target.value })}><option value="">--- Select ---</option>{locationOptions.map((x) => <option key={x.value} value={x.value}>{x.label}</option>)}</select></th>
               <th className="border-r border-t p-1"><input aria-label="WH Lead Time search" className={cls} value={filters.wh_lead_time} onChange={(e) => setFilters({ ...filters, wh_lead_time: e.target.value })} /></th>
               <th className="border-r border-t p-1"><input aria-label="Stock cover days search" className={cls} value={filters.stock_cover_days} onChange={(e) => setFilters({ ...filters, stock_cover_days: e.target.value })} /></th>
               <th className="border-r border-t p-1"/><th className="border-r border-t p-1"/>
@@ -610,7 +527,7 @@ export function ARSSkuLocation() {
               }
             >
               <option value="">--- Select ---</option>
-              {(locationOptions.length ? locationOptions : LOCATIONS.map((x) => ({ value: x, label: x }))).map((x) => <option key={x.value} value={x.value}>{x.label}</option>)}
+              {locationOptions.map((x) => <option key={x.value} value={x.value}>{x.label}</option>)}
             </select>
           </Field>
           <Field label="Fullfillment Method">
@@ -638,7 +555,7 @@ export function ARSSkuLocation() {
               }
             >
               <option value="">--- Select ---</option>
-              {(locationOptions.length ? locationOptions : LOCATIONS.map((x) => ({ value: x, label: x }))).map((x) => <option key={x.value} value={x.value}>{x.label}</option>)}
+              {locationOptions.map((x) => <option key={x.value} value={x.value}>{x.label}</option>)}
             </select>
           </Field>
           <Field label="WH Lead Time(In Days)">
@@ -733,7 +650,7 @@ export function ARSSkuLocation() {
               }
             >
               <option value="-1">--- Select ---</option>
-              {(locationOptions.length ? locationOptions : LOCATIONS.map((x) => ({value:x,label:x}))).map((x) => <option key={x.value} value={x.value}>{x.label}</option>)}
+              {locationOptions.map((x) => <option key={x.value} value={x.value}>{x.label}</option>)}
             </select>
           </Field>
           <Field label="Category">
@@ -766,7 +683,7 @@ export function ARSSkuLocation() {
           <Field label="Is CICO"><div className="flex gap-2"><input aria-label="Update Is CICO" type="checkbox" {...bulkCheck('is_cico')}/><input aria-label="Is CICO value" type="checkbox" checked={bulkForm.is_cico} onChange={(e) => setBulkForm({ ...bulkForm, is_cico: e.target.checked })}/></div></Field>
           <Field label="Case Size"><div className="flex gap-2"><input aria-label="Update Case Size" type="checkbox" {...bulkCheck('case_size')}/><input className={cls} value={bulkForm.case_size} onChange={(e) => setBulkForm({ ...bulkForm, case_size: e.target.value })}/></div></Field>
           <Field label="Fullfillment Method"><div className="flex gap-2"><input aria-label="Update Fullfillment Method" type="checkbox" {...bulkCheck('fulfilment_method')}/><select className={cls} value={bulkForm.fulfilment_method} onChange={(e) => setBulkForm({ ...bulkForm, fulfilment_method: e.target.value })}><option value="-1">--- Select ---</option>{FULFILMENT.map((x) => <option key={x}>{x}</option>)}</select></div></Field>
-          <Field label="Fullfillment WH"><div className="flex gap-2"><input aria-label="Update Fullfillment WH" type="checkbox" {...bulkCheck('fulfilment_wh')}/><select className={cls} value={bulkForm.fulfilment_wh} onChange={(e) => setBulkForm({ ...bulkForm, fulfilment_wh: e.target.value })}><option value="-1">--- Select ---</option>{(locationOptions.length ? locationOptions : LOCATIONS.map((x) => ({value:x,label:x}))).map((x) => <option key={x.value} value={x.value}>{x.label}</option>)}</select></div></Field>
+          <Field label="Fullfillment WH"><div className="flex gap-2"><input aria-label="Update Fullfillment WH" type="checkbox" {...bulkCheck('fulfilment_wh')}/><select className={cls} value={bulkForm.fulfilment_wh} onChange={(e) => setBulkForm({ ...bulkForm, fulfilment_wh: e.target.value })}><option value="-1">--- Select ---</option>{locationOptions.map((x) => <option key={x.value} value={x.value}>{x.label}</option>)}</select></div></Field>
           <Field label="WH Lead Time(In Days)"><div className="flex gap-2"><input aria-label="Update WH Lead Time" type="checkbox" {...bulkCheck('wh_lead_time')}/><input className={cls} value={bulkForm.wh_lead_time} onChange={(e) => setBulkForm({ ...bulkForm, wh_lead_time: e.target.value })}/></div></Field>
           <Field label="Minimum Transfer Qty"><div className="flex gap-2"><input aria-label="Update Minimum Transfer Qty" type="checkbox" {...bulkCheck('minimum_transfer_qty')}/><input className={cls} value={bulkForm.minimum_transfer_qty} onChange={(e) => setBulkForm({ ...bulkForm, minimum_transfer_qty: e.target.value })}/></div></Field>
           <Field label="Transfer Unit Factor"><div className="flex gap-2"><input aria-label="Update Transfer Unit Factor" type="checkbox" {...bulkCheck('transfer_unit_factor')}/><input className={cls} value={bulkForm.transfer_unit_factor} onChange={(e) => setBulkForm({ ...bulkForm, transfer_unit_factor: e.target.value })}/></div></Field>
@@ -786,11 +703,11 @@ export function ARSSkuLocation() {
 
 export function ARSRules() {
   const nav = useNavigate();
+  const { locations: ruleLocations } = useActiveLocations();
   const [routeParams] = useSearchParams();
   const [rows, setRows] = useState<any[]>([]);
   const [links, setLinks] = useState<any[]>([]);
   const [settings, setSettings] = useState<any>({});
-  const [ruleLocations, setRuleLocations] = useState<any[]>([]);
   const [editing, setEditing] = useState(false);
   const [record, setRecord] = useState<any>(null);
   const [notice, setNotice] = useState<Notice>(null);
@@ -846,11 +763,9 @@ export function ARSRules() {
     Promise.all([
       apiGet<any[]>("/api/ars?entity=links"),
       apiGet<any[]>("/api/ars?entity=settings"),
-      apiGet<any>("/api/locations"),
-    ]).then(([l, s, locationData]) => {
+    ]).then(([l, s]) => {
       setLinks(l);
       setSettings(s[0] || {});
-      setRuleLocations(Array.isArray(locationData) ? locationData : locationData.rows || []);
     });
   useEffect(() => {
     void loadDependencies();
@@ -997,24 +912,6 @@ export function ARSRules() {
       setNotice({ msg: e.message, type: "err" });
     }
   };
-  const run = async () => {
-    if (!record) return;
-    setBusy(true);
-    try {
-      const log: any = await apiSend("/api/ars", "PUT", {
-        entity: "rules",
-        id: record.id,
-        action: "run",
-      });
-      setNotice({ msg: log.message, type: "ok" });
-      nav(`/app/procurement/ars/logs?ruleId=${record.rule_id}&executionId=${log.execution_id || ""}`);
-      if (searched) void search(page);
-    } catch (e: any) {
-      setNotice({ msg: e.message, type: "err" });
-    } finally {
-      setBusy(false);
-    }
-  };
   const del = async () => {
     if (!record) return;
     try {
@@ -1047,10 +944,6 @@ export function ARSRules() {
       >
         <div className="border border-slate-300 bg-white">
           <Bar>
-            <Btn variant="ghost" disabled={busy} onClick={run}>
-              <Play size={13} />
-              Run Now
-            </Btn>
             <Btn
               variant="ghost"
               onClick={() => nav(`/app/procurement/ars/logs${record ? `?ruleId=${record.rule_id}` : ""}`)}
@@ -1071,6 +964,7 @@ export function ARSRules() {
               Add New
             </Btn>
           </Bar>
+          <p className="px-3 pb-2 text-xs text-amber-800">ARS Run Now is unavailable until purchase-order creation is idempotent and Sales History rules use recorded sales data.</p>
           <div className="grid grid-cols-1 gap-x-8 gap-y-3 border-t p-4 lg:grid-cols-[1fr_1fr_220px]">
             <div className="grid gap-3">
               <Field label="Rule ID">
@@ -1316,7 +1210,7 @@ export function ARSRules() {
           </div>
         </div>
         <Modal title="Location Pick List" open={locationPicker} onClose={() => setLocationPicker(false)} wide>
-          <div className="max-h-80 overflow-auto border p-2">{ruleLocations.map((row: any) => { const code = row.location_code || row.code || row.location_name || row.name; const label = row.location_name || row.name || code; return <label key={code} className="block border-b p-2"><input type="checkbox" checked={form.locations.includes(code)} onChange={() => setForm({ ...form, locations: form.locations.includes(code) ? form.locations.filter((x: string) => x !== code) : [...form.locations, code] })} /> {label}</label>; })}</div>
+          <div className="max-h-80 overflow-auto border p-2">{ruleLocations.map((location) => <label key={location.location_code} className="block border-b p-2"><input type="checkbox" checked={form.locations.includes(location.location_name)} onChange={() => setForm({ ...form, locations: form.locations.includes(location.location_name) ? form.locations.filter((value: string) => value !== location.location_name) : [...form.locations, location.location_name] })} /> {location.location_name} ({location.location_code})</label>)}{!ruleLocations.length && <p className="p-2 text-sm text-slate-500">No active locations configured.</p>}</div>
           <div className="mt-3 flex justify-end gap-2"><Btn onClick={() => setLocationPicker(false)}>OK</Btn><Btn variant="ghost" onClick={() => setLocationPicker(false)}>Close</Btn></div>
         </Modal>
         <Modal title="Add SKU Set" open={skuSetPicker} onClose={() => setSkuSetPicker(false)} wide>
@@ -1376,7 +1270,7 @@ export function ARSRules() {
             }
           >
             <option value="">--- Select ---</option>
-            {ruleLocations.map((row: any) => { const value = row.location_name || row.name || row.location_code || row.code; return <option key={row.id || value} value={value}>{value}</option>; })}
+            {ruleLocations.map((row: any) => { const value = row.location_name; return <option key={row.location_code} value={value}>{value} ({row.location_code})</option>; })}
           </select>
         </Field>
         <Field label="Product Set">
@@ -1553,20 +1447,13 @@ export function ARSExecutionLog() {
     if (ruleId || executionId) setFilters((current) => ({ ...current, rule_id: ruleId, execution_id: executionId }));
     void search(1);
   }, []);
-  const updateDetail = async (action: "approve-all" | "process-all") => {
-    if (!detail) return;
-    try {
-      const result: any = await apiSend("/api/ars", "POST", { entity: "logs", action, id: detail.id });
-      setDetail(result.log);
-      setNotice({ msg: action === "approve-all" ? `(${result.count}) Records are approved.` : `(${result.count}) Records are under processing. Please wait for couple of minutes.`, type: "ok" });
-    } catch (error: any) { setNotice({ msg: error.message, type: "err" }); }
-  };
   const downloadDetail = () => {
     if (!detail?.execution_details?.length) return setNotice({ msg: "No data in grid to export", type: "err" });
     requestDownload({ title: "ARS Execution Detail Log", module: "ARS Execution Detail Log", baseName: `ars-execution-${detail.execution_id}`, data: { columns: ["Location", "SKU", "Vendor", "Inventory", "ARS Calc", "ARS Approved", "Status", "Doc Generated"], rows: detail.execution_details.map((row: any) => [row.location, row.sku_code, row.vendor, row.inventory, row.ars_calculated, row.ars_approved, row.status, row.document_generated]) } });
   };
   if (detail) return <Shell active="procurement" breadcrumb="Procurement > ARS > ARS Execution Detail Log" openScreens={[{ label: "ARS Execution Log", to: "#" }, { label: "ARS Execution Detail Log", to: "#" }]}>
-    <Bar><Btn variant="warn">Search</Btn><Btn variant="ghost" onClick={downloadDetail}>Download</Btn><Btn variant="ghost" onClick={() => void updateDetail("approve-all")}>Approve All</Btn><Btn variant="ghost" onClick={() => void updateDetail("process-all")}>Process All</Btn><Btn variant="ghost" onClick={() => setDetail(null)}>Reset</Btn></Bar>
+    <Bar><Btn variant="ghost" onClick={downloadDetail}>Download visible detail</Btn><Btn variant="ghost" onClick={() => setDetail(null)}>Reset</Btn></Bar>
+    <p className="mb-2 rounded border border-amber-300 bg-amber-50 px-3 py-2 text-xs text-amber-950">This is a stored legacy execution log. Approval and processing are unavailable until their purchase-order job and permissions are connected and verified.</p>
     <div className="grid grid-cols-2 gap-4 border bg-white p-3"><Field label="Rule ID"><input className={cls} readOnly value={detail.rule_id || ""}/></Field><Field label="Execution ID"><input className={cls} readOnly value={detail.execution_id || ""}/></Field></div>
     <button className="my-2 text-xs text-sky-600 underline" onClick={() => setStatusDetail(detail)}>For Information regarding all attributes and ARS calculation. Please Click Here.</button>
     <table className="w-full bg-white"><thead><tr>{["Location", "SKU", "Vendor", "Inventory", "ARS Calc", "ARS Approved", "Status", "Doc Generated"].map((value) => <Th key={value}>{value}</Th>)}</tr></thead><tbody>{(detail.execution_details || []).map((row: any, index: number) => <tr key={index}><Td>{row.location}</Td><Td>{row.sku_code}</Td><Td>{row.vendor}</Td><Td>{row.inventory}</Td><Td>{row.ars_calculated}</Td><Td>{row.ars_approved}</Td><Td><button className="text-sky-600" onClick={() => setStatusDetail(row)}>{row.status}</button></Td><Td>{row.document_generated ? <button className="text-sky-600" onClick={() => nav(`/app/procurement/purchase-orders?poNo=${row.document_generated}`)}>{row.document_generated}</button> : ""}</Td></tr>)}</tbody></table>

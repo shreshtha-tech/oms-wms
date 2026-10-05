@@ -12,8 +12,8 @@ const dmy = (d: Date) => `${String(d.getDate()).padStart(2, '0')}/${String(d.get
 const iso = (v: string) => { const [d, m, y] = v.split('/'); return y && m && d ? `${y}-${m}-${d}` : v; };
 const today = new Date(), sixtyDaysAgo = new Date(Date.now() - 60 * 86400000);
 const creationRange = `${dmy(sixtyDaysAgo)} - ${dmy(today)}`;
-const initialFilters = { createdDate: creationRange, inboundLoc: 'UWH-JX Karawaci' };
-const blankAdvanced: any = { fromInboundNo: '', fromGRNNo: '', vendorCode: '', createdDate: '', GRNDate: '', locationCode: 'UWH', PONo: '', status: '', fromInvoiceNo: '', inboundType: '', isBarCode: true, skuCode: '', orderNo: '', lotCode: '', lotNoArr: '', mhierachyCode: '', hierarchyCode: '', usnNo: '', inbLpn: '' };
+const initialFilters = { createdDate: creationRange, inboundLoc: '' };
+const blankAdvanced: any = { fromInboundNo: '', fromGRNNo: '', vendorCode: '', createdDate: '', GRNDate: '', locationCode: '', PONo: '', status: '', fromInvoiceNo: '', inboundType: '', isBarCode: true, skuCode: '', orderNo: '', lotCode: '', lotNoArr: '', mhierachyCode: '', hierarchyCode: '', usnNo: '', inbLpn: '' };
 
 export default function InboundEnquiry() {
   const nav = useNavigate();
@@ -32,7 +32,7 @@ export default function InboundEnquiry() {
     try {
       const r: any = await apiSend('/api/inbound-enquiry', 'POST', {
         action: 'search', REQ_SEARCH_FLAG: true, doFetchCount: false, rows: size, page, sidx: 'inbound0_.crtDate', sord: 'desc',
-        locationCode: 'UWH', clientId: '0', ...filters,
+        ...filters,
         fromCreatedDate: iso(created[0] || ''), toCreatedDate: iso(created[1] || ''),
         fromGRNDate: iso(grn[0] || ''), toGRNDate: iso(grn[1] || ''),
         fromInboundNo: f.inboundNo || advanced.fromInboundNo || '', fromExtInboundNo: f.extInboundCode || '', transferNo: f.transferNo || '',
@@ -56,7 +56,7 @@ export default function InboundEnquiry() {
     { key: 'invoiceNo', label: 'Invoice No' }, { key: 'vendorCode', label: 'vendor', filterAction: (_value: string, setValue: (value: string) => void) => { setVendorFilterSetter(() => setValue); setPicker('vendor'); }, render: (r: any) => <span><span className="block text-sky-700">{r.vendorCode}</span><i className="text-xs">{r.vendorName}</i></span> },
     { key: 'status', label: 'Status', filter: 'select', options: (meta.statuses || []).map((x: any) => x[1]) },
     { key: 'qcStatus', label: 'QC Status', filter: 'select', options: ['in QC', 'QC Done'] },
-    { key: 'inboundLoc', label: 'Inbound Location', filter: 'select', options: ['UWH-JX Karawaci'] },
+    { key: 'inboundLoc', label: 'Inbound Location', filter: 'select', options: (meta.locations || []).map((x: string[]) => x[1]) },
     { key: 'extCustReturnNo', label: 'Ext Return No' }, { key: 'extInvoiceNo', label: 'Ext Invoice No' },
   ];
   const advancedFields: EField[] = advOpen ? [
@@ -65,7 +65,7 @@ export default function InboundEnquiry() {
     { key: 'vendorCode', label: 'Vendor Code', value: advanced.vendorCode, onChange: (v) => setAdv('vendorCode', v), filterAction: () => setPicker('vendor') },
     { key: 'createdDate', label: 'Creation Date', value: advanced.createdDate, onChange: (v) => setAdv('createdDate', v) },
     { key: 'GRNDate', label: 'GRN Date', value: advanced.GRNDate, onChange: (v) => setAdv('GRNDate', v) },
-    { key: 'locationCode', label: 'Location Code', type: 'select', options: ['UWH-JX Karawaci'], disabled: true, value: 'UWH-JX Karawaci' },
+    { key: 'locationCode', label: 'Location Code', type: 'select', options: ['--- Select ---', ...(meta.locations || []).map((x: string[]) => x[1])], value: advanced.locationCode, onChange: (v) => setAdv('locationCode', v === '--- Select ---' ? '' : v) },
     { key: 'PONo', label: 'PO No', value: advanced.PONo, onChange: (v) => setAdv('PONo', v) },
     { key: 'status', label: 'Status', type: 'select', options: (meta.statuses || []).map((x: any) => x[1]), value: advanced.status, onChange: (v) => setAdv('status', v) },
     { key: 'fromInvoiceNo', label: 'Invoice No', value: advanced.fromInvoiceNo, onChange: (v) => setAdv('fromInvoiceNo', v) },
@@ -79,9 +79,10 @@ export default function InboundEnquiry() {
     { key: 'inbLpn', label: 'LPN', value: advanced.inbLpn, onChange: (v) => setAdv('inbLpn', v) },
   ] : [];
   const vendorCols: GCol[] = [{ key: 'code', label: 'Vendor Code' }, { key: 'name', label: 'Vendor Name' }];
-  const actions: any[] = [{ label: 'Advance Search', icon: SearchIcon, onClick: () => setAdvOpen(!advOpen) }, { label: 'Add New', icon: Plus, onClick: () => nav('/app/r/inbound-realtime') }, { label: 'QC', onClick: () => void act('qc') }, { label: 'PutAway', onClick: () => void act('putaway') }];
+  const actions: any[] = [{ label: 'Advance Search', icon: SearchIcon, onClick: () => setAdvOpen(!advOpen) }, { label: 'Add New', icon: Plus, onClick: () => nav('/app/r/inbound-realtime') }, { label: 'PutAway', onClick: () => void act('putaway') }];
 
   return <Shell active="wms" breadcrumb="WMS > Inbound > Inbound Enquiry" openScreens={[{ label: 'Inbound Enquiry', to: '#' }]}>
+    <div role="alert" className="mb-3 rounded border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900">Inbound QC changes are unavailable until rejected and held quantities can be recorded in Central Inventory.</div>
     <EnquiryScreen breadcrumb={[{ label: 'WMS' }, { label: 'Inbound' }, { label: 'Inbound Enquiry' }]} cols={cols} fields={advancedFields} rows={rows} loading={loading} remote={pager} initialFilters={initialFilters} pageSizes={[20, 50, 100, 200]} selectedIds={selected} onSelectionChange={(ids) => setSelected(ids.slice(-1))} onSearch={search} onReset={reset} actions={actions} />
     <Modal title="Vendor" open={picker === 'vendor'} onClose={() => { setPicker(null); setVendorFilterSetter(null); }}><OrderGrid cols={vendorCols} rows={meta.vendors || []} empty="No vendors to view" onRowClick={(r: any) => { if (vendorFilterSetter) vendorFilterSetter(r.code); else setAdv('vendorCode', r.code); setVendorFilterSetter(null); setPicker(null); }} /></Modal>
     <Modal title="Multiple Lot No" open={picker === 'lot'} onClose={() => setPicker(null)}><textarea aria-label="Lot Numbers" className="h-40 w-full border p-2" value={lotText} onChange={(e) => setLotText(e.target.value)} /><div className="mt-3 flex justify-end"><button className="rounded bg-amber-500 px-3 py-2 text-white" onClick={() => { const values = lotText.split(/\r?\n/).map((x) => x.trim()).filter(Boolean); if (!values.length) return setToast({ msg: 'Please Enter LotNo', type: 'err' }); if (values.length > 100) return setToast({ msg: 'Max 100 Records Can Be Entered', type: 'err' }); setAdv('lotNoArr', values.join('\n')); setAdv('lotCode', values.join(', ')); setPicker(null); }}>Search</button></div></Modal>

@@ -84,6 +84,10 @@ export default function ControlTower() {
 
   return (
     <Shell active="dashboard" breadcrumb="DASHBOARD > Fulfillment Control Tower" openScreens={[{ label: 'Control Tower', to: '#' }]}>
+      <div role="status" className="mb-4 rounded border border-amber-300 bg-amber-50 p-3 text-sm text-amber-950">
+        Metrics are calculated from legacy fulfillment records and do not prove Central Inventory reservations or carrier events. Automatic allocation is disabled; priority changes only flag metadata.
+      </div>
+      {!loading && orders.length === 0 ? <div className="rounded border bg-white p-8 text-center"><h2 className="text-xl font-semibold">No fulfillment orders yet</h2><p className="mt-2 text-sm text-slate-600">Create an order to begin tracking fulfillment, warehouse load, and SLA metrics.</p><button className="mt-4 rounded bg-[#2f9e9e] px-4 py-2 text-sm text-white" onClick={() => nav('/app/order-maintenance')}>Create order</button></div> : <>
       {/* Hero KPI strip */}
       <div className="mb-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <div className="relative overflow-hidden rounded-lg bg-gradient-to-br from-[#1b232f] to-[#2f3b57] p-5 text-white">
@@ -100,7 +104,7 @@ export default function ControlTower() {
           <div className="mt-2 flex items-center gap-1 text-xs text-white/50"><Activity size={12} /> Live • auto-refresh 20s</div>
         </div>
 
-        <StatCard icon={AlertTriangle} tint="from-rose-500 to-red-600" label="SLA Breaches" value={loading ? '—' : stats.breaches.length} sub={`> ${SLA_DAYS} days open`} onClick={expediteBreaches} action="Expedite all" />
+        <StatCard icon={AlertTriangle} tint="from-rose-500 to-red-600" label="SLA Breaches" value={loading ? '—' : stats.breaches.length} sub={`> ${SLA_DAYS} days open`} onClick={expediteBreaches} action="Mark High Priority" />
         <StatCard icon={Flame} tint="from-orange-500 to-amber-600" label="High Priority Open" value={loading ? '—' : stats.highPriority.length} sub="need attention" />
         <StatCard icon={TrendingUp} tint="from-emerald-500 to-teal-600" label="Open Order Value" value={loading ? '—' : money(stats.totalOpenValue)} sub={`${open.length} orders in flight`} />
       </div>
@@ -137,7 +141,7 @@ export default function ControlTower() {
         <div className="space-y-4">
           <Panel title="Quick Actions">
             <div className="space-y-2">
-              <Btn onClick={bulkAllocate} disabled={busy}><PackageCheck size={15} /> Auto-Allocate All Pending</Btn>
+              <Btn onClick={bulkAllocate} disabled title="Central Inventory reservations are not connected"><PackageCheck size={15} /> Auto-Allocate All Pending</Btn>
               <Btn variant="danger" onClick={expediteBreaches} disabled={busy}><Flame size={15} /> Expedite SLA Breaches</Btn>
               <Btn variant="ghost" onClick={load}><RefreshCw size={15} /> Refresh Now</Btn>
             </div>
@@ -185,6 +189,7 @@ export default function ControlTower() {
         </Panel>
       </div>
 
+      </>}
       {toast && <Toast msg={toast.msg} type={toast.type} onClose={() => setToast(null)} />}
     </Shell>
   );

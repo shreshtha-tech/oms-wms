@@ -1,0 +1,190 @@
+{
+  "at": "2026-10-04T14:27:55.041Z",
+  "runtime": "v24.21.0",
+  "readOnly": true,
+  "configuration": {
+    "uriPresent": true,
+    "databasePresent": true,
+    "outerWhitespace": false,
+    "extraCaConfigured": false,
+    "proxyConfigured": false,
+    "tlsVerificationDisabled": false,
+    "uriParsed": true,
+    "scheme": "mongodb+srv",
+    "driverTlsEnabled": true,
+    "credentialsPresent": true
+  },
+  "endpoints": [
+    {
+      "endpoint": 1,
+      "dns": {
+        "ok": true,
+        "ipv4": 1,
+        "ipv6": 0
+      },
+      "tcp": {
+        "ok": true,
+        "family": "IPv4",
+        "durationMs": 39
+      },
+      "tlsDefault": {
+        "ok": false,
+        "error": {
+          "name": "Error",
+          "code": "ERR_SSL_TLSV1_ALERT_INTERNAL_ERROR",
+          "tlsAlert": "80"
+        },
+        "durationMs": 79
+      },
+      "tls12": {
+        "ok": false,
+        "error": {
+          "name": "Error",
+          "code": "ERR_SSL_TLSV1_ALERT_INTERNAL_ERROR",
+          "tlsAlert": "80"
+        },
+        "durationMs": 76
+      },
+      "tls13": {
+        "ok": false,
+        "error": {
+          "name": "Error",
+          "code": "ERR_SSL_TLSV1_ALERT_INTERNAL_ERROR",
+          "tlsAlert": "80"
+        },
+        "durationMs": 73
+      }
+    },
+    {
+      "endpoint": 2,
+      "dns": {
+        "ok": true,
+        "ipv4": 1,
+        "ipv6": 0
+      },
+      "tcp": {
+        "ok": true,
+        "family": "IPv4",
+        "durationMs": 38
+      },
+      "tlsDefault": {
+        "ok": false,
+        "error": {
+          "name": "Error",
+          "code": "ERR_SSL_TLSV1_ALERT_INTERNAL_ERROR",
+          "tlsAlert": "80"
+        },
+        "durationMs": 75
+      },
+      "tls12": {
+        "ok": false,
+        "error": {
+          "name": "Error",
+          "code": "ERR_SSL_TLSV1_ALERT_INTERNAL_ERROR",
+          "tlsAlert": "80"
+        },
+        "durationMs": 358
+      },
+      "tls13": {
+        "ok": false,
+        "error": {
+          "name": "Error",
+          "code": "ERR_SSL_TLSV1_ALERT_INTERNAL_ERROR",
+          "tlsAlert": "80"
+        },
+        "durationMs": 74
+      }
+    },
+    {
+      "endpoint": 3,
+      "dns": {
+        "ok": true,
+        "ipv4": 1,
+        "ipv6": 0
+      },
+      "tcp": {
+        "ok": true,
+        "family": "IPv4",
+        "durationMs": 61
+      },
+      "tlsDefault": {
+        "ok": false,
+        "error": {
+          "name": "Error",
+          "code": "ERR_SSL_TLSV1_ALERT_INTERNAL_ERROR",
+          "tlsAlert": "80"
+        },
+        "durationMs": 74
+      },
+      "tls12": {
+        "ok": false,
+        "error": {
+          "name": "Error",
+          "code": "ERR_SSL_TLSV1_ALERT_INTERNAL_ERROR",
+          "tlsAlert": "80"
+        },
+        "durationMs": 72
+      },
+      "tls13": {
+        "ok": false,
+        "error": {
+          "name": "Error",
+          "code": "ERR_SSL_TLSV1_ALERT_INTERNAL_ERROR",
+          "tlsAlert": "80"
+        },
+        "durationMs": 78
+      }
+    }
+  ],
+  "dns": {
+    "srv": true,
+    "count": 3,
+    "txtResolved": true,
+    "txtRecordCount": 1
+  },
+  "driver": {
+    "authenticatedPing": false,
+    "error": {
+      "name": "MongoServerSelectionError",
+      "tlsAlert": "80",
+      "cause": {
+        "name": "MongoNetworkError",
+        "tlsAlert": "80",
+        "cause": {
+          "name": "Error",
+          "code": "ERR_SSL_TLSV1_ALERT_INTERNAL_ERROR",
+          "tlsAlert": "80"
+        }
+      }
+    },
+    "servers": [
+      {
+        "name": "MongoNetworkError",
+        "tlsAlert": "80",
+        "cause": {
+          "name": "Error",
+          "code": "ERR_SSL_TLSV1_ALERT_INTERNAL_ERROR",
+          "tlsAlert": "80"
+        }
+      },
+      {
+        "name": "MongoNetworkError",
+        "tlsAlert": "80",
+        "cause": {
+          "name": "Error",
+          "code": "ERR_SSL_TLSV1_ALERT_INTERNAL_ERROR",
+          "tlsAlert": "80"
+        }
+      },
+      {
+        "name": "MongoNetworkError",
+        "tlsAlert": "80",
+        "cause": {
+          "name": "Error",
+          "code": "ERR_SSL_TLSV1_ALERT_INTERNAL_ERROR",
+          "tlsAlert": "80"
+        }
+      }
+    ]
+  }
+}

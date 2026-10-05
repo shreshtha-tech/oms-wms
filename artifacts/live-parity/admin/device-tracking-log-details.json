@@ -1,0 +1,465 @@
+{
+  "grids": [
+    {
+      "id": "trackingLogTable",
+      "url": "jsonDeviceTrackerLogSearch",
+      "datatype": "json",
+      "rowNum": 20,
+      "multiselect": true,
+      "height": "auto",
+      "colModel": [
+        {
+          "name": "cb",
+          "width": 35,
+          "hidden": false,
+          "search": false,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "id",
+          "label": "Id",
+          "width": 100,
+          "hidden": true,
+          "search": false,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "integrationType",
+          "label": "Integration Type",
+          "width": 117,
+          "hidden": false,
+          "search": true,
+          "stype": "select",
+          "searchoptions": {
+            "value": ":",
+            "searchOperMenu": true
+          },
+          "formatter": "function integrationFormatter(cellvalue, options, rowObject) {\n\t\t\t\tif(rowObject.integrationType != null && $(\"#gs_integrationType option[value='\"+rowObject.integrationType+\"']\").length > 0) {\n\t\t\t\t\treturn $(\"#gs_integrationType option[value='\"+rowObject.integrationType+\"']\").text();\n\t\t\t\t}\n\t\t\t\treturn \"Intugine\";\n\t\t\t}"
+        },
+        {
+          "name": "clientId",
+          "label": "Client",
+          "width": 125,
+          "hidden": true,
+          "search": true,
+          "stype": "select",
+          "searchoptions": {
+            "value": ":",
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "updDate",
+          "label": "Txn Date",
+          "width": 117,
+          "hidden": false,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          },
+          "formatter": "date"
+        },
+        {
+          "name": "deviceId",
+          "label": "Device ID",
+          "width": 117,
+          "hidden": false,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "documentNo",
+          "label": "Invoice No",
+          "width": 117,
+          "hidden": false,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "referenceNo",
+          "label": "Delivery No",
+          "width": 117,
+          "hidden": false,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "referenceNo2",
+          "label": "Reference No",
+          "width": 117,
+          "hidden": false,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          },
+          "formatter": "function formatOrderNoLink(cellvalue, options, rowObject) {\n\t\t\t\tvar html = \"<div title='\"+cellvalue+\"' style='margin-top:3px;margin-bottom:2px;'>\";\n\t\t\t\thtml+= \"<div style='text-align:center; '><span class='gCtrl' onclick='javascript: openOrderLink(\\\"\"\n\t\t\t\t\t\t+ cellvalue+ \"\\\", \\\"\" +rowObject.referenceType +\"\\\", \\\"\" +rowObject.referenceNo +\"\\\",event); return false;' style='color: #2179d0; font-weight:bold; font-family:Arial;cursor:pointer;cursor:hand;'>\" + cellvalue + \"</span></div>\";\n\t\t\t\thtml+=\"</div>\";\n\t\t\t\treturn html;\n\t\t\t}"
+        },
+        {
+          "name": "referenceType",
+          "label": "Ref Type",
+          "width": 117,
+          "hidden": false,
+          "search": true,
+          "stype": "select",
+          "searchoptions": {
+            "value": ":",
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "status",
+          "label": "Status",
+          "width": 94,
+          "hidden": false,
+          "search": true,
+          "stype": "select",
+          "searchoptions": {
+            "value": ":",
+            "searchOperMenu": true
+          },
+          "formatter": "function statusFormatLink(cellvalue, options, rowObject) {\n\t\t        var cssString = \"shape-flag-green\";\n\t\t        if(rowObject[\"hdnStatus\"]==0)\n\t\t\t\t\tcssString = \"shape-flag-darkYellow\";\n\t\t\t\telse if(rowObject[\"hdnStatus\"]==9)\n\t\t\t\t\tcssString = \"shape-flag-magenta\";\n\t\t\t\telse if(rowObject[\"hdnStatus\"]==10)\n\t\t\t\t\tcssString = \"shape-flag-violet\";\n\t\t        if(rowObject.hdnStatus == 9 && rowObject.errorDesc != null && rowObject.errorDesc != \"\"){\n\t\t\t        return \"<span class='shape-flag \"+cssString+\"' style='text-align:left; min-width:60px; display: inline-block; text-decoration: underline; cursor: pointer;' onclick='javascript:openErrorMessage(event, \\\"\"\n\t\t\t\t\t+ rowObject.errorDesc\t+ \"\\\");' >\"+ rowObject[\"status\"] +\"</a></span>\";                                               \n\t\t        } else {\n\t\t\t        return \"<span class='shape-flag \"+cssString+\"' style='text-align:left; min-width:60px; display: inline-block; ' >\"+ rowObject[\"status\"] +\"</span>\";                                               \n\t\t        \t\n\t\t        }                                               \n\t\t\t}"
+        },
+        {
+          "name": "errorDesc",
+          "label": "Message",
+          "width": 100,
+          "hidden": true,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "key1",
+          "label": "Output Key",
+          "width": 94,
+          "hidden": false,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "key2",
+          "label": "Output Ref1",
+          "width": 100,
+          "hidden": true,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "key3",
+          "label": "Output Ref2",
+          "width": 100,
+          "hidden": true,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "hdnStatus",
+          "label": "Output Ref2",
+          "width": 100,
+          "hidden": true,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "execTime",
+          "label": "Output Ref2",
+          "width": 100,
+          "hidden": true,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "action",
+          "label": "Action",
+          "width": 93,
+          "hidden": false,
+          "search": false,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          },
+          "formatter": "function formatActionLink(cellvalue, options, rowObject) {\n\t\t\t\tvar html = \"\";\n\t\t\t\tlet dataFound = false;\n\t\t\t\tif(rowObject.hdnStatus == 1 || rowObject.hdnStatus == 9)\n\t\t\t\t\thtml = \"<div class='col-xs-12' style='text-align:center;'><a href='javascript:void(0);' onclick='javascript:openRequestResponseBody(event, \\\"\"\n\t\t\t\t\t+ rowObject.id\t+ \"\\\");' class='gridIcon gridEditIcon' style='margin-left: 10px;'><i class='fa fa-eye' data-toggle='tooltip' data-placement='left' title='View'></i></a></div>\";/* <a href='javascript:void(0);' onclick='javascript:openOutputReference(event, \\\"\"\n\t\t\t\t\t+ options.rowId\t+ \"\\\");' class='gridIcon gridEditIcon' style='margin-left: 10px;'><i class='fa fa-info' data-toggle='tooltip' data-placement='left' title='Info'></i></a></div>\"; */\n\t\t\t\treturn html;\n\t\t\t}"
+        }
+      ],
+      "colNames": [
+        "<input role='checkbox' id='cb_trackingLogTable' class='cbox' type='checkbox'/>",
+        "Id",
+        "Integration Type",
+        "Client",
+        "Txn Date",
+        "Device ID",
+        "Invoice No",
+        "Delivery No",
+        "Reference No",
+        "Ref Type",
+        "Status",
+        "Message",
+        "Output Key",
+        "Output Ref1",
+        "Output Ref2",
+        "Output Ref2",
+        "Output Ref2",
+        "Action"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "",
+      "text": "",
+      "event": "mouseover",
+      "handlers": [
+        "function(){La.addClass(o)}"
+      ]
+    },
+    {
+      "id": "",
+      "text": "",
+      "event": "mouseout",
+      "handlers": [
+        "function(){La.removeClass(o)}"
+      ]
+    },
+    {
+      "id": "cb_trackingLogTable",
+      "text": "",
+      "event": "click",
+      "handlers": [
+        "function(e){var t,n,r=Y.get(this,i);if(1&e.isTrigger&&this[i]){if(r.length)(S.event.special[i]||{}).delegateType&&e.stopPropagation();else if(r=s.call(arguments),Y.set(this,i,r),t=o(this,i),this[i](),r!==(n=Y.get(this,i))||t?Y.set(this,i,!1):n={},r!==n)return e.stopImmediatePropagation(),e.preventDefault(),n.value}else r.length&&(Y.set(this,i,{value:S.event.trigger(S.extend(r[0],S.Event.prototype),r.slice(1),this)}),e.stopImmediatePropagation())}"
+      ]
+    },
+    {
+      "id": "gs_integrationType",
+      "text": "--- Select ---Intugine",
+      "event": "change",
+      "handlers": [
+        "function(){return k(),!1}"
+      ]
+    },
+    {
+      "id": "gs_clientId",
+      "text": "All0-DummyClient",
+      "event": "change",
+      "handlers": [
+        "function(){return k(),!1}"
+      ]
+    },
+    {
+      "id": "gs_updDate",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "gs_updDate",
+      "text": "",
+      "event": "click",
+      "handlers": [
+        "function(){return e.apply(t||this,r.concat(s.call(arguments)))}"
+      ]
+    },
+    {
+      "id": "gs_updDate",
+      "text": "",
+      "event": "focus",
+      "handlers": [
+        "function(e){var t,n,r=Y.get(this,i);if(1&e.isTrigger&&this[i]){if(r.length)(S.event.special[i]||{}).delegateType&&e.stopPropagation();else if(r=s.call(arguments),Y.set(this,i,r),t=o(this,i),this[i](),r!==(n=Y.get(this,i))||t?Y.set(this,i,!1):n={},r!==n)return e.stopImmediatePropagation(),e.preventDefault(),n.value}else r.length&&(Y.set(this,i,{value:S.event.trigger(S.extend(r[0],S.Event.prototype),r.slice(1),this)}),e.stopImmediatePropagation())}",
+        "function(){return e.apply(t||this,r.concat(s.call(arguments)))}"
+      ]
+    },
+    {
+      "id": "gs_updDate",
+      "text": "",
+      "event": "keyup",
+      "handlers": [
+        "function(){return e.apply(t||this,r.concat(s.call(arguments)))}"
+      ]
+    },
+    {
+      "id": "gs_updDate",
+      "text": "",
+      "event": "keydown",
+      "handlers": [
+        "function(){return e.apply(t||this,r.concat(s.call(arguments)))}"
+      ]
+    },
+    {
+      "id": "gs_updDate",
+      "text": "",
+      "event": "apply",
+      "handlers": [
+        "function(ev, picker) {\n\t\t\t\t\tchangeDateRangeData(ctrlId, hdnFrom, hdnTo);\n\t\t\t\t}"
+      ]
+    },
+    {
+      "id": "gs_deviceId",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "gs_documentNo",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "gs_referenceNo",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "gs_referenceNo2",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "gs_referenceType",
+      "text": "--- Select ---SO",
+      "event": "change",
+      "handlers": [
+        "function(){return k(),!1}"
+      ]
+    },
+    {
+      "id": "gs_status",
+      "text": "--- Select ---PendingsuccessProcessingError",
+      "event": "change",
+      "handlers": [
+        "function(){return k(),!1}"
+      ]
+    },
+    {
+      "id": "gs_errorDesc",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "gs_key1",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "gs_key2",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "gs_key3",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "gs_hdnStatus",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "gs_execTime",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "",
+      "text": "2050100200",
+      "event": "change",
+      "handlers": [
+        "function(){return u(\"records\",this)?(d.p.page=Math.round(d.p.rowNum*(d.p.page-1)/this.value-.5)+1,d.p.rowNum=this.value,d.p.pager&&$(\".ui-pg-selbox\",d.p.pager).val(this.value),d.p.toppager&&$(\".ui-pg-selbox\",d.p.toppager).val(this.value),S(),!1):!1}"
+      ]
+    }
+  ],
+  "functions": {
+    "encryptPasswordRSAUsingPubKey": "function encryptPasswordRSAUsingPubKey(password) {\n\tconst crypt = new JSEncrypt();\n\n\tconst publicKeyRSA = `-----BEGIN PUBLIC KEY-----\n\t\tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwByF8BbfSm98Vf5IsUsW\n\t\tpgCLPYEbYm8AFKIuVnteGA7PmBTJS3Mx1sYv6E8httGIFoPCu+p87nDrKYz1eK3n\n\t\tnJPxQOkxOaigpgejWRL9QCtkzNTbwKDWWGmoLxRgUKQMfLqX6Imwp/TdqOIGZEed\n\t\t206ISr8ENXVrfeW0Roi6yfSXgsOPS+LU+7oaGgaYRWGKDUsIKysKimhiIspGBvLa\n\t\tSG5urTI5bIEQkOqspzFWL/USBgd41mUdNm7LzFQi3CH3WySOdv2+gobRofsH5I4e\n\t\t/iUBGx5JuC+WUNhjwi4+P0QgOwbfDBnCv4VC1skVjBkkxs53M01xPiCNDhcmJbND\n\t\tQQIDAQAB\n\t\t-----END PUBLIC KEY-----`;\n\n\tcrypt.setPublicKey(publicKeyRSA);\n\n\tconst encryptedData = crypt.encrypt(password);\n\n\treturn encryptedData;\n}",
+    "gtag": "function gtag(){dataLayer.push(arguments);}",
+    "alignModal": "function alignModal() {\n\t    \t $(\".modal-dialog\").css(\"margin-top\", $(parent.document).scrollTop()+20);\n\t     }",
+    "showProgressBar": "function showProgressBar() {\n\t\ttry {\n\t\t\tif (typeof blockUIStart === 'function') {\n\t\t\t\tblockUIStart();\n\t\t\t} else if (typeof window.parent.blockUIStart === 'function') {\n\t\t\t\twindow.parent.blockUIStart();\n\t\t\t} else if (typeof window.parent.parent.blockUIStart === 'function') {\n\t\t\t\twindow.parent.parent.blockUIStart();\n\t\t\t} else if (typeof window.parent.parent.parent.blockUIStart === 'function') {\n\t\t\t\twindow.parent.parent.parent.blockUIStart();\n\t\t\t}\n\t\t} catch (e) {\n\t\t  console.log(e.message);\n\t\t}\n\t}",
+    "hideProgressBar": "function hideProgressBar() {\n\t\ttry {\n\t\t\tif (typeof blockUIEnd === 'function') {\n\t\t\t\tblockUIEnd();\n\t\t\t} else if (typeof window.parent.blockUIEnd === 'function') {\n\t\t\t\twindow.parent.blockUIEnd();\n\t\t\t} else if (typeof window.parent.parent.blockUIEnd === 'function') {\n\t\t\t\twindow.parent.parent.blockUIEnd();\n\t\t\t} else if (typeof window.parent.parent.parent.blockUIEnd === 'function') {\n\t\t\t\twindow.parent.parent.parent.blockUIEnd();\n\t\t\t}\n\t\t} catch (e) {\n\t\t\tconsole.log(e.message);\n\t\t}\n\t}",
+    "getGridWidth": "function getGridWidth() {\n\t\ttry {\n\t\t\tvar w = window.parent.$(\"#screensWrapper\").width();\n\t\t\tif(w>100)\n\t\t\t\treturn window.parent.$(\"#screensWrapper\").width()-10;\n\t\t\telse\n\t\t\t\treturn $(window).width()-10;\n\t\t} catch (e) {\n\t\t\tconsole.log(e.message);\n\t\t\treturn $(window).width()-10;\n\t\t}\n\t}",
+    "shortcutKey": "function shortcutKey(){ \t\t\n    \t$(document).bind('keydown', function(e) {\n    \t\tvar keyCode = (e.keyCode) ? e.keyCode : ((e.charCode) ? e.charCode : e.which);\n    \t\tif (e.originalEvent.altKey) {\n    \t\t\t// ALT + S     Search                   \n    \t\t\tif (keyCode === 83) {\n    \t\t\t\treloadSearchGrid();\n    \t\t\t\te.preventDefault();\n    \t\t\t\treturn false;\n    \t\t\t\t\n    \t\t\t}\n    \t\t\t// ALT + N      Reset                 \n    \t\t\tif (keyCode == 78) {\n    \t\t\t\tresetAll();\n    \t\t\t\te.preventDefault();\n    \t\t\t\treturn false;\n    \t\t\t}\n    \t\t\t// ALT + F    Add New\n    \t\t\tif (keyCode == 70){\n    \t\t\t\taddnew();\n    \t\t\t\te.preventDefault();\n    \t\t\t\treturn false;\n    \t\t\t}\n    \t\t\t\n    \t\t}\n    \t});\n    }",
+    "openErrorMessage": "function openErrorMessage(event, msg){\n\t\t\t$(\"#errorMessageDialog\").modal(\"show\");\n\t\t\t$(\"#errorDesc\").html(msg);\n\t\t}",
+    "openRequestResponseBody": "function openRequestResponseBody(event, id){\n\t\t\tif(id != undefined && id != null && id != \"\") {\n\t\t\t\t\n\t\t\t\tvar retVal = $.ajax({\n\t\t\t\t\turl : \"fetchTrackingRequestResponseById\",\n\t\t\t\t\t\n\t\t\t\t\ttype : \"POST\",\n\t\t\t\t\tdata : {\n\t\t\t\t\t\ttransId : id\n\t\t\t\t\t},\n\t\t\t\t\tdataType : \"json\",\n\t\t\t\t\tasync : false\n\t\t\t\t}).responseText;\n\t\t\t\t\n\t\t\t\tretVal = jQuery.parseJSON(retVal);\n\t\t\t\tif(retVal != null && retVal != undefined && retVal.deviceTrackingLogDTO != null \n\t\t\t\t\t\t&& (retVal.deviceTrackingLogDTO.requestJson != null || retVal.deviceTrackingLogDTO.responseJson != null)){\n\t\t\t\t\tif(retVal.deviceTrackingLogDTO.requestJson != undefined && retVal.deviceTrackingLogDTO.requestJson != \"\")\n\t\t\t\t\t\teditor.setValue(JSON.stringify(JSON.parse(retVal.deviceTrackingLogDTO.requestJson), null, '\\t'), -1);\n\t\t\t\t\telse\n\t\t\t\t\t\teditor.setValue(\"\");\n\t\t\t\t\n\t\t\t\t\tif(retVal.deviceTrackingLogDTO.responseJson != undefined && retVal.deviceTrackingLogDTO.responseJson != \"\")\n\t\t\t\t\t\teditor1.setValue(JSON.stringify(JSON.parse(retVal.deviceTrackingLogDTO.responseJson), null, '\\t'), -1);\n\t\t\t\t\telse\n\t\t\t\t\t\teditor1.setValue(\"\");\n\t\t\t\t\tvar rowData = jQuery(\"#trackingLogTable\").getRowData(id);\n\t\t\t\t\tlet str = \"\";\n\t\t\t\t\tif(rowData != undefined && rowData != null && rowData != \"\"){\n\t\t\t\t\t\t\n\t\t\t\t\t\tstr = \"common.invoiceno\";\n\t\t\t\t\t\tstr += \" : \" + rowData.documentNo + \" [ Exec Time : \" + rowData.execTime + \"s ]\";\n\t\t\t\t\t}\n\t\t\t\t\t$(\"#headLabel\").html(str);\n\t\t\t\t\t$(\"#requestResponseDialog\").modal(\"show\");\n\t\t\t\t}\n\t\t\t\telse{\n\t\t\t\t\twindow.parent.showAlert('Something Went Wrong');\n\t\t\t\t\treturn false;\n\t\t\t\t}\n\t\t\t}\n\t\t}",
+    "openOrderLink": "function openOrderLink(orderNo, orderType,refrenceNo, event){\n\t\t\tif (window.parent){\n\t\t\t\tif(orderType == \"STO\")\n\t\t\t\t\twindow.parent.openScreen(\"STO Order Create/Edit\",\"stockOrderMaintDisplayBS?stkTransferCode=\" + orderNo, \"fa fa-fw fa-list-ol\");\n\t\t\t\t\n\t\t\t\telse if(orderType == \"RETURN\"){\n\t\t\t\t\tif(refrenceNo != \"\")\n\t\t\t\t\t    window.parent.openScreen(\"Return Create/Edit-\"+orderNo,\"custReturnFetchDataBS?custRetCode=\"+ orderNo, \"fa fa-fw fa-list-ol\"); \n\t\t\t\t\telse\n\t\t\t\t\t\twindow.parent.openScreen(\"Return W/o Order  - \"+orderNo,\"custRetWithOutDisplay?custRetCode=\"+ orderNo, \"fa fa-fw fa-list-ol\");\n\t\t\t\t}\n\t\t\t\telse if(orderType == \"RTV\")\n\t\t\t\t\twindow.parent.openScreen(\"Vendor Return Create/Edit\",\"vendorReturnsFetchDataBS?rtvNo=\"+ orderNo, \"fa fa-fw fa-list-ol\");\n\t\t\t\telse\n\t\t\t\t\twindow.parent.openScreen(\"Order Create/Edit - \"+orderNo, \"orderMaintenanceBS?orderCode=\"+orderNo, \"fa fa-fw fa-simplybuilt\");\n\t\t\t\t\n\t\t\t  return false;\n\t\t\t}\n\t\t }",
+    "openOutputReference": "function openOutputReference(event, id){\n\t\t\tif(id != undefined && id != null){\n\t\t\t\tvar rowData = $(\"#trackingLogTable\").jqGrid('getRowData', id);\n\t\t\t\t$(\"#outputRef1\").html((rowData.key2 != null && rowData.key2 != \"\") ? rowData.key2 : \"N/A\");\n\t\t\t\t$(\"#outputRef2\").html((rowData.key3 != null && rowData.key3 != \"\") ? rowData.key3 : \"N/A\");\n\t\t\t\t$(\"#outputReferenceDialog\").modal(\"show\");\n\t\t\t}\n\t\t}",
+    "genricSearchGridResized": "function genricSearchGridResized() {\n\t\t\tvar gridObj = $(\"#trackingLogTable\");\n\t\t\t\n\t\t\tvar gridHeight = window.parent.getParentHeight()-131;\t\n\n\t\t\tvar gridWidth = $(window).width()-15;\n\t\t\tif(gridWidth<270)\n\t\t\t\tgridWidth=270;\n\t\t\t\n\t\t\tgridObj.jqGrid('setGridWidth',gridWidth);\t\t\n\t\t\t\n\t\t\t$(\"#gbox_\"+gridObj[0].id+\" .ui-jqgrid-bdiv\").css(\"height\",gridHeight+\"px\").css('overflow-x',($(window).width()<992 ?'auto':'hidden'));\n\t\t\toldWidth=gridWidth;\n\t\t}",
+    "reloadSearchGrid": "function reloadSearchGrid(event) {\n\t\t\treqJsonMap = {};\n\t\t\trespJsonMaps = {};\n\n\t\t\tif($(\"#gs_documentNo\").val() == \"\" && $(\"#gs_referenceNo\").val() == \"\" && $(\"#gs_referenceNo2\").val() == \"\"){\n\t\t\t\t\n\t\t\t\tif($(\"#fromUpdDate\").val() == \"\" || $(\"#toUpdDate\").val() == \"\"){\n\t\t\t\t\ttryFocusBS($(\"#gs_updDate\"));\n\t\t\t\t\t$(\"#gs_updDate\").attr(\"readonly\", false);\n\t\t\t\t\twindow.parent.showAlert('Transaction date is mandatory');\n\t\t\t\t\treturn false;\n\t\t\t\t}\n\t\t\t\tvar retVal = $.ajax({\n\t\t\t\t\turl : \"validateDateRange\",\n\t\t\t\t\t\n\t\t\t\t\ttype : \"POST\",\n\t\t\t\t\tdata : {\n\t\t\t\t  \t\tfromDateValue : $(\"#fromUpdDate\").val(),\n\t\t\t\t    \ttoDateValue : $(\"#toUpdDate\").val(),\n\t\t\t\t\t\tfieldName : \"Txn \"\n\t\t\t\t\t},\n\t\t\t\t\tdataType : \"json\",\n\t\t\t\t\tasync : false\n\t\t\t\t}).responseText;\n\t\t\t\tretVal = jQuery.parseJSON(retVal);\n\t\t\t\tif(retVal != null){\n\t\t\t\t\tif(retVal.jsonMessage == null){\n\t\t\t\t\t\t\n\t\t\t\t\t} else {\n\t\t\t\t\t\twindow.parent.showAlert(retVal.jsonMessage);\n\t\t\t\t\t\tevent.preventDefault();\n\t\t\t\t\t\treturn false;\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t\tvar retVal = $(\"#trackingLogTable\").jqGrid('setGridParam', {\n\t\t\t\tdatatype : 'json',\n\t\t\t\tpage : 1,\n\t\t\t\tpostData : {\n\t\t\t\t\tdocumentNo\t\t:$(\"#gs_documentNo\").val(),\n\t\t\t\t\treferenceNo\t\t:$(\"#gs_referenceNo\").val(),\n\t\t\t\t\tstatus\t\t\t:$(\"#gs_status\").val(),\n\t\t\t\t\terrorDesc\t\t:$(\"#gs_errorDesc\").val(),\n\t\t\t\t\tfromUpdDate\t\t:$(\"#fromUpdDate\").val(),\n\t\t\t\t\ttoUpdDate\t\t:$(\"#toUpdDate\").val(),\n\t\t\t\t\tclientId\t\t:$(\"#gs_clientId\").val(),\n\t\t\t\t\tkey1\t\t\t:$(\"#gs_key1\").val(),\n\t\t\t\t\tkey2\t\t\t:$(\"#gs_key2\").val(),\n\t\t\t\t\tkey3\t\t\t:$(\"#gs_key3\").val(),\n\t\t\t\t\treferenceNo2\t:$(\"#gs_referenceNo2\").val(),\n\t\t\t\t\treferenceType\t:$(\"#gs_referenceType\").val(),\n\t\t\t\t\tintegrationType :$(\"#gs_integrationType\").val(),\n\t\t\t\t\tdeviceId\t\t:$(\"#gs_deviceId\").val(),\n\t\t\t\t\tREQ_SEARCH_FLAG : true\n\t\t\t\t},\n\t\t\t\turl : \"jsonDeviceTrackerLogSearch\",\n\t\t\t\tsearch : true\t\t\t\t\n\t\t\t}).trigger('reloadGrid');\n\t\t}",
+    "resetAll": "function resetAll()\n\t\t{\n\t\t\t $(\"#gs_clientId,#gs_status,#gs_referenceType,#gs_integrationType\").val('-1')\n\t  \t\t $(\"#gs_deviceId,#gs_documentNo,#gs_referenceNo,#gs_errorDesc,#gs_updDate,#fromUpdDate,#toUpdDate,#gs_key1,#gs_key2,#gs_key3,#gs_referenceNo2\").val('');\n\t\t\t $(\"#trackingLogTable\").jqGrid('clearGridData', {\n\t\t\t\tclearfooter : true\n\t\t     });\n\t\t}"
+  },
+  "dialogs": [
+    {
+      "id": "requestResponseDialog",
+      "text": "×\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\n\t                    \n\t                    \t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\tRequest Body\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\tResponse Body\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+    },
+    {
+      "id": "errorMessageDialog",
+      "text": "×\n\t\t\t\t\t\t\n\t\t\t\t\t\tError Message\n\t\t\t\t\t\n\t\t\t\t\t\n\t                    \n\t                    \t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tIRN\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t    \n\t\t\t\t    \n\t\t\t\t    \n\t\t\t\t\t\tClose"
+    },
+    {
+      "id": "outputReferenceDialog",
+      "text": "×\n\t\t\t\t\t\t\n\t\t\t\t\t\tOutput Result\n\t\t\t\t\t\n\t\t\t\t\t\n\t                    \n\t                    \t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tOutput Ref1\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tOutput Ref2\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t    \n\t\t\t\t    \n\t\t\t\t    \n\t\t\t\t\t\tClose"
+    }
+  ]
+}

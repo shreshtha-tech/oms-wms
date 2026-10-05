@@ -1,0 +1,5508 @@
+{
+  "manage-api-add-edit": {
+    "tempMap": [
+      {
+        "text": "0\u0015",
+        "value": "110"
+      },
+      {
+        "text": "0\u0015",
+        "value": "474"
+      },
+      {
+        "text": "0\u0015",
+        "value": "111"
+      },
+      {
+        "text": "0\u0015",
+        "value": "475"
+      },
+      {
+        "text": "0\u0015",
+        "value": "112"
+      },
+      {
+        "text": "0\u0015",
+        "value": "113"
+      },
+      {
+        "text": "0\u0015",
+        "value": "114"
+      },
+      {
+        "text": "0\u0015",
+        "value": "115"
+      },
+      {
+        "text": "0\u0015",
+        "value": "478"
+      },
+      {
+        "text": "0\u0015",
+        "value": "117"
+      },
+      {
+        "text": "0\u0015",
+        "value": "118"
+      },
+      {
+        "text": "0\u0015",
+        "value": "119"
+      },
+      {
+        "text": "0\u0015",
+        "value": "10"
+      },
+      {
+        "text": "0\u0015",
+        "value": "11"
+      },
+      {
+        "text": "0\u0015",
+        "value": "12"
+      },
+      {
+        "text": "0\u0015",
+        "value": "13"
+      },
+      {
+        "text": "0\u0015",
+        "value": "14"
+      },
+      {
+        "text": "0\u0015",
+        "value": "16"
+      },
+      {
+        "text": "0\u0015",
+        "value": "17"
+      },
+      {
+        "text": "0\u0015",
+        "value": "18"
+      },
+      {
+        "text": "0\u0015",
+        "value": "19"
+      },
+      {
+        "text": "0\u0015",
+        "value": "480"
+      },
+      {
+        "text": "0\u0015",
+        "value": "481"
+      },
+      {
+        "text": "0\u0015",
+        "value": "482"
+      },
+      {
+        "text": "0\u0015",
+        "value": "120"
+      },
+      {
+        "text": "0\u0015",
+        "value": "484"
+      },
+      {
+        "text": "0\u0015",
+        "value": "1"
+      },
+      {
+        "text": "0\u0015",
+        "value": "122"
+      },
+      {
+        "text": "0\u0015",
+        "value": "2"
+      },
+      {
+        "text": "0\u0015",
+        "value": "123"
+      },
+      {
+        "text": "0\u0015",
+        "value": "3"
+      },
+      {
+        "text": "0\u0015",
+        "value": "487"
+      },
+      {
+        "text": "0\u0015",
+        "value": "4"
+      },
+      {
+        "text": "0\u0015",
+        "value": "488"
+      },
+      {
+        "text": "0\u0015",
+        "value": "5"
+      },
+      {
+        "text": "0\u0015",
+        "value": "489"
+      },
+      {
+        "text": "0\u0015",
+        "value": "6"
+      },
+      {
+        "text": "0\u0015",
+        "value": "7"
+      },
+      {
+        "text": "0\u0015",
+        "value": "8"
+      },
+      {
+        "text": "0\u0015",
+        "value": "9"
+      },
+      {
+        "text": "0\u0015",
+        "value": "20"
+      },
+      {
+        "text": "0\u0015",
+        "value": "21"
+      },
+      {
+        "text": "0\u0015",
+        "value": "22"
+      },
+      {
+        "text": "0\u0015",
+        "value": "23"
+      },
+      {
+        "text": "0\u0015",
+        "value": "490"
+      },
+      {
+        "text": "0\u0015",
+        "value": "491"
+      },
+      {
+        "text": "0\u0015",
+        "value": "138"
+      },
+      {
+        "text": "0\u0015",
+        "value": "34"
+      },
+      {
+        "text": "0\u0015",
+        "value": "37"
+      },
+      {
+        "text": "0\u0015",
+        "value": "38"
+      },
+      {
+        "text": "0\u0015",
+        "value": "39"
+      },
+      {
+        "text": "0\u0015",
+        "value": "142"
+      },
+      {
+        "text": "0\u0015",
+        "value": "40"
+      },
+      {
+        "text": "0\u0015",
+        "value": "41"
+      },
+      {
+        "text": "0\u0015",
+        "value": "42"
+      },
+      {
+        "text": "0\u0015",
+        "value": "43"
+      },
+      {
+        "text": "0\u0015",
+        "value": "47"
+      },
+      {
+        "text": "0\u0015",
+        "value": "48"
+      },
+      {
+        "text": "0\u0015",
+        "value": "49"
+      },
+      {
+        "text": "0\u0015",
+        "value": "151"
+      },
+      {
+        "text": "0\u0015",
+        "value": "152"
+      },
+      {
+        "text": "0\u0015",
+        "value": "153"
+      },
+      {
+        "text": "0\u0015",
+        "value": "154"
+      },
+      {
+        "text": "0\u0015",
+        "value": "156"
+      },
+      {
+        "text": "0\u0015",
+        "value": "51"
+      },
+      {
+        "text": "0\u0015",
+        "value": "52"
+      },
+      {
+        "text": "0\u0015",
+        "value": "55"
+      },
+      {
+        "text": "0\u0015",
+        "value": "57"
+      },
+      {
+        "text": "0\u0015",
+        "value": "601"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170074"
+      },
+      {
+        "text": "0\u0015",
+        "value": "602"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170073"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170072"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170071"
+      },
+      {
+        "text": "0\u0015",
+        "value": "607"
+      },
+      {
+        "text": "0\u0015",
+        "value": "65"
+      },
+      {
+        "text": "0\u0015",
+        "value": "66"
+      },
+      {
+        "text": "0\u0015",
+        "value": "67"
+      },
+      {
+        "text": "0\u0015",
+        "value": "68"
+      },
+      {
+        "text": "0\u0015",
+        "value": "69"
+      },
+      {
+        "text": "0\u0015",
+        "value": "610"
+      },
+      {
+        "text": "0\u0015",
+        "value": "611"
+      },
+      {
+        "text": "0\u0015",
+        "value": "612"
+      },
+      {
+        "text": "0\u0015",
+        "value": "613"
+      },
+      {
+        "text": "0\u0015",
+        "value": "70"
+      },
+      {
+        "text": "0\u0015",
+        "value": "614"
+      },
+      {
+        "text": "0\u0015",
+        "value": "71"
+      },
+      {
+        "text": "0\u0015",
+        "value": "615"
+      },
+      {
+        "text": "0\u0015",
+        "value": "72"
+      },
+      {
+        "text": "0\u0015",
+        "value": "616"
+      },
+      {
+        "text": "0\u0015",
+        "value": "73"
+      },
+      {
+        "text": "0\u0015",
+        "value": "617"
+      },
+      {
+        "text": "0\u0015",
+        "value": "75"
+      },
+      {
+        "text": "0\u0015",
+        "value": "76"
+      },
+      {
+        "text": "0\u0015",
+        "value": "77"
+      },
+      {
+        "text": "0\u0015",
+        "value": "78"
+      },
+      {
+        "text": "0\u0015",
+        "value": "80"
+      },
+      {
+        "text": "0\u0015",
+        "value": "81"
+      },
+      {
+        "text": "0\u0015",
+        "value": "82"
+      },
+      {
+        "text": "0\u0015",
+        "value": "506"
+      },
+      {
+        "text": "0\u0015",
+        "value": "83"
+      },
+      {
+        "text": "0\u0015",
+        "value": "84"
+      },
+      {
+        "text": "0\u0015",
+        "value": "507"
+      },
+      {
+        "text": "0\u0015",
+        "value": "85"
+      },
+      {
+        "text": "0\u0015",
+        "value": "508"
+      },
+      {
+        "text": "0\u0015",
+        "value": "86"
+      },
+      {
+        "text": "0\u0015",
+        "value": "509"
+      },
+      {
+        "text": "0\u0015",
+        "value": "87"
+      },
+      {
+        "text": "0\u0015",
+        "value": "89"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170048"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170047"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170046"
+      },
+      {
+        "text": "0\u0015",
+        "value": "510"
+      },
+      {
+        "text": "0\u0015",
+        "value": "511"
+      },
+      {
+        "text": "0\u0015",
+        "value": "512"
+      },
+      {
+        "text": "0\u0015",
+        "value": "90"
+      },
+      {
+        "text": "0\u0015",
+        "value": "514"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170041"
+      },
+      {
+        "text": "0\u0015",
+        "value": "91"
+      },
+      {
+        "text": "0\u0015",
+        "value": "92"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170040"
+      },
+      {
+        "text": "0\u0015",
+        "value": "515"
+      },
+      {
+        "text": "0\u0015",
+        "value": "93"
+      },
+      {
+        "text": "0\u0015",
+        "value": "94"
+      },
+      {
+        "text": "0\u0015",
+        "value": "95"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170045"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170044"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170043"
+      },
+      {
+        "text": "0\u0015",
+        "value": "98"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170038"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170037"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170035"
+      },
+      {
+        "text": "0\u0015",
+        "value": "402"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170039"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170030"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170034"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170033"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170032"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170031"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170070"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170069"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170068"
+      },
+      {
+        "text": "0\u0015",
+        "value": "533"
+      },
+      {
+        "text": "0\u0015",
+        "value": "534"
+      },
+      {
+        "text": "0\u0015",
+        "value": "535"
+      },
+      {
+        "text": "0\u0015",
+        "value": "536"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170063"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170062"
+      },
+      {
+        "text": "0\u0015",
+        "value": "537"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170061"
+      },
+      {
+        "text": "0\u0015",
+        "value": "538"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170060"
+      },
+      {
+        "text": "0\u0015",
+        "value": "539"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170067"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170066"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170065"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170064"
+      },
+      {
+        "text": "0\u0015",
+        "value": "540"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170059"
+      },
+      {
+        "text": "0\u0015",
+        "value": "541"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170058"
+      },
+      {
+        "text": "0\u0015",
+        "value": "542"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170057"
+      },
+      {
+        "text": "0\u0015",
+        "value": "543"
+      },
+      {
+        "text": "0\u0015",
+        "value": "544"
+      },
+      {
+        "text": "0\u0015",
+        "value": "545"
+      },
+      {
+        "text": "0\u0015",
+        "value": "425"
+      },
+      {
+        "text": "0\u0015",
+        "value": "546"
+      },
+      {
+        "text": "0\u0015",
+        "value": "547"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170052"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170051"
+      },
+      {
+        "text": "0\u0015",
+        "value": "548"
+      },
+      {
+        "text": "0\u0015",
+        "value": "549"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170056"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170055"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170054"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170053"
+      },
+      {
+        "text": "0\u0015",
+        "value": "550"
+      },
+      {
+        "text": "0\u0015",
+        "value": "551"
+      },
+      {
+        "text": "0\u0015",
+        "value": "552"
+      },
+      {
+        "text": "0\u0015",
+        "value": "553"
+      },
+      {
+        "text": "0\u0015",
+        "value": "563"
+      },
+      {
+        "text": "0\u0015",
+        "value": "565"
+      },
+      {
+        "text": "0\u0015",
+        "value": "567"
+      },
+      {
+        "text": "0\u0015",
+        "value": "568"
+      },
+      {
+        "text": "0\u0015",
+        "value": "450"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170027"
+      },
+      {
+        "text": "0\u0015",
+        "value": "451"
+      },
+      {
+        "text": "0\u0015",
+        "value": "452"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170026"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170025"
+      },
+      {
+        "text": "0\u0015",
+        "value": "453"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170024"
+      },
+      {
+        "text": "0\u0015",
+        "value": "455"
+      },
+      {
+        "text": "0\u0015",
+        "value": "456"
+      },
+      {
+        "text": "0\u0015",
+        "value": "457"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170029"
+      },
+      {
+        "text": "0\u0015",
+        "value": "458"
+      },
+      {
+        "text": "0\u0015",
+        "value": "579"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170028"
+      },
+      {
+        "text": "0\u0015",
+        "value": "459"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170023"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170022"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170021"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170020"
+      },
+      {
+        "text": "0\u0015",
+        "value": "580"
+      },
+      {
+        "text": "0\u0015",
+        "value": "581"
+      },
+      {
+        "text": "0\u0015",
+        "value": "582"
+      },
+      {
+        "text": "0\u0015",
+        "value": "583"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170016"
+      },
+      {
+        "text": "0\u0015",
+        "value": "101"
+      },
+      {
+        "text": "0\u0015",
+        "value": "585"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170013"
+      },
+      {
+        "text": "0\u0015",
+        "value": "465"
+      },
+      {
+        "text": "0\u0015",
+        "value": "102"
+      },
+      {
+        "text": "0\u0015",
+        "value": "103"
+      },
+      {
+        "text": "0\u0015",
+        "value": "466"
+      },
+      {
+        "text": "0\u0015",
+        "value": "467"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170019"
+      },
+      {
+        "text": "0\u0015",
+        "value": "104"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170018"
+      },
+      {
+        "text": "0\u0015",
+        "value": "105"
+      },
+      {
+        "text": "0\u0015",
+        "value": "468"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170017"
+      },
+      {
+        "text": "0\u0015",
+        "value": "109"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170012"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170011"
+      },
+      {
+        "text": "0\u0015",
+        "value": "170010"
+      }
+    ],
+    "tempApiUrl": [
+      {
+        "text": "",
+        "value": "110"
+      },
+      {
+        "text": "/order/updateChannelSkuDetails",
+        "value": "474"
+      },
+      {
+        "text": "/vendor/vendordetail",
+        "value": "111"
+      },
+      {
+        "text": "/locationFetch",
+        "value": "475"
+      },
+      {
+        "text": "",
+        "value": "112"
+      },
+      {
+        "text": "",
+        "value": "113"
+      },
+      {
+        "text": "",
+        "value": "114"
+      },
+      {
+        "text": "",
+        "value": "115"
+      },
+      {
+        "text": "/inbound/cancel",
+        "value": "478"
+      },
+      {
+        "text": "",
+        "value": "117"
+      },
+      {
+        "text": "",
+        "value": "118"
+      },
+      {
+        "text": "",
+        "value": "119"
+      },
+      {
+        "text": "/order/updateStatus",
+        "value": "10"
+      },
+      {
+        "text": "/order/orderInvoice",
+        "value": "11"
+      },
+      {
+        "text": "/inbound/create",
+        "value": "12"
+      },
+      {
+        "text": "/order/orderreturn",
+        "value": "13"
+      },
+      {
+        "text": "/order/return",
+        "value": "14"
+      },
+      {
+        "text": "/vendorCreate",
+        "value": "16"
+      },
+      {
+        "text": "/common/checkRequestStatus",
+        "value": "17"
+      },
+      {
+        "text": "/customer/detail",
+        "value": "18"
+      },
+      {
+        "text": "/po/create",
+        "value": "19"
+      },
+      {
+        "text": "/pos/POSIPInfo",
+        "value": "480"
+      },
+      {
+        "text": "/pos/POSIPUpdate",
+        "value": "481"
+      },
+      {
+        "text": "/asn/cancel",
+        "value": "482"
+      },
+      {
+        "text": "",
+        "value": "120"
+      },
+      {
+        "text": "/order/statusUpdate",
+        "value": "484"
+      },
+      {
+        "text": "/order/create",
+        "value": "1"
+      },
+      {
+        "text": "",
+        "value": "122"
+      },
+      {
+        "text": "/order/createBulk",
+        "value": "2"
+      },
+      {
+        "text": "",
+        "value": "123"
+      },
+      {
+        "text": "/order/status",
+        "value": "3"
+      },
+      {
+        "text": "/order/updateDocument",
+        "value": "487"
+      },
+      {
+        "text": "/order/orderPull",
+        "value": "4"
+      },
+      {
+        "text": "/order/stoCreate",
+        "value": "488"
+      },
+      {
+        "text": "/order/cancel",
+        "value": "5"
+      },
+      {
+        "text": "/order/stoCancel",
+        "value": "489"
+      },
+      {
+        "text": "/order/cancelLineLevel",
+        "value": "6"
+      },
+      {
+        "text": "/sku/create",
+        "value": "7"
+      },
+      {
+        "text": "/sku/inventoryStatus",
+        "value": "8"
+      },
+      {
+        "text": "/order/shipDetail",
+        "value": "9"
+      },
+      {
+        "text": "/po/popull",
+        "value": "20"
+      },
+      {
+        "text": "/rtv/create",
+        "value": "21"
+      },
+      {
+        "text": "/sku/skuDetail",
+        "value": "22"
+      },
+      {
+        "text": "/order/orderinvoicepdf",
+        "value": "23"
+      },
+      {
+        "text": "/order/stoDetails",
+        "value": "490"
+      },
+      {
+        "text": "/sku/getInventory",
+        "value": "491"
+      },
+      {
+        "text": "/currencyCreate",
+        "value": "138"
+      },
+      {
+        "text": "/inbound/detail",
+        "value": "34"
+      },
+      {
+        "text": "",
+        "value": "37"
+      },
+      {
+        "text": "",
+        "value": "38"
+      },
+      {
+        "text": "",
+        "value": "39"
+      },
+      {
+        "text": "/svlpCreate",
+        "value": "142"
+      },
+      {
+        "text": "/pos/fetchSalesData",
+        "value": "40"
+      },
+      {
+        "text": "",
+        "value": "41"
+      },
+      {
+        "text": "",
+        "value": "42"
+      },
+      {
+        "text": "",
+        "value": "43"
+      },
+      {
+        "text": "/order/customerOrder",
+        "value": "47"
+      },
+      {
+        "text": "/order/list",
+        "value": "48"
+      },
+      {
+        "text": "",
+        "value": "49"
+      },
+      {
+        "text": "",
+        "value": "151"
+      },
+      {
+        "text": "",
+        "value": "152"
+      },
+      {
+        "text": "",
+        "value": "153"
+      },
+      {
+        "text": "/tally/getDocumentAck",
+        "value": "154"
+      },
+      {
+        "text": "",
+        "value": "156"
+      },
+      {
+        "text": "",
+        "value": "51"
+      },
+      {
+        "text": "/adjustment/detail",
+        "value": "52"
+      },
+      {
+        "text": "",
+        "value": "55"
+      },
+      {
+        "text": "",
+        "value": "57"
+      },
+      {
+        "text": "/sku/getlotlevelinventory",
+        "value": "601"
+      },
+      {
+        "text": "/asn/shortClose",
+        "value": "170074"
+      },
+      {
+        "text": "/order/updateOrderDetails",
+        "value": "602"
+      },
+      {
+        "text": "/asn/shortClose",
+        "value": "170073"
+      },
+      {
+        "text": "/updateB2BManifestHeaderStatus",
+        "value": "170072"
+      },
+      {
+        "text": "/updateTaskDetails",
+        "value": "170071"
+      },
+      {
+        "text": "/order/orderAllocate",
+        "value": "607"
+      },
+      {
+        "text": "",
+        "value": "65"
+      },
+      {
+        "text": "/order/ackResponse",
+        "value": "66"
+      },
+      {
+        "text": "",
+        "value": "67"
+      },
+      {
+        "text": "/sku/create",
+        "value": "68"
+      },
+      {
+        "text": "/sizeCreate",
+        "value": "69"
+      },
+      {
+        "text": "/doc/statusUpdate",
+        "value": "610"
+      },
+      {
+        "text": "/repack/create",
+        "value": "611"
+      },
+      {
+        "text": "eretail/v4/inbound/create",
+        "value": "612"
+      },
+      {
+        "text": "order/returncancel",
+        "value": "613"
+      },
+      {
+        "text": "/countryCreate",
+        "value": "70"
+      },
+      {
+        "text": "/order/list",
+        "value": "614"
+      },
+      {
+        "text": "/stateCreate",
+        "value": "71"
+      },
+      {
+        "text": "/inbound/qcDetail",
+        "value": "615"
+      },
+      {
+        "text": "/uomCreate",
+        "value": "72"
+      },
+      {
+        "text": "/order/orderPullV2",
+        "value": "616"
+      },
+      {
+        "text": "/lovCreate",
+        "value": "73"
+      },
+      {
+        "text": "/order/orderUnAllocate",
+        "value": "617"
+      },
+      {
+        "text": "/currencyConvCreate",
+        "value": "75"
+      },
+      {
+        "text": "/colorCreate",
+        "value": "76"
+      },
+      {
+        "text": "/taxCodeCreate",
+        "value": "77"
+      },
+      {
+        "text": "/taxGroupCreate",
+        "value": "78"
+      },
+      {
+        "text": "",
+        "value": "80"
+      },
+      {
+        "text": "/transporterCreate",
+        "value": "81"
+      },
+      {
+        "text": "",
+        "value": "82"
+      },
+      {
+        "text": "/v1/custom/{apiName}",
+        "value": "506"
+      },
+      {
+        "text": "/customerCreate",
+        "value": "83"
+      },
+      {
+        "text": "/locationCreate",
+        "value": "84"
+      },
+      {
+        "text": "/deliveryConfirmation",
+        "value": "507"
+      },
+      {
+        "text": "master/vendorCreate",
+        "value": "85"
+      },
+      {
+        "text": "/offer/offerSku",
+        "value": "508"
+      },
+      {
+        "text": "/crmAPIs/crmCreateCase",
+        "value": "86"
+      },
+      {
+        "text": "vendor/vendlocskumapping/create",
+        "value": "509"
+      },
+      {
+        "text": "",
+        "value": "87"
+      },
+      {
+        "text": "",
+        "value": "89"
+      },
+      {
+        "text": "orderreturnList",
+        "value": "170048"
+      },
+      {
+        "text": "/order/orderPick",
+        "value": "170047"
+      },
+      {
+        "text": "/order/picklistPull",
+        "value": "170046"
+      },
+      {
+        "text": "master/skuVendorLocLinkCreate",
+        "value": "510"
+      },
+      {
+        "text": "/stock/detail",
+        "value": "511"
+      },
+      {
+        "text": "eretail/v1/customer/custCreate",
+        "value": "512"
+      },
+      {
+        "text": "/merchHierarchyConfigCreate",
+        "value": "90"
+      },
+      {
+        "text": "/eretail/master/driverCreate",
+        "value": "514"
+      },
+      {
+        "text": "/invReserve",
+        "value": "170041"
+      },
+      {
+        "text": "/materialCreate",
+        "value": "91"
+      },
+      {
+        "text": "/taxCategoryCreate",
+        "value": "92"
+      },
+      {
+        "text": "/common/expectedDelDate",
+        "value": "170040"
+      },
+      {
+        "text": "/pinMapCreateUpdate",
+        "value": "515"
+      },
+      {
+        "text": "",
+        "value": "93"
+      },
+      {
+        "text": "",
+        "value": "94"
+      },
+      {
+        "text": "/vendorCatalogCreate",
+        "value": "95"
+      },
+      {
+        "text": "/order/mgdStatus",
+        "value": "170045"
+      },
+      {
+        "text": "/sku/DeleteSkuBarcode",
+        "value": "170044"
+      },
+      {
+        "text": "/sku/mpInventoryStatus",
+        "value": "170043"
+      },
+      {
+        "text": "/inbound/qc",
+        "value": "98"
+      },
+      {
+        "text": "/pos/POSSalesRepList",
+        "value": "170038"
+      },
+      {
+        "text": "/pos/POSCommonApi",
+        "value": "170037"
+      },
+      {
+        "text": "/order/dsReturnStatusUpdate",
+        "value": "170035"
+      },
+      {
+        "text": "/order/downloadManifest",
+        "value": "402"
+      },
+      {
+        "text": "/sku/getLocLevelInventory",
+        "value": "170039"
+      },
+      {
+        "text": "/cycleCount/v1/updateInventoryByCC",
+        "value": "170030"
+      },
+      {
+        "text": "/order/updatePaymentMode",
+        "value": "170034"
+      },
+      {
+        "text": "/order/dsStatusUpdate",
+        "value": "170033"
+      },
+      {
+        "text": "order/ackPull",
+        "value": "170032"
+      },
+      {
+        "text": "/common/channelInfo",
+        "value": "170031"
+      },
+      {
+        "text": "/returnWithoutOrder",
+        "value": "170070"
+      },
+      {
+        "text": "/clienteling/update",
+        "value": "170069"
+      },
+      {
+        "text": "/order/orderUnpack",
+        "value": "170068"
+      },
+      {
+        "text": "/sku/getsku",
+        "value": "533"
+      },
+      {
+        "text": "/posorder/create",
+        "value": "534"
+      },
+      {
+        "text": "/stock/inventoryMovement",
+        "value": "535"
+      },
+      {
+        "text": "/pos/CreateCoupon",
+        "value": "536"
+      },
+      {
+        "text": "/eretail/v1/common/validateLpn",
+        "value": "170063"
+      },
+      {
+        "text": "/sku/inventoryRealTime",
+        "value": "170062"
+      },
+      {
+        "text": "/eretail/master/posPrinterCreate",
+        "value": "537"
+      },
+      {
+        "text": "/inboudGatePass/bulkCreate",
+        "value": "170061"
+      },
+      {
+        "text": "/eretail/master/posTillCreate",
+        "value": "538"
+      },
+      {
+        "text": "/inboudGatePass/statusUpdate",
+        "value": "170060"
+      },
+      {
+        "text": "/eretail/master/posPrinterCreate",
+        "value": "539"
+      },
+      {
+        "text": "/order/orderUnpack",
+        "value": "170067"
+      },
+      {
+        "text": "/transhipment",
+        "value": "170066"
+      },
+      {
+        "text": "/sku/webStoreData",
+        "value": "170065"
+      },
+      {
+        "text": "/common/NDR",
+        "value": "170064"
+      },
+      {
+        "text": "/eretail/master/posTillCreate",
+        "value": "540"
+      },
+      {
+        "text": "/order/updatePackagingDimensions",
+        "value": "170059"
+      },
+      {
+        "text": "/order/orderUpdate",
+        "value": "541"
+      },
+      {
+        "text": "/order/updatePackagingDimensions",
+        "value": "170058"
+      },
+      {
+        "text": "po/porevisionbulk/update",
+        "value": "542"
+      },
+      {
+        "text": "/order/updatePackagingDimensions",
+        "value": "170057"
+      },
+      {
+        "text": "/vendor/vendorAddressReturn",
+        "value": "543"
+      },
+      {
+        "text": "/common/lookUpValue",
+        "value": "544"
+      },
+      {
+        "text": "/stock/invMove",
+        "value": "545"
+      },
+      {
+        "text": "/order/addToManifest",
+        "value": "425"
+      },
+      {
+        "text": "RestWS/api/eretail/v1/channel/createEdit",
+        "value": "546"
+      },
+      {
+        "text": "vendor/vendorSkuMapping",
+        "value": "547"
+      },
+      {
+        "text": "/order/WHAddressReturn",
+        "value": "170052"
+      },
+      {
+        "text": "/inboudGatePass/create",
+        "value": "170051"
+      },
+      {
+        "text": "/location/getOpenShipmentCount",
+        "value": "548"
+      },
+      {
+        "text": "vendor/vendorSkuMapping",
+        "value": "549"
+      },
+      {
+        "text": "/master/clientCreate",
+        "value": "170056"
+      },
+      {
+        "text": "/manifest/createB2bManifest",
+        "value": "170055"
+      },
+      {
+        "text": "/order/returnupdate",
+        "value": "170054"
+      },
+      {
+        "text": "/order/returnupdate",
+        "value": "170053"
+      },
+      {
+        "text": "/location/getOpenShipmentCount",
+        "value": "550"
+      },
+      {
+        "text": "/stock/adjustmentDetail",
+        "value": "551"
+      },
+      {
+        "text": "/sku/update",
+        "value": "552"
+      },
+      {
+        "text": "/asn/detail",
+        "value": "553"
+      },
+      {
+        "text": "/order/HoldOrder",
+        "value": "563"
+      },
+      {
+        "text": "/location/getOpenShipmentCount",
+        "value": "565"
+      },
+      {
+        "text": "/location/getOpenShipmentCount",
+        "value": "567"
+      },
+      {
+        "text": "/sku/createSkuBarcode",
+        "value": "568"
+      },
+      {
+        "text": "/order/availableInventoryWH",
+        "value": "450"
+      },
+      {
+        "text": "/po/poStatusUpdate",
+        "value": "170027"
+      },
+      {
+        "text": "/rtv/detail",
+        "value": "451"
+      },
+      {
+        "text": "/po/gatepassdetail",
+        "value": "452"
+      },
+      {
+        "text": "/inbound/getGrnAttachment",
+        "value": "170026"
+      },
+      {
+        "text": "manifest/create",
+        "value": "170025"
+      },
+      {
+        "text": "/order/shipmentDetail",
+        "value": "453"
+      },
+      {
+        "text": "",
+        "value": "170024"
+      },
+      {
+        "text": "/order/orderShip",
+        "value": "455"
+      },
+      {
+        "text": "/order/orderPack",
+        "value": "456"
+      },
+      {
+        "text": "",
+        "value": "457"
+      },
+      {
+        "text": "/sku/binLotLevelInventory",
+        "value": "170029"
+      },
+      {
+        "text": "",
+        "value": "458"
+      },
+      {
+        "text": "/order/kit",
+        "value": "579"
+      },
+      {
+        "text": "/sku/skuChannelMapping",
+        "value": "170028"
+      },
+      {
+        "text": "/order/orderPick",
+        "value": "459"
+      },
+      {
+        "text": "/discrepancyNotes",
+        "value": "170023"
+      },
+      {
+        "text": "/rtvPull",
+        "value": "170022"
+      },
+      {
+        "text": "/order/ReplaceSKU",
+        "value": "170021"
+      },
+      {
+        "text": "/order/list",
+        "value": "170020"
+      },
+      {
+        "text": "/order/kitDetails",
+        "value": "580"
+      },
+      {
+        "text": "/sku/updateSkuBarcode",
+        "value": "581"
+      },
+      {
+        "text": "/stock/getWhInventory",
+        "value": "582"
+      },
+      {
+        "text": "/POSBuddyLocation",
+        "value": "583"
+      },
+      {
+        "text": "/stock/inventoryHoldUnhold",
+        "value": "170016"
+      },
+      {
+        "text": "",
+        "value": "101"
+      },
+      {
+        "text": "/POSBuddyLocation",
+        "value": "585"
+      },
+      {
+        "text": "/stock/movementHistory",
+        "value": "170013"
+      },
+      {
+        "text": "/skuBackOrder",
+        "value": "465"
+      },
+      {
+        "text": "/stock/updateInventory",
+        "value": "102"
+      },
+      {
+        "text": "/asn/create",
+        "value": "103"
+      },
+      {
+        "text": "/failedOrders",
+        "value": "466"
+      },
+      {
+        "text": "/PrintDocument/fetchInvoice",
+        "value": "467"
+      },
+      {
+        "text": "//merchHierarchy",
+        "value": "170019"
+      },
+      {
+        "text": "/order/getShippingLabelPdf",
+        "value": "104"
+      },
+      {
+        "text": "/api/oAuth/v1/Login/oAuthRefreshToken",
+        "value": "170018"
+      },
+      {
+        "text": "/order/orderProcess",
+        "value": "105"
+      },
+      {
+        "text": "/common/skuCategoryDetail",
+        "value": "468"
+      },
+      {
+        "text": "/api/oAuth/v1/Login/oAuthlogin",
+        "value": "170017"
+      },
+      {
+        "text": "",
+        "value": "109"
+      },
+      {
+        "text": "/stock/movementHistory",
+        "value": "170012"
+      },
+      {
+        "text": "/putaway/create",
+        "value": "170011"
+      },
+      {
+        "text": "/common/lpnUpdate",
+        "value": "170010"
+      }
+    ],
+    "timeZone": [
+      {
+        "text": "--- Select ---",
+        "value": "-1"
+      },
+      {
+        "text": "(GMT-12:00) Etc/GMT+12",
+        "value": "1"
+      },
+      {
+        "text": "(GMT-11:00) Etc/GMT+11",
+        "value": "2"
+      },
+      {
+        "text": "(GMT-11:00) Pacific/Midway",
+        "value": "3"
+      },
+      {
+        "text": "(GMT-11:00) Pacific/Niue",
+        "value": "4"
+      },
+      {
+        "text": "(GMT-11:00) Pacific/Pago_Pago",
+        "value": "5"
+      },
+      {
+        "text": "(GMT-11:00) Pacific/Samoa",
+        "value": "6"
+      },
+      {
+        "text": "(GMT-11:00) US/Samoa",
+        "value": "7"
+      },
+      {
+        "text": "(GMT-10:00) America/Adak",
+        "value": "8"
+      },
+      {
+        "text": "(GMT-10:00) America/Atka",
+        "value": "9"
+      },
+      {
+        "text": "(GMT-10:00) Etc/GMT+10",
+        "value": "10"
+      },
+      {
+        "text": "(GMT-10:00) Etc/GMT+10",
+        "value": "11"
+      },
+      {
+        "text": "(GMT-10:00) Pacific/Honolulu",
+        "value": "12"
+      },
+      {
+        "text": "(GMT-10:00) Pacific/Johnston",
+        "value": "13"
+      },
+      {
+        "text": "(GMT-10:00) Pacific/Rarotonga",
+        "value": "14"
+      },
+      {
+        "text": "(GMT-10:00) Pacific/Tahiti",
+        "value": "15"
+      },
+      {
+        "text": "(GMT-10:00) SystemV/HST10",
+        "value": "16"
+      },
+      {
+        "text": "(GMT-10:00) US/Aleutian",
+        "value": "17"
+      },
+      {
+        "text": "(GMT-10:00) US/Hawaii",
+        "value": "18"
+      },
+      {
+        "text": "(GMT-9:30) Pacific/Marquesas",
+        "value": "19"
+      },
+      {
+        "text": "(GMT-9:00) America/Anchorage",
+        "value": "20"
+      },
+      {
+        "text": "(GMT-9:00) America/Anchorage",
+        "value": "21"
+      },
+      {
+        "text": "(GMT-9:00) America/Juneau",
+        "value": "22"
+      },
+      {
+        "text": "(GMT-9:00) America/Nome",
+        "value": "23"
+      },
+      {
+        "text": "(GMT-9:00) America/Sitka",
+        "value": "24"
+      },
+      {
+        "text": "(GMT-9:00) America/Yakutat",
+        "value": "25"
+      },
+      {
+        "text": "(GMT-9:00) Etc/GMT+9",
+        "value": "26"
+      },
+      {
+        "text": "(GMT-9:00) Pacific/Gambier",
+        "value": "27"
+      },
+      {
+        "text": "(GMT-9:00) SystemV/YST9",
+        "value": "28"
+      },
+      {
+        "text": "(GMT-9:00) SystemV/YST9YDT",
+        "value": "29"
+      },
+      {
+        "text": "(GMT-9:00) US/Alaska",
+        "value": "30"
+      },
+      {
+        "text": "(GMT-8:00) America/Dawson",
+        "value": "31"
+      },
+      {
+        "text": "(GMT-8:00) America/Ensenada",
+        "value": "32"
+      },
+      {
+        "text": "(GMT-8:00) America/Los_Angeles",
+        "value": "33"
+      },
+      {
+        "text": "(GMT-8:00) America/Metlakatla",
+        "value": "34"
+      },
+      {
+        "text": "(GMT-8:00) America/Santa_Isabel",
+        "value": "35"
+      },
+      {
+        "text": "(GMT-8:00) America/Tijuana",
+        "value": "36"
+      },
+      {
+        "text": "(GMT-8:00) America/Vancouver",
+        "value": "37"
+      },
+      {
+        "text": "(GMT-8:00) America/Whitehorse",
+        "value": "38"
+      },
+      {
+        "text": "(GMT-8:00) Canada/Pacific",
+        "value": "39"
+      },
+      {
+        "text": "(GMT-8:00) Canada/Yukon",
+        "value": "40"
+      },
+      {
+        "text": "(GMT-8:00) Etc/GMT+8",
+        "value": "41"
+      },
+      {
+        "text": "(GMT-8:00) Mexico/BajaNorte",
+        "value": "42"
+      },
+      {
+        "text": "(GMT-8:00) America/Los_Angeles",
+        "value": "43"
+      },
+      {
+        "text": "(GMT-8:00) PST8PDT",
+        "value": "44"
+      },
+      {
+        "text": "(GMT-8:00) Pacific/Pitcairn",
+        "value": "45"
+      },
+      {
+        "text": "(GMT-8:00) SystemV/PST8",
+        "value": "46"
+      },
+      {
+        "text": "(GMT-8:00) SystemV/PST8PDT",
+        "value": "47"
+      },
+      {
+        "text": "(GMT-8:00) US/Pacific",
+        "value": "48"
+      },
+      {
+        "text": "(GMT-8:00) US/Pacific-New",
+        "value": "49"
+      },
+      {
+        "text": "(GMT-7:00) America/Boise",
+        "value": "50"
+      },
+      {
+        "text": "(GMT-7:00) America/Cambridge_Bay",
+        "value": "51"
+      },
+      {
+        "text": "(GMT-7:00) America/Chihuahua",
+        "value": "52"
+      },
+      {
+        "text": "(GMT-7:00) America/Creston",
+        "value": "53"
+      },
+      {
+        "text": "(GMT-7:00) America/Dawson_Creek",
+        "value": "54"
+      },
+      {
+        "text": "(GMT-7:00) America/Denver",
+        "value": "55"
+      },
+      {
+        "text": "(GMT-7:00) America/Edmonton",
+        "value": "56"
+      },
+      {
+        "text": "(GMT-7:00) America/Hermosillo",
+        "value": "57"
+      },
+      {
+        "text": "(GMT-7:00) America/Inuvik",
+        "value": "58"
+      },
+      {
+        "text": "(GMT-7:00) America/Mazatlan",
+        "value": "59"
+      },
+      {
+        "text": "(GMT-7:00) America/Ojinaga",
+        "value": "60"
+      },
+      {
+        "text": "(GMT-7:00) America/Phoenix",
+        "value": "61"
+      },
+      {
+        "text": "(GMT-7:00) America/Shiprock",
+        "value": "62"
+      },
+      {
+        "text": "(GMT-7:00) America/Yellowknife",
+        "value": "63"
+      },
+      {
+        "text": "(GMT-7:00) Canada/Mountain",
+        "value": "64"
+      },
+      {
+        "text": "(GMT-7:00) Etc/GMT+7",
+        "value": "65"
+      },
+      {
+        "text": "(GMT-7:00) Etc/GMT+7",
+        "value": "66"
+      },
+      {
+        "text": "(GMT-7:00) MST7MDT",
+        "value": "67"
+      },
+      {
+        "text": "(GMT-7:00) Mexico/BajaSur",
+        "value": "68"
+      },
+      {
+        "text": "(GMT-7:00) Navajo",
+        "value": "69"
+      },
+      {
+        "text": "(GMT-7:00) America/Phoenix",
+        "value": "70"
+      },
+      {
+        "text": "(GMT-7:00) SystemV/MST7",
+        "value": "71"
+      },
+      {
+        "text": "(GMT-7:00) SystemV/MST7MDT",
+        "value": "72"
+      },
+      {
+        "text": "(GMT-7:00) US/Arizona",
+        "value": "73"
+      },
+      {
+        "text": "(GMT-7:00) US/Mountain",
+        "value": "74"
+      },
+      {
+        "text": "(GMT-6:00) America/Bahia_Banderas",
+        "value": "75"
+      },
+      {
+        "text": "(GMT-6:00) America/Belize",
+        "value": "76"
+      },
+      {
+        "text": "(GMT-6:00) America/Cancun",
+        "value": "77"
+      },
+      {
+        "text": "(GMT-6:00) America/Chicago",
+        "value": "78"
+      },
+      {
+        "text": "(GMT-6:00) America/Costa_Rica",
+        "value": "79"
+      },
+      {
+        "text": "(GMT-6:00) America/El_Salvador",
+        "value": "80"
+      },
+      {
+        "text": "(GMT-6:00) America/Guatemala",
+        "value": "81"
+      },
+      {
+        "text": "(GMT-6:00) America/Indiana/Knox",
+        "value": "82"
+      },
+      {
+        "text": "(GMT-6:00) America/Indiana/Tell_City",
+        "value": "83"
+      },
+      {
+        "text": "(GMT-6:00) America/Knox_IN",
+        "value": "84"
+      },
+      {
+        "text": "(GMT-6:00) America/Managua",
+        "value": "85"
+      },
+      {
+        "text": "(GMT-6:00) America/Matamoros",
+        "value": "86"
+      },
+      {
+        "text": "(GMT-6:00) America/Menominee",
+        "value": "87"
+      },
+      {
+        "text": "(GMT-6:00) America/Merida",
+        "value": "88"
+      },
+      {
+        "text": "(GMT-6:00) America/Mexico_City",
+        "value": "89"
+      },
+      {
+        "text": "(GMT-6:00) America/Monterrey",
+        "value": "90"
+      },
+      {
+        "text": "(GMT-6:00) America/North_Dakota/Beulah",
+        "value": "91"
+      },
+      {
+        "text": "(GMT-6:00) America/North_Dakota/Center",
+        "value": "92"
+      },
+      {
+        "text": "(GMT-6:00) America/North_Dakota/New_Salem",
+        "value": "93"
+      },
+      {
+        "text": "(GMT-6:00) America/Rainy_River",
+        "value": "94"
+      },
+      {
+        "text": "(GMT-6:00) America/Rankin_Inlet",
+        "value": "95"
+      },
+      {
+        "text": "(GMT-6:00) America/Regina",
+        "value": "96"
+      },
+      {
+        "text": "(GMT-6:00) America/Resolute",
+        "value": "97"
+      },
+      {
+        "text": "(GMT-6:00) America/Swift_Current",
+        "value": "98"
+      },
+      {
+        "text": "(GMT-6:00) America/Tegucigalpa",
+        "value": "99"
+      },
+      {
+        "text": "(GMT-6:00) America/Winnipeg",
+        "value": "100"
+      },
+      {
+        "text": "(GMT-6:00) America/Chicago",
+        "value": "101"
+      },
+      {
+        "text": "(GMT-6:00) CST6CDT",
+        "value": "102"
+      },
+      {
+        "text": "(GMT-6:00) Canada/Central",
+        "value": "103"
+      },
+      {
+        "text": "(GMT-6:00) America/Regina",
+        "value": "104"
+      },
+      {
+        "text": "(GMT-6:00) Canada/Saskatchewan",
+        "value": "105"
+      },
+      {
+        "text": "(GMT-6:00) Chile/EasterIsland",
+        "value": "106"
+      },
+      {
+        "text": "(GMT-6:00) Etc/GMT+6",
+        "value": "107"
+      },
+      {
+        "text": "(GMT-6:00) Mexico/General",
+        "value": "108"
+      },
+      {
+        "text": "(GMT-6:00) Pacific/Easter",
+        "value": "109"
+      },
+      {
+        "text": "(GMT-6:00) Pacific/Galapagos",
+        "value": "110"
+      },
+      {
+        "text": "(GMT-6:00) SystemV/CST6",
+        "value": "111"
+      },
+      {
+        "text": "(GMT-6:00) SystemV/CST6CDT",
+        "value": "112"
+      },
+      {
+        "text": "(GMT-6:00) US/Central",
+        "value": "113"
+      },
+      {
+        "text": "(GMT-6:00) US/Indiana-Starke",
+        "value": "114"
+      },
+      {
+        "text": "(GMT-5:00) America/Atikokan",
+        "value": "115"
+      },
+      {
+        "text": "(GMT-5:00) America/Bogota",
+        "value": "116"
+      },
+      {
+        "text": "(GMT-5:00) America/Cayman",
+        "value": "117"
+      },
+      {
+        "text": "(GMT-5:00) America/Coral_Harbour",
+        "value": "118"
+      },
+      {
+        "text": "(GMT-5:00) America/Detroit",
+        "value": "119"
+      },
+      {
+        "text": "(GMT-5:00) America/Eirunepe",
+        "value": "120"
+      },
+      {
+        "text": "(GMT-5:00) America/Fort_Wayne",
+        "value": "121"
+      },
+      {
+        "text": "(GMT-5:00) America/Grand_Turk",
+        "value": "122"
+      },
+      {
+        "text": "(GMT-5:00) America/Guayaquil",
+        "value": "123"
+      },
+      {
+        "text": "(GMT-5:00) America/Havana",
+        "value": "124"
+      },
+      {
+        "text": "(GMT-5:00) America/Indiana/Indianapolis",
+        "value": "125"
+      },
+      {
+        "text": "(GMT-5:00) America/Indiana/Marengo",
+        "value": "126"
+      },
+      {
+        "text": "(GMT-5:00) America/Indiana/Petersburg",
+        "value": "127"
+      },
+      {
+        "text": "(GMT-5:00) America/Indiana/Vevay",
+        "value": "128"
+      },
+      {
+        "text": "(GMT-5:00) America/Indiana/Vincennes",
+        "value": "129"
+      },
+      {
+        "text": "(GMT-5:00) America/Indiana/Winamac",
+        "value": "130"
+      },
+      {
+        "text": "(GMT-5:00) America/Indianapolis",
+        "value": "131"
+      },
+      {
+        "text": "(GMT-5:00) America/Iqaluit",
+        "value": "132"
+      },
+      {
+        "text": "(GMT-5:00) America/Jamaica",
+        "value": "133"
+      },
+      {
+        "text": "(GMT-5:00) America/Kentucky/Louisville",
+        "value": "134"
+      },
+      {
+        "text": "(GMT-5:00) America/Kentucky/Monticello",
+        "value": "135"
+      },
+      {
+        "text": "(GMT-5:00) America/Lima",
+        "value": "136"
+      },
+      {
+        "text": "(GMT-5:00) America/Louisville",
+        "value": "137"
+      },
+      {
+        "text": "(GMT-5:00) America/Montreal",
+        "value": "138"
+      },
+      {
+        "text": "(GMT-5:00) America/Nassau",
+        "value": "139"
+      },
+      {
+        "text": "(GMT-5:00) America/New_York",
+        "value": "140"
+      },
+      {
+        "text": "(GMT-5:00) America/Nipigon",
+        "value": "141"
+      },
+      {
+        "text": "(GMT-5:00) America/Panama",
+        "value": "142"
+      },
+      {
+        "text": "(GMT-5:00) America/Pangnirtung",
+        "value": "143"
+      },
+      {
+        "text": "(GMT-5:00) America/Port-au-Prince",
+        "value": "144"
+      },
+      {
+        "text": "(GMT-5:00) America/Porto_Acre",
+        "value": "145"
+      },
+      {
+        "text": "(GMT-5:00) America/Rio_Branco",
+        "value": "146"
+      },
+      {
+        "text": "(GMT-5:00) America/Thunder_Bay",
+        "value": "147"
+      },
+      {
+        "text": "(GMT-5:00) America/Toronto",
+        "value": "148"
+      },
+      {
+        "text": "(GMT-5:00) Brazil/Acre",
+        "value": "149"
+      },
+      {
+        "text": "(GMT-5:00) Canada/Eastern",
+        "value": "150"
+      },
+      {
+        "text": "(GMT-5:00) Cuba",
+        "value": "151"
+      },
+      {
+        "text": "(GMT-5:00) Etc/GMT+5",
+        "value": "152"
+      },
+      {
+        "text": "(GMT-5:00) EST5EDT",
+        "value": "153"
+      },
+      {
+        "text": "(GMT-5:00) Etc/GMT+5",
+        "value": "154"
+      },
+      {
+        "text": "(GMT-5:00) America/Indiana/Indianapolis",
+        "value": "155"
+      },
+      {
+        "text": "(GMT-5:00) Jamaica",
+        "value": "156"
+      },
+      {
+        "text": "(GMT-5:00) SystemV/EST5",
+        "value": "157"
+      },
+      {
+        "text": "(GMT-5:00) SystemV/EST5EDT",
+        "value": "158"
+      },
+      {
+        "text": "(GMT-5:00) US/East-Indiana",
+        "value": "159"
+      },
+      {
+        "text": "(GMT-5:00) US/Eastern",
+        "value": "160"
+      },
+      {
+        "text": "(GMT-5:00) US/Michigan",
+        "value": "161"
+      },
+      {
+        "text": "(GMT-4:30) America/Caracas",
+        "value": "162"
+      },
+      {
+        "text": "(GMT-4:00) America/Anguilla",
+        "value": "163"
+      },
+      {
+        "text": "(GMT-4:00) America/Antigua",
+        "value": "164"
+      },
+      {
+        "text": "(GMT-4:00) America/Aruba",
+        "value": "165"
+      },
+      {
+        "text": "(GMT-4:00) America/Asuncion",
+        "value": "166"
+      },
+      {
+        "text": "(GMT-4:00) America/Barbados",
+        "value": "167"
+      },
+      {
+        "text": "(GMT-4:00) America/Blanc-Sablon",
+        "value": "168"
+      },
+      {
+        "text": "(GMT-4:00) America/Boa_Vista",
+        "value": "169"
+      },
+      {
+        "text": "(GMT-4:00) America/Campo_Grande",
+        "value": "170"
+      },
+      {
+        "text": "(GMT-4:00) America/Cuiaba",
+        "value": "171"
+      },
+      {
+        "text": "(GMT-4:00) America/Curacao",
+        "value": "172"
+      },
+      {
+        "text": "(GMT-4:00) America/Dominica",
+        "value": "173"
+      },
+      {
+        "text": "(GMT-4:00) America/Glace_Bay",
+        "value": "174"
+      },
+      {
+        "text": "(GMT-4:00) America/Goose_Bay",
+        "value": "175"
+      },
+      {
+        "text": "(GMT-4:00) America/Grenada",
+        "value": "176"
+      },
+      {
+        "text": "(GMT-4:00) America/Guadeloupe",
+        "value": "177"
+      },
+      {
+        "text": "(GMT-4:00) America/Guyana",
+        "value": "178"
+      },
+      {
+        "text": "(GMT-4:00) America/Halifax",
+        "value": "179"
+      },
+      {
+        "text": "(GMT-4:00) America/Kralendijk",
+        "value": "180"
+      },
+      {
+        "text": "(GMT-4:00) America/La_Paz",
+        "value": "181"
+      },
+      {
+        "text": "(GMT-4:00) America/Lower_Princes",
+        "value": "182"
+      },
+      {
+        "text": "(GMT-4:00) America/Manaus",
+        "value": "183"
+      },
+      {
+        "text": "(GMT-4:00) America/Marigot",
+        "value": "184"
+      },
+      {
+        "text": "(GMT-4:00) America/Martinique",
+        "value": "185"
+      },
+      {
+        "text": "(GMT-4:00) America/Moncton",
+        "value": "186"
+      },
+      {
+        "text": "(GMT-4:00) America/Montserrat",
+        "value": "187"
+      },
+      {
+        "text": "(GMT-4:00) America/Port_of_Spain",
+        "value": "188"
+      },
+      {
+        "text": "(GMT-4:00) America/Porto_Velho",
+        "value": "189"
+      },
+      {
+        "text": "(GMT-4:00) America/Puerto_Rico",
+        "value": "190"
+      },
+      {
+        "text": "(GMT-4:00) America/Santiago",
+        "value": "191"
+      },
+      {
+        "text": "(GMT-4:00) America/Santo_Domingo",
+        "value": "192"
+      },
+      {
+        "text": "(GMT-4:00) America/St_Barthelemy",
+        "value": "193"
+      },
+      {
+        "text": "(GMT-4:00) America/St_Kitts",
+        "value": "194"
+      },
+      {
+        "text": "(GMT-4:00) America/St_Lucia",
+        "value": "195"
+      },
+      {
+        "text": "(GMT-4:00) America/St_Thomas",
+        "value": "196"
+      },
+      {
+        "text": "(GMT-4:00) America/St_Vincent",
+        "value": "197"
+      },
+      {
+        "text": "(GMT-4:00) America/Thule",
+        "value": "198"
+      },
+      {
+        "text": "(GMT-4:00) America/Tortola",
+        "value": "199"
+      },
+      {
+        "text": "(GMT-4:00) America/Virgin",
+        "value": "200"
+      },
+      {
+        "text": "(GMT-4:00) Antarctica/Palmer",
+        "value": "201"
+      },
+      {
+        "text": "(GMT-4:00) Atlantic/Bermuda",
+        "value": "202"
+      },
+      {
+        "text": "(GMT-4:00) Brazil/West",
+        "value": "203"
+      },
+      {
+        "text": "(GMT-4:00) Canada/Atlantic",
+        "value": "204"
+      },
+      {
+        "text": "(GMT-4:00) Chile/Continental",
+        "value": "205"
+      },
+      {
+        "text": "(GMT-4:00) Etc/GMT+4",
+        "value": "206"
+      },
+      {
+        "text": "(GMT-4:00) America/Puerto_Rico",
+        "value": "207"
+      },
+      {
+        "text": "(GMT-4:00) SystemV/AST4",
+        "value": "208"
+      },
+      {
+        "text": "(GMT-4:00) SystemV/AST4ADT",
+        "value": "209"
+      },
+      {
+        "text": "(GMT-3:30) America/St_Johns",
+        "value": "210"
+      },
+      {
+        "text": "(GMT-3:30) America/St_Johns",
+        "value": "211"
+      },
+      {
+        "text": "(GMT-3:30) Canada/Newfoundland",
+        "value": "212"
+      },
+      {
+        "text": "(GMT-3:00) America/Argentina/Buenos_Aires",
+        "value": "213"
+      },
+      {
+        "text": "(GMT-3:00) America/Araguaina",
+        "value": "214"
+      },
+      {
+        "text": "(GMT-3:00) America/Argentina/Buenos_Aires",
+        "value": "215"
+      },
+      {
+        "text": "(GMT-3:00) America/Argentina/Catamarca",
+        "value": "216"
+      },
+      {
+        "text": "(GMT-3:00) America/Argentina/ComodRivadavia",
+        "value": "217"
+      },
+      {
+        "text": "(GMT-3:00) America/Argentina/Cordoba",
+        "value": "218"
+      },
+      {
+        "text": "(GMT-3:00) America/Argentina/Jujuy",
+        "value": "219"
+      },
+      {
+        "text": "(GMT-3:00) America/Argentina/La_Rioja",
+        "value": "220"
+      },
+      {
+        "text": "(GMT-3:00) America/Argentina/Mendoza",
+        "value": "221"
+      },
+      {
+        "text": "(GMT-3:00) America/Argentina/Rio_Gallegos",
+        "value": "222"
+      },
+      {
+        "text": "(GMT-3:00) America/Argentina/Salta",
+        "value": "223"
+      },
+      {
+        "text": "(GMT-3:00) America/Argentina/San_Juan",
+        "value": "224"
+      },
+      {
+        "text": "(GMT-3:00) America/Argentina/San_Luis",
+        "value": "225"
+      },
+      {
+        "text": "(GMT-3:00) America/Argentina/Tucuman",
+        "value": "226"
+      },
+      {
+        "text": "(GMT-3:00) America/Argentina/Ushuaia",
+        "value": "227"
+      },
+      {
+        "text": "(GMT-3:00) America/Bahia",
+        "value": "228"
+      },
+      {
+        "text": "(GMT-3:00) America/Belem",
+        "value": "229"
+      },
+      {
+        "text": "(GMT-3:00) America/Buenos_Aires",
+        "value": "230"
+      },
+      {
+        "text": "(GMT-3:00) America/Catamarca",
+        "value": "231"
+      },
+      {
+        "text": "(GMT-3:00) America/Cayenne",
+        "value": "232"
+      },
+      {
+        "text": "(GMT-3:00) America/Cordoba",
+        "value": "233"
+      },
+      {
+        "text": "(GMT-3:00) America/Fortaleza",
+        "value": "234"
+      },
+      {
+        "text": "(GMT-3:00) America/Godthab",
+        "value": "235"
+      },
+      {
+        "text": "(GMT-3:00) America/Jujuy",
+        "value": "236"
+      },
+      {
+        "text": "(GMT-3:00) America/Maceio",
+        "value": "237"
+      },
+      {
+        "text": "(GMT-3:00) America/Mendoza",
+        "value": "238"
+      },
+      {
+        "text": "(GMT-3:00) America/Miquelon",
+        "value": "239"
+      },
+      {
+        "text": "(GMT-3:00) America/Montevideo",
+        "value": "240"
+      },
+      {
+        "text": "(GMT-3:00) America/Paramaribo",
+        "value": "241"
+      },
+      {
+        "text": "(GMT-3:00) America/Recife",
+        "value": "242"
+      },
+      {
+        "text": "(GMT-3:00) America/Rosario",
+        "value": "243"
+      },
+      {
+        "text": "(GMT-3:00) America/Santarem",
+        "value": "244"
+      },
+      {
+        "text": "(GMT-3:00) America/Sao_Paulo",
+        "value": "245"
+      },
+      {
+        "text": "(GMT-3:00) Antarctica/Rothera",
+        "value": "246"
+      },
+      {
+        "text": "(GMT-3:00) Atlantic/Stanley",
+        "value": "247"
+      },
+      {
+        "text": "(GMT-3:00) America/Sao_Paulo",
+        "value": "248"
+      },
+      {
+        "text": "(GMT-3:00) Brazil/East",
+        "value": "249"
+      },
+      {
+        "text": "(GMT-3:00) Etc/GMT+3",
+        "value": "250"
+      },
+      {
+        "text": "(GMT-2:00) America/Noronha",
+        "value": "251"
+      },
+      {
+        "text": "(GMT-2:00) Atlantic/South_Georgia",
+        "value": "252"
+      },
+      {
+        "text": "(GMT-2:00) Brazil/DeNoronha",
+        "value": "253"
+      },
+      {
+        "text": "(GMT-2:00) Etc/GMT+2",
+        "value": "254"
+      },
+      {
+        "text": "(GMT-1:00) America/Scoresbysund",
+        "value": "255"
+      },
+      {
+        "text": "(GMT-1:00) Atlantic/Azores",
+        "value": "256"
+      },
+      {
+        "text": "(GMT-1:00) Atlantic/Cape_Verde",
+        "value": "257"
+      },
+      {
+        "text": "(GMT-1:00) Etc/GMT+1",
+        "value": "258"
+      },
+      {
+        "text": "(GMT0:00) Africa/Abidjan",
+        "value": "259"
+      },
+      {
+        "text": "(GMT0:00) Africa/Accra",
+        "value": "260"
+      },
+      {
+        "text": "(GMT0:00) Africa/Bamako",
+        "value": "261"
+      },
+      {
+        "text": "(GMT0:00) Africa/Banjul",
+        "value": "262"
+      },
+      {
+        "text": "(GMT0:00) Africa/Bissau",
+        "value": "263"
+      },
+      {
+        "text": "(GMT0:00) Africa/Casablanca",
+        "value": "264"
+      },
+      {
+        "text": "(GMT0:00) Africa/Conakry",
+        "value": "265"
+      },
+      {
+        "text": "(GMT0:00) Africa/Dakar",
+        "value": "266"
+      },
+      {
+        "text": "(GMT0:00) Africa/El_Aaiun",
+        "value": "267"
+      },
+      {
+        "text": "(GMT0:00) Africa/Freetown",
+        "value": "268"
+      },
+      {
+        "text": "(GMT0:00) Africa/Lome",
+        "value": "269"
+      },
+      {
+        "text": "(GMT0:00) Africa/Monrovia",
+        "value": "270"
+      },
+      {
+        "text": "(GMT0:00) Africa/Nouakchott",
+        "value": "271"
+      },
+      {
+        "text": "(GMT0:00) Africa/Ouagadougou",
+        "value": "272"
+      },
+      {
+        "text": "(GMT0:00) Africa/Sao_Tome",
+        "value": "273"
+      },
+      {
+        "text": "(GMT0:00) Africa/Timbuktu",
+        "value": "274"
+      },
+      {
+        "text": "(GMT0:00) America/Danmarkshavn",
+        "value": "275"
+      },
+      {
+        "text": "(GMT0:00) Antarctica/Troll",
+        "value": "276"
+      },
+      {
+        "text": "(GMT0:00) Atlantic/Canary",
+        "value": "277"
+      },
+      {
+        "text": "(GMT0:00) Atlantic/Faeroe",
+        "value": "278"
+      },
+      {
+        "text": "(GMT0:00) Atlantic/Faroe",
+        "value": "279"
+      },
+      {
+        "text": "(GMT0:00) Atlantic/Madeira",
+        "value": "280"
+      },
+      {
+        "text": "(GMT0:00) Atlantic/Reykjavik",
+        "value": "281"
+      },
+      {
+        "text": "(GMT0:00) Atlantic/St_Helena",
+        "value": "282"
+      },
+      {
+        "text": "(GMT0:00) Eire",
+        "value": "283"
+      },
+      {
+        "text": "(GMT0:00) Etc/GMT",
+        "value": "284"
+      },
+      {
+        "text": "(GMT0:00) Etc/GMT+0",
+        "value": "285"
+      },
+      {
+        "text": "(GMT0:00) Etc/GMT-0",
+        "value": "286"
+      },
+      {
+        "text": "(GMT0:00) Etc/GMT0",
+        "value": "287"
+      },
+      {
+        "text": "(GMT0:00) Etc/Greenwich",
+        "value": "288"
+      },
+      {
+        "text": "(GMT0:00) Etc/UCT",
+        "value": "289"
+      },
+      {
+        "text": "(GMT0:00) Etc/UTC",
+        "value": "290"
+      },
+      {
+        "text": "(GMT0:00) Etc/Universal",
+        "value": "291"
+      },
+      {
+        "text": "(GMT0:00) Etc/Zulu",
+        "value": "292"
+      },
+      {
+        "text": "(GMT0:00) Europe/Belfast",
+        "value": "293"
+      },
+      {
+        "text": "(GMT0:00) Europe/Dublin",
+        "value": "294"
+      },
+      {
+        "text": "(GMT0:00) Europe/Guernsey",
+        "value": "295"
+      },
+      {
+        "text": "(GMT0:00) Europe/Isle_of_Man",
+        "value": "296"
+      },
+      {
+        "text": "(GMT0:00) Europe/Jersey",
+        "value": "297"
+      },
+      {
+        "text": "(GMT0:00) Europe/Lisbon",
+        "value": "298"
+      },
+      {
+        "text": "(GMT0:00) Europe/London",
+        "value": "299"
+      },
+      {
+        "text": "(GMT0:00) GB",
+        "value": "300"
+      },
+      {
+        "text": "(GMT0:00) GB-Eire",
+        "value": "301"
+      },
+      {
+        "text": "(GMT0:00) GMT",
+        "value": "302"
+      },
+      {
+        "text": "(GMT0:00) GMT0",
+        "value": "303"
+      },
+      {
+        "text": "(GMT0:00) Greenwich",
+        "value": "304"
+      },
+      {
+        "text": "(GMT0:00) Iceland",
+        "value": "305"
+      },
+      {
+        "text": "(GMT0:00) Portugal",
+        "value": "306"
+      },
+      {
+        "text": "(GMT0:00) UCT",
+        "value": "307"
+      },
+      {
+        "text": "(GMT0:00) UTC",
+        "value": "308"
+      },
+      {
+        "text": "(GMT0:00) Universal",
+        "value": "309"
+      },
+      {
+        "text": "(GMT0:00) WET",
+        "value": "310"
+      },
+      {
+        "text": "(GMT0:00) Zulu",
+        "value": "311"
+      },
+      {
+        "text": "(GMT+1:00) Africa/Algiers",
+        "value": "312"
+      },
+      {
+        "text": "(GMT+1:00) Africa/Bangui",
+        "value": "313"
+      },
+      {
+        "text": "(GMT+1:00) Africa/Brazzaville",
+        "value": "314"
+      },
+      {
+        "text": "(GMT+1:00) Africa/Ceuta",
+        "value": "315"
+      },
+      {
+        "text": "(GMT+1:00) Africa/Douala",
+        "value": "316"
+      },
+      {
+        "text": "(GMT+1:00) Africa/Kinshasa",
+        "value": "317"
+      },
+      {
+        "text": "(GMT+1:00) Africa/Lagos",
+        "value": "318"
+      },
+      {
+        "text": "(GMT+1:00) Africa/Libreville",
+        "value": "319"
+      },
+      {
+        "text": "(GMT+1:00) Africa/Luanda",
+        "value": "320"
+      },
+      {
+        "text": "(GMT+1:00) Africa/Malabo",
+        "value": "321"
+      },
+      {
+        "text": "(GMT+1:00) Africa/Ndjamena",
+        "value": "322"
+      },
+      {
+        "text": "(GMT+1:00) Africa/Niamey",
+        "value": "323"
+      },
+      {
+        "text": "(GMT+1:00) Africa/Porto-Novo",
+        "value": "324"
+      },
+      {
+        "text": "(GMT+1:00) Africa/Tunis",
+        "value": "325"
+      },
+      {
+        "text": "(GMT+1:00) Africa/Windhoek",
+        "value": "326"
+      },
+      {
+        "text": "(GMT+1:00) Arctic/Longyearbyen",
+        "value": "327"
+      },
+      {
+        "text": "(GMT+1:00) Atlantic/Jan_Mayen",
+        "value": "328"
+      },
+      {
+        "text": "(GMT+1:00) CET",
+        "value": "329"
+      },
+      {
+        "text": "(GMT+1:00) Europe/Paris",
+        "value": "330"
+      },
+      {
+        "text": "(GMT+1:00) Etc/GMT-1",
+        "value": "331"
+      },
+      {
+        "text": "(GMT+1:00) Europe/Amsterdam",
+        "value": "332"
+      },
+      {
+        "text": "(GMT+1:00) Europe/Andorra",
+        "value": "333"
+      },
+      {
+        "text": "(GMT+1:00) Europe/Belgrade",
+        "value": "334"
+      },
+      {
+        "text": "(GMT+1:00) Europe/Berlin",
+        "value": "335"
+      },
+      {
+        "text": "(GMT+1:00) Europe/Bratislava",
+        "value": "336"
+      },
+      {
+        "text": "(GMT+1:00) Europe/Brussels",
+        "value": "337"
+      },
+      {
+        "text": "(GMT+1:00) Europe/Budapest",
+        "value": "338"
+      },
+      {
+        "text": "(GMT+1:00) Europe/Busingen",
+        "value": "339"
+      },
+      {
+        "text": "(GMT+1:00) Europe/Copenhagen",
+        "value": "340"
+      },
+      {
+        "text": "(GMT+1:00) Europe/Gibraltar",
+        "value": "341"
+      },
+      {
+        "text": "(GMT+1:00) Europe/Ljubljana",
+        "value": "342"
+      },
+      {
+        "text": "(GMT+1:00) Europe/Luxembourg",
+        "value": "343"
+      },
+      {
+        "text": "(GMT+1:00) Europe/Madrid",
+        "value": "344"
+      },
+      {
+        "text": "(GMT+1:00) Europe/Malta",
+        "value": "345"
+      },
+      {
+        "text": "(GMT+1:00) Europe/Monaco",
+        "value": "346"
+      },
+      {
+        "text": "(GMT+1:00) Europe/Oslo",
+        "value": "347"
+      },
+      {
+        "text": "(GMT+1:00) Europe/Paris",
+        "value": "348"
+      },
+      {
+        "text": "(GMT+1:00) Europe/Podgorica",
+        "value": "349"
+      },
+      {
+        "text": "(GMT+1:00) Europe/Prague",
+        "value": "350"
+      },
+      {
+        "text": "(GMT+1:00) Europe/Rome",
+        "value": "351"
+      },
+      {
+        "text": "(GMT+1:00) Europe/San_Marino",
+        "value": "352"
+      },
+      {
+        "text": "(GMT+1:00) Europe/Sarajevo",
+        "value": "353"
+      },
+      {
+        "text": "(GMT+1:00) Europe/Skopje",
+        "value": "354"
+      },
+      {
+        "text": "(GMT+1:00) Europe/Stockholm",
+        "value": "355"
+      },
+      {
+        "text": "(GMT+1:00) Europe/Tirane",
+        "value": "356"
+      },
+      {
+        "text": "(GMT+1:00) Europe/Vaduz",
+        "value": "357"
+      },
+      {
+        "text": "(GMT+1:00) Europe/Vatican",
+        "value": "358"
+      },
+      {
+        "text": "(GMT+1:00) Europe/Vienna",
+        "value": "359"
+      },
+      {
+        "text": "(GMT+1:00) Europe/Warsaw",
+        "value": "360"
+      },
+      {
+        "text": "(GMT+1:00) Europe/Zagreb",
+        "value": "361"
+      },
+      {
+        "text": "(GMT+1:00) Europe/Zurich",
+        "value": "362"
+      },
+      {
+        "text": "(GMT+1:00) MET",
+        "value": "363"
+      },
+      {
+        "text": "(GMT+1:00) Poland",
+        "value": "364"
+      },
+      {
+        "text": "(GMT+2:00) Africa/Cairo",
+        "value": "365"
+      },
+      {
+        "text": "(GMT+2:00) Africa/Blantyre",
+        "value": "366"
+      },
+      {
+        "text": "(GMT+2:00) Africa/Bujumbura",
+        "value": "367"
+      },
+      {
+        "text": "(GMT+2:00) Africa/Cairo",
+        "value": "368"
+      },
+      {
+        "text": "(GMT+2:00) Africa/Gaborone",
+        "value": "369"
+      },
+      {
+        "text": "(GMT+2:00) Africa/Harare",
+        "value": "370"
+      },
+      {
+        "text": "(GMT+2:00) Africa/Johannesburg",
+        "value": "371"
+      },
+      {
+        "text": "(GMT+2:00) Africa/Kigali",
+        "value": "372"
+      },
+      {
+        "text": "(GMT+2:00) Africa/Lubumbashi",
+        "value": "373"
+      },
+      {
+        "text": "(GMT+2:00) Africa/Lusaka",
+        "value": "374"
+      },
+      {
+        "text": "(GMT+2:00) Africa/Maputo",
+        "value": "375"
+      },
+      {
+        "text": "(GMT+2:00) Africa/Maseru",
+        "value": "376"
+      },
+      {
+        "text": "(GMT+2:00) Africa/Mbabane",
+        "value": "377"
+      },
+      {
+        "text": "(GMT+2:00) Africa/Tripoli",
+        "value": "378"
+      },
+      {
+        "text": "(GMT+2:00) Asia/Amman",
+        "value": "379"
+      },
+      {
+        "text": "(GMT+2:00) Asia/Beirut",
+        "value": "380"
+      },
+      {
+        "text": "(GMT+2:00) Asia/Damascus",
+        "value": "381"
+      },
+      {
+        "text": "(GMT+2:00) Asia/Gaza",
+        "value": "382"
+      },
+      {
+        "text": "(GMT+2:00) Asia/Hebron",
+        "value": "383"
+      },
+      {
+        "text": "(GMT+2:00) Asia/Istanbul",
+        "value": "384"
+      },
+      {
+        "text": "(GMT+2:00) Asia/Jerusalem",
+        "value": "385"
+      },
+      {
+        "text": "(GMT+2:00) Asia/Nicosia",
+        "value": "386"
+      },
+      {
+        "text": "(GMT+2:00) Asia/Tel_Aviv",
+        "value": "387"
+      },
+      {
+        "text": "(GMT+2:00) Africa/Harare",
+        "value": "388"
+      },
+      {
+        "text": "(GMT+2:00) EET",
+        "value": "389"
+      },
+      {
+        "text": "(GMT+2:00) Egypt",
+        "value": "390"
+      },
+      {
+        "text": "(GMT+2:00) Etc/GMT-2",
+        "value": "391"
+      },
+      {
+        "text": "(GMT+2:00) Europe/Athens",
+        "value": "392"
+      },
+      {
+        "text": "(GMT+2:00) Europe/Bucharest",
+        "value": "393"
+      },
+      {
+        "text": "(GMT+2:00) Europe/Chisinau",
+        "value": "394"
+      },
+      {
+        "text": "(GMT+2:00) Europe/Helsinki",
+        "value": "395"
+      },
+      {
+        "text": "(GMT+2:00) Europe/Istanbul",
+        "value": "396"
+      },
+      {
+        "text": "(GMT+2:00) Europe/Kiev",
+        "value": "397"
+      },
+      {
+        "text": "(GMT+2:00) Europe/Mariehamn",
+        "value": "398"
+      },
+      {
+        "text": "(GMT+2:00) Europe/Nicosia",
+        "value": "399"
+      },
+      {
+        "text": "(GMT+2:00) Europe/Riga",
+        "value": "400"
+      },
+      {
+        "text": "(GMT+2:00) Europe/Sofia",
+        "value": "401"
+      },
+      {
+        "text": "(GMT+2:00) Europe/Tallinn",
+        "value": "402"
+      },
+      {
+        "text": "(GMT+2:00) Europe/Tiraspol",
+        "value": "403"
+      },
+      {
+        "text": "(GMT+2:00) Europe/Uzhgorod",
+        "value": "404"
+      },
+      {
+        "text": "(GMT+2:00) Europe/Vilnius",
+        "value": "405"
+      },
+      {
+        "text": "(GMT+2:00) Europe/Zaporozhye",
+        "value": "406"
+      },
+      {
+        "text": "(GMT+2:00) Israel",
+        "value": "407"
+      },
+      {
+        "text": "(GMT+2:00) Libya",
+        "value": "408"
+      },
+      {
+        "text": "(GMT+2:00) Turkey",
+        "value": "409"
+      },
+      {
+        "text": "(GMT+3:00) Africa/Addis_Ababa",
+        "value": "410"
+      },
+      {
+        "text": "(GMT+3:00) Africa/Asmara",
+        "value": "411"
+      },
+      {
+        "text": "(GMT+3:00) Africa/Asmera",
+        "value": "412"
+      },
+      {
+        "text": "(GMT+3:00) Africa/Dar_es_Salaam",
+        "value": "413"
+      },
+      {
+        "text": "(GMT+3:00) Africa/Djibouti",
+        "value": "414"
+      },
+      {
+        "text": "(GMT+3:00) Africa/Juba",
+        "value": "415"
+      },
+      {
+        "text": "(GMT+3:00) Africa/Kampala",
+        "value": "416"
+      },
+      {
+        "text": "(GMT+3:00) Africa/Khartoum",
+        "value": "417"
+      },
+      {
+        "text": "(GMT+3:00) Africa/Mogadishu",
+        "value": "418"
+      },
+      {
+        "text": "(GMT+3:00) Africa/Nairobi",
+        "value": "419"
+      },
+      {
+        "text": "(GMT+3:00) Antarctica/Syowa",
+        "value": "420"
+      },
+      {
+        "text": "(GMT+3:00) Asia/Aden",
+        "value": "421"
+      },
+      {
+        "text": "(GMT+3:00) Asia/Baghdad",
+        "value": "422"
+      },
+      {
+        "text": "(GMT+3:00) Asia/Bahrain",
+        "value": "423"
+      },
+      {
+        "text": "(GMT+3:00) Asia/Kuwait",
+        "value": "424"
+      },
+      {
+        "text": "(GMT+3:00) Asia/Qatar",
+        "value": "425"
+      },
+      {
+        "text": "(GMT+3:00) Asia/Riyadh",
+        "value": "426"
+      },
+      {
+        "text": "(GMT+3:00) Africa/Addis_Ababa",
+        "value": "427"
+      },
+      {
+        "text": "(GMT+3:00) Etc/GMT-3",
+        "value": "428"
+      },
+      {
+        "text": "(GMT+3:00) Europe/Kaliningrad",
+        "value": "429"
+      },
+      {
+        "text": "(GMT+3:00) Europe/Minsk",
+        "value": "430"
+      },
+      {
+        "text": "(GMT+3:00) Indian/Antananarivo",
+        "value": "431"
+      },
+      {
+        "text": "(GMT+3:00) Indian/Comoro",
+        "value": "432"
+      },
+      {
+        "text": "(GMT+3:00) Indian/Mayotte",
+        "value": "433"
+      },
+      {
+        "text": "(GMT+3:30) Asia/Tehran",
+        "value": "440"
+      },
+      {
+        "text": "(GMT+3:30) Iran",
+        "value": "441"
+      },
+      {
+        "text": "(GMT+4:00) Asia/Baku",
+        "value": "442"
+      },
+      {
+        "text": "(GMT+4:00) Asia/Dubai",
+        "value": "443"
+      },
+      {
+        "text": "(GMT+4:00) Asia/Muscat",
+        "value": "444"
+      },
+      {
+        "text": "(GMT+4:00) Asia/Tbilisi",
+        "value": "445"
+      },
+      {
+        "text": "(GMT+4:00) Asia/Yerevan",
+        "value": "446"
+      },
+      {
+        "text": "(GMT+4:00) Etc/GMT-4",
+        "value": "447"
+      },
+      {
+        "text": "(GMT+4:00) Europe/Moscow",
+        "value": "448"
+      },
+      {
+        "text": "(GMT+4:00) Europe/Samara",
+        "value": "449"
+      },
+      {
+        "text": "(GMT+4:00) Europe/Simferopol",
+        "value": "450"
+      },
+      {
+        "text": "(GMT+4:00) Europe/Volgograd",
+        "value": "451"
+      },
+      {
+        "text": "(GMT+4:00) Indian/Mahe",
+        "value": "452"
+      },
+      {
+        "text": "(GMT+4:00) Indian/Mauritius",
+        "value": "453"
+      },
+      {
+        "text": "(GMT+4:00) Indian/Reunion",
+        "value": "454"
+      },
+      {
+        "text": "(GMT+4:00) Asia/Yerevan",
+        "value": "455"
+      },
+      {
+        "text": "(GMT+4:00) W-SU",
+        "value": "456"
+      },
+      {
+        "text": "(GMT+4:30) Asia/Kabul",
+        "value": "457"
+      },
+      {
+        "text": "(GMT+5:00) Antarctica/Mawson",
+        "value": "458"
+      },
+      {
+        "text": "(GMT+5:00) Asia/Aqtau",
+        "value": "459"
+      },
+      {
+        "text": "(GMT+5:00) Asia/Aqtobe",
+        "value": "460"
+      },
+      {
+        "text": "(GMT+5:00) Asia/Ashgabat",
+        "value": "461"
+      },
+      {
+        "text": "(GMT+5:00) Asia/Ashkhabad",
+        "value": "462"
+      },
+      {
+        "text": "(GMT+5:00) Asia/Dushanbe",
+        "value": "463"
+      },
+      {
+        "text": "(GMT+5:00) Asia/Karachi",
+        "value": "464"
+      },
+      {
+        "text": "(GMT+5:00) Asia/Oral",
+        "value": "465"
+      },
+      {
+        "text": "(GMT+5:00) Asia/Samarkand",
+        "value": "466"
+      },
+      {
+        "text": "(GMT+5:00) Asia/Tashkent",
+        "value": "467"
+      },
+      {
+        "text": "(GMT+5:00) Etc/GMT-5",
+        "value": "468"
+      },
+      {
+        "text": "(GMT+5:00) Indian/Kerguelen",
+        "value": "469"
+      },
+      {
+        "text": "(GMT+5:00) Indian/Maldives",
+        "value": "470"
+      },
+      {
+        "text": "(GMT+5:00) Asia/Karachi",
+        "value": "471"
+      },
+      {
+        "text": "(GMT+5:30) Asia/Calcutta",
+        "value": "472"
+      },
+      {
+        "text": "(GMT+5:30) Asia/Colombo",
+        "value": "473"
+      },
+      {
+        "text": "(GMT+5:30) Asia/Kolkata",
+        "value": "474"
+      },
+      {
+        "text": "(GMT+5:30) IST",
+        "value": "475"
+      },
+      {
+        "text": "(GMT+5:45) Asia/Kathmandu",
+        "value": "476"
+      },
+      {
+        "text": "(GMT+5:45) Asia/Katmandu",
+        "value": "477"
+      },
+      {
+        "text": "(GMT+6:00) Antarctica/Vostok",
+        "value": "478"
+      },
+      {
+        "text": "(GMT+6:00) Asia/Almaty",
+        "value": "479"
+      },
+      {
+        "text": "(GMT+6:00) Asia/Bishkek",
+        "value": "480"
+      },
+      {
+        "text": "(GMT+6:00) Asia/Dacca",
+        "value": "481"
+      },
+      {
+        "text": "(GMT+6:00) Asia/Dhaka",
+        "value": "482"
+      },
+      {
+        "text": "(GMT+6:00) Asia/Qyzylorda",
+        "value": "483"
+      },
+      {
+        "text": "(GMT+6:00) Asia/Thimbu",
+        "value": "484"
+      },
+      {
+        "text": "(GMT+6:00) Asia/Thimphu",
+        "value": "485"
+      },
+      {
+        "text": "(GMT+6:00) Asia/Yekaterinburg",
+        "value": "486"
+      },
+      {
+        "text": "(GMT+6:00) Asia/Dhaka",
+        "value": "487"
+      },
+      {
+        "text": "(GMT+6:00) Etc/GMT-6",
+        "value": "488"
+      },
+      {
+        "text": "(GMT+6:00) Indian/Chagos",
+        "value": "489"
+      },
+      {
+        "text": "(GMT+6:30) Asia/Rangoon",
+        "value": "490"
+      },
+      {
+        "text": "(GMT+6:30) Indian/Cocos",
+        "value": "491"
+      },
+      {
+        "text": "(GMT+7:00) Antarctica/Davis",
+        "value": "492"
+      },
+      {
+        "text": "(GMT+7:00) Asia/Bangkok",
+        "value": "493"
+      },
+      {
+        "text": "(GMT+7:00) Asia/Ho_Chi_Minh",
+        "value": "494"
+      },
+      {
+        "text": "(GMT+7:00) Asia/Hovd",
+        "value": "495"
+      },
+      {
+        "text": "(GMT+7:00) Asia/Jakarta",
+        "value": "496"
+      },
+      {
+        "text": "(GMT+7:00) Asia/Novokuznetsk",
+        "value": "497"
+      },
+      {
+        "text": "(GMT+7:00) Asia/Novosibirsk",
+        "value": "498"
+      },
+      {
+        "text": "(GMT+7:00) Asia/Omsk",
+        "value": "499"
+      },
+      {
+        "text": "(GMT+7:00) Asia/Phnom_Penh",
+        "value": "500"
+      },
+      {
+        "text": "(GMT+7:00) Asia/Pontianak",
+        "value": "501"
+      },
+      {
+        "text": "(GMT+7:00) Asia/Saigon",
+        "value": "502"
+      },
+      {
+        "text": "(GMT+7:00) Asia/Vientiane",
+        "value": "503"
+      },
+      {
+        "text": "(GMT+7:00) Etc/GMT-7",
+        "value": "504"
+      },
+      {
+        "text": "(GMT+7:00) Indian/Christmas",
+        "value": "505"
+      },
+      {
+        "text": "(GMT+7:00) Asia/Ho_Chi_Minh",
+        "value": "506"
+      },
+      {
+        "text": "(GMT+8:00) Antarctica/Casey",
+        "value": "507"
+      },
+      {
+        "text": "(GMT+8:00) Asia/Brunei",
+        "value": "508"
+      },
+      {
+        "text": "(GMT+8:00) Asia/Choibalsan",
+        "value": "509"
+      },
+      {
+        "text": "(GMT+8:00) Asia/Chongqing",
+        "value": "510"
+      },
+      {
+        "text": "(GMT+8:00) Asia/Chungking",
+        "value": "511"
+      },
+      {
+        "text": "(GMT+8:00) Asia/Harbin",
+        "value": "512"
+      },
+      {
+        "text": "(GMT+8:00) Asia/Hong_Kong",
+        "value": "513"
+      },
+      {
+        "text": "(GMT+8:00) Asia/Kashgar",
+        "value": "514"
+      },
+      {
+        "text": "(GMT+8:00) Asia/Krasnoyarsk",
+        "value": "515"
+      },
+      {
+        "text": "(GMT+8:00) Asia/Kuala_Lumpur",
+        "value": "516"
+      },
+      {
+        "text": "(GMT+8:00) Asia/Kuching",
+        "value": "517"
+      },
+      {
+        "text": "(GMT+8:00) Asia/Macao",
+        "value": "518"
+      },
+      {
+        "text": "(GMT+8:00) Asia/Macau",
+        "value": "519"
+      },
+      {
+        "text": "(GMT+8:00) Asia/Makassar",
+        "value": "520"
+      },
+      {
+        "text": "(GMT+8:00) Asia/Manila",
+        "value": "521"
+      },
+      {
+        "text": "(GMT+8:00) Asia/Shanghai",
+        "value": "522"
+      },
+      {
+        "text": "(GMT+8:00) Asia/Singapore",
+        "value": "523"
+      },
+      {
+        "text": "(GMT+8:00) Asia/Taipei",
+        "value": "524"
+      },
+      {
+        "text": "(GMT+8:00) Asia/Ujung_Pandang",
+        "value": "525"
+      },
+      {
+        "text": "(GMT+8:00) Asia/Ulaanbaatar",
+        "value": "526"
+      },
+      {
+        "text": "(GMT+8:00) Asia/Urumqi",
+        "value": "528"
+      },
+      {
+        "text": "(GMT+8:00) Australia/Perth",
+        "value": "529"
+      },
+      {
+        "text": "(GMT+8:00) Australia/West",
+        "value": "530"
+      },
+      {
+        "text": "(GMT+8:00) Asia/Shanghai",
+        "value": "531"
+      },
+      {
+        "text": "(GMT+8:00) Etc/GMT-8",
+        "value": "532"
+      },
+      {
+        "text": "(GMT+8:00) Hongkong",
+        "value": "533"
+      },
+      {
+        "text": "(GMT+8:00) PRC",
+        "value": "534"
+      },
+      {
+        "text": "(GMT+8:00) Singapore",
+        "value": "535"
+      },
+      {
+        "text": "(GMT+8:45) Australia/Eucla",
+        "value": "536"
+      },
+      {
+        "text": "(GMT+9:00) Asia/Dili",
+        "value": "537"
+      },
+      {
+        "text": "(GMT+9:00) Asia/Irkutsk",
+        "value": "538"
+      },
+      {
+        "text": "(GMT+9:00) Asia/Jayapura",
+        "value": "539"
+      },
+      {
+        "text": "(GMT+9:00) Asia/Pyongyang",
+        "value": "540"
+      },
+      {
+        "text": "(GMT+9:00) Asia/Seoul",
+        "value": "541"
+      },
+      {
+        "text": "(GMT+9:00) Asia/Tokyo",
+        "value": "542"
+      },
+      {
+        "text": "(GMT+9:00) Etc/GMT-9",
+        "value": "543"
+      },
+      {
+        "text": "(GMT+9:00) Asia/Tokyo",
+        "value": "544"
+      },
+      {
+        "text": "(GMT+9:00) Japan",
+        "value": "545"
+      },
+      {
+        "text": "(GMT+9:00) Pacific/Palau",
+        "value": "546"
+      },
+      {
+        "text": "(GMT+9:00) ROK",
+        "value": "547"
+      },
+      {
+        "text": "(GMT+9:30) Australia/Darwin",
+        "value": "548"
+      },
+      {
+        "text": "(GMT+9:30) Australia/Adelaide",
+        "value": "549"
+      },
+      {
+        "text": "(GMT+9:30) Australia/Broken_Hill",
+        "value": "550"
+      },
+      {
+        "text": "(GMT+9:30) Australia/Darwin",
+        "value": "551"
+      },
+      {
+        "text": "(GMT+9:30) Australia/North",
+        "value": "552"
+      },
+      {
+        "text": "(GMT+9:30) Australia/South",
+        "value": "553"
+      },
+      {
+        "text": "(GMT+9:30) Australia/Yancowinna",
+        "value": "554"
+      },
+      {
+        "text": "(GMT+10:00) Australia/Sydney",
+        "value": "555"
+      },
+      {
+        "text": "(GMT+10:00) Antarctica/DumontDUrville",
+        "value": "556"
+      },
+      {
+        "text": "(GMT+10:00) Asia/Khandyga",
+        "value": "557"
+      },
+      {
+        "text": "(GMT+10:00) Asia/Yakutsk",
+        "value": "558"
+      },
+      {
+        "text": "(GMT+10:00) Australia/ACT",
+        "value": "559"
+      },
+      {
+        "text": "(GMT+10:00) Australia/Brisbane",
+        "value": "560"
+      },
+      {
+        "text": "(GMT+10:00) Australia/Canberra",
+        "value": "561"
+      },
+      {
+        "text": "(GMT+10:00) Australia/Currie",
+        "value": "562"
+      },
+      {
+        "text": "(GMT+10:00) Australia/Hobart",
+        "value": "563"
+      },
+      {
+        "text": "(GMT+10:00) Australia/Lindeman",
+        "value": "564"
+      },
+      {
+        "text": "(GMT+10:00) Australia/Melbourne",
+        "value": "565"
+      },
+      {
+        "text": "(GMT+10:00) Australia/NSW",
+        "value": "566"
+      },
+      {
+        "text": "(GMT+10:00) Australia/Queensland",
+        "value": "567"
+      },
+      {
+        "text": "(GMT+10:00) Australia/Sydney",
+        "value": "568"
+      },
+      {
+        "text": "(GMT+10:00) Australia/Tasmania",
+        "value": "569"
+      },
+      {
+        "text": "(GMT+10:00) Australia/Victoria",
+        "value": "570"
+      },
+      {
+        "text": "(GMT+10:00) Etc/GMT-10",
+        "value": "571"
+      },
+      {
+        "text": "(GMT+10:00) Pacific/Chuuk",
+        "value": "572"
+      },
+      {
+        "text": "(GMT+10:00) Pacific/Guam",
+        "value": "573"
+      },
+      {
+        "text": "(GMT+10:00) Pacific/Port_Moresby",
+        "value": "574"
+      },
+      {
+        "text": "(GMT+10:00) Pacific/Saipan",
+        "value": "575"
+      },
+      {
+        "text": "(GMT+10:00) Pacific/Truk",
+        "value": "576"
+      },
+      {
+        "text": "(GMT+10:00) Pacific/Yap",
+        "value": "577"
+      },
+      {
+        "text": "(GMT+10:30) Australia/LHI",
+        "value": "578"
+      },
+      {
+        "text": "(GMT+10:30) Australia/Lord_Howe",
+        "value": "579"
+      },
+      {
+        "text": "(GMT+11:00) Antarctica/Macquarie",
+        "value": "580"
+      },
+      {
+        "text": "(GMT+11:00) Asia/Sakhalin",
+        "value": "581"
+      },
+      {
+        "text": "(GMT+11:00) Asia/Ust-Nera",
+        "value": "582"
+      },
+      {
+        "text": "(GMT+11:00) Asia/Vladivostok",
+        "value": "583"
+      },
+      {
+        "text": "(GMT+11:00) Etc/GMT-11",
+        "value": "584"
+      },
+      {
+        "text": "(GMT+11:00) Pacific/Efate",
+        "value": "585"
+      },
+      {
+        "text": "(GMT+11:00) Pacific/Guadalcanal",
+        "value": "586"
+      },
+      {
+        "text": "(GMT+11:00) Pacific/Kosrae",
+        "value": "587"
+      },
+      {
+        "text": "(GMT+11:00) Pacific/Noumea",
+        "value": "588"
+      },
+      {
+        "text": "(GMT+11:00) Pacific/Pohnpei",
+        "value": "589"
+      },
+      {
+        "text": "(GMT+11:00) Pacific/Ponape",
+        "value": "590"
+      },
+      {
+        "text": "(GMT+11:00) Pacific/Guadalcanal",
+        "value": "591"
+      },
+      {
+        "text": "(GMT+11:30) Pacific/Norfolk",
+        "value": "592"
+      },
+      {
+        "text": "(GMT+12:00) Antarctica/McMurdo",
+        "value": "593"
+      },
+      {
+        "text": "(GMT+12:00) Antarctica/South_Pole",
+        "value": "594"
+      },
+      {
+        "text": "(GMT+12:00) Asia/Anadyr",
+        "value": "595"
+      },
+      {
+        "text": "(GMT+12:00) Asia/Kamchatka",
+        "value": "596"
+      },
+      {
+        "text": "(GMT+12:00) Asia/Magadan",
+        "value": "597"
+      },
+      {
+        "text": "(GMT+12:00) Etc/GMT-12",
+        "value": "598"
+      },
+      {
+        "text": "(GMT+12:00) Kwajalein",
+        "value": "599"
+      },
+      {
+        "text": "(GMT+12:00) Pacific/Auckland",
+        "value": "600"
+      },
+      {
+        "text": "(GMT+12:00) NZ",
+        "value": "601"
+      },
+      {
+        "text": "(GMT+12:00) Pacific/Auckland",
+        "value": "602"
+      },
+      {
+        "text": "(GMT+12:00) Pacific/Fiji",
+        "value": "603"
+      },
+      {
+        "text": "(GMT+12:00) Pacific/Funafuti",
+        "value": "604"
+      },
+      {
+        "text": "(GMT+12:00) Pacific/Kwajalein",
+        "value": "605"
+      },
+      {
+        "text": "(GMT+12:00) Pacific/Majuro",
+        "value": "606"
+      },
+      {
+        "text": "(GMT+12:00) Pacific/Nauru",
+        "value": "607"
+      },
+      {
+        "text": "(GMT+12:00) Pacific/Tarawa",
+        "value": "608"
+      },
+      {
+        "text": "(GMT+12:00) Pacific/Wake",
+        "value": "609"
+      },
+      {
+        "text": "(GMT+12:00) Pacific/Wallis",
+        "value": "610"
+      },
+      {
+        "text": "(GMT+12:45) NZ-CHAT",
+        "value": "611"
+      },
+      {
+        "text": "(GMT+12:45) Pacific/Chatham",
+        "value": "612"
+      },
+      {
+        "text": "(GMT+13:00) Etc/GMT-13",
+        "value": "613"
+      },
+      {
+        "text": "(GMT+13:00) Pacific/Apia",
+        "value": "614"
+      },
+      {
+        "text": "(GMT+13:00) Pacific/Apia",
+        "value": "615"
+      },
+      {
+        "text": "(GMT+13:00) Pacific/Enderbury",
+        "value": "616"
+      },
+      {
+        "text": "(GMT+13:00) Pacific/Fakaofo",
+        "value": "617"
+      },
+      {
+        "text": "(GMT+13:00) Pacific/Tongatapu",
+        "value": "618"
+      },
+      {
+        "text": "(GMT+14:00) Etc/GMT-14",
+        "value": "619"
+      },
+      {
+        "text": "(GMT+14:00) Pacific/Kiritimati",
+        "value": "620"
+      },
+      {
+        "text": "(GMT+1:00) Africa/Luanda",
+        "value": "736"
+      },
+      {
+        "text": "(GMT+1:00) Africa/Luanda",
+        "value": "763"
+      },
+      {
+        "text": "(GMT0:00) Etc/GMT",
+        "value": "769"
+      },
+      {
+        "text": "(GMT-5:00) US/Michigan",
+        "value": "772"
+      }
+    ],
+    "maskStatus": [
+      {
+        "text": "Phone",
+        "value": "1"
+      },
+      {
+        "text": "Email",
+        "value": "2"
+      },
+      {
+        "text": "Registration",
+        "value": "3"
+      },
+      {
+        "text": "Address",
+        "value": "4"
+      }
+    ],
+    "apiType": [
+      {
+        "text": "All",
+        "value": "-1"
+      },
+      {
+        "text": "eRetail",
+        "value": "1"
+      },
+      {
+        "text": "MDM",
+        "value": "4"
+      },
+      {
+        "text": "Other",
+        "value": "5"
+      }
+    ],
+    "apiCategory": [
+      {
+        "text": "--- Select ---",
+        "value": "-1"
+      },
+      {
+        "text": "GATEPASS",
+        "value": "GATEPASS"
+      },
+      {
+        "text": "INBOUND",
+        "value": "INBOUND"
+      },
+      {
+        "text": "INVENTORY",
+        "value": "INVENTORY"
+      },
+      {
+        "text": "INVMOVE",
+        "value": "INVMOVE"
+      },
+      {
+        "text": "LOADING",
+        "value": "LOADING"
+      },
+      {
+        "text": "ORDER",
+        "value": "ORDER"
+      },
+      {
+        "text": "ORDER RETURN",
+        "value": "ORDER RETURN"
+      },
+      {
+        "text": "PO",
+        "value": "PO"
+      },
+      {
+        "text": "PRODUCTS",
+        "value": "PRODUCTS"
+      },
+      {
+        "text": "RTV",
+        "value": "RTV"
+      },
+      {
+        "text": "SHIPMENT",
+        "value": "SHIPMENT"
+      },
+      {
+        "text": "SVLCATALOGUE",
+        "value": "SVLCATALOGUE"
+      },
+      {
+        "text": "TRANSHIPMENT",
+        "value": "TRANSHIPMENT"
+      },
+      {
+        "text": "VENDOR",
+        "value": "VENDOR"
+      }
+    ],
+    "apiName": [
+      {
+        "text": "--- Select ---",
+        "value": "-1"
+      },
+      {
+        "text": "Ack Pull",
+        "value": "170032"
+      },
+      {
+        "text": "Acknowledge Response",
+        "value": "66"
+      },
+      {
+        "text": "AddToManifest",
+        "value": "425"
+      },
+      {
+        "text": "Adjustment Details",
+        "value": "551"
+      },
+      {
+        "text": "Amazon Login Broken API",
+        "value": "57"
+      },
+      {
+        "text": "Amazon Login Fixed API",
+        "value": "101"
+      },
+      {
+        "text": "ASN Cancel",
+        "value": "482"
+      },
+      {
+        "text": "ASN Detail",
+        "value": "553"
+      },
+      {
+        "text": "ASN ShortClose",
+        "value": "170073"
+      },
+      {
+        "text": "ASN ShortClose",
+        "value": "170074"
+      },
+      {
+        "text": "Buddy Location",
+        "value": "585"
+      },
+      {
+        "text": "Buddy Store Inventory",
+        "value": "583"
+      },
+      {
+        "text": "Bulk Order Create",
+        "value": "2"
+      },
+      {
+        "text": "Change OrderType",
+        "value": "42"
+      },
+      {
+        "text": "Channel Create",
+        "value": "546"
+      },
+      {
+        "text": "channelInfo",
+        "value": "170031"
+      },
+      {
+        "text": "Check Vendor Exist",
+        "value": "115"
+      },
+      {
+        "text": "Client Master Create",
+        "value": "170056"
+      },
+      {
+        "text": "Clienteling Update",
+        "value": "170069"
+      },
+      {
+        "text": "Create ASN",
+        "value": "103"
+      },
+      {
+        "text": "Create B2B Manifest",
+        "value": "170055"
+      },
+      {
+        "text": "Create Client",
+        "value": "156"
+      },
+      {
+        "text": "Create Color",
+        "value": "76"
+      },
+      {
+        "text": "Create Country",
+        "value": "70"
+      },
+      {
+        "text": "Create Currency",
+        "value": "138"
+      },
+      {
+        "text": "Create Currency Conversion",
+        "value": "75"
+      },
+      {
+        "text": "Create Location",
+        "value": "84"
+      },
+      {
+        "text": "Create Lottable Validation",
+        "value": "80"
+      },
+      {
+        "text": "Create Manifest",
+        "value": "170025"
+      },
+      {
+        "text": "Create Repack",
+        "value": "611"
+      },
+      {
+        "text": "Create Return",
+        "value": "14"
+      },
+      {
+        "text": "Create Return Cancel",
+        "value": "613"
+      },
+      {
+        "text": "Create Role",
+        "value": "94"
+      },
+      {
+        "text": "Create Size",
+        "value": "69"
+      },
+      {
+        "text": "Create SKU",
+        "value": "68"
+      },
+      {
+        "text": "Create Sku Barcode",
+        "value": "568"
+      },
+      {
+        "text": "Create SKU Group",
+        "value": "82"
+      },
+      {
+        "text": "Create SKU Location Vendor Price",
+        "value": "142"
+      },
+      {
+        "text": "Create State",
+        "value": "71"
+      },
+      {
+        "text": "Create Tax Category",
+        "value": "92"
+      },
+      {
+        "text": "Create Tax Code",
+        "value": "77"
+      },
+      {
+        "text": "Create Tax Group",
+        "value": "78"
+      },
+      {
+        "text": "Create Transporter",
+        "value": "81"
+      },
+      {
+        "text": "Create UOM",
+        "value": "72"
+      },
+      {
+        "text": "Create User",
+        "value": "93"
+      },
+      {
+        "text": "Create Vendor MDM",
+        "value": "85"
+      },
+      {
+        "text": "Create Vendor SKU Catalog",
+        "value": "95"
+      },
+      {
+        "text": "CreateCoupon",
+        "value": "536"
+      },
+      {
+        "text": "crmCreateCase",
+        "value": "86"
+      },
+      {
+        "text": "Custom API Configured",
+        "value": "506"
+      },
+      {
+        "text": "Customer Create",
+        "value": "83"
+      },
+      {
+        "text": "Customer Detail",
+        "value": "18"
+      },
+      {
+        "text": "Delete ASN",
+        "value": "118"
+      },
+      {
+        "text": "Delete Sku Barcode Details",
+        "value": "170044"
+      },
+      {
+        "text": "Delivery Confirmation",
+        "value": "507"
+      },
+      {
+        "text": "Discrepancy Notes API",
+        "value": "170023"
+      },
+      {
+        "text": "Download Print Document",
+        "value": "458"
+      },
+      {
+        "text": "DownloadManifest",
+        "value": "402"
+      },
+      {
+        "text": "Driver Create / Update",
+        "value": "514"
+      },
+      {
+        "text": "Ds Order Status Update",
+        "value": "170033"
+      },
+      {
+        "text": "Ds Return Status Update",
+        "value": "170035"
+      },
+      {
+        "text": "eRetail Customer Create / Update",
+        "value": "512"
+      },
+      {
+        "text": "Failed Orders",
+        "value": "466"
+      },
+      {
+        "text": "Fetch ASN Status",
+        "value": "117"
+      },
+      {
+        "text": "Fetch Inventory",
+        "value": "8"
+      },
+      {
+        "text": "Fetch Inventory",
+        "value": "49"
+      },
+      {
+        "text": "fetch location list (genesys)",
+        "value": "65"
+      },
+      {
+        "text": "Fetch Locations",
+        "value": "475"
+      },
+      {
+        "text": "Fetch Print Document",
+        "value": "457"
+      },
+      {
+        "text": "Fetch Print Invoice Document",
+        "value": "467"
+      },
+      {
+        "text": "Fetch SKU Inventory",
+        "value": "491"
+      },
+      {
+        "text": "Get Available Inventory Warehouse",
+        "value": "450"
+      },
+      {
+        "text": "Get Coupon Detail",
+        "value": "112"
+      },
+      {
+        "text": "Get Coupon Enquiry Detail",
+        "value": "114"
+      },
+      {
+        "text": "get Customer Order",
+        "value": "47"
+      },
+      {
+        "text": "Get Expected Delivery Date",
+        "value": "170040"
+      },
+      {
+        "text": "Get Lot Level Inventory",
+        "value": "601"
+      },
+      {
+        "text": "get Order List",
+        "value": "48"
+      },
+      {
+        "text": "get Order ListV2",
+        "value": "614"
+      },
+      {
+        "text": "get Order ListV3",
+        "value": "170020"
+      },
+      {
+        "text": "Get Order Status",
+        "value": "3"
+      },
+      {
+        "text": "Get Return Details",
+        "value": "13"
+      },
+      {
+        "text": "Get Tally Details",
+        "value": "154"
+      },
+      {
+        "text": "Get Vendor Address Return",
+        "value": "543"
+      },
+      {
+        "text": "Get Warehouse Inventory",
+        "value": "582"
+      },
+      {
+        "text": "GetGatePass",
+        "value": "452"
+      },
+      {
+        "text": "getsku",
+        "value": "533"
+      },
+      {
+        "text": "getStockAdjustmentDetail",
+        "value": "52"
+      },
+      {
+        "text": "getStockDetail",
+        "value": "511"
+      },
+      {
+        "text": "Grn Attachment",
+        "value": "170026"
+      },
+      {
+        "text": "HoldOrder",
+        "value": "563"
+      },
+      {
+        "text": "Inbound Cancel",
+        "value": "478"
+      },
+      {
+        "text": "Inbound Create",
+        "value": "12"
+      },
+      {
+        "text": "Inbound Create",
+        "value": "612"
+      },
+      {
+        "text": "Inbound Gatepass Bulk Create",
+        "value": "170061"
+      },
+      {
+        "text": "Inbound Gatepass Create",
+        "value": "170051"
+      },
+      {
+        "text": "Inbound Gatepass Status Update",
+        "value": "170060"
+      },
+      {
+        "text": "Inbound Get",
+        "value": "34"
+      },
+      {
+        "text": "Inbound QC",
+        "value": "98"
+      },
+      {
+        "text": "Inbound QC Detail",
+        "value": "615"
+      },
+      {
+        "text": "Inv Move",
+        "value": "545"
+      },
+      {
+        "text": "Inventory Hold Status Update",
+        "value": "170016"
+      },
+      {
+        "text": "Inventory Movement",
+        "value": "535"
+      },
+      {
+        "text": "Inventory Real Time",
+        "value": "170062"
+      },
+      {
+        "text": "Inventory Reservation",
+        "value": "170041"
+      },
+      {
+        "text": "Kitting Order Create",
+        "value": "579"
+      },
+      {
+        "text": "Kitting Order Details",
+        "value": "580"
+      },
+      {
+        "text": "Loc Level Inventory",
+        "value": "170039"
+      },
+      {
+        "text": "Location Validation (genesys)",
+        "value": "67"
+      },
+      {
+        "text": "LookUp",
+        "value": "544"
+      },
+      {
+        "text": "Lot Level Inventory by Bin",
+        "value": "170029"
+      },
+      {
+        "text": "LovCreate",
+        "value": "73"
+      },
+      {
+        "text": "LPN Status Update",
+        "value": "170010"
+      },
+      {
+        "text": "materialCreate",
+        "value": "91"
+      },
+      {
+        "text": "Merchant Hierarchy Config Create",
+        "value": "90"
+      },
+      {
+        "text": "Merchant Hierarchy Create",
+        "value": "170019"
+      },
+      {
+        "text": "mgd orderStatus api",
+        "value": "170045"
+      },
+      {
+        "text": "Movement History",
+        "value": "170012"
+      },
+      {
+        "text": "Movement History",
+        "value": "170013"
+      },
+      {
+        "text": "MP InventoryStatus",
+        "value": "55"
+      },
+      {
+        "text": "MP InventoryStatus",
+        "value": "170043"
+      },
+      {
+        "text": "mpOpenInv",
+        "value": "110"
+      },
+      {
+        "text": "NDR",
+        "value": "170064"
+      },
+      {
+        "text": "oAuthlogin",
+        "value": "170017"
+      },
+      {
+        "text": "oAuthRefreshToken",
+        "value": "170018"
+      },
+      {
+        "text": "OfferSKu",
+        "value": "508"
+      },
+      {
+        "text": "Open Shipment Count",
+        "value": "548"
+      },
+      {
+        "text": "Open Shipment Count",
+        "value": "550"
+      },
+      {
+        "text": "Open Shipment Count",
+        "value": "565"
+      },
+      {
+        "text": "Open Shipment Count",
+        "value": "567"
+      },
+      {
+        "text": "Order Allocate",
+        "value": "607"
+      },
+      {
+        "text": "Order Cancellation",
+        "value": "5"
+      },
+      {
+        "text": "Order Create",
+        "value": "1"
+      },
+      {
+        "text": "Order Invoice",
+        "value": "11"
+      },
+      {
+        "text": "Order Line Level Cancellation",
+        "value": "6"
+      },
+      {
+        "text": "Order Pack",
+        "value": "456"
+      },
+      {
+        "text": "Order PaymentMode Update",
+        "value": "170034"
+      },
+      {
+        "text": "Order Pick",
+        "value": "459"
+      },
+      {
+        "text": "Order Pick V2",
+        "value": "170047"
+      },
+      {
+        "text": "Order Process",
+        "value": "105"
+      },
+      {
+        "text": "Order Pull",
+        "value": "4"
+      },
+      {
+        "text": "Order Pull V2",
+        "value": "616"
+      },
+      {
+        "text": "order Push in Eretail",
+        "value": "153"
+      },
+      {
+        "text": "Order Replace Sku",
+        "value": "109"
+      },
+      {
+        "text": "Order Ship",
+        "value": "455"
+      },
+      {
+        "text": "Order Status Update",
+        "value": "484"
+      },
+      {
+        "text": "Order UnAllocate",
+        "value": "617"
+      },
+      {
+        "text": "Order Unpack",
+        "value": "170067"
+      },
+      {
+        "text": "Order Unpack",
+        "value": "170068"
+      },
+      {
+        "text": "Order Update",
+        "value": "541"
+      },
+      {
+        "text": "Order Update Status",
+        "value": "10"
+      },
+      {
+        "text": "orderinvoicepdf",
+        "value": "23"
+      },
+      {
+        "text": "orgHierarchyConfigCreate",
+        "value": "89"
+      },
+      {
+        "text": "orgHierarchyCreate",
+        "value": "87"
+      },
+      {
+        "text": "Picklist Pull",
+        "value": "170046"
+      },
+      {
+        "text": "Pin Map Create",
+        "value": "515"
+      },
+      {
+        "text": "Po Create",
+        "value": "19"
+      },
+      {
+        "text": "PO Pull",
+        "value": "20"
+      },
+      {
+        "text": "PO Revision Bulk Update",
+        "value": "542"
+      },
+      {
+        "text": "Po Status Update",
+        "value": "170027"
+      },
+      {
+        "text": "PO STO StatusUpdate",
+        "value": "610"
+      },
+      {
+        "text": "POS Adjustment List",
+        "value": "122"
+      },
+      {
+        "text": "POS Adjustment Update",
+        "value": "123"
+      },
+      {
+        "text": "pos checkServiceability",
+        "value": "151"
+      },
+      {
+        "text": "pos getInventory",
+        "value": "152"
+      },
+      {
+        "text": "Pos Order Create",
+        "value": "534"
+      },
+      {
+        "text": "Pos Printer Create / Update",
+        "value": "537"
+      },
+      {
+        "text": "Pos Printer Create / Update",
+        "value": "539"
+      },
+      {
+        "text": "POS Sales Data",
+        "value": "40"
+      },
+      {
+        "text": "Pos Till Create/Update",
+        "value": "538"
+      },
+      {
+        "text": "Pos Till Create/Update",
+        "value": "540"
+      },
+      {
+        "text": "POSCommonApi",
+        "value": "170037"
+      },
+      {
+        "text": "POSIPInfo",
+        "value": "480"
+      },
+      {
+        "text": "POSIPUpdate",
+        "value": "481"
+      },
+      {
+        "text": "POSSalesRepList",
+        "value": "170038"
+      },
+      {
+        "text": "Post Shipment API",
+        "value": "37"
+      },
+      {
+        "text": "Putaway Create",
+        "value": "170011"
+      },
+      {
+        "text": "Realtime webhook api",
+        "value": "170024"
+      },
+      {
+        "text": "ReplaceSKU 1",
+        "value": "170021"
+      },
+      {
+        "text": "Request Status Check",
+        "value": "17"
+      },
+      {
+        "text": "Return Update",
+        "value": "170053"
+      },
+      {
+        "text": "Return Update",
+        "value": "170054"
+      },
+      {
+        "text": "Return Without Order",
+        "value": "170070"
+      },
+      {
+        "text": "returnList",
+        "value": "170048"
+      },
+      {
+        "text": "Rtv Create",
+        "value": "21"
+      },
+      {
+        "text": "Rtv List",
+        "value": "451"
+      },
+      {
+        "text": "RTV Pull API",
+        "value": "170022"
+      },
+      {
+        "text": "Seller Panel Report Push",
+        "value": "120"
+      },
+      {
+        "text": "ShipDetail",
+        "value": "9"
+      },
+      {
+        "text": "shiphistory",
+        "value": "38"
+      },
+      {
+        "text": "Shipment Detail",
+        "value": "453"
+      },
+      {
+        "text": "Shipping Label PDF",
+        "value": "104"
+      },
+      {
+        "text": "SKU Category Detail",
+        "value": "468"
+      },
+      {
+        "text": "Sku Channel Mapping",
+        "value": "170028"
+      },
+      {
+        "text": "SKU Creation",
+        "value": "7"
+      },
+      {
+        "text": "SKU Detail",
+        "value": "22"
+      },
+      {
+        "text": "SKU Update",
+        "value": "552"
+      },
+      {
+        "text": "SKU Vendor Link Mapping",
+        "value": "547"
+      },
+      {
+        "text": "SKU Vendor Link Mapping",
+        "value": "549"
+      },
+      {
+        "text": "skuWacInfo",
+        "value": "465"
+      },
+      {
+        "text": "STO Cancellation",
+        "value": "489"
+      },
+      {
+        "text": "STO Create/Update",
+        "value": "488"
+      },
+      {
+        "text": "STO Details",
+        "value": "490"
+      },
+      {
+        "text": "transhipment",
+        "value": "170066"
+      },
+      {
+        "text": "Update Address API",
+        "value": "51"
+      },
+      {
+        "text": "Update ASN",
+        "value": "119"
+      },
+      {
+        "text": "Update B2B Manifest Header Status",
+        "value": "170072"
+      },
+      {
+        "text": "Update Channel Sku Details",
+        "value": "474"
+      },
+      {
+        "text": "Update Coupon Detail",
+        "value": "113"
+      },
+      {
+        "text": "Update Inventory",
+        "value": "102"
+      },
+      {
+        "text": "Update Inventory by Cycle Count",
+        "value": "170030"
+      },
+      {
+        "text": "Update Label Details",
+        "value": "487"
+      },
+      {
+        "text": "Update Order Details",
+        "value": "602"
+      },
+      {
+        "text": "Update Packaging Dimensions",
+        "value": "170057"
+      },
+      {
+        "text": "Update Packaging Dimensions",
+        "value": "170058"
+      },
+      {
+        "text": "Update Packaging Dimensions",
+        "value": "170059"
+      },
+      {
+        "text": "Update SKU Attribute Details",
+        "value": "39"
+      },
+      {
+        "text": "Update Sku Barcode",
+        "value": "581"
+      },
+      {
+        "text": "updateClpCardPoints",
+        "value": "43"
+      },
+      {
+        "text": "updateTaskDetails",
+        "value": "170071"
+      },
+      {
+        "text": "Validate ChangeOrderType",
+        "value": "41"
+      },
+      {
+        "text": "Validate lpn Id",
+        "value": "170063"
+      },
+      {
+        "text": "Vendor Create",
+        "value": "16"
+      },
+      {
+        "text": "Vendor Detail",
+        "value": "111"
+      },
+      {
+        "text": "Vendor Sku Location Cost Api Create / Update",
+        "value": "510"
+      },
+      {
+        "text": "Vendor Sku Price Location Mapping",
+        "value": "509"
+      },
+      {
+        "text": "webStoreData",
+        "value": "170065"
+      },
+      {
+        "text": "WH Address Return",
+        "value": "170052"
+      }
+    ]
+  },
+  "register-webhook": {
+    "sourcetype": [
+      {
+        "text": "WMS",
+        "value": "1"
+      },
+      {
+        "text": "Seller Panel",
+        "value": "2"
+      },
+      {
+        "text": "JIT",
+        "value": "3"
+      }
+    ],
+    "type": [
+      {
+        "text": "Full Payload",
+        "value": "F_URL"
+      },
+      {
+        "text": "Partial Payload",
+        "value": "URL"
+      }
+    ],
+    "apiCategory": [
+      {
+        "text": "--- Select ---",
+        "value": "-1"
+      },
+      {
+        "text": "LOADING",
+        "value": "LOADING"
+      },
+      {
+        "text": "INVMOVE",
+        "value": "INVMOVE"
+      },
+      {
+        "text": "SHIPMENT",
+        "value": "SHIPMENT"
+      },
+      {
+        "text": "GATEPASS",
+        "value": "GATEPASS"
+      },
+      {
+        "text": "TRANSHIPMENT",
+        "value": "TRANSHIPMENT"
+      },
+      {
+        "text": "INBOUND",
+        "value": "INBOUND"
+      },
+      {
+        "text": "ORDER",
+        "value": "ORDER"
+      },
+      {
+        "text": "ORDER RETURN",
+        "value": "ORDER RETURN"
+      },
+      {
+        "text": "INVENTORY",
+        "value": "INVENTORY"
+      },
+      {
+        "text": "RTV",
+        "value": "RTV"
+      },
+      {
+        "text": "PRODUCTS",
+        "value": "PRODUCTS"
+      },
+      {
+        "text": "VENDOR",
+        "value": "VENDOR"
+      },
+      {
+        "text": "SVLCATALOGUE",
+        "value": "SVLCATALOGUE"
+      },
+      {
+        "text": "PO",
+        "value": "PO"
+      }
+    ],
+    "orderStatusFilter": [
+      {
+        "text": "--- Select ---",
+        "value": "-1"
+      }
+    ],
+    "apiName": [
+      {
+        "text": "--- Select ---",
+        "value": "-1"
+      },
+      {
+        "text": "Get Order Status",
+        "value": "3"
+      },
+      {
+        "text": "Order Pull",
+        "value": "4"
+      },
+      {
+        "text": "PO Pull",
+        "value": "20"
+      },
+      {
+        "text": "Inbound Get",
+        "value": "34"
+      },
+      {
+        "text": "Vendor Detail",
+        "value": "111"
+      },
+      {
+        "text": "Rtv List",
+        "value": "451"
+      },
+      {
+        "text": "GetGatePass",
+        "value": "452"
+      },
+      {
+        "text": "Failed Orders",
+        "value": "466"
+      },
+      {
+        "text": "STO Details",
+        "value": "490"
+      },
+      {
+        "text": "Order Pull V2",
+        "value": "616"
+      },
+      {
+        "text": "Get Return Details",
+        "value": "618"
+      },
+      {
+        "text": "Create Manifest",
+        "value": "170025"
+      },
+      {
+        "text": "Get Order StatusV3",
+        "value": "170036"
+      },
+      {
+        "text": "Get Return Details v2",
+        "value": "170042"
+      },
+      {
+        "text": "mgd orderStatus api",
+        "value": "170045"
+      },
+      {
+        "text": "get orderFetch",
+        "value": "170049"
+      },
+      {
+        "text": "Inventory Update",
+        "value": "170050"
+      },
+      {
+        "text": "Client Master Create",
+        "value": "170056"
+      },
+      {
+        "text": "Validate lpn Id",
+        "value": "170063"
+      },
+      {
+        "text": "transhipment",
+        "value": "170066"
+      }
+    ],
+    "versions": [
+      {
+        "text": "V1",
+        "value": "v1"
+      }
+    ]
+  }
+}

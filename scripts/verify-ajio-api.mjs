@@ -1,92 +1,93 @@
-const base = 'http://127.0.0.1:3002/api';
-async function request(path, method = 'GET', body) {
-  const response = await fetch(base + path, { method, headers: body ? { 'Content-Type': 'application/json' } : undefined, body: body ? JSON.stringify(body) : undefined });
-  return { status: response.status, data: await response.json() };
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+import handler from '../api/ajio.js';
+import { find, getMode, insert } from '../api/mongo.js';
+
+if (process.env.MONGODB_URI) throw new Error('Run this verifier without a configured MongoDB database.');
+assert.equal(getMode(), 'memory');
+
+const call = async (method, body = {}, query = {}) => {
+  const response = {
+    code: 200,
+    headers: {},
+    setHeader(key, value) { this.headers[key] = value; },
+    status(code) { this.code = code; return this; },
+    json(value) { this.body = value; return this; },
+  };
+  await handler({ method, body, query }, response);
+  return response;
+};
+
+const configRead = await call('GET', {}, { entity: 'config' });
+assert.equal(configRead.code, 200);
+assert.equal(configRead.body[0].interface_status, 'Not Configured');
+assert.equal((await find('ajio_config')).length, 0, 'reading blank AJIO config must not write a default document');
+
+for (const entity of ['mappings', 'backorders', 'orders', 'deliveries', 'invoices', 'manifests']) {
+  const result = await call('GET', {}, { entity });
+  assert.equal(result.code, 200);
+  assert.deepEqual(result.body, []);
 }
-function assert(value, message) { if (!value) throw new Error(message); }
 
-const configs = await request('/ajio?entity=config'); const config = configs.data[0];
-const badSeller = await request('/ajio', 'PUT', { ...config, action: 'save-config', seller_id: 'seller@example.com', password: 'not-stored' });
-assert(badSeller.status === 400, 'email seller ID was not rejected');
-const badLpn = await request('/ajio', 'PUT', { ...config, action: 'save-config', scan_lpn_on_picking: false });
-assert(badLpn.status === 400, 'mandatory LPN configuration was not enforced');
-const saved = await request('/ajio', 'PUT', { ...config, action: 'save-config', password: 'not-stored' });
-assert(saved.status === 200 && saved.data.password_configured && !('password' in saved.data), 'credential configuration failed or retained a secret');
+const secret = 'AUDIT-AJIO-SECRET-NEVER-STORED';
+await insert('generic_records', {
+  module: 'location', location_code: 'AUDIT-AJIO-LOC', location_name: 'Audit AJIO location', status: 'Active',
+});
+const savedConfig = await call('PUT', {
+  action: 'save-config', seller_id: 'DV123', password: secret, channel_name: 'AJIO audit',
+  order_fulfillment_wh: 'Audit AJIO location', b2b_invoice_series: 'AUDIT', is_b2b: true,
+  sku_sync: 'Pull', sku_create: 'Moderate', scan_lpn_on_picking: true,
+  lpn_reuse_after_ship: true, unpack_access: false, order_sync: false, return_sync: false,
+});
+assert.equal(savedConfig.code, 200);
+assert.equal(savedConfig.body.password_configured, true);
+assert.equal(savedConfig.body.interface_status, 'Credentials Saved - Connection Not Tested');
+assert.equal(savedConfig.body.message, 'Configuration saved locally; AJIO connection not tested.');
+assert.equal(Object.hasOwn(savedConfig.body, 'password'), false);
+assert.equal((await find('ajio_config')).some(row => Object.values(row).includes(secret)), false, 'AJIO credentials must not be persisted as plaintext');
 
-const mappings = await request('/ajio?entity=mappings'); const unmapped = mappings.data.find((row) => row.mapping_status === 'Un-Mapped');
-const mapped = await request('/ajio', 'PUT', { action: 'map-sku', id: unmapped.id, sku_code: 'BACKPACK-GRY' });
-assert(mapped.status === 200 && mapped.data.mapping_status === 'Mapped', 'SKU mapping failed');
-const sync = await request('/ajio', 'POST', { action: 'inventory-sync' });
-assert(sync.status === 200 && sync.data.count === 3, 'mapped inventory synchronization failed');
+const sku = await insert('skus', { sku_code: 'AUDIT-AJIO-SKU', name: 'Isolated verifier SKU' });
+const mapping = await insert('ajio_sku_mappings', {
+  article_code: 'AUDIT-ARTICLE', channel_sku_code: 'AUDIT-CHANNEL-SKU', channel_product_id: 'PROD~VARIANT',
+  mapping_status: 'Un-Mapped', inventory_sync: 'Success', published_inventory: 88, last_sync: '2026-09-01T00:00:00Z',
+});
+const mappingRead = await call('GET', {}, { entity: 'mappings' });
+assert.equal(mappingRead.body[0].inventory_sync, 'Not Connected');
+assert.equal(mappingRead.body[0].published_inventory, null);
+assert.equal(mappingRead.body[0].last_sync, null);
+const mapped = await call('PUT', {
+  action: 'map-sku', id: mapping.id, sku_code: sku.sku_code,
+  channel_sku_code: 'AUDIT-CHANNEL-SKU', channel_product_id: 'PROD~VARIANT',
+});
+assert.equal(mapped.code, 200);
+assert.equal(mapped.body.mapping_status, 'Mapped');
+assert.equal(mapped.body.inventory_sync, 'Not Connected');
+assert.equal(mapped.body.published_inventory, null);
+assert.equal(mapped.body.last_sync, null);
+assert.equal(mapped.body.message, 'SKU mapping saved locally; AJIO connection not tested.');
 
-const inventoryBefore = await request('/inventory?warehouse=Delhi%20NCR');
-const tshirtBefore = inventoryBefore.data.find((row) => row.sku_code === 'TSHIRT-BLK-M');
-const pulled = await request('/ajio', 'POST', { action: 'pull-backorders' });
-assert(pulled.status === 200 && pulled.data.count === 1, 'order pendency pull failed');
-const inventoryAfter = await request('/inventory?warehouse=Delhi%20NCR');
-const tshirtAfter = inventoryAfter.data.find((row) => row.sku_code === 'TSHIRT-BLK-M');
-assert(tshirtAfter.available === tshirtBefore.available - 4 && tshirtAfter.reserved === tshirtBefore.reserved + 4, 'backorder did not reserve inventory');
-const duplicatePull = await request('/ajio', 'POST', { action: 'pull-backorders' });
-assert(duplicatePull.status === 404, 'repeat pendency pull was not blocked');
+for (const action of [
+  'inventory-sync', 'inventory-reconciliation', 'prefetch-label', 'pull-backorders', 'release-po',
+  'generate-picklist', 'scan', 'close-box', 'delivery-split', 'pack', 'request-manifest', 'cancel', 'handover',
+]) {
+  const result = await call('POST', { action });
+  assert.equal(result.code, 503, `${action} must stay disabled without a connector and central transaction`);
+  assert.match(result.body.error, /live AJIO|Central Inventory/i);
+}
 
-const backorders = await request('/ajio?entity=backorders'); const reserved = backorders.data.find((row) => row.status === 'Reserved');
-const released = await request('/ajio', 'POST', { action: 'release-po', id: reserved.id });
-assert(released.status === 201 && released.data.status === 'Allocated', 'AJIO PO did not create an allocated sales order');
-const duplicateRelease = await request('/ajio', 'POST', { action: 'release-po', id: reserved.id });
-assert(duplicateRelease.status === 409, 'duplicate AJIO PO release was not blocked');
-const saleOrders = await request('/sale-orders');
-assert(saleOrders.data.some((row) => row.external_order_no === reserved.ajio_po_no && row.channel === 'AJIO'), 'AJIO sales-order downstream mapping missing');
-const fulfillment = await request('/fulfillment');
-assert(fulfillment.data.filter((row) => row.ajio_order_id === released.data.id).length === released.data.lines.length, 'AJIO fulfillment lines were not allocated');
-
-const orders = await request('/ajio?entity=orders'); const seedOrder = orders.data.find((row) => row.ajio_po_no === '40184240');
-const picklist = await request('/ajio', 'POST', { action: 'generate-picklist', order_ids: [seedOrder.id, released.data.id] });
-assert(picklist.status === 201 && picklist.data.deliveries.length === 2 && new Set(picklist.data.deliveries.map((row) => row.ajio_po_no)).size === 2, 'one-delivery-per-PO picklist mapping failed');
-const first = picklist.data.deliveries.find((row) => row.ajio_po_no === '40184240'); const second = picklist.data.deliveries.find((row) => row.id !== first.id);
-
-const scanOne = await request('/ajio', 'POST', { action: 'scan', delivery_id: first.id, lpn: 'AJIO-BOX-01', sku_code: 'TSHIRT-BLK-M', qty: 2 });
-assert(scanOne.status === 200 && scanOne.data.status === 'Processing', 'first LPN scan failed');
-const crossShipment = await request('/ajio', 'POST', { action: 'scan', delivery_id: second.id, lpn: 'AJIO-BOX-01', sku_code: second.lines[0].sku_code, qty: 1 });
-assert(crossShipment.status === 409, 'cross-shipment Box ID was not rejected');
-const partialScan = await request('/ajio', 'POST', { action: 'scan', delivery_id: second.id, lpn: 'AJIO-BOX-03', sku_code: second.lines[0].sku_code, qty: 1 });
-assert(partialScan.status === 200 && partialScan.data.status === 'Processing', 'partial scan for Delivery Split failed');
-const split = await request('/ajio', 'POST', { action: 'delivery-split', delivery_id: second.id });
-assert(split.status === 201 && split.data.split_from === second.delivery_no && split.data.ajio_po_no === second.ajio_po_no && split.data.lines.every((line) => line.picked_qty === 0), 'pending quantities were not moved to a new delivery');
-const scanTwo = await request('/ajio', 'POST', { action: 'scan', delivery_id: first.id, lpn: 'AJIO-BOX-02', sku_code: 'BOTTLE-STL-1L', qty: 1 });
-assert(scanTwo.status === 200 && scanTwo.data.status === 'Picked', 'multi-box picking did not complete');
-await request('/ajio', 'POST', { action: 'close-box', delivery_id: first.id, lpn: 'AJIO-BOX-01' });
-await request('/ajio', 'POST', { action: 'close-box', delivery_id: first.id, lpn: 'AJIO-BOX-02' });
-const closedMutation = await request('/ajio', 'POST', { action: 'scan', delivery_id: first.id, lpn: 'AJIO-BOX-01', sku_code: 'TSHIRT-BLK-M', qty: 1 });
-assert(closedMutation.status === 409, 'closed box modification was not blocked');
-
-const packed = await request('/ajio', 'POST', { action: 'pack', delivery_id: first.id });
-assert(packed.status === 200 && packed.data.child_awbs.length === 2 && packed.data.master_awb === packed.data.child_awbs[0] && packed.data.invoice_no.startsWith(config.b2b_invoice_series), 'invoice/child/master AWB generation failed');
-const cancelPacked = await request('/ajio', 'POST', { action: 'cancel', delivery_id: first.id });
-assert(cancelPacked.status === 409, 'post-pack cancellation was not blocked');
-
-const manifest = await request('/ajio', 'POST', { action: 'request-manifest', delivery_ids: [first.id] });
-assert(manifest.status === 201 && manifest.data.shipment_count === 1 && manifest.data.box_count === 2, 'Request Manifest failed');
-const partialManifest = await request('/ajio', 'POST', { action: 'request-manifest', delivery_ids: [second.id] });
-assert(partialManifest.status === 409, 'partial shipment manifest was not blocked');
-const handover = await request('/ajio', 'POST', { action: 'handover', manifest_id: manifest.data.id });
-assert(handover.status === 200 && handover.data.status === 'Handed Over', 'manifest handover failed');
-const deliveries = await request('/ajio?entity=deliveries');
-assert(deliveries.data.find((row) => row.id === first.id).status === 'Shipped', 'handover did not mark delivery Shipped');
-
-console.log(JSON.stringify({
-  checks: 25,
-  seller_id_validation: 'passed',
-  secrets_persisted: false,
-  reserved_po: reserved.ajio_po_no,
-  generated_sales_order: released.data.sales_order_no,
-  picklist: picklist.data.picklist_no,
-  deliveries: picklist.data.deliveries.map((row) => row.delivery_no),
-  split_delivery: split.data.delivery_no,
-  boxes: packed.data.boxes.map((box) => box.lpn),
-  master_awb: packed.data.master_awb,
-  child_awbs: packed.data.child_awbs,
-  invoice: packed.data.invoice_no,
-  manifest: manifest.data.manifest_no,
-  final_status: 'Shipped',
-  blocked_paths: ['email seller ID', 'mandatory LPN settings off', 'repeat pendency pull', 'repeat PO release', 'cross-shipment LPN', 'closed-box mutation', 'post-pack cancellation', 'partial manifest'],
-}, null, 2));
+assert.equal((await find('ajio_orders')).length, 0);
+assert.equal((await find('ajio_deliveries')).length, 0);
+assert.equal((await find('ajio_invoices')).length, 0);
+assert.equal((await find('ajio_manifests')).length, 0);
+const source = await readFile(new URL('../src/eretail/modules/AJIOWorkflow.tsx', import.meta.url), 'utf8');
+assert.match(source, /not connected to a live seller account/i);
+assert.match(source, /mapped locally/i);
+assert.match(source, /not connected to a live seller account or Central Inventory workflow/i);
+assert.doesNotMatch(source, /result\.message\s*\|\|\s*ok/);
+assert.match(source, /AJIO shipping label/i);
+assert.match(source, /AJIO manifest download/i);
+assert.match(source, /is unavailable until the AJIO connector and document service/i);
+assert.doesNotMatch(source, /requestDownload/);
+assert.doesNotMatch(source, /All pending items scanned into/);
+assert.doesNotMatch(await readFile(new URL('../api/ajio.js', import.meta.url), 'utf8'), /async function (reserveBackorders|scanItem|packDelivery|requestManifest)/);
+console.log('PASS AJIO: blank config reads are side-effect free, credentials are not stored, local SKU mappings show no feed success, and every provider-dependent action returns 503 without creating fulfillment artifacts.');

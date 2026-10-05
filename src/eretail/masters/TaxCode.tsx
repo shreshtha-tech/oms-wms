@@ -27,15 +27,25 @@ export default function TaxCode() {
   useEffect(() => { void search({}, 1, 20); }, []);
 
   const openNew = () => { setEdit(null); setForm(empty); setErrors({}); setShow(true); };
-  const openEdit = (r: any) => { setEdit(r); setForm({ ...empty, ...r }); setErrors({}); setShow(true); };
+  const openEdit = (r: any) => {
+    if (['VINCCNA', 'VINSCNA'].includes(String(r.tax_code).toUpperCase())) {
+      setToast({ msg: 'VINCCNA/VINSCNA are system defined taxes and cannot be changed.', type: 'err' });
+      return;
+    }
+    setEdit(r); setForm({ ...empty, ...r }); setErrors({}); setShow(true);
+  };
 
   const validate = () => {
     const e: Record<string, string> = {};
     if (!form.tax_code.trim()) e.tax_code = 'Please Enter Tax Code';
     else if (!/^[a-z0-9]+$/i.test(form.tax_code)) e.tax_code = 'Please Enter Only AlphaNumerics';
+    else if (form.tax_code.length > 50) e.tax_code = 'Tax Code cannot exceed 50 characters';
     if (!form.tax_code_type) e.tax_code_type = 'Please Select Tax Code Type';
-    if (!form.tax_nature) e.tax_nature = 'Tax Nature is mandatory';
-    if (!form.start_date) e.start_date = 'Please Select Start Date';
+    if (!form.tax_nature) e.tax_nature = 'Please Select Tax Nature';
+    const date = String(form.start_date || '');
+    const parsedDate = /^\d{4}-\d{2}-\d{2}$/.test(date) ? new Date(`${date}T00:00:00.000Z`) : null;
+    if (!parsedDate || Number.isNaN(parsedDate.getTime()) || parsedDate.toISOString().slice(0, 10) !== date) e.start_date = 'Please Select a valid Start Date';
+    if (String(form.description || '').length > 500) e.description = 'Description cannot exceed 500 characters';
     if (form.percentage === '') e.percentage = 'Please Enter Percentage';
     else if (isNaN(Number(form.percentage)) || Number(form.percentage) < 0 || Number(form.percentage) > 100) e.percentage = 'Please Enter Valid Percentage';
     const dup = rows.find((r) => r.tax_code?.toLowerCase() === form.tax_code.toLowerCase() && (!edit || r.id !== edit.id));
@@ -50,7 +60,7 @@ export default function TaxCode() {
       const payload = { ...form, percentage: Number(form.percentage) };
       if (edit) await apiSend('/api/taxcodes', 'PUT', { id: edit.id, ...payload });
       else await apiSend('/api/taxcodes', 'POST', payload);
-      setToast({ msg: edit ? 'Tax Code updated successfully' : 'Tax Code created successfully', type: 'ok' }); setShow(false); load();
+      setToast({ msg: edit ? 'Tax Code updated successfully' : 'Tax Code created successfully', type: 'ok' }); setShow(false); await search({}, 1, pageSize);
     } catch (e: any) { setToast({ msg: e.message || 'Save failed', type: 'err' }); } finally { setBusy(false); }
   };
 
@@ -78,20 +88,20 @@ export default function TaxCode() {
       <Modal title={edit ? 'Edit Tax Code' : 'Add New Tax Code'} open={show} onClose={() => setShow(false)}>
         <div className="grid grid-cols-2 gap-3">
           <div><label className="lbl">Tax Code<span className="text-rose-500"> *</span></label>
-            <input value={form.tax_code} onChange={(e) => setForm({ ...form, tax_code: e.target.value })} className={`inp ${errors.tax_code ? 'border-rose-400 ring-1 ring-rose-300' : ''}`} />
+            <input aria-label="Tax Code" maxLength={50} value={form.tax_code} onChange={(e) => setForm({ ...form, tax_code: e.target.value })} className={`inp ${errors.tax_code ? 'border-rose-400 ring-1 ring-rose-300' : ''}`} />
             {errors.tax_code && <p className="mt-0.5 text-xs text-rose-500">{errors.tax_code}</p>}</div>
           <div><label className="lbl">Tax Code Type<span className="text-rose-500"> *</span></label>
-            <select value={form.tax_code_type} onChange={(e) => setForm({ ...form, tax_code_type: e.target.value })} className="inp"><option value="">--- Select ---</option>{TYPES.map((t) => <option key={t}>{t}</option>)}</select>{errors.tax_code_type && <p className="mt-0.5 text-xs text-rose-500">{errors.tax_code_type}</p>}</div>
-          <div><label className="lbl">Tax Nature<span className="text-rose-500"> *</span></label><select value={form.tax_nature} onChange={(e) => setForm({ ...form, tax_nature: e.target.value })} className="inp"><option value="">--- Select ---</option><option>Central Cess</option><option>State Cess</option></select>{errors.tax_nature && <p className="mt-0.5 text-xs text-rose-500">{errors.tax_nature}</p>}</div>
+            <select aria-label="Tax Code Type" value={form.tax_code_type} onChange={(e) => setForm({ ...form, tax_code_type: e.target.value })} className="inp"><option value="">--- Select ---</option>{TYPES.map((t) => <option key={t}>{t}</option>)}</select>{errors.tax_code_type && <p className="mt-0.5 text-xs text-rose-500">{errors.tax_code_type}</p>}</div>
+          <div><label className="lbl">Tax Nature<span className="text-rose-500"> *</span></label><select aria-label="Tax Nature" value={form.tax_nature} onChange={(e) => setForm({ ...form, tax_nature: e.target.value })} className="inp"><option value="">--- Select ---</option><option>Central Cess</option><option>State Cess</option></select>{errors.tax_nature && <p className="mt-0.5 text-xs text-rose-500">{errors.tax_nature}</p>}</div>
           <div><label className="lbl">Start Date<span className="text-rose-500"> *</span></label>
-            <input type="date" value={form.start_date} onChange={(e) => setForm({ ...form, start_date: e.target.value })} className={`inp ${errors.start_date ? 'border-rose-400 ring-1 ring-rose-300' : ''}`} />
+            <input aria-label="Start Date" type="date" value={form.start_date} onChange={(e) => setForm({ ...form, start_date: e.target.value })} className={`inp ${errors.start_date ? 'border-rose-400 ring-1 ring-rose-300' : ''}`} />
             {errors.start_date && <p className="mt-0.5 text-xs text-rose-500">{errors.start_date}</p>}</div>
           <div><label className="lbl">Percentage (%)<span className="text-rose-500"> *</span></label>
-            <input type="number" step="0.01" value={form.percentage} onChange={(e) => setForm({ ...form, percentage: e.target.value })} className={`inp ${errors.percentage ? 'border-rose-400 ring-1 ring-rose-300' : ''}`} />
+            <input aria-label="Percentage (%)" type="number" min="0" max="100" step="0.01" value={form.percentage} onChange={(e) => setForm({ ...form, percentage: e.target.value })} className={`inp ${errors.percentage ? 'border-rose-400 ring-1 ring-rose-300' : ''}`} />
             {errors.percentage && <p className="mt-0.5 text-xs text-rose-500">{errors.percentage}</p>}</div>
           <div className="col-span-2"><label className="lbl">Description</label>
-            <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="inp" rows={2} /></div>
-          <div><label className="lbl">Is Active</label><select value={form.is_active} onChange={(e) => setForm({ ...form, is_active: e.target.value })} className="inp"><option>Active</option><option>Inactive</option></select></div>
+            <textarea aria-label="Description" maxLength={500} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="inp" rows={2} />{errors.description && <p className="mt-0.5 text-xs text-rose-500">{errors.description}</p>}</div>
+          <div><label className="lbl">Is Active</label><select aria-label="Is Active" value={form.is_active} onChange={(e) => setForm({ ...form, is_active: e.target.value })} className="inp"><option>Active</option><option>Inactive</option></select></div>
         </div>
         <div className="mt-5 flex justify-end gap-2">
           <button onClick={() => setShow(false)} className="rounded-md border border-slate-300 px-4 py-2 text-sm text-slate-600 hover:bg-slate-50">Cancel</button>

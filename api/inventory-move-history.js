@@ -1,2 +1,52 @@
-import{cors,find}from'./mongo.js';const t=v=>String(v??'').trim(),has=(v,q)=>!t(q)||t(v).toLowerCase().includes(t(q).toLowerCase());const format=x=>({id:x.id,skuCode:x.sku_code||'',SKUDesc:x.sku_desc||x.name||'',moveDate:x.created_at||x.created_date||'',siteLocation:x.site_location||x.from_warehouse||'JX Karawaci',moveQty:Number(x.quantity||0),fromZone:x.from_zone||'',toZone:x.to_zone||'',fromBin:x.from_bin||'',toBin:x.to_bin||'',lpn:x.lpn||'',user:x.created_by||x.user||'',putawayNo:x.putaway_no||x.reference||'',remarks:x.remarks||'',reason:x.reason||'',cycleId:x.cycle_id||''});
-export default async function handler(req,res){if(cors(req,res))return;try{if(req.method==='GET')return res.json({locations:[['USPL','USPL-JX Karawaci']],clients:[['0','0-DummyClient']],reasons:[['-1','--- Select ---'],['Test1','Test1'],['Test2','Test2'],['Test3','Test3'],['Test4','Test4']],pageSizes:[20,50,100,200]});if(req.method!=='POST')return res.status(405).json({error:'Method not allowed'});const b=req.body||{},all=(await find('inventory_moves')).map(format);let rows=all.filter(x=>has(x.skuCode,b.skuCode)&&has(x.skuDesc,b.SKUDesc)&&has(x.fromZone,b.fromZone)&&has(x.toZone,b.toZone)&&has(x.fromBin,b.fromBin)&&has(x.toBin,b.toBin)&&has(x.user,b.userId)&&has(x.putawayNo,b.putawayNo)&&has(x.reason,b.reason==='-1'?'':b.reason)&&has(x.cycleId,b.cycleId)&&(!t(b.fromDate)||x.moveDate.slice(0,10)>=b.fromDate)&&(!t(b.toDate)||x.moveDate.slice(0,10)<=b.toDate));rows.sort((a,z)=>t(a.moveDate).localeCompare(t(z.moveDate))*(b.sord==='asc'?1:-1));const size=[20,50,100,200].includes(+b.rows)?+b.rows:20,page=Math.max(1,+b.page||1),records=rows.length,total=Math.ceil(records/size);return res.json({rows:rows.slice((page-1)*size,page*size),page,total,records,sidx:b.sidx||'createdDate',sord:b.sord||'desc',REQ_SEARCH_FLAG:true});}catch(e){console.error('Inventory Move History error:',e);res.status(500).json({error:e.message})}}
+import { sendDatabaseUnavailable, cors, find } from './mongo.js';
+import { clientPairs, locationPairs } from './catalogs.js';
+import { listCentralWmsMoveHistory } from '../inventory/wms-operations.js';
+
+const text = value => String(value ?? '').trim();
+const has = (value, query) => !text(query) || text(query) === '-1' || text(value).toLowerCase().includes(text(query).toLowerCase());
+export default async function handler(req, res) {
+  if (cors(req, res)) return;
+  try {
+    if (req.method === 'GET') {
+      const [moves, clients, locations, configuredReasons] = await Promise.all([
+        listCentralWmsMoveHistory(), clientPairs(), locationPairs(), find('generic_records', { module: 'inventory-move-reason' }),
+      ]);
+      const reasons = [...new Set([...moves.map(row => text(row.reason)), ...configuredReasons.map(row => text(row.code))].filter(Boolean))].sort();
+      return res.json({ locations, clients,
+        reasons: [['-1', '--- Select ---'], ...reasons.map(reason => [reason, reason])],
+        pageSizes: [20, 50, 100, 200], source: 'central-inventory' });
+    }
+    if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+    const body = req.body || {};
+    const unsupported = ['SKUDesc', 'fromZone', 'toZone', 'fromBin', 'toBin', 'userId', 'clientId', 'putawayNo', 'cycleId', 'styleCode', 'usnNo']
+      .find(key => text(body[key]) && !(key === 'clientId' && text(body[key]) === '0'));
+    if (unsupported) return res.status(501).json({ error: `${unsupported} cannot be filtered from Central Inventory movement events because that mapping is not recorded.` });
+    const all = await listCentralWmsMoveHistory(body);
+    const rows = all.filter(row => has(row.skuCode, body.skuCode)
+      && has(row.SKUDesc, body.SKUDesc)
+      && has(row.fromZone, body.fromZone)
+      && has(row.toZone, body.toZone)
+      && has(row.fromBin, body.fromBin)
+      && has(row.toBin, body.toBin)
+      && has(row.user, body.userId)
+      && has(row.putawayNo, body.putawayNo)
+      && has(row.reason, body.reason)
+      && has(row.cycleId, body.cycleId)
+      && has(row.siteLocationCode, body.siteLocationCode)
+      );
+    rows.sort((a, b) => text(a.moveDate).localeCompare(text(b.moveDate)) * (body.sord === 'asc' ? 1 : -1));
+    const size = [20, 50, 100, 200].includes(+body.rows) ? +body.rows : 20;
+    const page = Math.max(1, +body.page || 1);
+    const records = rows.length;
+    const total = Math.ceil(records / size);
+    return res.json({
+      rows: rows.slice((page - 1) * size, page * size), page, total, records,
+      sidx: body.sidx || 'createdDate', sord: body.sord || 'desc', REQ_SEARCH_FLAG: true,
+    });
+  } catch (error) {
+    if (sendDatabaseUnavailable(res, error)) return;
+    console.error('Inventory Move History error:', { name: error?.name, code: error?.code });
+    return res.status(error.statusCode || error.status || (error.code || /database|connection/i.test(error.message || '') ? 503 : 500)).json({ error: error.message || 'Inventory Move History unavailable.' });
+  }
+}

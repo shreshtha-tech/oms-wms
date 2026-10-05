@@ -1,4 +1,4 @@
-import { find, findOne, cors } from './mongo.js';
+import { sendDatabaseUnavailable, find, findOne, cors } from './mongo.js';
 
 function displayDate(value) {
   if (!value) return '';
@@ -24,5 +24,6 @@ export default async function handler(req, res) {
     }));
     const start = (page - 1) * pageSize;
     return res.status(200).json({ asnEnquiryDTOList: records.slice(start, start + pageSize), page, records: records.length, rows: pageSize, total: Math.ceil(records.length / pageSize) });
-  } catch (error) { console.error('API error:', error); return res.status(500).json({ error: error.message }); }
+  } catch (error) {
+    if (sendDatabaseUnavailable(res, error)) return; console.error('API error:', { name: error?.name, code: error?.code }); return res.status(500).json({ error: error.message }); }
 }

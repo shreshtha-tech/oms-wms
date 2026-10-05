@@ -1,2 +1,47 @@
-import assert from'node:assert/strict';import{chromium}from'playwright';const base=process.env.ERETAIL_BASE_URL||'http://127.0.0.1:3002';const send=async(method,body={})=>{const r=await fetch(`${base}/api/order-allocation`,{method,headers:{'content-type':'application/json'},body:method==='GET'?undefined:JSON.stringify(body)});return{r,j:await r.json()}},q=(x={})=>({action:'search',REQ_SEARCH_FLAG:true,rows:50,page:1,sidx:'orderNo',sord:'asc',siteLocation:'-1',fromMagentoOrderNo:'',fromOrderNo:'',onHold:'-1',orderType:'-1',fromOrderDate:'',toOrderDate:'',wip:false,forceAlloc:false,status:'',skuCode:'',customerName:'',customerEmail:'',customerPh:'',orderTagTmp:'',clientId:'0',filteredOrderArr:'',searchType:false,sku:'',virtualBomSku:'',shortPick:false,...x});assert.equal((await send('GET')).r.status,200);for(const rows of[50,100,200]){const x=await send('POST',q({rows}));for(const k of['gridModel','rows','page','total','records'])assert.ok(k in x.j)}let x=await send('POST',q());assert.ok(x.j.records>0);const row=x.j.rows[0];x=await send('PUT',{action:'allocate',ids:[]});assert.equal(x.j.error,'Please Select An Order');x=await send('PUT',{action:'allocate',ids:[row.id],searchType:false});assert.equal(x.j.jsonMessage,'Order Allocated Successfully');x=await send('PUT',{action:'unAllocate',ids:[row.id],searchType:false});assert.equal(x.j.jsonMessage,'Order UnAllocated Successfully');x=await send('PUT',{action:'close',ids:[row.id],reason:'',remarks:''});assert.equal(x.j.error,'Reason is mandatory');x=await send('POST',{action:'import',orders:Array.from({length:101},(_,i)=>String(i))});assert.equal(x.j.error,'Max 100 lines are allowed at a time');
-const b=await chromium.launch({headless:true}),p=await b.newPage({viewport:{width:1440,height:1000}}),errors=[];p.on('pageerror',e=>errors.push(e.message));p.on('console',m=>m.type()==='error'&&errors.push(m.text()));try{await p.goto(base);const cap=(await p.locator('.font-mono').textContent()).trim();await p.getByPlaceholder('Username').fill('allocate');await p.getByPlaceholder('Password').fill('local');await p.getByPlaceholder('Enter captcha').fill(cap);await p.getByRole('button',{name:'Login'}).click();await p.waitForURL('**/app/dashboard');await p.goto(`${base}/app/fulfillment/allocate`);for(const a of['Search','Reset','Allocate','UnAllocate','Close SO','Advance Search','Import','Export'])await p.getByRole('button',{name:a,exact:true}).first().waitFor();for(const h of['Client','Order No','Ext Order No','Status','Order Date','SKU','Line Qty','Open Qty','Line Amount','Line No','Site Location','Customer Name','Order Type','Order Qty','On Hold','Logs'])await p.getByRole('columnheader',{name:h,exact:true}).waitFor();for(const size of['50','100','200'])await p.getByLabel('Records per Page').selectOption(size);await p.getByRole('button',{name:'Advance Search',exact:true}).click();await p.getByLabel('Customer Email').waitFor();await p.getByRole('button',{name:'Import',exact:true}).click();await p.getByLabel('Import Order Numbers').fill('SO1\nSO2');await p.getByRole('button',{name:'OK',exact:true}).click();await p.getByText('2 order(s) accepted for import',{exact:true}).waitFor();assert.equal(await p.locator('vite-error-overlay').count(),0);assert.deepEqual(errors,[]);console.log('PASS Order Allocate/Unallocate: live remote search, actions, import limit, lifecycle, paging, and clean browser state.')}finally{await b.close()}
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+
+// Use only an isolated in-memory store; never mutate a configured tenant.
+process.env.MONGODB_URI = '';
+process.env.DMILLS_REQUIRE_PERSISTENCE = '';
+process.env.INVENTORY_DATABASE_URL = '';
+process.env.INVENTORY_ALLOWED_TENANT_ID = '';
+const { find, insert } = await import('../api/mongo.js');
+const orderAllocation = (await import('../api/order-allocation.js')).default;
+
+async function invoke(method, body = {}) {
+  const response = {
+    statusCode: 200,
+    status(value) { this.statusCode = value; return this; },
+    json(value) { this.payload = value; return this; },
+    setHeader() {},
+  };
+  await orderAllocation({ method, body, query: {}, headers: {} }, response);
+  return response;
+}
+
+const order = await insert('fulfillment_orders', {
+  order_no: 'SAFE-ALLOC-ORDER', ext_order_no: 'SAFE-ALLOC-EXT',
+  sku_code: 'SAFE-ALLOC-SKU', status: 'Pending', qty: 4, open_qty: 4,
+});
+const meta = await invoke('GET');
+assert.equal(meta.payload.allocationAvailable, false);
+assert.equal(meta.payload.dataTrust, 'legacy-unverified');
+const search = await invoke('POST', { REQ_SEARCH_FLAG: true, fromOrderNo: order.order_no, rows: 50, page: 1 });
+assert.equal(search.payload.gridModel[0].orderNo, order.order_no);
+assert.equal(search.payload.gridModel[0].trust, 'legacy-unverified');
+const found = await invoke('POST', { action: 'import', orders: [order.order_no, 'MISSING-ORDER'] });
+assert.equal(found.payload.rows[0].orderNo, order.order_no);
+assert.deepEqual(found.payload.notFound, ['MISSING-ORDER']);
+
+for (const action of ['allocate', 'unAllocate', 'close']) {
+  const result = await invoke('PUT', { action, ids: [order.id], reason: '10', remarks: 'Safe test' });
+  assert.equal(result.statusCode, 501);
+}
+assert.deepEqual(await find('fulfillment_orders', { id: order.id }), [order]);
+assert.deepEqual(await find('fulfillment_audit'), []);
+
+const ui = await readFile(new URL('../src/eretail/modules/Allocate.tsx', import.meta.url), 'utf8');
+assert.match(ui, /Allocate, UnAllocate, and Close SO are disabled until Central Inventory/);
+assert.doesNotMatch(ui, /label: 'Allocate'|label: 'UnAllocate'|label: 'Close SO'/);
+console.log('PASS Order Allocation: enquiry/import are read-only, allocation/unallocation/cancellation fail closed, and order/audit state remains unchanged.');

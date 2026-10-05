@@ -1,0 +1,75 @@
+[
+  {
+    "text": "Exports",
+    "href": "#",
+    "onclick": "openScreen(\"Exports\", \"pendingDisplay\",\"fa fa-arrow-circle-right\"); return false;"
+  },
+  {
+    "text": "Force Order Pull",
+    "href": "#",
+    "onclick": "openScreen(\"Force Order Pull\", \"forceOrderPullBS\",\"fa fa-arrow-circle-right\"); return false;"
+  },
+  {
+    "text": "Settings",
+    "href": "#",
+    "onclick": "openScreen(\"Settings\", \"displayAdminSettings\",\"fa fa-arrow-circle-right\"); return false;"
+  },
+  {
+    "text": "Manage Api",
+    "href": "#",
+    "onclick": "openScreen(\"Manage Api\", \"displayManageApiBS\",\"fa fa-arrow-circle-right\"); return false;"
+  },
+  {
+    "text": "API Dashboard",
+    "href": "#",
+    "onclick": "openScreen(\"API Dashboard\", \"apiDashboard\",\"fa fa-arrow-circle-right\"); return false;"
+  },
+  {
+    "text": "Language Setting",
+    "href": "#",
+    "onclick": "openScreen(\"Language Setting\", \"displayVinLanguageAction\",\"fa fa-arrow-circle-right\"); return false;"
+  },
+  {
+    "text": "User Audit Logs",
+    "href": "#",
+    "onclick": "openScreen(\"User Audit Logs\", \"roleLogBS\",\"fa fa-arrow-circle-right\"); return false;"
+  },
+  {
+    "text": "Accounting Log",
+    "href": "#",
+    "onclick": "openScreen(\"Accounting Log\", \"tallyInterfaceAction\",\"fa fa-arrow-circle-right\"); return false;"
+  },
+  {
+    "text": "Tax Integration Log",
+    "href": "#",
+    "onclick": "openScreen(\"Tax Integration Log\", \"taxSettingAction\",\"fa fa-arrow-circle-right\"); return false;"
+  },
+  {
+    "text": "Device Tracking Log",
+    "href": "#",
+    "onclick": "openScreen(\"Device Tracking Log\", \"deviceTrackingLogBS\",\"fa fa-arrow-circle-right\"); return false;"
+  },
+  {
+    "text": "External Apps Logs",
+    "href": "#",
+    "onclick": "openScreen(\"External Apps Logs\", \"displayExtAppsFailedOrderGrid\",\"fa fa-arrow-circle-right\"); return false;"
+  },
+  {
+    "text": "POS Integration Log",
+    "href": "#",
+    "onclick": "openScreen(\"POS Integration Log\", \"displayPosIntLog\",\"fa fa-arrow-circle-right\"); return false;"
+  },
+  {
+    "text": "Repush Log",
+    "href": "#",
+    "onclick": "openScreen(\"Repush Log\", \"repushlogdisplay\",\"fa fa-arrow-circle-right\"); return false;"
+  },
+  {
+    "text": "Manage Api Add/Edit",
+    "onclick": "openScreen(\"Manage Api Add/Edit\", \"manageApiKeyEdit?seqId=\",\"fa fa-fw fa-list-ol\")"
+  },
+  {
+    "text": "Register Webhook",
+    "onclick": "openScreen(\"Register Webhook\", \"manageApiWebhook\",\"fa fa-fw fa-list-ol\")"
+  }
+]

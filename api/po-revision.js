@@ -1,4 +1,4 @@
-import { find, cors } from './mongo.js';
+import { sendDatabaseUnavailable, find, cors } from './mongo.js';
 
 const textMatch = (value, query) => !query || String(value || '').toLowerCase().includes(String(query).toLowerCase());
 const dateMatch = (value, query) => !query || String(value || '').slice(0, 10) === String(query).slice(0, 10);
@@ -47,7 +47,8 @@ export default async function handler(req, res) {
     const start = (page - 1) * rowsPerPage;
     return res.status(200).json({ rows: filtered.slice(start, start + rowsPerPage), total, page, records });
   } catch (error) {
-    console.error('PO Revision API error:', error);
+    if (sendDatabaseUnavailable(res, error)) return;
+    console.error('PO Revision API error:', { name: error?.name, code: error?.code });
     return res.status(500).json({ error: error.message || 'Unable to search PO revisions' });
   }
 }

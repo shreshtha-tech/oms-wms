@@ -1,0 +1,2845 @@
+{
+  "url": "https://demo.vineretail.com/eRetailWeb/taxSettingAction",
+  "title": "",
+  "text": "Search\tReset\tManual Repush\tRe Push\tCancel\n Admin Tax Integration Log\n\t\n\u00a0\nIntegration Type\n\t\n\u00a0\nTxn Date\n\t\n\u00a0\nTransaction Type\n\t\n\u00a0\nDocument Number\n\t\n\u00a0\nReference No\n\t\n\u00a0\nRef Number 2\n\t\n\u00a0\nRef Type\n\t\n\u00a0\nStatus\n\t\n\u00a0\nOutput Key\n\t\n\u00a0\nAction\n\n\n\t\n--- Select ---\nAvalara\nClear(India)\nSuperTax\nErnst & Young\nClear(KSA)\nVayana\n\t\n\t\n--- Select ---\nIRN_GET\nIRN_CANCEL\nEWB_GEN\nIRN_CNSLDT\n\t\n\t\n\t\n\t\n--- Select ---\nReturn\nRTV\nSO\nSTO\n\t\n--- Select ---\nPending\nsuccess\nProcessing\nError\n\t\n\t\n\t\t\t\t\t\t\t\t\t\t\n\t\n\t\n\t\n\tPage  of 0\t\n\t\n\t\n\t\n20\n50\n100\n200\n\tNo records to view",
+  "controls": [
+    {
+      "tag": "BUTTON",
+      "id": "searchFinTransmitLogButton",
+      "name": "",
+      "type": "button",
+      "text": "Search",
+      "value": "",
+      "disabled": false,
+      "visible": true,
+      "title": "Search",
+      "onclick": "reloadSearchGrid(); return false;",
+      "onchange": null,
+      "geometry": {
+        "x": 662.953125,
+        "y": 4,
+        "width": 79.171875,
+        "height": 30,
+        "font": "12px / 18px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(255, 255, 255)",
+        "background": "rgb(243, 156, 18)"
+      }
+    },
+    {
+      "tag": "BUTTON",
+      "id": "resetTransmitLogButton",
+      "name": "",
+      "type": "button",
+      "text": "Reset",
+      "value": "",
+      "disabled": false,
+      "visible": true,
+      "title": "Clear Search",
+      "onclick": "resetAll(); return false;",
+      "onchange": null,
+      "geometry": {
+        "x": 747.125,
+        "y": 4,
+        "width": 75,
+        "height": 30,
+        "font": "12px / 18px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(68, 68, 68)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "BUTTON",
+      "id": "manualTransmitLogButton",
+      "name": "",
+      "type": "button",
+      "text": "Manual Repush",
+      "value": "",
+      "disabled": false,
+      "visible": true,
+      "title": "Manual Repush",
+      "onclick": null,
+      "onchange": null,
+      "geometry": {
+        "x": 827.125,
+        "y": 4,
+        "width": 126.0546875,
+        "height": 30,
+        "font": "12px / 18px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(255, 255, 255)",
+        "background": "rgb(0, 166, 90)"
+      }
+    },
+    {
+      "tag": "BUTTON",
+      "id": "repushTransmitLogButton",
+      "name": "",
+      "type": "button",
+      "text": "Re Push",
+      "value": "",
+      "disabled": false,
+      "visible": true,
+      "title": "Re Push",
+      "onclick": null,
+      "onchange": null,
+      "geometry": {
+        "x": 958.1796875,
+        "y": 4,
+        "width": 88.03125,
+        "height": 30,
+        "font": "12px / 18px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(255, 255, 255)",
+        "background": "rgb(0, 166, 90)"
+      }
+    },
+    {
+      "tag": "BUTTON",
+      "id": "cancelTransmitLogButton",
+      "name": "",
+      "type": "button",
+      "text": "Cancel",
+      "value": "",
+      "disabled": false,
+      "visible": true,
+      "title": "Cancel",
+      "onclick": null,
+      "onchange": null,
+      "geometry": {
+        "x": 1051.2109375,
+        "y": 4,
+        "width": 76.7890625,
+        "height": 30,
+        "font": "12px / 18px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(255, 255, 255)",
+        "background": "rgb(221, 75, 57)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "Admin",
+      "visible": true,
+      "title": "",
+      "onclick": "return false;",
+      "onchange": null,
+      "geometry": {
+        "x": 15,
+        "y": 6,
+        "width": 52.8359375,
+        "height": 17.140625,
+        "font": "12px / 17.1429px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(68, 68, 68)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "Tax Integration Log",
+      "visible": true,
+      "title": "",
+      "onclick": "return false;",
+      "onchange": null,
+      "geometry": {
+        "x": 91.515625,
+        "y": 6,
+        "width": 110.4453125,
+        "height": 17.140625,
+        "font": "12px / 17.1429px Arial, \"Helvetica Neue\", Helvetica, sans-serif",
+        "color": "rgb(68, 68, 68)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "",
+      "visible": false,
+      "title": "Toggle Expand Collapse Grid",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "cb_taxSettingLogTable",
+      "name": "",
+      "type": "checkbox",
+      "text": "",
+      "value": "on",
+      "checked": false,
+      "disabled": false,
+      "visible": true,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null,
+      "geometry": {
+        "x": 20,
+        "y": 50,
+        "width": 13,
+        "height": 13,
+        "font": "700 12px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "tag": "SELECT",
+      "id": "gs_integrationType",
+      "name": "integrationType",
+      "type": "select-one",
+      "text": "",
+      "value": "-1",
+      "disabled": false,
+      "visible": true,
+      "title": "",
+      "onclick": null,
+      "onchange": null,
+      "options": [
+        {
+          "text": "--- Select ---",
+          "value": "-1"
+        },
+        {
+          "text": "Avalara",
+          "value": "17"
+        },
+        {
+          "text": "Clear(India)",
+          "value": "18"
+        },
+        {
+          "text": "SuperTax",
+          "value": "22"
+        },
+        {
+          "text": "Ernst & Young",
+          "value": "29"
+        },
+        {
+          "text": "Clear(KSA)",
+          "value": "44"
+        },
+        {
+          "text": "Vayana",
+          "value": "59"
+        }
+      ],
+      "geometry": {
+        "x": 46.5,
+        "y": 69,
+        "width": 113,
+        "height": 23,
+        "font": "12px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(85, 85, 85)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "x",
+      "visible": false,
+      "title": "Reset Search Value",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "SELECT",
+      "id": "gs_clientId",
+      "name": "clientId",
+      "type": "select-one",
+      "text": "",
+      "value": "0",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": null,
+      "onchange": null,
+      "options": [
+        {
+          "text": "All",
+          "value": "-1"
+        },
+        {
+          "text": "0-DummyClient",
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "x",
+      "visible": false,
+      "title": "Reset Search Value",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "gs_updDate",
+      "name": "updDate",
+      "type": "text",
+      "text": "",
+      "value": "17/09/2026 - 24/09/2026",
+      "checked": false,
+      "disabled": false,
+      "visible": true,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null,
+      "geometry": {
+        "x": 166.5,
+        "y": 69,
+        "width": 113,
+        "height": 23,
+        "font": "12px / 17.1428px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(85, 85, 85)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "x",
+      "visible": false,
+      "title": "Reset Search Value",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "SELECT",
+      "id": "gs_intCode",
+      "name": "intCode",
+      "type": "select-one",
+      "text": "",
+      "value": "-1",
+      "disabled": false,
+      "visible": true,
+      "title": "",
+      "onclick": null,
+      "onchange": null,
+      "options": [
+        {
+          "text": "--- Select ---",
+          "value": "-1"
+        },
+        {
+          "text": "IRN_GET",
+          "value": "IRN_GET"
+        },
+        {
+          "text": "IRN_CANCEL",
+          "value": "IRN_CANCEL"
+        },
+        {
+          "text": "EWB_GEN",
+          "value": "EWB_GEN"
+        },
+        {
+          "text": "IRN_CNSLDT",
+          "value": "IRN_CNSLDT"
+        }
+      ],
+      "geometry": {
+        "x": 286.5,
+        "y": 69,
+        "width": 89,
+        "height": 23,
+        "font": "12px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(85, 85, 85)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "x",
+      "visible": false,
+      "title": "Reset Search Value",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "gs_hdnIntCode",
+      "name": "hdnIntCode",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "x",
+      "visible": false,
+      "title": "Reset Search Value",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "gs_documentType",
+      "name": "documentType",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "x",
+      "visible": false,
+      "title": "Reset Search Value",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "gs_documentNo",
+      "name": "documentNo",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": true,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null,
+      "geometry": {
+        "x": 382.5,
+        "y": 69,
+        "width": 113,
+        "height": 23,
+        "font": "12px / 17.1428px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(85, 85, 85)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "x",
+      "visible": false,
+      "title": "Reset Search Value",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "gs_referenceNo",
+      "name": "referenceNo",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": true,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null,
+      "geometry": {
+        "x": 502.5,
+        "y": 69,
+        "width": 113,
+        "height": 23,
+        "font": "12px / 17.1428px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(85, 85, 85)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "x",
+      "visible": false,
+      "title": "Reset Search Value",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "gs_referenceNo2",
+      "name": "referenceNo2",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": true,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null,
+      "geometry": {
+        "x": 622.5,
+        "y": 69,
+        "width": 113,
+        "height": 23,
+        "font": "12px / 17.1428px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(85, 85, 85)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "x",
+      "visible": false,
+      "title": "Reset Search Value",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "SELECT",
+      "id": "gs_referenceType",
+      "name": "referenceType",
+      "type": "select-one",
+      "text": "",
+      "value": "-1",
+      "disabled": false,
+      "visible": true,
+      "title": "",
+      "onclick": null,
+      "onchange": null,
+      "options": [
+        {
+          "text": "--- Select ---",
+          "value": "-1"
+        },
+        {
+          "text": "Return",
+          "value": "3"
+        },
+        {
+          "text": "RTV",
+          "value": "4"
+        },
+        {
+          "text": "SO",
+          "value": "1"
+        },
+        {
+          "text": "STO",
+          "value": "2"
+        }
+      ],
+      "geometry": {
+        "x": 742.5,
+        "y": 69,
+        "width": 113,
+        "height": 23,
+        "font": "12px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(85, 85, 85)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "x",
+      "visible": false,
+      "title": "Reset Search Value",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "gs_hdnReferenceType",
+      "name": "hdnReferenceType",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "x",
+      "visible": false,
+      "title": "Reset Search Value",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "SELECT",
+      "id": "gs_status",
+      "name": "status",
+      "type": "select-one",
+      "text": "",
+      "value": "-1",
+      "disabled": false,
+      "visible": true,
+      "title": "",
+      "onclick": null,
+      "onchange": null,
+      "options": [
+        {
+          "text": "--- Select ---",
+          "value": "-1"
+        },
+        {
+          "text": "Pending",
+          "value": "0"
+        },
+        {
+          "text": "success",
+          "value": "1"
+        },
+        {
+          "text": "Processing",
+          "value": "3"
+        },
+        {
+          "text": "Error",
+          "value": "9"
+        }
+      ],
+      "geometry": {
+        "x": 862.5,
+        "y": 69,
+        "width": 89,
+        "height": 23,
+        "font": "12px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(85, 85, 85)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "x",
+      "visible": false,
+      "title": "Reset Search Value",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "gs_errorDesc",
+      "name": "errorDesc",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "x",
+      "visible": false,
+      "title": "Reset Search Value",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "gs_key1",
+      "name": "key1",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": true,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null,
+      "geometry": {
+        "x": 958.5,
+        "y": 69,
+        "width": 89,
+        "height": 23,
+        "font": "12px / 17.1428px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(85, 85, 85)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "x",
+      "visible": false,
+      "title": "Reset Search Value",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "gs_key2",
+      "name": "key2",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "x",
+      "visible": false,
+      "title": "Reset Search Value",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "gs_key3",
+      "name": "key3",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "x",
+      "visible": false,
+      "title": "Reset Search Value",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "gs_isCancelled",
+      "name": "isCancelled",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "x",
+      "visible": false,
+      "title": "Reset Search Value",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "gs_hdnStatus",
+      "name": "hdnStatus",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "x",
+      "visible": false,
+      "title": "Reset Search Value",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "gs_execTime",
+      "name": "execTime",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "name": "",
+      "type": "",
+      "text": "x",
+      "visible": false,
+      "title": "Reset Search Value",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "",
+      "name": "",
+      "type": "text",
+      "text": "",
+      "value": "0",
+      "checked": false,
+      "disabled": false,
+      "visible": true,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null,
+      "geometry": {
+        "x": 535.796875,
+        "y": 523.25,
+        "width": 26.5,
+        "height": 18,
+        "font": "10.8px / 15.4286px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(0, 0, 0)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "SELECT",
+      "id": "",
+      "name": "",
+      "type": "select-one",
+      "text": "",
+      "value": "20",
+      "disabled": false,
+      "visible": true,
+      "title": "Records per Page",
+      "onclick": null,
+      "onchange": null,
+      "options": [
+        {
+          "text": "20",
+          "value": "20"
+        },
+        {
+          "text": "50",
+          "value": "50"
+        },
+        {
+          "text": "100",
+          "value": "100"
+        },
+        {
+          "text": "200",
+          "value": "200"
+        }
+      ],
+      "geometry": {
+        "x": 664.09375,
+        "y": 523.125,
+        "width": 50,
+        "height": 18,
+        "font": "10.8px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(0, 0, 0)",
+        "background": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "tag": "BUTTON",
+      "id": "",
+      "name": "",
+      "type": "button",
+      "text": "\u00d7",
+      "value": "",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "TEXTAREA",
+      "id": "",
+      "name": "",
+      "type": "textarea",
+      "text": "",
+      "value": "\u2028\u2028",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "TEXTAREA",
+      "id": "",
+      "name": "",
+      "type": "textarea",
+      "text": "",
+      "value": "\u2028\u2028",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "BUTTON",
+      "id": "",
+      "name": "",
+      "type": "button",
+      "text": "\u00d7",
+      "value": "",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "irn",
+      "name": "irn",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "TEXTAREA",
+      "id": "qrCode",
+      "name": "qrCode",
+      "type": "textarea",
+      "text": "",
+      "value": "",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "BUTTON",
+      "id": "manualRepushBtn",
+      "name": "",
+      "type": "button",
+      "text": "Re Push",
+      "value": "",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "BUTTON",
+      "id": "",
+      "name": "",
+      "type": "button",
+      "text": "Close",
+      "value": "",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "BUTTON",
+      "id": "",
+      "name": "",
+      "type": "button",
+      "text": "\u00d7",
+      "value": "",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "BUTTON",
+      "id": "",
+      "name": "",
+      "type": "button",
+      "text": "Close",
+      "value": "",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "BUTTON",
+      "id": "",
+      "name": "",
+      "type": "button",
+      "text": "\u00d7",
+      "value": "",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "BUTTON",
+      "id": "",
+      "name": "",
+      "type": "button",
+      "text": "Close",
+      "value": "",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "BUTTON",
+      "id": "",
+      "name": "",
+      "type": "button",
+      "text": "\u00d7",
+      "value": "",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "BUTTON",
+      "id": "",
+      "name": "",
+      "type": "submit",
+      "text": "",
+      "value": "",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": "collapseAddress();",
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "custNameId",
+      "name": "",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "TEXTAREA",
+      "id": "custadd1Id",
+      "name": "",
+      "type": "textarea",
+      "text": "",
+      "value": "",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "custadd2Id",
+      "name": "",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "custadd3Id",
+      "name": "",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "custadd4Id",
+      "name": "",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "shipCountryId",
+      "name": "",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "custphoneid",
+      "name": "",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "custCityId",
+      "name": "",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "custPinCodeId",
+      "name": "",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "custToStateId",
+      "name": "",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "custEmailId",
+      "name": "",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "shipGstin",
+      "name": "",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "BUTTON",
+      "id": "",
+      "name": "",
+      "type": "submit",
+      "text": "",
+      "value": "",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": "collapseAddress();",
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "billNameId",
+      "name": "",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "TEXTAREA",
+      "id": "billadd1Id",
+      "name": "",
+      "type": "textarea",
+      "text": "",
+      "value": "",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "billadd2Id",
+      "name": "",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "billadd3Id",
+      "name": "",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "billadd4Id",
+      "name": "",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "billcountryid",
+      "name": "",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "billphoneId",
+      "name": "",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "billcityId",
+      "name": "",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "billpincodeId",
+      "name": "",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "billstateId",
+      "name": "",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "billEmailId",
+      "name": "",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "billgstnoid",
+      "name": "",
+      "type": "text",
+      "text": "",
+      "value": "",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "BUTTON",
+      "id": "saveBtnId",
+      "name": "",
+      "type": "button",
+      "text": "Update & Retry",
+      "value": "",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": "saveAddressData();",
+      "onchange": null
+    },
+    {
+      "tag": "BUTTON",
+      "id": "",
+      "name": "",
+      "type": "button",
+      "text": "Close",
+      "value": "",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "SELECT",
+      "id": "",
+      "name": "",
+      "type": "select-one",
+      "text": "",
+      "value": "8",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": null,
+      "onchange": null,
+      "options": [
+        {
+          "text": "Sep",
+          "value": "8"
+        },
+        {
+          "text": "Oct",
+          "value": "9"
+        },
+        {
+          "text": "Nov",
+          "value": "10"
+        },
+        {
+          "text": "Dec",
+          "value": "11"
+        }
+      ]
+    },
+    {
+      "tag": "SELECT",
+      "id": "",
+      "name": "",
+      "type": "select-one",
+      "text": "",
+      "value": "2026",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": null,
+      "onchange": null,
+      "options": [
+        {
+          "text": "2026",
+          "value": "2026"
+        },
+        {
+          "text": "2027",
+          "value": "2027"
+        },
+        {
+          "text": "2028",
+          "value": "2028"
+        },
+        {
+          "text": "2029",
+          "value": "2029"
+        },
+        {
+          "text": "2030",
+          "value": "2030"
+        },
+        {
+          "text": "2031",
+          "value": "2031"
+        }
+      ]
+    },
+    {
+      "tag": "SELECT",
+      "id": "",
+      "name": "",
+      "type": "select-one",
+      "text": "",
+      "value": "8",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": null,
+      "onchange": null,
+      "options": [
+        {
+          "text": "Jan",
+          "value": "0"
+        },
+        {
+          "text": "Feb",
+          "value": "1"
+        },
+        {
+          "text": "Mar",
+          "value": "2"
+        },
+        {
+          "text": "Apr",
+          "value": "3"
+        },
+        {
+          "text": "May",
+          "value": "4"
+        },
+        {
+          "text": "Jun",
+          "value": "5"
+        },
+        {
+          "text": "Jul",
+          "value": "6"
+        },
+        {
+          "text": "Aug",
+          "value": "7"
+        },
+        {
+          "text": "Sep",
+          "value": "8"
+        },
+        {
+          "text": "Oct",
+          "value": "9"
+        },
+        {
+          "text": "Nov",
+          "value": "10"
+        },
+        {
+          "text": "Dec",
+          "value": "11"
+        }
+      ]
+    },
+    {
+      "tag": "SELECT",
+      "id": "",
+      "name": "",
+      "type": "select-one",
+      "text": "",
+      "value": "2026",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": null,
+      "onchange": null,
+      "options": [
+        {
+          "text": "1976",
+          "value": "1976"
+        },
+        {
+          "text": "1977",
+          "value": "1977"
+        },
+        {
+          "text": "1978",
+          "value": "1978"
+        },
+        {
+          "text": "1979",
+          "value": "1979"
+        },
+        {
+          "text": "1980",
+          "value": "1980"
+        },
+        {
+          "text": "1981",
+          "value": "1981"
+        },
+        {
+          "text": "1982",
+          "value": "1982"
+        },
+        {
+          "text": "1983",
+          "value": "1983"
+        },
+        {
+          "text": "1984",
+          "value": "1984"
+        },
+        {
+          "text": "1985",
+          "value": "1985"
+        },
+        {
+          "text": "1986",
+          "value": "1986"
+        },
+        {
+          "text": "1987",
+          "value": "1987"
+        },
+        {
+          "text": "1988",
+          "value": "1988"
+        },
+        {
+          "text": "1989",
+          "value": "1989"
+        },
+        {
+          "text": "1990",
+          "value": "1990"
+        },
+        {
+          "text": "1991",
+          "value": "1991"
+        },
+        {
+          "text": "1992",
+          "value": "1992"
+        },
+        {
+          "text": "1993",
+          "value": "1993"
+        },
+        {
+          "text": "1994",
+          "value": "1994"
+        },
+        {
+          "text": "1995",
+          "value": "1995"
+        },
+        {
+          "text": "1996",
+          "value": "1996"
+        },
+        {
+          "text": "1997",
+          "value": "1997"
+        },
+        {
+          "text": "1998",
+          "value": "1998"
+        },
+        {
+          "text": "1999",
+          "value": "1999"
+        },
+        {
+          "text": "2000",
+          "value": "2000"
+        },
+        {
+          "text": "2001",
+          "value": "2001"
+        },
+        {
+          "text": "2002",
+          "value": "2002"
+        },
+        {
+          "text": "2003",
+          "value": "2003"
+        },
+        {
+          "text": "2004",
+          "value": "2004"
+        },
+        {
+          "text": "2005",
+          "value": "2005"
+        },
+        {
+          "text": "2006",
+          "value": "2006"
+        },
+        {
+          "text": "2007",
+          "value": "2007"
+        },
+        {
+          "text": "2008",
+          "value": "2008"
+        },
+        {
+          "text": "2009",
+          "value": "2009"
+        },
+        {
+          "text": "2010",
+          "value": "2010"
+        },
+        {
+          "text": "2011",
+          "value": "2011"
+        },
+        {
+          "text": "2012",
+          "value": "2012"
+        },
+        {
+          "text": "2013",
+          "value": "2013"
+        },
+        {
+          "text": "2014",
+          "value": "2014"
+        },
+        {
+          "text": "2015",
+          "value": "2015"
+        },
+        {
+          "text": "2016",
+          "value": "2016"
+        },
+        {
+          "text": "2017",
+          "value": "2017"
+        },
+        {
+          "text": "2018",
+          "value": "2018"
+        },
+        {
+          "text": "2019",
+          "value": "2019"
+        },
+        {
+          "text": "2020",
+          "value": "2020"
+        },
+        {
+          "text": "2021",
+          "value": "2021"
+        },
+        {
+          "text": "2022",
+          "value": "2022"
+        },
+        {
+          "text": "2023",
+          "value": "2023"
+        },
+        {
+          "text": "2024",
+          "value": "2024"
+        },
+        {
+          "text": "2025",
+          "value": "2025"
+        },
+        {
+          "text": "2026",
+          "value": "2026"
+        },
+        {
+          "text": "2027",
+          "value": "2027"
+        },
+        {
+          "text": "2028",
+          "value": "2028"
+        },
+        {
+          "text": "2029",
+          "value": "2029"
+        },
+        {
+          "text": "2030",
+          "value": "2030"
+        },
+        {
+          "text": "2031",
+          "value": "2031"
+        }
+      ]
+    },
+    {
+      "tag": "INPUT",
+      "id": "",
+      "name": "daterangepicker_start",
+      "type": "text",
+      "text": "",
+      "value": "24/09/2026",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "",
+      "name": "daterangepicker_end",
+      "type": "text",
+      "text": "",
+      "value": "24/09/2026",
+      "checked": false,
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "placeholder": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "BUTTON",
+      "id": "",
+      "name": "",
+      "type": "submit",
+      "text": "Apply",
+      "value": "",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": null,
+      "onchange": null
+    },
+    {
+      "tag": "BUTTON",
+      "id": "",
+      "name": "",
+      "type": "submit",
+      "text": "Cancel",
+      "value": "",
+      "disabled": false,
+      "visible": false,
+      "title": "",
+      "onclick": null,
+      "onchange": null
+    }
+  ],
+  "headers": [
+    {
+      "text": "",
+      "id": "taxSettingLogTable_cb",
+      "geometry": {
+        "x": 8,
+        "y": 44,
+        "width": 35,
+        "height": 22.5,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Id",
+      "id": "taxSettingLogTable_id",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Integration Type",
+      "id": "taxSettingLogTable_integrationType",
+      "geometry": {
+        "x": 43,
+        "y": 44,
+        "width": 120,
+        "height": 22.5,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Client",
+      "id": "taxSettingLogTable_clientId",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Txn Date",
+      "id": "taxSettingLogTable_updDate",
+      "geometry": {
+        "x": 163,
+        "y": 44,
+        "width": 120,
+        "height": 22.5,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Transaction Type",
+      "id": "taxSettingLogTable_intCode",
+      "geometry": {
+        "x": 283,
+        "y": 44,
+        "width": 96,
+        "height": 22.5,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Transaction Type",
+      "id": "taxSettingLogTable_hdnIntCode",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Document Number",
+      "id": "taxSettingLogTable_documentType",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Document Number",
+      "id": "taxSettingLogTable_documentNo",
+      "geometry": {
+        "x": 379,
+        "y": 44,
+        "width": 120,
+        "height": 22.5,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Reference No",
+      "id": "taxSettingLogTable_referenceNo",
+      "geometry": {
+        "x": 499,
+        "y": 44,
+        "width": 120,
+        "height": 22.5,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Ref Number 2",
+      "id": "taxSettingLogTable_referenceNo2",
+      "geometry": {
+        "x": 619,
+        "y": 44,
+        "width": 120,
+        "height": 22.5,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Ref Type",
+      "id": "taxSettingLogTable_referenceType",
+      "geometry": {
+        "x": 739,
+        "y": 44,
+        "width": 120,
+        "height": 22.5,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Ref Type",
+      "id": "taxSettingLogTable_hdnReferenceType",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Status",
+      "id": "taxSettingLogTable_status",
+      "geometry": {
+        "x": 859,
+        "y": 44,
+        "width": 96,
+        "height": 22.5,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Message",
+      "id": "taxSettingLogTable_errorDesc",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Output Key",
+      "id": "taxSettingLogTable_key1",
+      "geometry": {
+        "x": 955,
+        "y": 44,
+        "width": 96,
+        "height": 22.5,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Output Ref1",
+      "id": "taxSettingLogTable_key2",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Output Ref2",
+      "id": "taxSettingLogTable_key3",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Output Ref2",
+      "id": "taxSettingLogTable_isCancelled",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Output Ref2",
+      "id": "taxSettingLogTable_hdnStatus",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Output Ref2",
+      "id": "taxSettingLogTable_execTime",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Output Ref2",
+      "id": "taxSettingLogTable_retryProcessing",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "Action",
+      "id": "taxSettingLogTable_action",
+      "geometry": {
+        "x": 1051,
+        "y": 44,
+        "width": 92,
+        "height": 22.5,
+        "font": "700 12px / 17.1429px Arial, Helvetica, sans-serif",
+        "color": "rgb(66, 65, 65)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "",
+      "id": "gsh_taxSettingLogTable_cb",
+      "geometry": {
+        "x": 8,
+        "y": 66.5,
+        "width": 35,
+        "height": 28,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "",
+      "id": "gsh_taxSettingLogTable_id",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "--- Select ---AvalaraClear(India)SuperTaxErnst & YoungClear(KSA)Vayanax",
+      "id": "gsh_taxSettingLogTable_integrationType",
+      "geometry": {
+        "x": 43,
+        "y": 66.5,
+        "width": 120,
+        "height": 28,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "All0-DummyClientx",
+      "id": "gsh_taxSettingLogTable_clientId",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "x",
+      "id": "gsh_taxSettingLogTable_updDate",
+      "geometry": {
+        "x": 163,
+        "y": 66.5,
+        "width": 120,
+        "height": 28,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "--- Select ---IRN_GETIRN_CANCELEWB_GENIRN_CNSLDTx",
+      "id": "gsh_taxSettingLogTable_intCode",
+      "geometry": {
+        "x": 283,
+        "y": 66.5,
+        "width": 96,
+        "height": 28,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "x",
+      "id": "gsh_taxSettingLogTable_hdnIntCode",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "x",
+      "id": "gsh_taxSettingLogTable_documentType",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "x",
+      "id": "gsh_taxSettingLogTable_documentNo",
+      "geometry": {
+        "x": 379,
+        "y": 66.5,
+        "width": 120,
+        "height": 28,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "x",
+      "id": "gsh_taxSettingLogTable_referenceNo",
+      "geometry": {
+        "x": 499,
+        "y": 66.5,
+        "width": 120,
+        "height": 28,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "x",
+      "id": "gsh_taxSettingLogTable_referenceNo2",
+      "geometry": {
+        "x": 619,
+        "y": 66.5,
+        "width": 120,
+        "height": 28,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "--- Select ---ReturnRTVSOSTOx",
+      "id": "gsh_taxSettingLogTable_referenceType",
+      "geometry": {
+        "x": 739,
+        "y": 66.5,
+        "width": 120,
+        "height": 28,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "x",
+      "id": "gsh_taxSettingLogTable_hdnReferenceType",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "--- Select ---PendingsuccessProcessingErrorx",
+      "id": "gsh_taxSettingLogTable_status",
+      "geometry": {
+        "x": 859,
+        "y": 66.5,
+        "width": 96,
+        "height": 28,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "x",
+      "id": "gsh_taxSettingLogTable_errorDesc",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "x",
+      "id": "gsh_taxSettingLogTable_key1",
+      "geometry": {
+        "x": 955,
+        "y": 66.5,
+        "width": 96,
+        "height": 28,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "x",
+      "id": "gsh_taxSettingLogTable_key2",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "x",
+      "id": "gsh_taxSettingLogTable_key3",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "x",
+      "id": "gsh_taxSettingLogTable_isCancelled",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "x",
+      "id": "gsh_taxSettingLogTable_hdnStatus",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "x",
+      "id": "gsh_taxSettingLogTable_execTime",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "",
+      "id": "gsh_taxSettingLogTable_retryProcessing",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "",
+      "id": "gsh_taxSettingLogTable_action",
+      "geometry": {
+        "x": 1051,
+        "y": 66.5,
+        "width": 92,
+        "height": 28,
+        "font": "700 12px / 17.1429px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(233, 233, 243)"
+      }
+    },
+    {
+      "text": "",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "text": "SepOctNovDec202620272028202920302031",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "text": "",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "text": "Su",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "text": "Mo",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "text": "Tu",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "text": "We",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "text": "Th",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "text": "Fr",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "text": "Sa",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "text": "",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "text": "JanFebMarAprMayJunJulAugSepOctNovDec19761977197819791980198119821983198419851986198719881989199019911992199319941995199619971998199920002001200220032004200520062007200820092010201120122013201420152016201720182019202020212022202320242025202620272028202920302031",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "text": "",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "text": "Su",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "text": "Mo",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "text": "Tu",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "text": "We",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "text": "Th",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "text": "Fr",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "text": "Sa",
+      "id": "",
+      "geometry": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "font": "700 11.6667px / 16.6667px \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    }
+  ],
+  "scripts": [
+    "https://www.google-analytics.com/analytics.js",
+    "https://www.googletagmanager.com/gtag/js?id=G-H8NVRVNQXJ&cx=c&gtm=4e69m0",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/SecurityJS/AesUtil.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/SecurityJS/CryptoJS.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/SecurityJS/PBKDF2.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/SecurityJS/jsencrypt.min.3.5.4.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/moment.js2.10.2/raphael-min.js",
+    "https://www.googletagmanager.com/gtag/js?id=UA-108693828-3",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/jQuery/jQuery-3.7.1.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/jQuery/jquery-migrate-3.3.0.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/jQueryUI/jquery-ui.min.js?v=1",
+    "https://demo.vineretail.com/eRetailWeb/struts/js/plugins/jquery.subscribe.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/jqGrid_JS_5.1.0/js/jquery.jqGrid.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/jqGrid_JS_5.1.0/js/i18n/grid.locale-en.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/bootstrap/js/bootstrap.min.js?v=1",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/moment.js2.10.2/moment.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/morris/morris.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/sparkline/jquery.sparkline.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/jvectormap/jquery-jvectormap-world-mill-en.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/knob/jquery.knob.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/daterangepicker/daterangepicker.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/datepicker/bootstrap-datepicker.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/timepicker/bootstrap-timepicker.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/slimScroll/jquery.slimscroll.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/fastclick/fastclick.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/dist/js/app.min.js?v=1",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/iCheck/icheck.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/daterangepicker/jquery.timepicker.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/switch/bootstrap-switch.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/select2/select2.full.min.js?v=1",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/ckeditor/ckeditor.js?v=1",
+    "https://demo.vineretail.com/eRetailWeb/js/CommonFunctions.js?v=1.33",
+    "https://demo.vineretail.com/eRetailWeb/jQuery-UI-Date-Range-Picker-master/js/date.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/daterangepicker/bootstrap-datetimepicker.min.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/ace-builds-master/src-min-noconflict/ace.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/ace-builds-master/src-min-noconflict/theme-chaos.js",
+    "https://demo.vineretail.com/eRetailWeb/bootstrap/_resources/plugins/ace-builds-master/src-min-noconflict/mode-json.js"
+  ],
+  "handlers": {
+    "reloadSearchGrid": "function reloadSearchGrid(event) {\n\t\t\tvar intCode = $(\"#gs_intCode\").val();\n\t\t\treqJsonMap = {};\n\t\t\trespJsonMaps = {};\n\n\t\t\tif($(\"#gs_documentNo\").val() == \"\" && $(\"#gs_referenceNo\").val() == \"\" && $(\"#gs_referenceNo2\").val() == \"\"){\n\t\t\t\t\n\t\t\t\tif($(\"#fromUpdDate\").val() == \"\" || $(\"#toUpdDate\").val() == \"\"){\n\t\t\t\t\ttryFocusBS($(\"#gs_updDate\"));\n\t\t\t\t\t$(\"#gs_updDate\").attr(\"readonly\", false);\n\t\t\t\t\twindow.parent.showAlert('Transaction date is mandatory');\n\t\t\t\t\treturn false;\n\t\t\t\t}\n\t\t\t\tvar retVal = $.ajax({\n\t\t\t\t\turl : \"validateDateRange\",\n\t\t\t\t\t\n\t\t\t\t\ttype : \"POST\",\n\t\t\t\t\tdata : {\n\t\t\t\t  \t\tfromDateValue : $(\"#fromUpdDate\").val(),\n\t\t\t\t    \ttoDateValue : $(\"#toUpdDate\").val(),\n\t\t\t\t\t\tfieldName : \"Txn \"\n\t\t\t\t\t},\n\t\t\t\t\t\tdataType : \"json\",\n\t\t\t\t\t\tasync : false\n\t\t\t\t}).responseText;\n\t\t\t\tretVal = jQuery.parseJSON(retVal);\n\t\t\t\tif(retVal != null){\n\t\t\t\t\tif(retVal.jsonMessage == null){\n\t\t\t\t\t\t\n\t\t\t\t\t} else {\n\t\t\t\t\t\twindow.parent.showAlert(retVal.jsonMessage);\n\t\t\t\t\t\tevent.preventDefault();\n\t\t\t\t\t\treturn false;\n\t\t\t\t\t}\n\t\t\t\t}\t\n\t\t\t}\n\t\t\tvar retVal = $(\"#taxSettingLogTable\").jqGrid('setGridParam', {\n\t\t\t\tdatatype : 'json',\n\t\t\t\tpage : 1,\n\t\t\t\tpostData : {\n\t\t\t\t\tintCode\t\t\t:$(\"#gs_intCode\").val(),\n\t\t\t\t\tdocumentNo\t\t:$(\"#gs_documentNo\").val(),\n\t\t\t\t\treferenceNo\t\t:$(\"#gs_referenceNo\").val(),\n\t\t\t\t\tstatus\t\t\t:$(\"#gs_status\").val(),\n\t\t\t\t\terrorDesc\t\t:$(\"#gs_errorDesc\").val(),\n\t\t\t\t\tfromUpdDate\t\t:$(\"#fromUpdDate\").val(),\n\t\t\t\t\ttoUpdDate\t\t:$(\"#toUpdDate\").val(),\n\t\t\t\t\tclientId\t\t:$(\"#gs_clientId\").val(),\n\t\t\t\t\tkey1\t\t\t:$(\"#gs_key1\").val(),\n\t\t\t\t\tkey2\t\t\t:$(\"#gs_key2\").val(),\n\t\t\t\t\tkey3\t\t\t:$(\"#gs_key3\").val(),\n\t\t\t\t\treferenceNo2\t:$(\"#gs_referenceNo2\").val(),\n\t\t\t\t\treferenceType\t:$(\"#gs_referenceType\").val(),\n\t\t\t\t\tintegrationType :$(\"#gs_integrationType\").val(),\n\t\t\t\t\tREQ_SEARCH_FLAG : true\n\t\t\t\t},\n\t\t\t\turl : \"jsonTaxTransmitLogSearch\",\n\t\t\t\tsearch : true\t\t\t\t\n\t\t\t}).trigger('reloadGrid');\n\t\t}",
+    "resetAll": "function resetAll()\n\t\t{\n\t\t\t $(\"#gs_clientId,#gs_intCode,#gs_status,#gs_referenceType,#gs_integrationType\").val('-1')\n\t  \t\t $(\"#gs_documentNo,#gs_referenceNo,#gs_errorDesc,#gs_updDate,#fromUpdDate,#toUpdDate,#gs_key1,#gs_key2,#gs_key3,#gs_referenceNo2\").val('');\n\t\t\t $(\"#taxSettingLogTable\").jqGrid('clearGridData', {\n\t\t\t\tclearfooter : true\n\t\t     });\n\t\t}",
+    "saveAddressData": "function saveAddressData(){\n\t\t\tif($(\"#custNameId\").val() != null && $(\"#custNameId\").val().trim() == \"\"){\n\t\t\t\ttryFocusBS($(\"#custNameId\"));\n\t\t\t\twindow.parent.showAlert('Customer Name' +' '+'is Mandatory.');\n\t\t\t\treturn false;\n\t\t\t}\n\t\t\tif($(\"#custadd1Id\").val() != null && $(\"#custadd1Id\").val().trim() == \"\"){\n\t\t\t\ttryFocusBS($(\"#custadd1Id\"));\n\t\t\t\twindow.parent.showAlert('Ship to Address1 is mandatory');\n\t\t\t\treturn false;\n\t\t\t}\n\t\t\tif($(\"#shipCountryId\").val() != null && $(\"#shipCountryId\").val() == \"-1\"){\n\t\t\t\ttryFocusBS($(\"#shipCountryId\"));\n\t\t\t\twindow.parent.showAlert('Ship to Country is mandatory');\n\t\t\t\treturn false;\n\t\t\t}\n\t\t\tif($(\"#custphoneid\").val() != null && $(\"#custphoneid\").val().trim() == \"\"){\n\t\t\t\ttryFocusBS($(\"#custphoneid\"));\n\t\t\t\twindow.parent.showAlert('Ship to Phone is mandatory');\n\t\t\t\treturn false;\n\t\t\t}\n\t\t\tif($(\"#custToStateId\").val() != null && $(\"#custToStateId\").val() == \"-1\"){   \n\t\t\t\ttryFocusBS($(\"#custToStateId\"));\n\t\t\t\twindow.parent.showAlert('Ship to State is mandatory');\n\t\t\t\treturn false;\n\t\t\t}\n\t\t\t\n\t\t\tif($(\"#custPinCodeId\").val() != null && $(\"#custPinCodeId\").val().trim() == \"\"){\n\t\t\t\ttryFocusBS($(\"#custPinCodeId\"));\n\t\t\t\twindow.parent.showAlert('Ship to Pincode is mandatory');\n\t\t\t\treturn false;\n\t\t\t}\n\t\t\tif($(\"#custEmailId\").val() != null && $(\"#custEmailId\").val().trim() == \"\"){\n\t\t\t\ttryFocusBS($(\"#custEmailId\"));\n\t\t\t\twindow.parent.showAlert('Ship to Email is mandatory');\n\t\t\t\treturn false;\n\t\t\t}\n\t\t\t\n\t\t\t//-----------------------\n\t\t\tif($(\"#billNameId\").val() != null && $(\"#billNameId\").val().trim() == \"\"){\n\t\t\t\ttryFocusBS($(\"#billNameId\"));\n\t\t\t\twindow.parent.showAlert('Bill to Name is mandatory');\n\t\t\t\treturn false;\n\t\t\t}\n\t\t\tif($(\"#billadd1Id\").val() != null && $(\"#billadd1Id\").val().trim() == \"\"){\n\t\t\t\ttryFocusBS($(\"#billadd1Id\"));\n\t\t\t\twindow.parent.showAlert('Bill to Address1 is mandatory');\n\t\t\t\treturn false;\n\t\t\t}\n\t\t\tif($(\"#billphoneId\").val() != null && $(\"#billphoneId\").val() == \"\"){\n\t\t\t\ttryFocusBS($(\"#billphoneId\"));\n\t\t\t\twindow.parent.showAlert('Bill to Phone is mandatory');\n\t\t\t\treturn false;\n\t\t\t}\n\t\t\tif($(\"#billcountryid\").val() != null && $(\"#billcountryid\").val() == \"-1\"){   \n\t\t\t\ttryFocusBS($(\"#billcountryid\"));\n\t\t\t\twindow.parent.showAlert('Bill to Country is mandatory');\n\t\t\t\treturn false;\n\t\t\t}\n\t\t\tif($(\"#billstateId\").val() != null && $(\"#billstateId\").val().trim() == \"-1\"){\n\t\t\t\ttryFocusBS($(\"#billstateId\"));\n\t\t\t\twindow.parent.showAlert('Bill to State is mandatory');\n\t\t\t\treturn false;\n\t\t\t}\n\t\t\t if($(\"#billpincodeId\").val() != null && $(\"#billpincodeId\").val().trim() == \"\"){\n\t\t\t\ttryFocusBS($(\"#billpincodeId\"));\n\t\t\t\twindow.parent.showAlert('Bill to Pincode is mandatory');\n\t\t\t\treturn false;\n\t\t\t}\n\t\t\t if($(\"#billgstnoid\").val() != null && $(\"#billgstnoid\").val() == \"\"){\n\t\t\t\t\ttryFocusBS($(\"#billgstnoid\"));\n\t\t\t\t\twindow.parent.showAlert('Customer GSTIN/TIN'+' '+'is Mandatory.');\n\t\t\t\t\treturn false;\n\t\t\t}\n\t\t\t if($(\"#billgstnoid\").val() != null && $(\"#billgstnoid\").val().trim() != \"\" && $(\"#billgstnoid\").val().trim() != undefined \n\t\t\t\t\t && $(\"#billgstnoid\").val().trim().toLocaleUpperCase() != \"URP\" && $(\"#billgstnoid\").val().length != '15'){\n\t\t\t\t\ttryFocusBS($(\"#billgstnoid\"));\n\t\t\t\t\twindow.parent.showAlert('GSTIN No must be 15 characters');\n\t\t\t\t\treturn false;\n\t\t\t\t}\n\t\t\tif($(\"#billEmailId\").val() != null && $(\"#billEmailId\").val().trim() == \"\"){\n\t\t\t\ttryFocusBS($(\"#billEmailId\"));\n\t\t\t\twindow.parent.showAlert('Bill to Email is mandatory');\n\t\t\t\treturn false;\n\t\t\t}\n\t\t\t\n\t\t\tvar emailaddressVal = $(\"#billEmailId\").val();\n\t\t    var emailReg = /^([\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,10})?$/; \n\t\t   \n\t\t    if(!emailReg.test(emailaddressVal)){\n\t\t    \twindow.parent.showAlert('Bill to Email is not a valid address.');\n\t\t\t\ttryFocus($(\"#billEmailId\"));\t\t\t\n\t\t        return false; \n\t\t    }\n\t\t    if(!emailReg.test($(\"#custEmailId\").val())){\n\t\t    \twindow.parent.showAlert('Ship to Email is not a valid address.');\n\t\t\t\ttryFocus($(\"#custEmailId\"));\t\t\t\n\t\t        return false; \n\t\t    }\n\t\t    \n\t\t    if(isNotBlank($(\"#shipGstin\").val()) && $(\"#shipGstin\").val().trim().toLocaleUpperCase() != \"URP\" && $(\"#shipGstin\").val().length != '15'){\n\t\t\t\t\ttryFocusBS($(\"#shipGstin\"));\n\t\t\t\t\twindow.parent.showAlert('GSTIN No must be 15 characters');\n\t\t\t\t\treturn false;\n\t\t\t}\n\t\t\t\n\t\t\tvar retVal = $.ajax({\n\t\t\t\turl : \"updateOrderAddressDetails\",\n\t\t\t\t\n\t\t\t\ttype : \"POST\",\n\t\t\t\tdata : {\n\t\t\t\t\tshipCustname : $(\"#custNameId\").val(),\n\t\t\t\t\tshipAddss1 : $(\"#custadd1Id\").val(),\n\t\t\t\t\tshipAddss2 : $(\"#custadd2Id\").val(),\n\t\t\t\t\tshipAddss3 : $(\"#custadd3Id\").val(),\n\t\t\t\t\tshipAddss4 : $(\"#custadd4Id\").val(),\n\t\t\t\t\tshipPhone : $(\"#custphoneid\").val(),\n\t\t\t\t\tshipPinCode : $(\"#custPinCodeId\").val(),\n\t\t\t\t\tshipCity : $(\"#custCityId\").val(),\n\t\t\t\t\tshipEmail : $(\"#custEmailId\").val(),\n\t\t\t\t\tbillCustname : $(\"#billNameId\").val(),\n\t\t\t\t\tbillAddss1 : $(\"#billadd1Id\").val(),\n\t\t\t\t\tbillAddss2 : $(\"#billadd2Id\").val(),\n\t\t\t\t\tbillAddss3 : $(\"#billadd3Id\").val(),\n\t\t\t\t\tbillAddss4 : $(\"#billadd4Id\").val(),\n\t\t\t\t\tbillPhone : $(\"#billphoneId\").val(),\n\t\t\t\t\tbillPinCode : $(\"#billpincodeId\").val(),\n\t\t\t\t\tbillCity : $(\"#billcityId\").val(),\n\t\t\t\t\tbillEmail : $(\"#billEmailId\").val(),   \n\t\t\t\t\tbillGstIN : $(\"#billgstnoid\").val(),\n\t\t\t\t\t orderno : $('#hiddnOrderNo').val(),\n\t\t\t\t\t obdelNo : $('#hiddnObCode').val(),\n\t\t\t\t\t transKey : $('#hiddentransKey').val(),\n\t\t\t\t\t intCode  : $('#hiddenIntCode').val(),\n\t\t\t\t\t shipGstIn : $(\"#shipGstin\").val()\n\t\t\t\t},\n\t\t\t\tdataType : \"json\",\n\t\t\t\tasync : false\n\t\t\t}).responseText;\n\t\t\t\n\t\t\tretVal = jQuery.parseJSON(retVal);\n\t\t\tif(retVal != null && retVal.jsonMessage != null && retVal.jsonMessage != \"\"){\n\t\t\t\twindow.parent.blockUIEnd();\n\t\t\t\twindow.parent.showAlert(retVal.jsonMessage);\n\t\t\t\treturn false;\n\t\t\t}else{\n\t\t\t\t$(\"#addressDialogPopUp\").modal(\"hide\");\n\t\t\t\tif($('#hiddenIntCode').val() != null && $('#hiddenIntCode').val()== \"EWB_GEN\")\n\t\t\t\t\twindow.parent.showAlert('Record Updated Successfully');\n\t\t\t\telse\n\t\t\t\twindow.parent.showAlert('Record Updated Successfully'+' & '+'Records Repushed Successfully');\n\t\t\t\tjQuery(\"#taxSettingLogTable\").trigger(\"reloadGrid\");\n\t\t\t\treturn false;\n\t\t}\n\t\t\t\n\t\t}"
+  }
+}

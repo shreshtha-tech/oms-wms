@@ -1,4 +1,4 @@
-import { find, cors } from './mongo.js';
+import { sendDatabaseUnavailable, find, cors } from './mongo.js';
 
 // Report engine — builds each report from real collections.
 // GET /api/reports?type=<reportKey>&from=&to=&warehouse=
@@ -9,11 +9,24 @@ export default async function handler(req, res) {
   try {
     const { type = '', warehouse = '', from = '', to = '' } = req.query;
 
-    const inRange = (d) => (!from || d >= from) && (!to || d <= to);
+    const validDay = value => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)
+      && Number.isFinite(Date.parse(value)) && new Date(value).toISOString().slice(0, 10) === value;
+    if ((from && !validDay(from)) || (to && !validDay(to)) || (from && to && from > to)) {
+      return res.status(400).json({ error: 'Select valid report dates with From Date on or before To Date.' });
+    }
+    const numeric = value => {
+      const number = Number(value ?? 0);
+      if (!Number.isFinite(number)) throw Object.assign(new Error('A report source record contains an invalid numeric quantity or amount.'), { statusCode: 422 });
+      return number;
+    };
+    const inRange = (d) => {
+      const day = String(d || '').slice(0, 10);
+      return (!from && !to) || (validDay(day) && (!from || day >= from) && (!to || day <= to));
+    };
     const inWh = (w) => !warehouse || warehouse === 'All' || w === warehouse;
 
-    const [skus, inv, so, po, grn, rets, ff, picks, ship, transfers] = await Promise.all([
-      find('skus', {}), find('inventory', {}), find('sale_orders', {}),
+    const [skus, so, po, grn, rets, ff, picks, ship, transfers] = await Promise.all([
+      find('skus', {}), find('sale_orders', {}),
       find('purchase_orders', {}), find('grn', {}), find('returns', {}),
       find('fulfillment_orders', {}), find('picklists', {}), find('shipments', {}),
       find('stock_transfers', {}),
@@ -35,9 +48,21 @@ export default async function handler(req, res) {
         break;
       case 'inbound-qc-report':
         columns = ['GRN No', 'PO No', 'Vendor', 'Received', 'Accepted', 'Rejected', 'QC %'];
-        rows = grn.map((g) => {
-          const rej = Math.round(g.received_qty * 0.02);
-          return [g.grn_no, g.po_no, g.vendor, g.received_qty, g.received_qty - rej, rej, '98%'];
+        rows = grn.filter((g) => g.qc_done && inWh(g.warehouse) && inRange(g.qc_completed_date || g.grn_date)).map((g) => {
+          const invalid=()=>Object.assign(new Error('QC report source quantities are missing or inconsistent. Reconcile the recorded receipt and rejection quantities.'),{statusCode:422});
+          const quantity=value=>{
+            if(!['number','string'].includes(typeof value)||(typeof value==='string'&&!value.trim()))throw invalid();
+            const result=Number(value);
+            if(!Number.isFinite(result)||result<0)throw invalid();
+            return result;
+          };
+          const received = quantity(g.received_qty);
+          if(!Array.isArray(g.qc_rejected))throw invalid();
+          const rejected = g.qc_rejected.reduce((sum, line) => sum + quantity(line?.rejQty), 0);
+          if(!Number.isFinite(rejected)||rejected>received)throw invalid();
+          const accepted = received - rejected;
+          return [g.grn_no, g.po_no, g.vendor, received, accepted, rejected,
+            received > 0 ? `${Math.round(accepted / received * 100)}%` : '—'];
         });
         break;
       case 'sales-register':
@@ -62,12 +87,13 @@ export default async function handler(req, res) {
         break;
       case 'invoice-report':
         columns = ['Invoice No', 'Order No', 'Customer', 'Date', 'Qty', 'Amount', 'Payment'];
-        rows = so.filter((o) => o.status !== 'Cancelled' && inRange(o.order_date))
-          .map((o) => ['INV' + o.order_no.slice(-6), o.order_no, o.customer, o.order_date, o.qty, o.amount, o.payment_mode]);
+        rows = so.filter((o) => o.invoice_no && o.status !== 'Cancelled' && inRange(o.invoice_date || o.order_date))
+          .map((o) => [o.invoice_no, o.order_no, o.customer, o.invoice_date || o.order_date, o.qty, o.amount, o.payment_mode]);
         break;
       case 'manifest-report':
         columns = ['Manifest No', 'Courier', 'Warehouse', 'Shipments', 'Handover Date', 'Status'];
-        rows = ship.filter((s) => inWh(s.warehouse) && inRange(s.handover_date))
+        // A locally saved draft is not a dispatched manifest and must not enter the operations report.
+        rows = ship.filter((s) => s.record_trust !== 'local-draft-metadata' && inWh(s.warehouse) && inRange(s.handover_date))
           .map((s) => [s.manifest_no, s.courier, s.warehouse, s.shipment_count, s.handover_date, s.status]);
         break;
       case 'dispatch-report':
@@ -76,46 +102,22 @@ export default async function handler(req, res) {
           .map((o) => [o.order_no, o.courier, o.awb, o.warehouse, o.status, o.order_date]);
         break;
       case 'fin-inv-sku': {
-        // Financial Inventory Report by SKU — valuation at cost + MRP
-        columns = ['SKU', 'Product', 'Warehouse', 'Available', 'Reserved', 'On Hand', 'Cost Price', 'Stock Value (Cost)', 'MRP', 'Stock Value (MRP)'];
-        rows = inv.filter((i) => inWh(i.warehouse)).map((i) => {
-          const meta = skus.find((s) => s.sku_code === i.sku_code) || {};
-          const cost = Number(meta.cost_price || 0); const mrp = Number(meta.mrp || 0);
-          return [i.sku_code, i.name, i.warehouse, i.available, i.reserved, i.on_hand, cost, Math.round(i.on_hand * cost), mrp, Math.round(i.on_hand * mrp)];
-        });
-        break;
+        return res.status(501).json({ error: 'Financial inventory report requires authoritative Central Inventory balances and recorded valuation.' });
       }
       case 'fin-inv-sku-bin': {
-        // Financial Inventory Report by SKU + BIN
-        columns = ['SKU', 'Warehouse', 'Bin', 'Available', 'On Hand', 'Cost Price', 'Stock Value (Cost)'];
-        rows = inv.filter((i) => inWh(i.warehouse)).map((i) => {
-          const meta = skus.find((s) => s.sku_code === i.sku_code) || {};
-          const cost = Number(meta.cost_price || 0);
-          return [i.sku_code, i.warehouse, i.bin, i.available, i.on_hand, cost, Math.round(i.on_hand * cost)];
-        });
-        break;
+        return res.status(501).json({ error: 'SKU and bin financial inventory report requires authoritative Central Inventory balances, bin attribution and recorded valuation.' });
       }
       case 'inventory-ageing':
-        columns = ['SKU', 'Warehouse', 'On Hand', '0-30d', '31-60d', '61-90d', '90d+'];
-        rows = inv.filter((i) => inWh(i.warehouse)).map((i) => {
-          const oh = i.on_hand;
-          return [i.sku_code, i.warehouse, oh, Math.round(oh * 0.5), Math.round(oh * 0.3), Math.round(oh * 0.15), Math.round(oh * 0.05)];
-        });
-        break;
+        return res.status(501).json({ error: 'Inventory ageing requires receipt-dated stock layers. No verified ageing source is configured.' });
       case 'inventory-ledger':
-        columns = ['SKU', 'Warehouse', 'Opening', 'Inward', 'Outward', 'Closing'];
-        rows = inv.filter((i) => inWh(i.warehouse)).map((i) => {
-          const closing = i.on_hand; const inward = i.reserved; const outward = Math.round(i.reserved * 0.6);
-          return [i.sku_code, i.warehouse, closing - inward + outward, inward, outward, closing];
-        });
-        break;
+        return res.status(501).json({ error: 'Inventory ledger report requires the authoritative Central Inventory event history.' });
       case 'sales-report':
         columns = ['Channel', 'Orders', 'Units', 'Revenue'];
         {
-          const byCh = {};
+          const byCh = Object.create(null);
           so.filter((o) => inRange(o.order_date)).forEach((o) => {
             byCh[o.channel] = byCh[o.channel] || { orders: 0, units: 0, rev: 0 };
-            byCh[o.channel].orders++; byCh[o.channel].units += o.qty; byCh[o.channel].rev += Number(o.amount);
+            byCh[o.channel].orders++; byCh[o.channel].units += numeric(o.qty); byCh[o.channel].rev += numeric(o.amount);
           });
           rows = Object.entries(byCh).map(([ch, v]) => [ch, v.orders, v.units, v.rev]);
         }
@@ -123,10 +125,10 @@ export default async function handler(req, res) {
       case 'sku-wise-sales':
         columns = ['SKU', 'Product', 'Category', 'Units Sold', 'Revenue'];
         {
-          const bySku = {};
-          ff.forEach((o) => {
+          const bySku = Object.create(null);
+          ff.filter((o) => inWh(o.warehouse) && inRange(o.order_date)).forEach((o) => {
             bySku[o.sku_code] = bySku[o.sku_code] || { name: o.sku_name, units: 0, rev: 0 };
-            bySku[o.sku_code].units += o.qty; bySku[o.sku_code].rev += Number(o.amount);
+            bySku[o.sku_code].units += numeric(o.qty); bySku[o.sku_code].rev += numeric(o.amount);
           });
           rows = Object.entries(bySku).map(([sku, v]) => {
             const meta = skus.find((s) => s.sku_code === sku);
@@ -146,7 +148,7 @@ export default async function handler(req, res) {
           ['Total Revenue', so.reduce((s, o) => s + Number(o.amount || 0), 0)],
           ['Open POs', po.filter((p) => p.status === 'Open').length],
           ['Total SKUs', skus.length],
-          ['Inventory Units', inv.reduce((s, i) => s + Number(i.on_hand || 0), 0)],
+          ['Inventory Units (Central Inventory)', 'Unavailable in this report'],
           ['Open Returns', rets.filter((r) => r.status !== 'Refunded').length],
           ['Fulfillment Orders', ff.length],
           ['Active Picklists', picks.filter((p) => p.status !== 'Completed').length],
@@ -158,26 +160,21 @@ export default async function handler(req, res) {
           .map((p) => [p.picklist_no, p.warehouse, p.pick_mode, p.order_count, p.total_qty, p.picker, p.status]);
         break;
       case 'order-unallocation': {
-        // Order Unallocation Log — WHY each order is unallocated (stock/rule/user cause)
+        // Show only recorded unallocation events, never infer a cause from current stock.
         columns = ['Order No', 'Channel', 'Warehouse', 'SKU', 'Qty', 'Available Stock', 'Unallocation Reason', 'Triggered By', 'Status'];
-        rows = ff.filter((o) => o.status === 'Pending' && inWh(o.warehouse)).map((o) => {
-          const stock = inv.find((i) => i.sku_code === o.sku_code && i.warehouse === o.warehouse);
-          const avail = stock ? stock.available : 0;
-          let reason, by;
-          if (avail < o.qty) { reason = 'Insufficient stock at location'; by = 'System (Auto-allocation rule)'; }
-          else if (o.priority === 'High') { reason = 'Held for manual review (priority)'; by = 'OMS Rule: OMS-NEAREST'; }
-          else { reason = 'Awaiting allocation cycle'; by = 'System (Scheduled ARS)'; }
-          return [o.order_no, o.channel, o.warehouse, o.sku_code, o.qty, avail, reason, by, o.status];
+        rows = ff.filter((o) => o.unallocation_date && inWh(o.warehouse) && inRange(o.unallocation_date)).map((o) => {
+          return [o.order_no, o.channel, o.warehouse, o.sku_code, o.qty, o.available_at_unallocation ?? '—',
+            o.unallocation_reason || 'Not recorded', o.unallocated_by || 'Not recorded', o.status];
         });
         break;
       }
       case 'mis-report-2': {
         // MIS Report 2.0 — richer channel + fulfilment analytics
         columns = ['Channel', 'Orders', 'Units', 'Revenue', 'Avg Order Value', 'Fulfilled %', 'Cancelled'];
-        const byCh2 = {};
+        const byCh2 = Object.create(null);
         so.filter((o) => inRange(o.order_date)).forEach((o) => {
           byCh2[o.channel] = byCh2[o.channel] || { orders: 0, units: 0, rev: 0, ful: 0, canc: 0 };
-          const b = byCh2[o.channel]; b.orders++; b.units += o.qty; b.rev += Number(o.amount || 0);
+          const b = byCh2[o.channel]; b.orders++; b.units += numeric(o.qty); b.rev += numeric(o.amount);
           if (['Shipped', 'Delivered'].includes(o.status)) b.ful++;
           if (o.status === 'Cancelled') b.canc++;
         });
@@ -194,7 +191,8 @@ export default async function handler(req, res) {
 
     return res.status(200).json({ columns, rows });
   } catch (err) {
-    console.error('Report error:', err);
-    res.status(500).json({ error: err.message });
+    if (sendDatabaseUnavailable(res, err)) return;
+    console.error('Report error:', { name: err?.name, code: err?.code });
+    res.status(err.statusCode || 500).json({ error: err.message });
   }
 }

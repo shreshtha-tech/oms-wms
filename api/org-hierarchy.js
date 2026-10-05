@@ -1,4 +1,4 @@
-import { find, findOne, insert, update, cors } from './mongo.js';
+import { sendDatabaseUnavailable, find, findOne, insert, update, cors } from './mongo.js';
 
 const MODULE = 'org-hierarchy';
 const clean = (value) => String(value ?? '').trim();
@@ -31,5 +31,6 @@ export default async function handler(req, res) {
     }
     if (req.method === 'DELETE') return res.status(409).json({ error: 'Organization hierarchy nodes cannot be deleted.' });
     return res.status(405).json({ error: 'Method not allowed' });
-  } catch (error) { console.error('org hierarchy error:', error); return res.status(500).json({ error: error.message }); }
+  } catch (error) {
+    if (sendDatabaseUnavailable(res, error)) return; console.error('org hierarchy error:', { name: error?.name, code: error?.code }); return res.status(500).json({ error: error.message }); }
 }

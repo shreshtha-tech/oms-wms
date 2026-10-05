@@ -1,7 +1,28 @@
-import{cors,find,findOne,insert,update}from'./mongo.js';const t=v=>String(v??'').trim(),reasons=[['-1','--- Select ---'],['1','Test1'],['2','Test2'],['3','Test3'],['4','Test4']],moveRow=(x,b)=>({error:'',fromBin:x.bin||'',fromLPN:x.lpn||'',toBin:t(b.toBin),toLPN:t(b.toLPN),skuCode:x.sku_code||'',skuDesc:x.name||'',uniqueNo:x.unique_no||'',quantity:Number(b.qty||1),lot:x.lot_no||'',referenceNo:b.referenceNo||''});
-async function move(source,b){const qty=Number(b.qty||1);if(!t(b.toBin))throw Object.assign(new Error('To Bin is mandatory.'),{statusCode:400});if(t(source.bin).toLowerCase()===t(b.toBin).toLowerCase()&&t(source.lpn).toLowerCase()===t(b.toLPN).toLowerCase())throw Object.assign(new Error('Inventory can not be moved in same bins'),{statusCode:400});if(!Number.isFinite(qty)||qty<=0)throw Object.assign(new Error('Quantity should be greater than 0.'),{statusCode:400});if(Number(source.available)<qty)throw Object.assign(new Error('Insufficient available inventory'),{statusCode:409});await update('inventory',source.id,{available:Number(source.available)-qty,on_hand:Number(source.on_hand||0)-qty});const all=await find('inventory');let target=all.find(x=>x.sku_code===source.sku_code&&x.warehouse===source.warehouse&&x.bin===b.toBin&&t(x.lpn)===t(b.toLPN));if(target)await update('inventory',target.id,{available:Number(target.available)+qty,on_hand:Number(target.on_hand||0)+qty});else{const{id,...copy}=source;target=await insert('inventory',{...copy,bin:b.toBin,lpn:t(b.toLPN),available:qty,reserved:0,on_hand:qty})}await insert('inventory_moves',{operation:'scan',sku_code:source.sku_code,sku_desc:source.name,from_warehouse:source.warehouse,to_warehouse:source.warehouse,from_zone:source.zone||'',to_zone:target.zone||source.zone||'',from_bin:source.bin,to_bin:b.toBin,from_lpn:source.lpn||'',to_lpn:t(b.toLPN),quantity:qty,lot_no:source.lot_no||'',reason:b.reasonText||'',status:'Completed',created_at:new Date().toISOString()});return moveRow(source,b)}
-export default async function handler(req,res){if(cors(req,res))return;try{const b=req.body||{},inventory=await find('inventory');if(req.method==='GET')return res.json({reasons,bins:[...new Set(inventory.map(x=>x.bin).filter(Boolean))],lpns:[...new Set(inventory.map(x=>x.lpn).filter(Boolean))],pageSizes:[20,50,100,200]});if(req.method!=='POST')return res.status(405).json({error:'Method not allowed'});
- if(b.action==='show-inventory'){const rows=inventory.filter(x=>(!t(b.fromBin)||t(x.bin).toLowerCase()===t(b.fromBin).toLowerCase())&&(!t(b.fromLPN)||t(x.lpn).toLowerCase()===t(b.fromLPN).toLowerCase())).map(x=>moveRow(x,{qty:x.available,toBin:b.toBin,toLPN:b.toLPN}));return res.json({rows,records:rows.length})}
- if(b.action==='add-sku'){if(!t(b.skuCode))return res.status(400).json({error:'SKU Code is mandatory.'});const source=inventory.find(x=>[x.sku_code,x.barcode].some(v=>t(v).toLowerCase()===t(b.skuCode).toLowerCase())&&(!t(b.fromBin)||t(x.bin).toLowerCase()===t(b.fromBin).toLowerCase())&&(!t(b.fromLPN)||t(x.lpn).toLowerCase()===t(b.fromLPN).toLowerCase()));if(!source)return res.status(404).json({error:'Invalid SKU Code'});return res.json({jsonMessage:'Inventory moved successfully',row:await move(source,b)})}
- if(b.action==='lpn-move'||b.action==='lpn-to-lpn'){if(!t(b.fromLPN))return res.status(400).json({error:'From LPN is mandatory.'});if(b.action==='lpn-to-lpn'&&!t(b.toLPN))return res.status(400).json({error:'To LPN is mandatory.'});const sources=inventory.filter(x=>t(x.lpn).toLowerCase()===t(b.fromLPN).toLowerCase()&&Number(x.available)>0);if(!sources.length)return res.status(404).json({error:'Invalid LPN'});const rows=[];for(const source of sources)rows.push(await move(source,{...b,qty:source.available}));return res.json({jsonMessage:'LPN moved successfully',rows,records:rows.length})}
- return res.status(400).json({error:'Invalid action'});}catch(e){res.status(e.statusCode||500).json({error:e.message})}}
+import { sendDatabaseUnavailable, cors, find } from './mongo.js';
+
+const text = value => String(value ?? '').trim();
+
+export default async function handler(req, res) {
+  if (cors(req, res)) return;
+  try {
+    if (req.method === 'GET') {
+      const reasons = (await find('generic_records', { module: 'inventory-move-reason' }))
+        .filter(row => row.status !== 'Inactive' && text(row.code) && text(row.name))
+        .map(row => [text(row.code), text(row.name)]);
+      return res.json({
+        reasons: [['-1', '--- Select ---'], ...reasons],
+        bins: [],
+        lpns: [],
+        pageSizes: [20, 50, 100, 200],
+        source: 'central-inventory',
+        unavailableReason: 'Central Inventory does not store bin or LPN balances.',
+      });
+    }
+    if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+    return res.status(501).json({ error: 'Bin and LPN moves are disabled until those balances are mapped to Central Inventory.' });
+  } catch (error) {
+    if (sendDatabaseUnavailable(res, error)) return;
+    const status = error.statusCode || error.status || (error.code || /database|connection/i.test(error.message || '') ? 503 : 500);
+    return res.status(status).json({ error: error.message || 'Inventory Move By Scan unavailable.' });
+  }
+}

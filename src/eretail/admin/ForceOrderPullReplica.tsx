@@ -1,3 +1,48 @@
-import{useState}from'react';import{apiSend}from'../../lib/api';
-const channels=[['Z18','QA11'],['Z17','QA12'],['Z19','QA12'],['M80','Jeevacare Magento'],['M84','1Mg test'],['M83','Demo CMS'],['M86','Amazon SOUQ'],['M85','Flipkart Test'],['M88','Test Woocommerce'],['M89','vajorOm'],['M91','jaypore megento'],['M90','OrangeVajor'],['M93','Doit retail'],['M92','test doit'],['M95','ebay account'],['M94','Adapty CLP'],['M97','Magento(Holistique)'],['M96','LR01'],['M99','Magento-NykaaFashion'],['M98','Fynd B2B'],['AB5','SUBCONTRACT'],['AB7','Swish Club Test'],['AB8','FBA'],['ABA','BergneriMP'],['ABB','TSS'],['ABL','Shopify_Mulmul_Dummy'],['ABM','Terratwo'],['AC0','TataClik'],['ABP','Trendyol UAT'],['AC2','Endless Aisle App'],['ABR','TIktok V2']];const warehouses=[['DFC','SANGHVI BEAUTY AND TECHNOLOGIES-LUCKY ENTERPRISES'],['909','Ra'],['TEX','Pratibha_Textile'],['JS1','JS1 Demo'],['EHO','HeadOffice'],['M87','soch.saascart.com'],['2424','Mansi old'],['CDS','Chandan'],['1211','Location12'],['UHO','Head Office'],['0009','Mansi'],['MYM','MW3 - The Souled Store Pvt. Ltd.'],['HOL','Repro'],['BCG','VinCULUM'],['22400','Faizabad'],['GMS','National Fulfillment Store']];const inp='h-9 w-full border border-slate-300 bg-white px-2 text-sm';
-export default function ForceOrderPullReplica(){const[location,setLocation]=useState('-1'),[orders,setOrders]=useState(''),[addWh,setAddWh]=useState(false),[notice,setNotice]=useState(''),[saving,setSaving]=useState(false),options=addWh?[...channels.slice(0,1),...warehouses,...channels.slice(1)]:channels;const reset=()=>{setAddWh(false);setLocation('-1');setOrders('')};const save=async()=>{if(location==='-1')return setNotice('Location is Mandatory');if(!orders)return setNotice('Order Number is Mandatory');setSaving(true);try{await apiSend('/api/admin','POST',{action:'force-pull',location,orders:orders.trim().toUpperCase()});setOrders('');setNotice('Orders Pulled Successfully  ')}catch(e:any){setNotice(e.message)}finally{setSaving(false)}};return <div className="min-h-[calc(100vh-190px)] border bg-white"><div className="flex justify-end gap-2 border-b p-2"><button className="rounded bg-[#ec9818] px-3 py-2 text-white disabled:opacity-50" disabled={saving} onClick={()=>void save()}>Save</button><button className="rounded border bg-white px-3 py-2" onClick={reset}>Reset</button></div>{notice&&<div role="alert" className="m-2 border border-rose-300 bg-rose-50 p-2 text-rose-700">{notice}<button className="float-right" onClick={()=>setNotice('')}>×</button></div>}<div className="mx-auto mt-5 grid max-w-4xl grid-cols-[140px_1fr_130px] items-center gap-4"><label className="text-right" htmlFor="force-location">Location</label><select id="force-location" aria-label="Location" className={inp} value={location} onChange={e=>setLocation(e.target.value)}><option value="-1">--- Select ---</option>{options.map(x=><option key={x[0]} value={x[0]}>{x[1]}</option>)}</select><label className="flex items-center gap-2">Add WH/HO<input aria-label="Add WH/HO" type="checkbox" checked={addWh} onChange={e=>{setAddWh(e.target.checked);setLocation('-1')}}/></label><label className="text-right" htmlFor="force-orders">Order Number</label><input id="force-orders" aria-label="Order Number" className={inp} value={orders} onChange={e=>setOrders(e.target.value)}/><span/></div><p className="mt-5 text-center font-bold italic">(Enter comma separated order numbers if more than one order numbers, Max 20 order numbers are allowed)</p></div>}
+import { useEffect, useState } from 'react';
+import { apiGet, apiSend } from '../../lib/api';
+import { Printer, X } from 'lucide-react';
+import { AdminParityHeader, AdminParityNotice } from './AdminParityParts';
+
+type Pair = [string, string];
+
+export default function ForceOrderPullReplica() {
+  const [location, setLocation] = useState('-1');
+  const [orders, setOrders] = useState('');
+  const [addWh, setAddWh] = useState(false);
+  const [channels, setChannels] = useState<Pair[]>([]);
+  const [warehouses, setWarehouses] = useState<Pair[]>([]);
+  const [notice, setNotice] = useState('');
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    void apiGet<{ channels: Pair[]; warehouses: Pair[] }>('/api/admin?action=force-pull-catalog')
+      .then(data => { setChannels(data.channels); setWarehouses(data.warehouses); })
+      .catch(error => setNotice(error instanceof Error ? error.message : 'Unable to load locations'));
+  }, []);
+
+  const reset = () => { setAddWh(false); setLocation('-1'); setOrders(''); setNotice(''); };
+  const save = async () => {
+    if (location === '-1') { document.getElementById('force-location')?.focus(); return setNotice('Location is Mandatory'); }
+    if (!orders.trim()) { document.getElementById('force-orders')?.focus(); return setNotice('Order Number is Mandatory'); }
+    setSaving(true);
+    try {
+      await apiSend('/api/admin', 'POST', { action: 'force-pull', location, orders: orders.trim().toUpperCase(), addWhHo: addWh });
+      setOrders('');
+      setNotice('Orders Pulled Successfully');
+    } catch (error) {
+      setNotice(error instanceof Error ? error.message : 'Unable to pull orders');
+    } finally { setSaving(false); }
+  };
+
+  return <div className="admin-parity">
+    <AdminParityHeader title="Force Order Pull"><button className="admin-parity-button save" disabled={saving} onClick={() => void save()}><Printer size={12} />Save</button><button className="admin-parity-button" onClick={reset}><X size={12} strokeWidth={4} />Reset</button></AdminParityHeader>
+    <AdminParityNotice message={notice} close={() => setNotice('')} />
+    <div className="admin-force-panel"><div className="admin-force-fields">
+      <label htmlFor="force-location">Location</label>
+      <select id="force-location" aria-label="Location" value={location} onChange={event => setLocation(event.target.value)}><option value="-1">--- Select ---</option>{(addWh ? [...channels, ...warehouses] : channels).map(([code, name]) => <option key={code} value={code}>{name}</option>)}</select>
+      <label className="admin-force-wh">Add WH/HO<input aria-label="Add WH/HO" type="checkbox" checked={addWh} onChange={event => { setAddWh(event.target.checked); setLocation('-1'); }} /></label>
+      <label htmlFor="force-orders">Order Number</label><input id="force-orders" aria-label="Order Number" value={orders} onChange={event => setOrders(event.target.value)} /><span />
+    </div>
+    <p>(Enter comma separated order numbers if more than one order numbers, Max 20 order numbers are allowed)</p></div>
+  </div>;
+}

@@ -1,0 +1,171 @@
+{
+  "grids": [
+    {
+      "id": "languageSearchGrid",
+      "url": "fetchLanguageProperties",
+      "datatype": "local",
+      "rowNum": 20,
+      "multiselect": false,
+      "height": "auto",
+      "colModel": [
+        {
+          "name": "propertyKey",
+          "label": "Property Key",
+          "width": 246,
+          "hidden": false
+        },
+        {
+          "name": "defaultValue",
+          "label": "Default Value",
+          "width": 409,
+          "hidden": false
+        },
+        {
+          "name": "langValue",
+          "label": "language.lbl.lang1",
+          "width": 409,
+          "hidden": false
+        },
+        {
+          "name": "globalLangValue",
+          "label": "language.lbl.lang1",
+          "width": 150,
+          "hidden": true
+        },
+        {
+          "name": "localOverride",
+          "label": "language.lbl.lang1",
+          "width": 150,
+          "hidden": true
+        },
+        {
+          "name": "dummy",
+          "label": " ",
+          "width": 72,
+          "hidden": false,
+          "formatter": "function editFormatter(cellvalue, options, rowObject) {\n\t\tvar htmStr = \"\";\n\t\thtmStr+=\"<button class='btn btn-xs \"+ (\"Y\"==rowObject[\"localOverride\"] ? 'bg-purple' : 'btn-info') +\"' type='button' style='margin-left:14px;line-height: 1;'\";\n\t\thtmStr+=\"title='\"+ (\"Y\"==rowObject[\"localOverride\"] ? rowObject[\"globalLangValue\"] : '') +\"' onclick='javascript:copyGridDataToPopUp(\\\"\"+options.rowId+ \"\\\",event);' data-toggle='tooltip' data-placement='left'><label>Edit</label></button>\"; //VE-56507 S,E\n\n\t\treturn htmStr;\n\t}"
+        },
+        {
+          "name": "createdBy",
+          "label": "Created By",
+          "width": 150,
+          "hidden": true
+        },
+        {
+          "name": "createdDate",
+          "label": "Created date",
+          "width": 150,
+          "hidden": true
+        },
+        {
+          "name": "updBy",
+          "label": "Modified By",
+          "width": 150,
+          "hidden": true
+        },
+        {
+          "name": "updDate",
+          "label": "Modified Date",
+          "width": 150,
+          "hidden": true
+        },
+        {
+          "name": "langId",
+          "label": "language.lbl.lang1",
+          "width": 150,
+          "hidden": true
+        },
+        {
+          "name": "isMobile",
+          "label": "",
+          "width": 150,
+          "hidden": true
+        }
+      ],
+      "colNames": [
+        "Property Key",
+        "Default Value",
+        "language.lbl.lang1",
+        "language.lbl.lang1",
+        "language.lbl.lang1",
+        " ",
+        "Created By",
+        "Created date",
+        "Modified By",
+        "Modified Date",
+        "language.lbl.lang1",
+        "isMobile"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "propertyKey",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function (e) {\n\t\t        if (e.which === 13) { \n\t\t            callSearch(false);\n\t\t            e.preventDefault(); \n\t\t            return false;\n\t\t        }\n\t\t    }"
+      ]
+    },
+    {
+      "id": "propertyValue",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function (e) {\n\t\t        if (e.which === 13) { \n\t\t            callSearch(false);\n\t\t            e.preventDefault(); \n\t\t            return false;\n\t\t        }\n\t\t    }"
+      ]
+    },
+    {
+      "id": "",
+      "text": "",
+      "event": "mouseover",
+      "handlers": [
+        "function(){La.addClass(o)}"
+      ]
+    },
+    {
+      "id": "",
+      "text": "",
+      "event": "mouseout",
+      "handlers": [
+        "function(){La.removeClass(o)}"
+      ]
+    },
+    {
+      "id": "",
+      "text": "2050100200",
+      "event": "change",
+      "handlers": [
+        "function(){return u(\"records\",this)?(d.p.page=Math.round(d.p.rowNum*(d.p.page-1)/this.value-.5)+1,d.p.rowNum=this.value,d.p.pager&&$(\".ui-pg-selbox\",d.p.pager).val(this.value),d.p.toppager&&$(\".ui-pg-selbox\",d.p.toppager).val(this.value),S(),!1):!1}"
+      ]
+    }
+  ],
+  "functions": {
+    "encryptPasswordRSAUsingPubKey": "function encryptPasswordRSAUsingPubKey(password) {\n\tconst crypt = new JSEncrypt();\n\n\tconst publicKeyRSA = `-----BEGIN PUBLIC KEY-----\n\t\tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwByF8BbfSm98Vf5IsUsW\n\t\tpgCLPYEbYm8AFKIuVnteGA7PmBTJS3Mx1sYv6E8httGIFoPCu+p87nDrKYz1eK3n\n\t\tnJPxQOkxOaigpgejWRL9QCtkzNTbwKDWWGmoLxRgUKQMfLqX6Imwp/TdqOIGZEed\n\t\t206ISr8ENXVrfeW0Roi6yfSXgsOPS+LU+7oaGgaYRWGKDUsIKysKimhiIspGBvLa\n\t\tSG5urTI5bIEQkOqspzFWL/USBgd41mUdNm7LzFQi3CH3WySOdv2+gobRofsH5I4e\n\t\t/iUBGx5JuC+WUNhjwi4+P0QgOwbfDBnCv4VC1skVjBkkxs53M01xPiCNDhcmJbND\n\t\tQQIDAQAB\n\t\t-----END PUBLIC KEY-----`;\n\n\tcrypt.setPublicKey(publicKeyRSA);\n\n\tconst encryptedData = crypt.encrypt(password);\n\n\treturn encryptedData;\n}",
+    "gtag": "function gtag(){dataLayer.push(arguments);}",
+    "alignModal": "function alignModal() {\n\t    \t $(\".modal-dialog\").css(\"margin-top\", $(parent.document).scrollTop()+20);\n\t     }",
+    "showProgressBar": "function showProgressBar() {\n\t\ttry {\n\t\t\tif (typeof blockUIStart === 'function') {\n\t\t\t\tblockUIStart();\n\t\t\t} else if (typeof window.parent.blockUIStart === 'function') {\n\t\t\t\twindow.parent.blockUIStart();\n\t\t\t} else if (typeof window.parent.parent.blockUIStart === 'function') {\n\t\t\t\twindow.parent.parent.blockUIStart();\n\t\t\t} else if (typeof window.parent.parent.parent.blockUIStart === 'function') {\n\t\t\t\twindow.parent.parent.parent.blockUIStart();\n\t\t\t}\n\t\t} catch (e) {\n\t\t  console.log(e.message);\n\t\t}\n\t}",
+    "hideProgressBar": "function hideProgressBar() {\n\t\ttry {\n\t\t\tif (typeof blockUIEnd === 'function') {\n\t\t\t\tblockUIEnd();\n\t\t\t} else if (typeof window.parent.blockUIEnd === 'function') {\n\t\t\t\twindow.parent.blockUIEnd();\n\t\t\t} else if (typeof window.parent.parent.blockUIEnd === 'function') {\n\t\t\t\twindow.parent.parent.blockUIEnd();\n\t\t\t} else if (typeof window.parent.parent.parent.blockUIEnd === 'function') {\n\t\t\t\twindow.parent.parent.parent.blockUIEnd();\n\t\t\t}\n\t\t} catch (e) {\n\t\t\tconsole.log(e.message);\n\t\t}\n\t}",
+    "getGridWidth": "function getGridWidth() {\n\t\ttry {\n\t\t\tvar w = window.parent.$(\"#screensWrapper\").width();\n\n\t\t\tif (w > 100)\n\t\t\t\treturn window.parent.$(\"#screensWrapper\").width() - 5;\n\t\t\telse\n\t\t\t\treturn $(window).width() - 10;\n\t\t} catch (e) {\n\t\t\tconsole.log(e.message);\n\t\t\treturn $(window).width() - 10;\n\t\t}\n\t}",
+    "shortcutKey": "function shortcutKey(){ \t\t\n    \t$(document).bind('keydown', function(e) {\n    \t\tvar keyCode = (e.keyCode) ? e.keyCode : ((e.charCode) ? e.charCode : e.which);\n    \t\tif (e.originalEvent.altKey) {\n    \t\t\t// ALT + S     Search                   \n    \t\t\tif (keyCode === 83) {\n    \t\t\t\treloadSearchGrid();\n    \t\t\t\te.preventDefault();\n    \t\t\t\treturn false;\n    \t\t\t\t\n    \t\t\t}\n    \t\t\t// ALT + N      Reset                 \n    \t\t\tif (keyCode == 78) {\n    \t\t\t\tresetAll();\n    \t\t\t\te.preventDefault();\n    \t\t\t\treturn false;\n    \t\t\t}\n    \t\t\t// ALT + F    Add New\n    \t\t\tif (keyCode == 70){\n    \t\t\t\taddnew();\n    \t\t\t\te.preventDefault();\n    \t\t\t\treturn false;\n    \t\t\t}\n    \t\t\t\n    \t\t}\n    \t});\n    }",
+    "editFormatter": "function editFormatter(cellvalue, options, rowObject) {\n\t\tvar htmStr = \"\";\n\t\thtmStr+=\"<button class='btn btn-xs \"+ (\"Y\"==rowObject[\"localOverride\"] ? 'bg-purple' : 'btn-info') +\"' type='button' style='margin-left:14px;line-height: 1;'\";\n\t\thtmStr+=\"title='\"+ (\"Y\"==rowObject[\"localOverride\"] ? rowObject[\"globalLangValue\"] : '') +\"' onclick='javascript:copyGridDataToPopUp(\\\"\"+options.rowId+ \"\\\",event);' data-toggle='tooltip' data-placement='left'><label>Edit</label></button>\"; //VE-56507 S,E\n\n\t\treturn htmStr;\n\t}",
+    "copyGridDataToPopUp": "function copyGridDataToPopUp(id, event) {\n\t\t\n\t\tvar ret = $(\"#languageSearchGrid\").jqGrid('getRowData', id);\n\t\t\n\t\t$(\"#propertyKey1\").html(ret.propertyKey);\n\t\t$(\"#defaultValue1\").html(ret.defaultValue);\n\t\t$(\"#glanguageValue\").html(ret.globalLangValue); \n\t\t$(\"#createdBy1\").html(ret.createdBy);\n\t\t$(\"#createdDate1\").html(ret.createdDate);\n\t\t$(\"#updBy1\").html(ret.updBy);\n\t\t$(\"#updDate1\").html(ret.updDate);\n\n\t\t$(\"#langValue1\").html($(\"#language option:selected\").text());\n\t\t\n\t\tif(\"Y\"==ret.localOverride) {\n\t\t\t$(\"#overrideValue\").val(ret.langValue);\n\t\t\t$(\".changedTime\").show();\n\t\t} else {\n\t\t\t$(\"#overrideValue\").val(\"\");\n\t\t\t$(\".changedTime\").hide();\n\t\t}\n\t\t\n\t\t$(\"#editLangId\").val(ret.langId);\n\t\t$(\"#editRowId\").val(id);\n\t\t$(\"#isMobile\").val(ret.isMobile);\n\t\t\n\n\t\tif(\"1\"==ret.langId) {\n\t\t\t$(\"#languageSpecificValue\").hide();\n\t\t} else {\n\t\t\t$(\"#languageSpecificValue\").show();\n\t\t}\n\t\t\n\t\t$(\"#EditDialog\").modal('show').draggable();\n\t\t\n\t\tsetTimeout(function(){ $(\"#overrideValue\").focus(); }, 500);\n\t\t\n\t\tevent.preventDefault();\n\t\tevent.stopPropagation();\n\t\t}",
+    "callSearch": "function callSearch() {\n\n\t\t$(\"#languageSearchGrid\").jqGrid('setGridParam', {\n\t\t\tdatatype : 'json',\n\t\t\tpage : 1\n\t\t});\n\t\t$(\"#languageSearchGrid\").jqGrid('setGridParam', {\n\t\t\tpostData : {\n\t\t\t\tlanguageId : $(\"#language\").val(),\n\t\t\t\tpropertyType : $(\"#propertyType\").val(),\n\t\t\t\tpropertyKey : $(\"#propertyKey\").val(),\n\t\t\t\tpropertyValue : $(\"#propertyValue\").val(),\n\t\t\t\tREQ_SEARCH_FLAG : true\n\t\t\t},\n\t\t\turl : \"fetchLanguageProperties\",\n\t\t\tsearch : true\n\t\t}).trigger('reloadGrid');\n\t}",
+    "resizeGrid": "function resizeGrid(gridId) {\n\n\t\tvar gridObj = $(\"#\" + gridId);\n\n\t\tvar gridHeight = window.parent.getParentHeight() - 149;\n\t\tvar gridWidth = $(window).width() - 14;\n\t\tif (gridWidth < 270)\n\t\t\tgridWidth = 270;\n\n\t\ttry {\n\t\t\tif ($(window).width() < 992) {\n\t\t\t\tif (oldWidth > 992) {\n\t\t\t\t\tgridObj.trigger('reloadGrid');\n\t\t\t\t}\n\t\t\t} else {\n\t\t\t\tif (oldWidth < 992) {\n\t\t\t\t\tgridObj.trigger('reloadGrid');\n\t\t\t\t}\n\t\t\t}\n\t\t} catch (e) {\n\t\t}\n\n\t\tgridObj.jqGrid('setGridWidth', gridWidth);\n\t\tgridHeight = gridHeight;\n\t\t$(\"#gbox_\" + gridObj[0].id + \" .ui-jqgrid-bdiv\").css(\"height\",\n\t\t\t\tgridHeight + \"px\");\n\t\toldWidth = gridWidth;\n\t}",
+    "resetData": "function resetData(){\n\t\t$(\"#propertyType\").val(\"-1\");\n\t\t$(\"#propertyKey\").val(\"\");\n\t\t$(\"#propertyValue\").val(\"\");\n\t\t\n\t\t$(\"#jqgh_languageSearchGrid_langValue\").html($(\"#language option:selected\").text());\n\n\t\t$(\"#languageSearchGrid\").jqGrid('clearGridData', {\n\t\t\tclearfooter : true\n\t\t});\n\t}",
+    "clickSave": "function clickSave() {\n\t\t\n\t\tif (trimString($(\"#overrideValue\").val()).toUpperCase() == trimString($(\"#defaultValue1\").html()).toUpperCase()) {\n\t\t\ttryFocusBS($(\"#overrideValue\"));\n\t\t\twindow.parent.showAlert(\"Overrided Text is should not be same as Default Text\"); \n\t\t\treturn false;\n\t\t}\n\t\t\n\t\tvar retVal = $.ajax({\n\t\t\turl: \"EditPropertyValueBS\",\n\t\t\tglobal: false,\n\t\t\ttype: \"POST\",\n\t\t\tdata: {\n\t\t\t\tpropertyKey : $(\"#propertyKey1\").html(),\n\t\t\t\toverrideValue: $(\"#overrideValue\").val(),\n\t\t\t\tlanguageId1 : $(\"#editLangId\").val(),\n\t\t\t\tisMobile : $(\"#isMobile\").val()\n\t\t\t},\n\t\t\tdataType: \"json\",\n\t\t\tasync: false\n\t\t\t}).responseText;\n\t\tretVal = jQuery.parseJSON(retVal);\n\t\t\n\t\tif(retVal!=null) {\n\t\t\tif(retVal.jsonMessage==null) {\n\t\t\t\tif(retVal.langPropertyMap!=null) {\n\t\t\t\t\tvar gridObj = $('#languageSearchGrid');\n\t\t\t\t\tvar index =gridObj.jqGrid('getInd', $(\"#editRowId\").val());\n\t\t\t\t\tvar position = 'first';\n\t\t\t\t\tvar srcRowId='';\n\t\t\t\t    if ( index == 1 ) {\n\t\t\t\t\t\tposition = 'first';\n\t\t\t\t\t} else {\n\t\t\t\t    \tposition = 'after';\n\t\t\t\t        srcRowId = gridObj.find('tr#' + $(\"#editRowId\").val()).prev()[0].id;\n\t\t\t\t    }\n\t\t\t\t\t \n\t\t\t\t    gridObj.jqGrid('delRowData', $(\"#editRowId\").val());\n\t\t\t\t    gridObj.jqGrid('addRowData', $(\"#editRowId\").val(), retVal.langPropertyMap[0], position, srcRowId);\n//\t\t\t\t\t$('#languageSearchGrid').jqGrid('setRowData', $(\"#editRowId\").val(), retVal.langPropertyMap[0]);\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\t$(\"#EditDialog\").modal('hide')\n\t\t\t\t\n\t\t\t\twindow.parent.showAlert(retVal.langDTO.createDateText); \n\t\t\t\treturn false;\n\t\t\t} else {\n\t\t\t\twindow.parent.showAlert(retVal.jsonMessage); \n\t\t\t\treturn false;\n\t\t\t}\n\t\t}\n\t\t\n\t\t\n\t}",
+    "pickList": "function pickList(key, key2, key3, key4, flag) {\n\t\t\tif (flag == \"1\") {\n\t\t\t\tdocument.getElementById(\"pickListIFrame\").src = \"fetchBrandMS?key=\" + key + ((key2 != null) ? (\"&&key2=\" + encodeURIComponent(key2)) : \"\")\n\t\t\t\t\t\t+ ((key3 != null) ? (\"&&key3=\" + key3) : \"\") + ((key4 != null) ? (\"&&key4=\" + key4) : \"\");\t\t\t\n\t\t\t\t$(\"#pickListDialog\").modal().draggable();\n\t\t\t} else if(flag== \"2\" || flag== \"3\"){\n\t\t\t\tdocument.getElementById(\"pickListIFrame\").src = \"fetchBrandMS?key=\" + key + ((key2 != null) ? (\"&&key2=\" + encodeURIComponent(key2)) : \"\")\n\t\t\t\t+ ((key3 != null) ? (\"&&key3=\" + key3) : \"\") + ((flag != null) ? (\"&&key4=\" + flag) : \"\");/* VE-80183 S,E */\n\t\t \t\t$(\"#pickListDialog\").modal().draggable();\n\t\t\t}else {\n\t\t\t\tdocument.getElementById(\"pickListIFrame\").src = \"eretail_openPickListBS?key=\" + key + ((key2 != null) ? (\"&&key2=\" + encodeURIComponent(key2)) : \"\")\n\t\t\t\t\t\t+ ((key3 != null) ? (\"&&key3=\" + key3) : \"\") + ((key4 != null) ? (\"&&key4=\" + key4) : \"\");\t\t\t\n\t\t\t\t$(\"#pickListDialog\").modal().draggable();\n\t\t\t}\n\t\t}",
+    "closePickList": "function closePickList() {\n\t\t\t$(\"#pickListIFrame\").removeAttr(\"src\");\n\t\t\t$(\"#pickListDialog\").modal('hide');\n\t\t}",
+    "okPickList": "function okPickList() {\n\t\t\twindow.pickListIFrame.okClick();\n\t\t}"
+  },
+  "dialogs": [
+    {
+      "id": "EditDialog",
+      "text": "×\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\tEdit Value \n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tProperty Key\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tDefault Value\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tlanguage.lbl.lang1\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tOverride Value \n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t \n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tCreated By\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tUpd By\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tCreated date\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tUpd Date\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t Save\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tClose"
+    },
+    {
+      "id": "pickListDialog",
+      "text": "Brand List \n\t\t\t\t\t\n\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\tClose\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\tOK"
+    }
+  ]
+}

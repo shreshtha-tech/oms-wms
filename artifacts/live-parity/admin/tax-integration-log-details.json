@@ -1,0 +1,569 @@
+{
+  "grids": [
+    {
+      "id": "taxSettingLogTable",
+      "url": "jsonTaxTransmitLogSearch",
+      "datatype": "json",
+      "rowNum": 20,
+      "multiselect": true,
+      "height": "auto",
+      "colModel": [
+        {
+          "name": "cb",
+          "width": 35,
+          "hidden": false,
+          "search": false,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "id",
+          "label": "Id",
+          "width": 100,
+          "hidden": true,
+          "search": false,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "integrationType",
+          "label": "Integration Type",
+          "width": 120,
+          "hidden": false,
+          "search": true,
+          "stype": "select",
+          "searchoptions": {
+            "value": ":",
+            "searchOperMenu": true
+          },
+          "formatter": "function integrationFormatter(cellvalue, options, rowObject) {\n\t\t\t\tif(rowObject.integrationType != null && $(\"#gs_integrationType option[value='\"+rowObject.integrationType+\"']\").length > 0) {\n\t\t\t\t\treturn $(\"#gs_integrationType option[value='\"+rowObject.integrationType+\"']\").text();\n\t\t\t\t}\n\t\t\t\treturn \"\";\n\t\t\t}"
+        },
+        {
+          "name": "clientId",
+          "label": "Client",
+          "width": 125,
+          "hidden": true,
+          "search": true,
+          "stype": "select",
+          "searchoptions": {
+            "value": ":",
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "updDate",
+          "label": "Txn Date",
+          "width": 120,
+          "hidden": false,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          },
+          "formatter": "date"
+        },
+        {
+          "name": "intCode",
+          "label": "Transaction Type",
+          "width": 96,
+          "hidden": false,
+          "search": true,
+          "stype": "select",
+          "searchoptions": {
+            "value": ":",
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "hdnIntCode",
+          "label": "Transaction Type",
+          "width": 100,
+          "hidden": true,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "documentType",
+          "label": "Document Number",
+          "width": 125,
+          "hidden": true,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "documentNo",
+          "label": "Document Number",
+          "width": 120,
+          "hidden": false,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "referenceNo",
+          "label": "Reference No",
+          "width": 120,
+          "hidden": false,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "referenceNo2",
+          "label": "Ref Number 2",
+          "width": 120,
+          "hidden": false,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          },
+          "formatter": "function formatOrderNoLink(cellvalue, options, rowObject) {\n\t\t\t\tif(rowObject.intCode == \"IRN_CNSLDT\")\n\t\t\t\t\treturn cellvalue;\n\t\t\t\tvar html = \"<div title='\"+cellvalue+\"' style='margin-top:3px;margin-bottom:2px;'>\";\n\t\t\t\thtml+= \"<div style='text-align:center; '><span class='gCtrl' onclick='javascript: openOrderLink(\\\"\"\n\t\t\t\t\t\t+ cellvalue+ \"\\\", \\\"\" +rowObject.referenceType +\"\\\", \\\"\" +rowObject.referenceNo +\"\\\",event); return false;' style='color: #2179d0; font-weight:bold; font-family:Arial;cursor:pointer;cursor:hand;'>\" + cellvalue + \"</span></div>\"; //VE-56507 S,E \n\t\t\t\thtml+=\"</div>\";\n\t\t\t\treturn html;\n\t\t\t}"
+        },
+        {
+          "name": "referenceType",
+          "label": "Ref Type",
+          "width": 120,
+          "hidden": false,
+          "search": true,
+          "stype": "select",
+          "searchoptions": {
+            "value": ":",
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "hdnReferenceType",
+          "label": "Ref Type",
+          "width": 100,
+          "hidden": true,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "status",
+          "label": "Status",
+          "width": 96,
+          "hidden": false,
+          "search": true,
+          "stype": "select",
+          "searchoptions": {
+            "value": ":",
+            "searchOperMenu": true
+          },
+          "formatter": "function statusFormatLink(cellvalue, options, rowObject) {\n\t\t        var cssString = \"shape-flag-green\";\n\t\t        if(rowObject[\"hdnStatus\"]==0)\n\t\t\t\t\tcssString = \"shape-flag-darkYellow\";\n\t\t\t\telse if(rowObject[\"hdnStatus\"]==9)\n\t\t\t\t\tcssString = \"shape-flag-magenta\";\n\t\t\t\telse if(rowObject[\"hdnStatus\"]==10)\n\t\t\t\t\tcssString = \"shape-flag-violet\";\n\t\t        if(rowObject.hdnStatus == 9 && rowObject.errorDesc != null && rowObject.errorDesc != \"\"){\n\t\t\t        return \"<span class='shape-flag \"+cssString+\"' style='text-align:left; min-width:60px; display: inline-block; text-decoration: underline; cursor: pointer;' onclick='javascript:openErrorMessage(event, \\\"\"\n\t\t\t\t\t+ escape(rowObject.errorDesc)+ \"\\\");' >\"+ rowObject[\"status\"] +\"</a></span>\";                                               \n\t\t        } else {\n\t\t\t        return \"<span class='shape-flag \"+cssString+\"' style='text-align:left; min-width:60px; display: inline-block; ' >\"+ rowObject[\"status\"] +\"</span>\";                                               \n\t\t        \t\n\t\t        }                                               \n\t\t\t}"
+        },
+        {
+          "name": "errorDesc",
+          "label": "Message",
+          "width": 100,
+          "hidden": true,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "key1",
+          "label": "Output Key",
+          "width": 96,
+          "hidden": false,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "key2",
+          "label": "Output Ref1",
+          "width": 100,
+          "hidden": true,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "key3",
+          "label": "Output Ref2",
+          "width": 100,
+          "hidden": true,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "isCancelled",
+          "label": "Output Ref2",
+          "width": 100,
+          "hidden": true,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "hdnStatus",
+          "label": "Output Ref2",
+          "width": 100,
+          "hidden": true,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "execTime",
+          "label": "Output Ref2",
+          "width": 100,
+          "hidden": true,
+          "search": true,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "retryProcessing",
+          "label": "Output Ref2",
+          "width": 100,
+          "hidden": true,
+          "search": false,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          }
+        },
+        {
+          "name": "action",
+          "label": "Action",
+          "width": 92,
+          "hidden": false,
+          "search": false,
+          "stype": "text",
+          "searchoptions": {
+            "searchOperMenu": true
+          },
+          "formatter": "function formatActionLink(cellvalue, options, rowObject) {\n\t\t\t\tvar html = \"\";\n\t\t\t\tlet dataFound = false;\n\n\t\t\t\tif(rowObject.hdnStatus == 1 || rowObject.hdnStatus == 9) {\n\t\t\t\t\t//VE-68990 S\t\n\t\t\t\t\tif(updateAddRight != null && updateAddRight ==\"true\" && rowObject.hdnStatus == 9 && (rowObject.hdnIntCode ==\"EWB_GEN\" || rowObject.hdnIntCode==\"IRN_GET\") && rowObject.referenceType=='SO'){ //VE-56507 S,E\n\t\t\t\t\t\thtml+=\"<div class='col-xs-12' style='text-align:center;'> <a href='javascript:void(0);'  onclick='javascript:openDialog(\\\"\"+options.rowId+ \"\\\",\\\"\"+rowObject.hdnIntCode+ \"\\\",\\\"\" +rowObject.referenceNo2+ \"\\\",\\\"\"+rowObject.referenceNo+ \"\\\",event);' class='gridIcon gridEditIcon' ><i class='fa fa-pencil'></i></a>\"; //VE-56507 S,E\n\t\t\t\t\t}else\n\t\t\t\t\t\thtml += \"<div class='col-xs-12' style='text-align:center; padding-left: 27px;'>\";\n\t\t\t\t\t//VE-68990 E\n\t\t\t\t} else\n\t\t\t\t\thtml += \"<div class='col-xs-12' style='text-align:center; padding-left: 27px;'>\";\n\t\t\t    html +=\"<a href='javascript:void(0);' onclick='javascript:openRequestResponseBody(event, \\\"\"\n\t\t\t\t\t+ rowObject.id\t+ \"\\\");' class='gridIcon gridEditIcon' ><i class='fa fa-eye' data-toggle='tooltip' data-placement='left' title='View'></i></a><a href='javascript:void(0);' onclick='javascript:openOutputReference(event, \\\"\"\n\t\t\t\t\t+ options.rowId\t+ \"\\\");' class='gridIcon gridEditIcon' ><i class='fa fa-info' data-toggle='tooltip' data-placement='left' title='Info'></i></a></div>\";\n\t\t\t\treturn html;\n\t\t\t}"
+        }
+      ],
+      "colNames": [
+        "<input role='checkbox' id='cb_taxSettingLogTable' class='cbox' type='checkbox'/>",
+        "Id",
+        "Integration Type",
+        "Client",
+        "Txn Date",
+        "Transaction Type",
+        "Transaction Type",
+        "Document Number",
+        "Document Number",
+        "Reference No",
+        "Ref Number 2",
+        "Ref Type",
+        "Ref Type",
+        "Status",
+        "Message",
+        "Output Key",
+        "Output Ref1",
+        "Output Ref2",
+        "Output Ref2",
+        "Output Ref2",
+        "Output Ref2",
+        "Output Ref2",
+        "Action"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "",
+      "text": "",
+      "event": "mouseover",
+      "handlers": [
+        "function(){La.addClass(o)}"
+      ]
+    },
+    {
+      "id": "",
+      "text": "",
+      "event": "mouseout",
+      "handlers": [
+        "function(){La.removeClass(o)}"
+      ]
+    },
+    {
+      "id": "cb_taxSettingLogTable",
+      "text": "",
+      "event": "click",
+      "handlers": [
+        "function(e){var t,n,r=Y.get(this,i);if(1&e.isTrigger&&this[i]){if(r.length)(S.event.special[i]||{}).delegateType&&e.stopPropagation();else if(r=s.call(arguments),Y.set(this,i,r),t=o(this,i),this[i](),r!==(n=Y.get(this,i))||t?Y.set(this,i,!1):n={},r!==n)return e.stopImmediatePropagation(),e.preventDefault(),n.value}else r.length&&(Y.set(this,i,{value:S.event.trigger(S.extend(r[0],S.Event.prototype),r.slice(1),this)}),e.stopImmediatePropagation())}"
+      ]
+    },
+    {
+      "id": "gs_integrationType",
+      "text": "--- Select ---AvalaraClear(India)SuperTaxErnst & YoungClear(KSA)Vayana",
+      "event": "change",
+      "handlers": [
+        "function(){return k(),!1}"
+      ]
+    },
+    {
+      "id": "gs_clientId",
+      "text": "All0-DummyClient",
+      "event": "change",
+      "handlers": [
+        "function(){return k(),!1}"
+      ]
+    },
+    {
+      "id": "gs_updDate",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "gs_updDate",
+      "text": "",
+      "event": "click",
+      "handlers": [
+        "function(){return e.apply(t||this,r.concat(s.call(arguments)))}"
+      ]
+    },
+    {
+      "id": "gs_updDate",
+      "text": "",
+      "event": "focus",
+      "handlers": [
+        "function(e){var t,n,r=Y.get(this,i);if(1&e.isTrigger&&this[i]){if(r.length)(S.event.special[i]||{}).delegateType&&e.stopPropagation();else if(r=s.call(arguments),Y.set(this,i,r),t=o(this,i),this[i](),r!==(n=Y.get(this,i))||t?Y.set(this,i,!1):n={},r!==n)return e.stopImmediatePropagation(),e.preventDefault(),n.value}else r.length&&(Y.set(this,i,{value:S.event.trigger(S.extend(r[0],S.Event.prototype),r.slice(1),this)}),e.stopImmediatePropagation())}",
+        "function(){return e.apply(t||this,r.concat(s.call(arguments)))}"
+      ]
+    },
+    {
+      "id": "gs_updDate",
+      "text": "",
+      "event": "keyup",
+      "handlers": [
+        "function(){return e.apply(t||this,r.concat(s.call(arguments)))}"
+      ]
+    },
+    {
+      "id": "gs_updDate",
+      "text": "",
+      "event": "keydown",
+      "handlers": [
+        "function(){return e.apply(t||this,r.concat(s.call(arguments)))}"
+      ]
+    },
+    {
+      "id": "gs_updDate",
+      "text": "",
+      "event": "apply",
+      "handlers": [
+        "function(ev, picker) {\n\t\t\t\t\tchangeDateRangeData(ctrlId, hdnFrom, hdnTo);\n\t\t\t\t}"
+      ]
+    },
+    {
+      "id": "gs_intCode",
+      "text": "--- Select ---IRN_GETIRN_CANCELEWB_GENIRN_CNSLDT",
+      "event": "change",
+      "handlers": [
+        "function(){return k(),!1}"
+      ]
+    },
+    {
+      "id": "gs_hdnIntCode",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "gs_documentType",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "gs_documentNo",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "gs_referenceNo",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "gs_referenceNo2",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "gs_referenceType",
+      "text": "--- Select ---ReturnRTVSOSTO",
+      "event": "change",
+      "handlers": [
+        "function(){return k(),!1}"
+      ]
+    },
+    {
+      "id": "gs_hdnReferenceType",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "gs_status",
+      "text": "--- Select ---PendingsuccessProcessingError",
+      "event": "change",
+      "handlers": [
+        "function(){return k(),!1}"
+      ]
+    },
+    {
+      "id": "gs_errorDesc",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "gs_key1",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "gs_key2",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "gs_key3",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "gs_isCancelled",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "gs_hdnStatus",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "gs_execTime",
+      "text": "",
+      "event": "keypress",
+      "handlers": [
+        "function(a){var\nb=a.charCode||a.keyCode||0;return 13===b?(k(),!1):this}"
+      ]
+    },
+    {
+      "id": "",
+      "text": "2050100200",
+      "event": "change",
+      "handlers": [
+        "function(){return u(\"records\",this)?(d.p.page=Math.round(d.p.rowNum*(d.p.page-1)/this.value-.5)+1,d.p.rowNum=this.value,d.p.pager&&$(\".ui-pg-selbox\",d.p.pager).val(this.value),d.p.toppager&&$(\".ui-pg-selbox\",d.p.toppager).val(this.value),S(),!1):!1}"
+      ]
+    }
+  ],
+  "functions": {
+    "encryptPasswordRSAUsingPubKey": "function encryptPasswordRSAUsingPubKey(password) {\n\tconst crypt = new JSEncrypt();\n\n\tconst publicKeyRSA = `-----BEGIN PUBLIC KEY-----\n\t\tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwByF8BbfSm98Vf5IsUsW\n\t\tpgCLPYEbYm8AFKIuVnteGA7PmBTJS3Mx1sYv6E8httGIFoPCu+p87nDrKYz1eK3n\n\t\tnJPxQOkxOaigpgejWRL9QCtkzNTbwKDWWGmoLxRgUKQMfLqX6Imwp/TdqOIGZEed\n\t\t206ISr8ENXVrfeW0Roi6yfSXgsOPS+LU+7oaGgaYRWGKDUsIKysKimhiIspGBvLa\n\t\tSG5urTI5bIEQkOqspzFWL/USBgd41mUdNm7LzFQi3CH3WySOdv2+gobRofsH5I4e\n\t\t/iUBGx5JuC+WUNhjwi4+P0QgOwbfDBnCv4VC1skVjBkkxs53M01xPiCNDhcmJbND\n\t\tQQIDAQAB\n\t\t-----END PUBLIC KEY-----`;\n\n\tcrypt.setPublicKey(publicKeyRSA);\n\n\tconst encryptedData = crypt.encrypt(password);\n\n\treturn encryptedData;\n}",
+    "gtag": "function gtag(){dataLayer.push(arguments);}",
+    "alignModal": "function alignModal() {\n\t    \t $(\".modal-dialog\").css(\"margin-top\", $(parent.document).scrollTop()+20);\n\t     }",
+    "showProgressBar": "function showProgressBar() {\n\t\ttry {\n\t\t\tif (typeof blockUIStart === 'function') {\n\t\t\t\tblockUIStart();\n\t\t\t} else if (typeof window.parent.blockUIStart === 'function') {\n\t\t\t\twindow.parent.blockUIStart();\n\t\t\t} else if (typeof window.parent.parent.blockUIStart === 'function') {\n\t\t\t\twindow.parent.parent.blockUIStart();\n\t\t\t} else if (typeof window.parent.parent.parent.blockUIStart === 'function') {\n\t\t\t\twindow.parent.parent.parent.blockUIStart();\n\t\t\t}\n\t\t} catch (e) {\n\t\t  console.log(e.message);\n\t\t}\n\t}",
+    "hideProgressBar": "function hideProgressBar() {\n\t\ttry {\n\t\t\tif (typeof blockUIEnd === 'function') {\n\t\t\t\tblockUIEnd();\n\t\t\t} else if (typeof window.parent.blockUIEnd === 'function') {\n\t\t\t\twindow.parent.blockUIEnd();\n\t\t\t} else if (typeof window.parent.parent.blockUIEnd === 'function') {\n\t\t\t\twindow.parent.parent.blockUIEnd();\n\t\t\t} else if (typeof window.parent.parent.parent.blockUIEnd === 'function') {\n\t\t\t\twindow.parent.parent.parent.blockUIEnd();\n\t\t\t}\n\t\t} catch (e) {\n\t\t\tconsole.log(e.message);\n\t\t}\n\t}",
+    "getGridWidth": "function getGridWidth() {\n\t\ttry {\n\t\t\tvar w = window.parent.$(\"#screensWrapper\").width();\n\t\t\tif(w>100)\n\t\t\t\treturn window.parent.$(\"#screensWrapper\").width()-10;\n\t\t\telse\n\t\t\t\treturn $(window).width()-10;\n\t\t} catch (e) {\n\t\t\tconsole.log(e.message);\n\t\t\treturn $(window).width()-10;\n\t\t}\n\t}",
+    "shortcutKey": "function shortcutKey(){ \t\t\n    \t$(document).bind('keydown', function(e) {\n    \t\tvar keyCode = (e.keyCode) ? e.keyCode : ((e.charCode) ? e.charCode : e.which);\n    \t\tif (e.originalEvent.altKey) {\n    \t\t\t// ALT + S     Search                   \n    \t\t\tif (keyCode === 83) {\n    \t\t\t\treloadSearchGrid();\n    \t\t\t\te.preventDefault();\n    \t\t\t\treturn false;\n    \t\t\t\t\n    \t\t\t}\n    \t\t\t// ALT + N      Reset                 \n    \t\t\tif (keyCode == 78) {\n    \t\t\t\tresetAll();\n    \t\t\t\te.preventDefault();\n    \t\t\t\treturn false;\n    \t\t\t}\n    \t\t\t// ALT + F    Add New\n    \t\t\tif (keyCode == 70){\n    \t\t\t\taddnew();\n    \t\t\t\te.preventDefault();\n    \t\t\t\treturn false;\n    \t\t\t}\n    \t\t\t\n    \t\t}\n    \t});\n    }",
+    "openErrorMessage": "function openErrorMessage(event, msg){\n\t\t\t$(\"#errorMessageDialog\").modal(\"show\");\n\t\t\t$(\"#errorDesc\").html(unescape(msg));\n\t\t}",
+    "openRequestResponseBody": "function openRequestResponseBody(event, id){\n\t\t\tif(id != undefined && id != null && id != \"\") {\n\t\t\t\t\n\t\t\t\tvar retVal = $.ajax({\n\t\t\t\t\turl : \"fetchRequestResponseById\",\n\t\t\t\t\t\n\t\t\t\t\ttype : \"POST\",\n\t\t\t\t\tdata : {\n\t\t\t\t\t\ttransId : id\n\t\t\t\t\t},\n\t\t\t\t\tdataType : \"json\",\n\t\t\t\t\tasync : false\n\t\t\t\t}).responseText;\n\t\t\t\t\n\t\t\t\tretVal = jQuery.parseJSON(retVal);\n\t\t\t\tif(retVal != null && retVal != undefined && retVal.transmitLogDTO != null \n\t\t\t\t\t\t&& (retVal.transmitLogDTO.requestJson != null || retVal.transmitLogDTO.responseJson != null)){//VE-31975 SE\n\t\t\t\t\t//VE-16029 S\n\t\t\t\t\ttry {\n\t\t\t\t\t\tif(retVal.transmitLogDTO.requestJson != undefined && retVal.transmitLogDTO.requestJson != \"\")\n\t\t\t\t\t\t\teditor.setValue(JSON.stringify(JSON.parse(retVal.transmitLogDTO.requestJson), null, '\\t'), -1);\n\t\t\t\t\t\telse\n\t\t\t\t\t\t\teditor.setValue(\"\");\n\t\t\t\t\t} catch (e) {\n\t\t\t\t\t\tif(retVal.transmitLogDTO.requestJson != undefined && retVal.transmitLogDTO.requestJson != \"\")\n\t\t\t\t\t\t\teditor.setValue(retVal.transmitLogDTO.requestJson);\n\t\t\t\t\t\telse\n\t\t\t\t\t\t\teditor.setValue(\"\");\t\t\t\t\t\t\n\t\t\t\t\t}\n\t\t\t\t\ttry {\n\t\t\t\t\t\tif(retVal.transmitLogDTO.responseJson != undefined && retVal.transmitLogDTO.responseJson != \"\")\n\t\t\t\t\t\t\teditor1.setValue(JSON.stringify(JSON.parse(retVal.transmitLogDTO.responseJson), null, '\\t'), -1);\n\t\t\t\t\t\telse\n\t\t\t\t\t\t\teditor1.setValue(\"\");\n\t\t\t\t\t} catch(e) {\n\t\t\t\t\t\tif(retVal.transmitLogDTO.responseJson != undefined && retVal.transmitLogDTO.responseJson != \"\")\n\t\t\t\t\t\t\teditor1.setValue(retVal.transmitLogDTO.responseJson);\n\t\t\t\t\t\telse\n\t\t\t\t\t\t\teditor1.setValue(\"\");\n\t\t\t\t\t}\n\t\t\t\t\tvar rowData = jQuery(\"#taxSettingLogTable\").getRowData(id);\n\t\t\t\t\tlet str = \"\";\n\t\t\t\t\tif(rowData != undefined && rowData != null && rowData != \"\"){\n\t\t\t\t\t\t\n\t\t\t\t\t\tstr = \"Document Number\";\n\t\t\t\t\t\tstr += \" : \" + rowData.documentNo + \" [ Exec Time : \" + rowData.execTime + \"s ]\";\n\t\t\t\t\t}\n\t\t\t\t\t$(\"#headLabel\").html(str);\n\t\t\t\t\t//VE-16029 E\n\t\t\t\t\t$(\"#requestResponseDialog\").modal(\"show\");\n\t\t\t\t}\n\t\t\t\telse{\n\t\t\t\t\twindow.parent.showAlert('Something Went Wrong');\n\t\t\t\t\treturn false;\n\t\t\t\t}\n\t\t\t}\n\t\t}",
+    "openOrderLink": "function openOrderLink(orderNo, orderType,refrenceNo, event){\n\t\t\tvar clientId = $(\"#gs_clientId\").val() != null && $(\"#gs_clientId\").val() != ''  ? $(\"#gs_clientId\").val() :\"0\";\n\t\t\tif (window.parent){\n\t\t\t\tif(orderType == \"STO\")\n\t\t\t\t\twindow.parent.openScreen(\"STO Order Create/Edit\",\"stockOrderMaintDisplayBS?stkTransferCode=\" + orderNo, \"fa fa-fw fa-list-ol\");\n\t\t\t\t\n\t\t\t\telse if(orderType.toUpperCase() == \"RETURN\"){\n\t\t\t\t\tif(refrenceNo != \"\")\n\t\t\t\t\twindow.parent.openScreen(\"Return Create/Edit-\"+orderNo,\"custReturnFetchDataBS?custRetCode=\"+ orderNo+\"&clientIds=\" +clientId, \"fa fa-fw fa-list-ol\");  \n\t\t\t\t\telse\n\t\t\t\t\t\twindow.parent.openScreen(\"Return W/o Order  - \"+orderNo,\"custRetWithOutDisplay?custRetCode=\"+ orderNo, \"fa fa-fw fa-list-ol\");\n\t\t\t\t}\n\t\t\t\telse if(orderType == \"RTV\")\n\t\t\t\t\twindow.parent.openScreen(\"Vendor Return Create/Edit\",\"vendorReturnsFetchDataBS?rtvNo=\"+ orderNo, \"fa fa-fw fa-list-ol\");\n\t\t\t\telse\n\t\t\t\t\twindow.parent.openScreen(\"Order Create/Edit - \"+orderNo, \"orderMaintenanceBS?orderCode=\"+orderNo, \"fa fa-fw fa-simplybuilt\");\n\t\t\t\t\n\t\t\t  return false;\n\t\t\t}\n\t\t }",
+    "openOutputReference": "function openOutputReference(event, id){\n\t\t\tif(id != undefined && id != null){\n\t\t\t\tvar rowData = $(\"#taxSettingLogTable\").jqGrid('getRowData', id);\n\t\t\t\t$(\"#outputRef1\").html((rowData.key2 != null && rowData.key2 != \"\") ? rowData.key2 : \"N/A\");\n\t\t\t\t$(\"#outputRef2\").html((rowData.key3 != null && rowData.key3 != \"\") ? rowData.key3 : \"N/A\");\n\t\t\t\t$(\"#outputReferenceDialog\").modal(\"show\");\n\t\t\t}\n\t\t}",
+    "genricSearchGridResized": "function genricSearchGridResized() {\n\t\t\tvar gridObj = $(\"#taxSettingLogTable\");\n\t\t\t\n\t\t\tvar gridHeight = window.parent.getParentHeight()-131;\t\n\n\t\t\tvar gridWidth = $(window).width()-15;\n\t\t\tif(gridWidth<270)\n\t\t\t\tgridWidth=270;\n\t\t\t\n\t\t\tgridObj.jqGrid('setGridWidth',gridWidth);\t\t\n\t\t\t\n\t\t\t$(\"#gbox_\"+gridObj[0].id+\" .ui-jqgrid-bdiv\").css(\"height\",gridHeight+\"px\").css('overflow-x',($(window).width()<992 ?'auto':'hidden'));\n\t\t\toldWidth=gridWidth;\n\t\t}",
+    "reloadSearchGrid": "function reloadSearchGrid(event) {\n\t\t\tvar intCode = $(\"#gs_intCode\").val();\n\t\t\treqJsonMap = {};\n\t\t\trespJsonMaps = {};\n\n\t\t\tif($(\"#gs_documentNo\").val() == \"\" && $(\"#gs_referenceNo\").val() == \"\" && $(\"#gs_referenceNo2\").val() == \"\"){\n\t\t\t\t\n\t\t\t\tif($(\"#fromUpdDate\").val() == \"\" || $(\"#toUpdDate\").val() == \"\"){\n\t\t\t\t\ttryFocusBS($(\"#gs_updDate\"));\n\t\t\t\t\t$(\"#gs_updDate\").attr(\"readonly\", false);\n\t\t\t\t\twindow.parent.showAlert('Transaction date is mandatory');\n\t\t\t\t\treturn false;\n\t\t\t\t}\n\t\t\t\tvar retVal = $.ajax({\n\t\t\t\t\turl : \"validateDateRange\",\n\t\t\t\t\t\n\t\t\t\t\ttype : \"POST\",\n\t\t\t\t\tdata : {\n\t\t\t\t  \t\tfromDateValue : $(\"#fromUpdDate\").val(),\n\t\t\t\t    \ttoDateValue : $(\"#toUpdDate\").val(),\n\t\t\t\t\t\tfieldName : \"Txn \"\n\t\t\t\t\t},\n\t\t\t\t\t\tdataType : \"json\",\n\t\t\t\t\t\tasync : false\n\t\t\t\t}).responseText;\n\t\t\t\tretVal = jQuery.parseJSON(retVal);\n\t\t\t\tif(retVal != null){\n\t\t\t\t\tif(retVal.jsonMessage == null){\n\t\t\t\t\t\t\n\t\t\t\t\t} else {\n\t\t\t\t\t\twindow.parent.showAlert(retVal.jsonMessage);\n\t\t\t\t\t\tevent.preventDefault();\n\t\t\t\t\t\treturn false;\n\t\t\t\t\t}\n\t\t\t\t}\t\n\t\t\t}\n\t\t\tvar retVal = $(\"#taxSettingLogTable\").jqGrid('setGridParam', {\n\t\t\t\tdatatype : 'json',\n\t\t\t\tpage : 1,\n\t\t\t\tpostData : {\n\t\t\t\t\tintCode\t\t\t:$(\"#gs_intCode\").val(),\n\t\t\t\t\tdocumentNo\t\t:$(\"#gs_documentNo\").val(),\n\t\t\t\t\treferenceNo\t\t:$(\"#gs_referenceNo\").val(),\n\t\t\t\t\tstatus\t\t\t:$(\"#gs_status\").val(),\n\t\t\t\t\terrorDesc\t\t:$(\"#gs_errorDesc\").val(),\n\t\t\t\t\tfromUpdDate\t\t:$(\"#fromUpdDate\").val(),\n\t\t\t\t\ttoUpdDate\t\t:$(\"#toUpdDate\").val(),\n\t\t\t\t\tclientId\t\t:$(\"#gs_clientId\").val(),\n\t\t\t\t\tkey1\t\t\t:$(\"#gs_key1\").val(),\n\t\t\t\t\tkey2\t\t\t:$(\"#gs_key2\").val(),\n\t\t\t\t\tkey3\t\t\t:$(\"#gs_key3\").val(),\n\t\t\t\t\treferenceNo2\t:$(\"#gs_referenceNo2\").val(),\n\t\t\t\t\treferenceType\t:$(\"#gs_referenceType\").val(),\n\t\t\t\t\tintegrationType :$(\"#gs_integrationType\").val(),\n\t\t\t\t\tREQ_SEARCH_FLAG : true\n\t\t\t\t},\n\t\t\t\turl : \"jsonTaxTransmitLogSearch\",\n\t\t\t\tsearch : true\t\t\t\t\n\t\t\t}).trigger('reloadGrid');\n\t\t}",
+    "resetAll": "function resetAll()\n\t\t{\n\t\t\t $(\"#gs_clientId,#gs_intCode,#gs_status,#gs_referenceType,#gs_integrationType\").val('-1')\n\t  \t\t $(\"#gs_documentNo,#gs_referenceNo,#gs_errorDesc,#gs_updDate,#fromUpdDate,#toUpdDate,#gs_key1,#gs_key2,#gs_key3,#gs_referenceNo2\").val('');\n\t\t\t $(\"#taxSettingLogTable\").jqGrid('clearGridData', {\n\t\t\t\tclearfooter : true\n\t\t     });\n\t\t}",
+    "openDialog": "function openDialog(cellvalue,intcode,orderno,obCode,event) {\n\t\t\t\n\t\t\tvar retVal = $.ajax({\n\t\t\t\turl : \"fetchOrderAddressDetails\",\n\t\t\t\t\n\t\t\t\ttype : \"POST\",\n\t\t\t\tdata : {\n\t\t\t\t\torderno : orderno\n\t\t\t\t},\n\t\t\t\tdataType : \"json\",\n\t\t\t\tasync : false\n\t\t\t}).responseText;\n\t\t\t\n\t\t\tretVal = jQuery.parseJSON(retVal);\n\t\t\tif(retVal != null){\n\t\t\t\tif(retVal.jsonMessage != null && retVal.jsonMessage != \"\"){\n\t\t\t\t\twindow.parent.blockUIEnd();\n\t\t\t\t\twindow.parent.showAlert(retVal.jsonMessage);\n\t\t\t\t\treturn false;\n\t\t\t\t}else if(retVal.orderMaintDto != null){\n\t\t\t\t\tvar addressDto = retVal.orderMaintDto;\n\t\t\t\t\t $(\"#custadd1Id\").val(addressDto.address1);\n\t\t\t\t\t $(\"#custadd2Id\").val(addressDto.address2);\n\t\t\t\t\t $(\"#custadd3Id\").val(addressDto.address3);\n\t\t\t\t\t $(\"#custadd4Id\").val(addressDto.address4);\n\t\t\t\t\t $(\"#shipCountryId\").val(addressDto.country);\n\t\t\t\t\t $(\"#custToStateId\").val(addressDto.state);\n\t\t\t\t\t $(\"#custphoneid\").val(addressDto.phone);\n\t\t\t\t\t $(\"#custPinCodeId\").val(addressDto.pinCode);\n\t\t\t\t\t $(\"#custEmailId\").val(addressDto.email1);\n\t\t\t\t\t $(\"#custNameId\").val(addressDto.customerName);\n\t\t\t\t\t $(\"#custCityId\").val(addressDto.city);\n\t\t\t\t\t\n\t\t\t\t\t $(\"#billNameId\").val(addressDto.billcustomerName);\n\t\t\t\t\t $(\"#billadd1Id\").val(addressDto.billAddress1);\n\t\t\t\t\t $(\"#billadd2Id\").val(addressDto.billAddress2);\n\t\t\t\t\t $(\"#billadd3Id\").val(addressDto.billAddress3);\n\t\t\t\t\t $(\"#billadd4Id\").val(addressDto.billAddress4);\n\t\t\t\t\t $(\"#billcityId\").val(addressDto.billCity);\n\t\t\t\t\t $(\"#billEmailId\").val(addressDto.billEmail1);\n\t\t\t\t\t $(\"#billphoneId\").val(addressDto.billPhone);\n\t\t\t\t\t $(\"#billpincodeId\").val(addressDto.billPinCode);\n\t\t\t\t\t $(\"#billstateId\").val(addressDto.billState);\n\t\t\t\t     $(\"#billcountryid\").val(addressDto.billCountry);\n\t\t\t\t\t $(\"#billgstnoid\").val(addressDto.udf1)\n\t\t\t\t\t $(\"#shipGstin\").val(addressDto.tinNo);\n\t\t\t\t}\n\t\t\t\t\n\t\t\t}\n\t\t\tif(intcode == \"EWB_GEN\")\n\t\t\t\t$('#saveBtnId').text('Update')\n\n\t\t\t$('#hiddnOrderNo').val(orderno);\n\t\t\t$('#hiddnObCode').val(obCode);\n\t\t\t$('#hiddentransKey').val(cellvalue);\n\t\t\t$('#hiddenIntCode').val(intcode);\n\t\t\t$(\"#addressDialogPopUp\").modal(\"show\");\n\t\t\t\n\t\t\t\n\t\t\t\n\t\t}",
+    "saveAddressData": "function saveAddressData(){\n\t\t\tif($(\"#custNameId\").val() != null && $(\"#custNameId\").val().trim() == \"\"){\n\t\t\t\ttryFocusBS($(\"#custNameId\"));\n\t\t\t\twindow.parent.showAlert('Customer Name' +' '+'is Mandatory.');\n\t\t\t\treturn false;\n\t\t\t}\n\t\t\tif($(\"#custadd1Id\").val() != null && $(\"#custadd1Id\").val().trim() == \"\"){\n\t\t\t\ttryFocusBS($(\"#custadd1Id\"));\n\t\t\t\twindow.parent.showAlert('Ship to Address1 is mandatory');\n\t\t\t\treturn false;\n\t\t\t}\n\t\t\tif($(\"#shipCountryId\").val() != null && $(\"#shipCountryId\").val() == \"-1\"){\n\t\t\t\ttryFocusBS($(\"#shipCountryId\"));\n\t\t\t\twindow.parent.showAlert('Ship to Country is mandatory');\n\t\t\t\treturn false;\n\t\t\t}\n\t\t\tif($(\"#custphoneid\").val() != null && $(\"#custphoneid\").val().trim() == \"\"){\n\t\t\t\ttryFocusBS($(\"#custphoneid\"));\n\t\t\t\twindow.parent.showAlert('Ship to Phone is mandatory');\n\t\t\t\treturn false;\n\t\t\t}\n\t\t\tif($(\"#custToStateId\").val() != null && $(\"#custToStateId\").val() == \"-1\"){   \n\t\t\t\ttryFocusBS($(\"#custToStateId\"));\n\t\t\t\twindow.parent.showAlert('Ship to State is mandatory');\n\t\t\t\treturn false;\n\t\t\t}\n\t\t\t\n\t\t\tif($(\"#custPinCodeId\").val() != null && $(\"#custPinCodeId\").val().trim() == \"\"){\n\t\t\t\ttryFocusBS($(\"#custPinCodeId\"));\n\t\t\t\twindow.parent.showAlert('Ship to Pincode is mandatory');\n\t\t\t\treturn false;\n\t\t\t}\n\t\t\tif($(\"#custEmailId\").val() != null && $(\"#custEmailId\").val().trim() == \"\"){\n\t\t\t\ttryFocusBS($(\"#custEmailId\"));\n\t\t\t\twindow.parent.showAlert('Ship to Email is mandatory');\n\t\t\t\treturn false;\n\t\t\t}\n\t\t\t\n\t\t\t//-----------------------\n\t\t\tif($(\"#billNameId\").val() != null && $(\"#billNameId\").val().trim() == \"\"){\n\t\t\t\ttryFocusBS($(\"#billNameId\"));\n\t\t\t\twindow.parent.showAlert('Bill to Name is mandatory');\n\t\t\t\treturn false;\n\t\t\t}\n\t\t\tif($(\"#billadd1Id\").val() != null && $(\"#billadd1Id\").val().trim() == \"\"){\n\t\t\t\ttryFocusBS($(\"#billadd1Id\"));\n\t\t\t\twindow.parent.showAlert('Bill to Address1 is mandatory');\n\t\t\t\treturn false;\n\t\t\t}\n\t\t\tif($(\"#billphoneId\").val() != null && $(\"#billphoneId\").val() == \"\"){\n\t\t\t\ttryFocusBS($(\"#billphoneId\"));\n\t\t\t\twindow.parent.showAlert('Bill to Phone is mandatory');\n\t\t\t\treturn false;\n\t\t\t}\n\t\t\tif($(\"#billcountryid\").val() != null && $(\"#billcountryid\").val() == \"-1\"){   \n\t\t\t\ttryFocusBS($(\"#billcountryid\"));\n\t\t\t\twindow.parent.showAlert('Bill to Country is mandatory');\n\t\t\t\treturn false;\n\t\t\t}\n\t\t\tif($(\"#billstateId\").val() != null && $(\"#billstateId\").val().trim() == \"-1\"){\n\t\t\t\ttryFocusBS($(\"#billstateId\"));\n\t\t\t\twindow.parent.showAlert('Bill to State is mandatory');\n\t\t\t\treturn false;\n\t\t\t}\n\t\t\t if($(\"#billpincodeId\").val() != null && $(\"#billpincodeId\").val().trim() == \"\"){\n\t\t\t\ttryFocusBS($(\"#billpincodeId\"));\n\t\t\t\twindow.parent.showAlert('Bill to Pincode is mandatory');\n\t\t\t\treturn false;\n\t\t\t}\n\t\t\t if($(\"#billgstnoid\").val() != null && $(\"#billgstnoid\").val() == \"\"){\n\t\t\t\t\ttryFocusBS($(\"#billgstnoid\"));\n\t\t\t\t\twindow.parent.showAlert('Customer GSTIN/TIN'+' '+'is Mandatory.');\n\t\t\t\t\treturn false;\n\t\t\t}\n\t\t\t if($(\"#billgstnoid\").val() != null && $(\"#billgstnoid\").val().trim() != \"\" && $(\"#billgstnoid\").val().trim() != undefined \n\t\t\t\t\t && $(\"#billgstnoid\").val().trim().toLocaleUpperCase() != \"URP\" && $(\"#billgstnoid\").val().length != '15'){\n\t\t\t\t\ttryFocusBS($(\"#billgstnoid\"));\n\t\t\t\t\twindow.parent.showAlert('GSTIN No must be 15 characters');\n\t\t\t\t\treturn false;\n\t\t\t\t}\n\t\t\tif($(\"#billEmailId\").val() != null && $(\"#billEmailId\").val().trim() == \"\"){\n\t\t\t\ttryFocusBS($(\"#billEmailId\"));\n\t\t\t\twindow.parent.showAlert('Bill to Email is mandatory');\n\t\t\t\treturn false;\n\t\t\t}\n\t\t\t\n\t\t\tvar emailaddressVal = $(\"#billEmailId\").val();\n\t\t    var emailReg = /^([\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,10})?$/; \n\t\t   \n\t\t    if(!emailReg.test(emailaddressVal)){\n\t\t    \twindow.parent.showAlert('Bill to Email is not a valid address.');\n\t\t\t\ttryFocus($(\"#billEmailId\"));\t\t\t\n\t\t        return false; \n\t\t    }\n\t\t    if(!emailReg.test($(\"#custEmailId\").val())){\n\t\t    \twindow.parent.showAlert('Ship to Email is not a valid address.');\n\t\t\t\ttryFocus($(\"#custEmailId\"));\t\t\t\n\t\t        return false; \n\t\t    }\n\t\t    \n\t\t    if(isNotBlank($(\"#shipGstin\").val()) && $(\"#shipGstin\").val().trim().toLocaleUpperCase() != \"URP\" && $(\"#shipGstin\").val().length != '15'){\n\t\t\t\t\ttryFocusBS($(\"#shipGstin\"));\n\t\t\t\t\twindow.parent.showAlert('GSTIN No must be 15 characters');\n\t\t\t\t\treturn false;\n\t\t\t}\n\t\t\t\n\t\t\tvar retVal = $.ajax({\n\t\t\t\turl : \"updateOrderAddressDetails\",\n\t\t\t\t\n\t\t\t\ttype : \"POST\",\n\t\t\t\tdata : {\n\t\t\t\t\tshipCustname : $(\"#custNameId\").val(),\n\t\t\t\t\tshipAddss1 : $(\"#custadd1Id\").val(),\n\t\t\t\t\tshipAddss2 : $(\"#custadd2Id\").val(),\n\t\t\t\t\tshipAddss3 : $(\"#custadd3Id\").val(),\n\t\t\t\t\tshipAddss4 : $(\"#custadd4Id\").val(),\n\t\t\t\t\tshipPhone : $(\"#custphoneid\").val(),\n\t\t\t\t\tshipPinCode : $(\"#custPinCodeId\").val(),\n\t\t\t\t\tshipCity : $(\"#custCityId\").val(),\n\t\t\t\t\tshipEmail : $(\"#custEmailId\").val(),\n\t\t\t\t\tbillCustname : $(\"#billNameId\").val(),\n\t\t\t\t\tbillAddss1 : $(\"#billadd1Id\").val(),\n\t\t\t\t\tbillAddss2 : $(\"#billadd2Id\").val(),\n\t\t\t\t\tbillAddss3 : $(\"#billadd3Id\").val(),\n\t\t\t\t\tbillAddss4 : $(\"#billadd4Id\").val(),\n\t\t\t\t\tbillPhone : $(\"#billphoneId\").val(),\n\t\t\t\t\tbillPinCode : $(\"#billpincodeId\").val(),\n\t\t\t\t\tbillCity : $(\"#billcityId\").val(),\n\t\t\t\t\tbillEmail : $(\"#billEmailId\").val(),   \n\t\t\t\t\tbillGstIN : $(\"#billgstnoid\").val(),\n\t\t\t\t\t orderno : $('#hiddnOrderNo').val(),\n\t\t\t\t\t obdelNo : $('#hiddnObCode').val(),\n\t\t\t\t\t transKey : $('#hiddentransKey').val(),\n\t\t\t\t\t intCode  : $('#hiddenIntCode').val(),\n\t\t\t\t\t shipGstIn : $(\"#shipGstin\").val()\n\t\t\t\t},\n\t\t\t\tdataType : \"json\",\n\t\t\t\tasync : false\n\t\t\t}).responseText;\n\t\t\t\n\t\t\tretVal = jQuery.parseJSON(retVal);\n\t\t\tif(retVal != null && retVal.jsonMessage != null && retVal.jsonMessage != \"\"){\n\t\t\t\twindow.parent.blockUIEnd();\n\t\t\t\twindow.parent.showAlert(retVal.jsonMessage);\n\t\t\t\treturn false;\n\t\t\t}else{\n\t\t\t\t$(\"#addressDialogPopUp\").modal(\"hide\");\n\t\t\t\tif($('#hiddenIntCode').val() != null && $('#hiddenIntCode').val()== \"EWB_GEN\")\n\t\t\t\t\twindow.parent.showAlert('Record Updated Successfully');\n\t\t\t\telse\n\t\t\t\twindow.parent.showAlert('Record Updated Successfully'+' & '+'Records Repushed Successfully');\n\t\t\t\tjQuery(\"#taxSettingLogTable\").trigger(\"reloadGrid\");\n\t\t\t\treturn false;\n\t\t}\n\t\t\t\n\t\t}",
+    "exportClick": "function exportClick() {\n\t\t\t\t\n\t\t\t\tif($(\"#taxSettingLogTable\").jqGrid('getGridParam','records')=='0'){\n\t\t\t\t\twindow.parent.showAlert(\"No Data In Grid To Export\");\n\t\t\t\t\treturn false;\n\t\t\t\t}\n\t\t\t\tdocument.getElementById('hiddenIntegrationType').value = ($(\"#gs_integrationType\").val()!= \"-1\") ? $(\"#gs_integrationType\").val() : \"\";\n\n\t\t\t\tdocument.getElementById('hiddenIntCodeVal').value = ($(\"#gs_intCode\").val()!= \"-1\") ? $(\"#gs_intCode\").val() :  \"\";\n\t\t\t\t\t\t\n\t\t\t\tdocument.getElementById('hiddenDocumentNo').value = $(\"#gs_documentNo\").val();\n\n\t\t\t\tdocument.getElementById('hiddenReferenceNo').value = $(\"#gs_referenceNo\").val();\n\n\t\t\t\tdocument.getElementById('hiddenReferenceNo2').value = $(\"#gs_referenceNo2\").val();\n\t\t\t\t\n\t\t\t\tdocument.getElementById('hiddenReferenceTypeVal').value = ($(\"#gs_referenceType\").val()!= \"-1\") ? $(\"#gs_referenceType\").val() : \"\";\n\n\t\t\t\tdocument.getElementById('hiddenKey1').value = $(\"#gs_key1\").val();\n\n\t\t\t\tdocument.getElementById('hiddenKey2').value = $(\"#gs_key2\").val();\n\n\t\t\t\tdocument.getElementById('hiddenKey3').value = $(\"#gs_key3\").val();\n\n\t\t\t\tdocument.getElementById('hiddenStatus').value = ($(\"#gs_status\").val()!= \"-1\") ? $(\"#gs_status\").val() : \"\";\n\t\t\t\t\n\t\t\t\tdocument.getElementById('hiddenClientId').value = ($(\"#gs_clientId\").val()!= \"-1\") ? $(\"#gs_clientId\").val() : \"\";\n\n\t\t\t\tdocument.getElementById('hiddenFromUpdDate').value = $(\"#fromUpdDate\").val();\n\n\t\t\t\tdocument.getElementById('hiddenToUpdDate').value = $(\"#toUpdDate\").val();\n\t\t\t\t\n\t\t\t\tdocument.getElementById('hiddengridDataLen').value=$(\"#taxSettingLogTable\").jqGrid('getDataIDs').length;\n\n\t\t\t\tvar $form = $(\"#transmitLogEnquiryForm\");\n\n\t\t\t    $.ajax({\n\t\t\t           type: \"POST\",\n\t\t\t           url: \"exportTaxIntegrationLogBS\",\n\t\t\t           data: $form.serialize(), // serializes the form's elements.\n\t\t\t           success: function(data) {\n\t\t\t               if(data.jsonMessage==null) {\n\t\t\t            \t   var path=window.location.pathname;\n\t\t\t            \t   var actioname=path.split('/')[2];\n\t\t\t            \t   if(actioname!=null && actioname!='undefined' && actioname!='' && actioname=='taxSettingAction')\n\t\t\t\t           \t\t{\n\t\t\t            \t\t   window.parent.openScreen(\"Pending Report\", \"pendingDisplay\",\"fa fa-fw fa-truck\");\n\t\t\t\t           \t\t\n\t\t\t\t           \t\t}else{ \n\t\t\t\t           \t\t\t  window.parent.pendingReportSearch('?uuId='+data.reportId);\n\t\t\t\t           \t\t} \n\t\t\t               } else {\n\t\t\t            \t   window.parent.showAlert(data.jsonMessage);\n\t\t\t            \t   var path=window.location.pathname;\n\t\t\t            \t   var actioname=path.split('/')[2];\n\t\t\t            \t   if(actioname!=null && actioname!='undefined' && actioname!='' && actioname=='taxSettingAction')\n\t\t\t\t           \t\t{\n\t\t\t            \t\t   window.parent.openScreen(\"Pending Report\", \"pendingDisplay\",\"fa fa-fw fa-truck\");\n\t\t\t\t           \t\t}\n\t\t\t\t           \t\telse\n\t\t\t\t           \t\t\t   window.parent.pendingReportSearch(); \n\t\t\t\t           \t\t}\n\t\t\t               }\n\t\t\t\t});\n\t\t\t}"
+  },
+  "dialogs": [
+    {
+      "id": "requestResponseDialog",
+      "text": "×\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\n\t                    \n\t                    \t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\tRequest Body\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\tResponse Body\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+    },
+    {
+      "id": "manualRepushDialog",
+      "text": "×\n\t\t\t\t\t\t\n\t\t\t\t\t\tManual Repush\n\t\t\t\t\t\n\t\t\t\t\t\n\t                    \n\t                    \t\n\t                    \t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tIRN\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tQR Code\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t    \n\t\t\t\t    \n\t\t\t\t    \n\t\t\t\t\t\tRe Push\n\t\t\t\t\t\tClose"
+    },
+    {
+      "id": "errorMessageDialog",
+      "text": "×\n\t\t\t\t\t\t\n\t\t\t\t\t\tError Message\n\t\t\t\t\t\n\t\t\t\t\t\n\t                    \n\t                    \t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tIRN\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t    \n\t\t\t\t    \n\t\t\t\t    \n\t\t\t\t\t\tClose"
+    },
+    {
+      "id": "outputReferenceDialog",
+      "text": "×\n\t\t\t\t\t\t\n\t\t\t\t\t\tOutput Result\n\t\t\t\t\t\n\t\t\t\t\t\n\t                    \n\t                    \t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tOutput Ref1\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tOutput Ref2\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t    \n\t\t\t\t    \n\t\t\t\t    \n\t\t\t\t\t\tClose"
+    },
+    {
+      "id": "addressDialogPopUp",
+      "text": "×\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\tUpdate Customer Address Details\n\t\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\tShip To\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tCustomer Name *\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tCustomer Address 1* \n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tCustomer Address 2 \n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tCustomer Address 3 \n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tCustomer Address 4 \n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tCountry* \n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tPhone*\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tCity \n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tPinCode *\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tState* \n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tEmail*\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tCustomer GSTIN/TIN\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\n\n\n\t\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\tBill To\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tBill To Name* \n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tCustomer Address 1* \n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tCustomer Address 2 \n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tCustomer Address 3 \n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tCustomer Address 4 \n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tCountry* \n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tPhone*\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tCity \n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tPinCode *\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tState* \n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tEmail*\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tCustomer GSTIN/TIN\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\n\n\n\t\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\n\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\tUpdate & Retry\n\t\t\t\t\t \n\t\t\t\t\t\n\t\t\t\t\t\tClose"
+    }
+  ]
+}

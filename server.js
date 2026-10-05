@@ -1,10 +1,20 @@
+import "./env.js"; // must be first: loads .env before the Supabase client is created
+import { operationsStatus } from './reliability/operations.js';
+import { requestTelemetry, mutationOriginGuard, protectAsyncRoutes, internalMetrics } from './reliability/http.js';
+import { loginLimit } from './reliability/login-limiter.js';
 // Express server — serves the built frontend + all /api routes.
 // Works locally (VS Code), on Render, or any Node host. The API route files
 // use the Vercel handler signature (req, res), which is Express-compatible.
-import "./env.js"; // must be first: loads .env before the Supabase client is created
 import express from "express";
+import { inventoryPublic, inventoryPrivate } from './inventory/http.js';
 import path from "path";
 import { fileURLToPath } from "url";
+import { authConfigured, currentUser, authenticateSession, issueSession, revokeSession, verifyCredentials } from "./api/auth-session.js";
+import { probeDataStore, waitForDataReady, dataStoreStatus, dataStoreDataset, closeDataStore } from './api/mongo.js';
+import { mongoRoutes } from './api/mongo-collections.js';
+import { publicReadiness, createDatasetHeaderObserver } from './api/mongo-health.js';
+import { persistenceRequired } from './api/storage-policy.js';
+import { inventoryPool, inventoryDatabaseStatus } from './inventory/db.js';
 
 import skus from "./api/skus.js";
 import partners from "./api/partners.js";
@@ -63,6 +73,9 @@ import skuImports from "./api/sku-imports.js";
 import skuCompanyLinks from "./api/sku-company-links.js";
 import skuGroups from "./api/sku-groups.js";
 import merchHierarchy from "./api/merch-hierarchy.js";
+import attributeSets from "./api/attribute-sets.js";
+import vendorSkuCatalog from "./api/vendor-sku-catalog.js";
+import vendorSkuLocCatalog from "./api/vendor-sku-loc-catalog.js";
 import manageAttributes from "./api/manage-attributes.js";
 import pricingEvents from "./api/pricing-events.js";
 import priceZones from "./api/price-zones.js";
@@ -131,6 +144,7 @@ import cycleCount from "./api/cycle-count.js";
 import binAudit from "./api/bin-audit.js";
 import bulkLottables from "./api/bulk-lottables.js";
 import admin from "./api/admin.js";
+import adminParity from "./api/admin-parity.js";
 import tallyConfig from "./api/tally-config.js";
 import procurement from "./api/procurement.js";
 import ars from "./api/ars.js";
@@ -143,10 +157,50 @@ import sellerPanelDashboard from "./api/seller-panel-dashboard.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
+app.set('trust proxy', process.env.TRUST_PROXY === 'true' ? 1 : false);
+app.use(requestTelemetry);
+app.use((req, res, next) => { res.set('X-Content-Type-Options', 'nosniff'); res.set('Referrer-Policy', 'same-origin'); res.set('X-Frame-Options', 'SAMEORIGIN'); next(); });
+let shuttingDown = false;
+app.get(['/health/live', '/api/health/live'], (_req, res) => res.status(200).json({ status: shuttingDown ? 'stopping' : 'alive' }));
 const PORT = process.env.PORT || 3002;
 
+app.use('/api/inventory-sync',inventoryPublic);
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
+
+app.get('/api/auth/session', async (req, res) => {try{res.json({user:await authenticateSession(req),configured:authConfigured()});}catch{res.status(503).json({error:'Session database unavailable'});}});
+app.use('/api', mutationOriginGuard);
+app.post('/api/auth/login', loginLimit, async (req, res) => {
+  if (!authConfigured()) return res.status(503).json({ error: 'Administrator login is not configured.' });
+  const username = String(req.body?.username || '');
+  const password = String(req.body?.password || '');
+  if (!await verifyCredentials(username, password)) return res.status(401).json({ error: 'Invalid login credentials.' });
+  try{await issueSession(res, username, req.secure);}catch{return res.status(503).json({error:'Session database unavailable'});}
+  return res.json({ user: { username } });
+});
+app.post('/api/auth/logout', async (req, res) => {try{await revokeSession(req,res);res.json({ok:true});}catch{res.status(503).json({error:'Session database unavailable'});}});
+app.get(['/health/ready', '/api/health/ready'], async (_req, res) => {
+  const checks = await Promise.allSettled([probeDataStore(), Promise.resolve().then(() => inventoryPool().query("SELECT to_regclass('public.ci_auth_session') IS NOT NULL AND to_regclass('public.ci_login_rate_limit') IS NOT NULL AND to_regclass('public.ci_outbox') IS NOT NULL AS schema_ready"))]);
+  const mongoRequired = persistenceRequired() || Boolean(process.env.MONGODB_URI);
+  const schemaReady = checks[1].status === 'fulfilled' && checks[1].value.rows[0]?.schema_ready === true;
+  const mongodb = await dataStoreDataset();
+  const payload = publicReadiness({ shuttingDown, schemaReady, postgresState: inventoryDatabaseStatus().state, mongoRequired, probeSucceeded: checks[0].status === 'fulfilled', mongo: mongodb, authenticationRequired: persistenceRequired(), authenticationConfigured: authConfigured() });
+  res.status(payload.ready ? 200 : 503).json(payload);
+});
+app.use('/api', async (req, res, next) => {
+  try{req.user=await authenticateSession(req);}catch{return res.status(503).json({error:'Session database unavailable'});}
+  if (!currentUser(req)) return res.status(401).json({ error: 'Sign in to continue.' });
+  next();
+});
+app.use('/api/inventory-sync',inventoryPrivate);
+app.get('/api/health/metrics', internalMetrics);
+app.get('/api/health/operations', operationsStatus);
+app.get('/api/health/databases', async (_req, res) => {
+  const checks = await Promise.allSettled([probeDataStore(), Promise.resolve().then(() => inventoryPool().query('SELECT 1'))]);
+  const mongodb = await dataStoreDataset();
+  const postgresql = inventoryDatabaseStatus();
+  res.status(checks.every(check => check.status === 'fulfilled') ? 200 : 503).json({ mongodb, postgresql });
+});
 
 // Mount each serverless handler at its path. app.all forwards every method
 // (GET/POST/PUT/DELETE/OPTIONS) to the handler, mirroring Vercel behavior.
@@ -223,6 +277,9 @@ const routes = {
   "/api/sku-company-links": skuCompanyLinks,
   "/api/sku-groups": skuGroups,
   "/api/merch-hierarchy": merchHierarchy,
+  "/api/attribute-sets": attributeSets,
+  "/api/vendor-sku-catalog": vendorSkuCatalog,
+  "/api/vendor-sku-loc-catalog": vendorSkuLocCatalog,
   "/api/manage-attributes": manageAttributes,
   "/api/pricing-events": pricingEvents,
   "/api/price-zones": priceZones,
@@ -296,6 +353,7 @@ const routes = {
   "/api/bin-audit": binAudit,
   "/api/bulk-lottables": bulkLottables,
   "/api/admin": admin,
+  "/api/admin-parity": adminParity,
   "/api/tally-config": tallyConfig,
   "/api/procurement": procurement,
   "/api/ars": ars,
@@ -307,9 +365,26 @@ const routes = {
   "/api/amazon-mfn": amazonMfn,
   "/api/vin-lister": vinLister,
 };
+const observeDatasetHeader = createDatasetHeaderObserver(dataStoreDataset);
 for (const [route, handler] of Object.entries(routes)) {
-  app.all(route, (req, res) => handler(req, res));
+  app.all(route, async (req, res, next) => {
+    try {
+      if (mongoRoutes.has(route)) {
+        observeDatasetHeader(res);
+      }
+      await handler(req, res);
+    } catch (error) { next(error); }
+  });
 }
+
+app.use('/api', (_req, res) => res.status(404).json({ error: 'ROUTE_NOT_FOUND', message: 'The requested API route was not found.' }));
+app.use((error, _req, res, _next) => {
+  if (error?.code === 'DATABASE_UNAVAILABLE') return res.status(503).json({ error: error.code, database: error.database || 'mongodb', message: error.message });
+  if (error?.code === 'DATABASE_TIMEOUT') return res.status(504).json({ error: error.code, database: error.database, message: error.message });
+  if ([400,413,415].includes(error.status)) return res.status(error.status).json({ error: 'VALIDATION_ERROR', message: 'The request body is invalid or too large.' });
+  console.error('[api] Unhandled request failure', { name: error?.name, code: error?.code });
+  res.status(500).json({ error: 'SERVER_ERROR', message: 'The request could not be completed.' });
+});
 
 // Serve the built frontend (produced by `npm run build`).
 const distPath = path.join(__dirname, "dist");
@@ -322,8 +397,31 @@ app.get(/^(?!\/api).*/, (_req, res) => {
 });
 
 // Bind to all IPv4 interfaces so other devices on the same LAN can reach the server.
-app.listen(PORT, "0.0.0.0", () => {
+// A missing required configuration is a deployment error. A configured transient
+// outage is reported by readiness while independent routes remain available.
+if (persistenceRequired() && !process.env.MONGODB_URI) await waitForDataReady();
+protectAsyncRoutes(app);
+const server = app.listen(PORT, "0.0.0.0", () => {
   console.log(
-    `\n  eRetail server running on http://localhost:${PORT} / http://<your-ip>:${PORT}\n`,
+    `\n  D-Mills Global server running on http://localhost:${PORT} / http://<your-ip>:${PORT}\n`,
   );
 });
+
+server.requestTimeout = 30000;
+server.headersTimeout = 15000;
+server.keepAliveTimeout = 5000;
+async function shutdown() {
+  if (shuttingDown) return;
+  shuttingDown = true;
+  // Stop accepting work and drain requests before closing pools.
+  const deadline = setTimeout(() => { server.closeAllConnections(); process.exitCode = 1; }, 30000);
+  deadline.unref();
+  server.close(async () => {
+    try { await Promise.all([closeDataStore(), process.env.INVENTORY_DATABASE_URL ? inventoryPool().end() : Promise.resolve()]); }
+    catch { process.exitCode = 1; console.error('Database shutdown failed.'); }
+    finally { clearTimeout(deadline); }
+  });
+  server.closeIdleConnections();
+}
+process.on('SIGTERM', shutdown);
+process.on('SIGINT', shutdown);
