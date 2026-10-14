@@ -15,7 +15,32 @@ concurrency:
 jobs:
   checks:
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 120
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ci_disposable
+          POSTGRES_DB: oms_ci_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d oms_ci_test"
+          --health-interval 5s --health-timeout 5s --health-retries 20
+      mongo:
+        image: mongo:7
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --quiet --eval 'db.adminCommand({ping:1})'"
+          --health-interval 5s --health-timeout 5s --health-retries 20
+    env:
+      NODE_ENV: test
+      INVENTORY_DATABASE_URL: postgresql://postgres:ci_disposable@127.0.0.1:5432/oms_ci_test
+      INVENTORY_DB_SSL: 'false'
+      MONGODB_URI: mongodb://127.0.0.1:27017/oms_ci_test
+      MONGODB_DB: oms_ci_test
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -24,10 +49,14 @@ jobs:
         with:
           node-version: '24'
           cache: npm
-      - name: Install locked dependencies without lifecycle scripts
-        run: npm ci --ignore-scripts
+      - name: Install locked dependencies
+        run: npm ci
       - name: TypeScript
-        run: node node_modules/typescript/bin/tsc --noEmit -p tsconfig.app.json
+        run: npm run typecheck
+      - name: Build
+        run: npm run build
+      - name: Migrate disposable service database
+        run: npm run inventory:migrate
       - name: Isolated SKU server contracts
         run: |
           node scripts/verify-sku-import-provenance.mjs
@@ -42,5 +71,12 @@ jobs:
           node scripts/verify-migration-history.mjs
       - name: Install test browser
         run: npm exec -- playwright install --with-deps chromium
-      - name: Isolated SKU browser regression
-        run: node scripts/verify-sku-import.mjs
+      - name: Run every registered test script
+        run: node scripts/run-ci-tests.mjs
+      - name: Retain complete test outcomes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-test-results
+          path: artifacts/ci-test-results.json
+          if-no-files-found: warn

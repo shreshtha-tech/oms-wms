@@ -32,3 +32,7 @@ Source search across `inventory/`, `api/`, `scripts/` and `db/migrations/` for `
 3. Reconcile preexisting configured balances/events, if any, to their legitimate source; do not backfill or synthesize missing quantities.
 4. Add the controlled opening-stock command and approval audit as a distinct writer row after the real workbook mapping is verified.
 5. Re-run the register search and inspect the deployed commit before signing this as final.
+
+## PR 1 CI scope — 2026-10-15
+
+`.github/workflows/ci.yml` runs migrations and `scripts/run-ci-tests.mjs` against disposable CI service databases. No new runtime stock writer is introduced; `inventory/ledger.js` remains the authoritative write boundary. Fixture writes are test evidence only. Full CI and staging proof remain pending; see `docs/research/pr-01-ci.md`.
