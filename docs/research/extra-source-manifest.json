@@ -1,0 +1,110 @@
+[
+  {
+    "repo": "saleor/saleor",
+    "sha": "925b69959a97c9deda7cdc85092494896d0aa1f4",
+    "path": "saleor/warehouse/tests/test_stock_management.py",
+    "bytes": 54189,
+    "sha256": "2ca6582f01ea112c15678db6d5f69b0d5234aab7398a4785e54de454d819d9b2",
+    "url": "https://github.com/saleor/saleor/blob/925b69959a97c9deda7cdc85092494896d0aa1f4/saleor/warehouse/tests/test_stock_management.py",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "medusajs/medusa",
+    "sha": "0b97a96ea0d32ff3f4b18dbeeeeba9e763600a15",
+    "path": "packages/modules/locking/src/services/locking-module.ts",
+    "bytes": 2550,
+    "sha256": "5e0a50a21f90fcb691ae88ac971ebf597fc432d4f17f1b0b824aa6860d2d1996",
+    "url": "https://github.com/medusajs/medusa/blob/0b97a96ea0d32ff3f4b18dbeeeeba9e763600a15/packages/modules/locking/src/services/locking-module.ts",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "medusajs/medusa",
+    "sha": "0b97a96ea0d32ff3f4b18dbeeeeba9e763600a15",
+    "path": "packages/modules/providers/locking-postgres/src/services/advisory-lock.ts",
+    "bytes": 5127,
+    "sha256": "d6b5f30a4020eb4ed478ab3d5f5869717bc3c677aa2c5a836ec203be56fdf309",
+    "url": "https://github.com/medusajs/medusa/blob/0b97a96ea0d32ff3f4b18dbeeeeba9e763600a15/packages/modules/providers/locking-postgres/src/services/advisory-lock.ts",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "medusajs/medusa",
+    "sha": "0b97a96ea0d32ff3f4b18dbeeeeba9e763600a15",
+    "path": "packages/modules/providers/locking-postgres/integration-tests/__tests__/index.spec.ts",
+    "bytes": 5869,
+    "sha256": "bcf123f16de0e98047fd7d15ffa51ea176231c3ac8407f9c66d3094cfd5a8db6",
+    "url": "https://github.com/medusajs/medusa/blob/0b97a96ea0d32ff3f4b18dbeeeeba9e763600a15/packages/modules/providers/locking-postgres/integration-tests/__tests__/index.spec.ts",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "vendure-ecommerce/vendure",
+    "sha": "530fa0afad87c449635d3864b604de93d7dd0a43",
+    "path": "LICENSE.md",
+    "bytes": 1861,
+    "sha256": "b78a9d11922dff7b00efee72d40381bc3765e220fd31c575e2d39ffd42883013",
+    "url": "https://github.com/vendure-ecommerce/vendure/blob/530fa0afad87c449635d3864b604de93d7dd0a43/LICENSE.md",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "vendure-ecommerce/vendure",
+    "sha": "530fa0afad87c449635d3864b604de93d7dd0a43",
+    "path": "packages/core/e2e/stock-control.e2e-spec.ts",
+    "bytes": 82316,
+    "sha256": "69e2ca5233900544a29eb918221e9876935a619b7643b4d7d87c869b56d4952b",
+    "url": "https://github.com/vendure-ecommerce/vendure/blob/530fa0afad87c449635d3864b604de93d7dd0a43/packages/core/e2e/stock-control.e2e-spec.ts",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "vendure-ecommerce/vendure",
+    "sha": "530fa0afad87c449635d3864b604de93d7dd0a43",
+    "path": "packages/core/e2e/stock-level-concurrency.e2e-spec.ts",
+    "bytes": 42705,
+    "sha256": "aa5aa4b3f9560ba8c52d51e3511a90e9a356726710cc75e2e793d43cda83ebea",
+    "url": "https://github.com/vendure-ecommerce/vendure/blob/530fa0afad87c449635d3864b604de93d7dd0a43/packages/core/e2e/stock-level-concurrency.e2e-spec.ts",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "vendure-ecommerce/vendure",
+    "sha": "530fa0afad87c449635d3864b604de93d7dd0a43",
+    "path": "packages/core/src/config/order/default-order-process.ts",
+    "bytes": 23853,
+    "sha256": "6b0b706b1f6a090e625eab9f37be29f0400d712a30076bbac7575524553d66b4",
+    "url": "https://github.com/vendure-ecommerce/vendure/blob/530fa0afad87c449635d3864b604de93d7dd0a43/packages/core/src/config/order/default-order-process.ts",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "debezium/debezium",
+    "sha": "2f84b29c03638d261823172d1d8bfa9ca3a99824",
+    "path": "debezium-connect-plugins/src/main/java/io/debezium/transforms/outbox/EventRouterDelegate.java",
+    "bytes": 23714,
+    "sha256": "3988554524542a83c023c8f1a05f4b6db7773b93e7638cfee7faf366dc50f1f3",
+    "url": "https://github.com/debezium/debezium/blob/2f84b29c03638d261823172d1d8bfa9ca3a99824/debezium-connect-plugins/src/main/java/io/debezium/transforms/outbox/EventRouterDelegate.java",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "debezium/debezium",
+    "sha": "2f84b29c03638d261823172d1d8bfa9ca3a99824",
+    "path": "debezium-connect-plugins/src/test/java/io/debezium/transforms/outbox/EventRouterTest.java",
+    "bytes": 61193,
+    "sha256": "6fcc4b2db073644bd4727f854ccabb4af789ddba585e7d70d76f6599103c028e",
+    "url": "https://github.com/debezium/debezium/blob/2f84b29c03638d261823172d1d8bfa9ca3a99824/debezium-connect-plugins/src/test/java/io/debezium/transforms/outbox/EventRouterTest.java",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "openboxes/openboxes",
+    "sha": "94f393a240347209ad88fa6b48124e0238dd17ad",
+    "path": "epl-v10.html",
+    "bytes": 12538,
+    "sha256": "51f836837f574cd716ef49d3bf224f3c5eacea9202bef772c9019a8b00bdae8c",
+    "url": "https://github.com/openboxes/openboxes/blob/94f393a240347209ad88fa6b48124e0238dd17ad/epl-v10.html",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Shopify/shopify-app-js",
+    "sha": "e409d06d03aebb88c3b0af85ea6b0120e439fd6b",
+    "path": "packages/apps/shopify-api/lib/webhooks/__tests__/validate.test.ts",
+    "bytes": 10249,
+    "sha256": "339b5d6834bf8d0fde4698844c3aa72e3956ea4b2261a9b6249620253c24f45f",
+    "url": "https://github.com/Shopify/shopify-app-js/blob/e409d06d03aebb88c3b0af85ea6b0120e439fd6b/packages/apps/shopify-api/lib/webhooks/__tests__/validate.test.ts",
+    "status": "retrieved; pending reading"
+  }
+]

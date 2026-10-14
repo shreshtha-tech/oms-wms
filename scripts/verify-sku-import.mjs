@@ -1,114 +1,55 @@
+// Disposable browser fixture for the real SKU Import component. No application
+// server, credentials, configured MongoDB or PostgreSQL is used.
 import assert from 'node:assert/strict';
-import { MongoClient } from 'mongodb';
+import { createServer } from 'node:http';
+import { build } from 'esbuild';
 import { chromium } from 'playwright';
-
-const base = process.env.ERETAIL_BASE_URL || 'http://127.0.0.1:3011';
-const username = process.env.ERETAIL_TEST_USERNAME || '';
-const password = process.env.ERETAIL_TEST_PASSWORD || '';
-const suffix = `${Date.now().toString(36)}${Math.random().toString(16).slice(2, 7)}`.toUpperCase();
-const skuCode = `QA-IMPORTED-${suffix}`;
-const filename = `qa-sku-import-${suffix}.csv`;
-const attributeSetName = `QA SKU Import ${suffix}`;
-const mongoUri = process.env.MONGODB_URI;
-const dbName = process.env.MONGODB_DB;
-
-assert.ok(username && password, 'SKU Import verification requires an isolated administrator.');
-assert.ok(mongoUri && /^codexqa_[a-z0-9_]+$/i.test(dbName || ''), 'SKU Import test must use a generated codexqa MongoDB database.');
-const login = await fetch(`${base}/api/auth/login`, {
-  method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ username, password }),
+import { fileURLToPath } from 'node:url';
+const root = fileURLToPath(new URL('../', import.meta.url));
+const requests = [];
+const result = await build({
+  stdin: { contents: `import React from 'react';import{createRoot}from'react-dom/client';import Screen from './src/eretail/masters/SkuImport.tsx';createRoot(document.getElementById('root')).render(<Screen/>);`, resolveDir: root, loader: 'jsx' },
+  bundle: true, write: false, format: 'iife', platform: 'browser', jsx: 'automatic',
+  plugins: [{ name: 'isolated-layout-and-http', setup(b) {
+    b.onResolve({ filter: /^(\.\.\/Shell|\.\.\/EnquiryScreen|\.\.\/parts|\.\.\/\.\.\/lib\/api)$/ }, a => ({ path: a.path, namespace: 'fixture' }));
+    b.onLoad({ filter: /.*/, namespace: 'fixture' }, a => {
+      if (a.path.endsWith('/api')) return { contents: `export async function apiGet(path){const r=await fetch(path);return r.json()}export async function apiSend(path,method,body){const r=await fetch(path,{method,headers:{'content-type':'application/json'},body:JSON.stringify(body)});const data=await r.json();if(!r.ok)throw Error(data.message||data.error);return data}`, loader: 'js' };
+      if (a.path.endsWith('/parts')) return { contents: `import React from 'react';export function Toast({msg}){return <div role="alert">{msg}</div>}`, loader: 'jsx', resolveDir: root };
+      if (a.path.endsWith('/Shell')) return { contents: `import React from 'react';export default function Shell({children}){return <main>{children}</main>}`, loader: 'jsx', resolveDir: root };
+      return { contents: `import React from 'react';export default function EnquiryScreen(){return <div>History enquiry</div>}`, loader: 'jsx', resolveDir: root };
+    });
+  } }],
 });
-assert.equal(login.status, 200);
-const cookie = (login.headers.get('set-cookie') || '').split(';', 1)[0];
-assert.match(cookie, /^dmills_session=[a-f0-9]{64}$/);
-const send = async (path, method = 'GET', body) => {
-  const response = await fetch(`${base}${path}`, {
-    method,
-    headers: { 'content-type': 'application/json', cookie },
-    body: method === 'GET' ? undefined : JSON.stringify(body),
-  });
-  let json;
-  try { json = await response.json(); } catch { json = null; }
-  return { response, json };
-};
-const eventsBefore = await send('/api/inventory-sync/central/events');
-assert.equal(eventsBefore.response.status, 200);
-const mongo = new MongoClient(mongoUri, { serverSelectionTimeoutMS: 8000 });
-await mongo.connect();
-const db = mongo.db(dbName);
-const browser = await chromium.launch({
-  headless: true,
-  ...(process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE ? { executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE } : {}),
+const script = result.outputFiles[0].text;
+const server = createServer(async (req, res) => {
+  if (req.url === '/fixture.js') { res.setHeader('content-type', 'text/javascript'); return res.end(script); }
+  if (req.url.startsWith('/api/')) {
+    let raw = '';for await (const chunk of req) raw += chunk;
+    requests.push({ path: req.url, method: req.method, body: raw ? JSON.parse(raw) : null });
+    res.setHeader('content-type', 'application/json');
+    if (req.url === '/api/sku-imports' && req.method === 'GET') return res.end(JSON.stringify({ attributeSets: ['Fixture attributes'], importTypes: ['CreateUpdate'] }));
+    if (req.url === '/api/sku-imports' && req.method === 'POST') {
+      res.statusCode = 501;
+      return res.end(JSON.stringify({ error: 'SKU_IMPORT_PROCESSOR_UNAVAILABLE', message: 'SKU import processing is not connected. No SKU changes or processed import record were created.' }));
+    }
+    res.statusCode = 500; return res.end(JSON.stringify({ error: 'Unexpected API access in isolated fixture' }));
+  }
+  res.setHeader('content-type','text/html');res.end('<html><body><div id="root"></div><script src="/fixture.js"></script></body></html>');
 });
-const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
-const errors = [];
-page.on('pageerror', (error) => errors.push(error.message));
-page.on('console', (message) => { if (message.type() === 'error') errors.push(message.text()); });
-page.setDefaultTimeout(12_000);
-
+let browser;
 try {
-  const attributeSet = await send('/api/generic', 'POST', {
-    module: 'attribute-set', code: `QA-AS-${suffix}`, name: attributeSetName,
-    description: attributeSetName, status: 'Active', extra: { external_code: `QA-${suffix}` },
-  });
-  assert.equal(attributeSet.response.status, 201);
-  const invalidHistory = await send('/api/sku-imports', 'POST', {
-    import_type: 'CreateUpdate', attribute_set: attributeSetName, file_name: filename,
-    success_records: 0, failed_records: 0,
-  });
-  assert.equal(invalidHistory.response.status, 400, 'An empty import result cannot be recorded.');
-
-  await page.goto(base);
-  await page.getByLabel('Login Id').fill(username);
-  await page.getByLabel('Password').fill(password);
-  await page.getByRole('button', { name: 'Login', exact: true }).click();
-  await page.waitForURL('**/app/dashboard');
-  await page.goto(`${base}/app/sku-import`, { waitUntil: 'domcontentloaded' });
-  await page.getByLabel('Import Type').waitFor();
-  await page.getByLabel('Attribute Set *').selectOption({ label: attributeSetName });
-  const fileInput = page.locator('input[type="file"][accept=".csv"]');
-  const csv = [
-    'sku_code,name,master_sku_code,category,brand,uom,mrp,cost_price,sale_price,status',
-    `${skuCode},"Imported, SKU ${suffix}",QA-MASTER-${suffix},Apparel,QA brand,PCS,321,110,250,Active`,
-    `${skuCode},Duplicate SKU row,QA-MASTER-${suffix},Apparel,QA brand,PCS,321,110,250,Active`,
-    `QA-IMPORT-BLANK-${suffix},,QA-MASTER-${suffix},Apparel,QA brand,PCS,321,110,250,Active`,
-  ].join('\n');
-  await fileInput.setInputFiles({ name: filename, mimeType: 'text/csv', buffer: Buffer.from(csv) });
-  const historyPromise = page.waitForResponse((response) => response.url().endsWith('/api/sku-imports') && response.request().method() === 'POST' && response.request().postDataJSON()?.REQ_SEARCH_FLAG !== true);
+  server.listen(0, '127.0.0.1');await new Promise((resolve, reject) => { server.once('listening', resolve);server.once('error', reject); });
+  browser = await chromium.launch({ headless: true, ...(process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE ? { executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE } : {}) });
+  const page = await browser.newPage();const pageErrors = [];page.on('pageerror', e => pageErrors.push(e.message));
+  await page.goto(`http://127.0.0.1:${server.address().port}`);
+  await page.getByText('SKU import processing is currently unavailable.', { exact: false }).waitFor();
+  await page.getByLabel('Attribute Set *').selectOption({ label: 'Fixture attributes' });
+  await page.locator('input[type="file"]').setInputFiles({ name: 'fixture.csv', mimeType: 'text/csv', buffer: Buffer.from('sku_code,name\nFIXTURE,Must never be written\n') });
   await page.getByRole('button', { name: 'Import', exact: true }).first().click();
-  const historyResponse = await historyPromise;
-  assert.equal(historyResponse.status(), 201, JSON.stringify(await historyResponse.json()));
-  const history = await historyResponse.json();
-  assert.equal(history.status, 'Completed With Errors');
-  assert.equal(history.success_records, 1);
-  assert.equal(history.failed_records, 2);
-  assert.equal(history.upload_by, username, 'Import actor is the authenticated user.');
-  assert.equal(history.attribute_set, attributeSetName);
-
-  const sku = await db.collection('skus').findOne({ sku_code: skuCode });
-  assert.equal(sku.name, `Imported, SKU ${suffix}`, 'Quoted CSV commas are parsed as part of the SKU name.');
-  assert.equal(sku.master_sku_code, `QA-MASTER-${suffix}`);
-  assert.equal(sku.attribute_set, attributeSetName);
-  assert.equal(sku.created_by, username);
-  assert.equal(await db.collection('skus').countDocuments({ sku_code: `QA-IMPORT-BLANK-${suffix}` }), 0);
-  assert.equal(await db.collection('generic_records').countDocuments({ module: 'sku-import', code: history.code }), 1);
-  await page.getByText('Import completed: 1 successful, 2 failed', { exact: true }).waitFor();
-
-  await page.getByRole('button', { name: 'Download', exact: true }).click();
-  const searchPromise = page.waitForResponse((response) => response.url().endsWith('/api/sku-imports') && response.request().method() === 'POST' && response.request().postDataJSON()?.REQ_SEARCH_FLAG === true);
-  await page.getByRole('button', { name: 'Search', exact: true }).last().click();
-  assert.equal((await searchPromise).status(), 200);
-  const historyRow = page.locator('tbody tr').filter({ hasText: filename });
-  await historyRow.getByRole('cell', { name: 'Completed With Errors', exact: true }).waitFor();
-
-  const noCentralChanges = await send('/api/inventory-sync/central/events');
-  assert.equal(noCentralChanges.response.status, 200);
-  assert.deepEqual(noCentralChanges.json.map((event) => event.event_key).sort(), eventsBefore.json.map((event) => event.event_key).sort());
-  assert.deepEqual(errors, []);
-  console.log('PASS SKU Import: authenticated CSV upload, quoted-field parsing, successful SKU Mongo readback, duplicate/required-field row failures, accurate import history and actor, history enquiry, and no Central Inventory changes.');
-} catch (error) {
-  console.error('SKU Import browser state at failure:', { url: page.url(), visible: await page.locator('body').innerText().catch(() => ''), errors });
-  throw error;
-} finally {
-  await browser.close();
-  await mongo.close();
-}
+  await page.getByRole('alert').filter({ hasText: 'No SKU changes or processed import record were created.' }).waitFor();
+  const posts = requests.filter(r => r.method !== 'GET');
+  assert.deepEqual(posts, [{ path: '/api/sku-imports', method: 'POST', body: { file_name: 'fixture.csv', attribute_set: 'Fixture attributes', import_type: 'CreateUpdate' } }]);
+  assert.ok(requests.every(r => r.path === '/api/sku-imports'), 'Import must never read or mutate individual SKUs');
+  assert.deepEqual(pageErrors, []);
+  console.log('PASS SKU import browser boundary: actual component sends only an import request, shows unavailable outcome, and never accesses individual SKUs. Layout and HTTP client are fixture adapters; no configured store was used.');
+} finally { if (browser) await browser.close();await new Promise(resolve => server.close(resolve)); }

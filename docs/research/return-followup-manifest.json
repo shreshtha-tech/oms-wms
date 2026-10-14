@@ -1,0 +1,75 @@
+[
+  {
+    "repo": "saleor/saleor",
+    "sha": "925b69959a97c9deda7cdc85092494896d0aa1f4",
+    "path": "saleor/graphql/core/mutations.py",
+    "url": "https://github.com/saleor/saleor/blob/925b69959a97c9deda7cdc85092494896d0aa1f4/saleor/graphql/core/mutations.py",
+    "bytes": 43704,
+    "sha256": "3b73c316a082bbbbaf6a8f0a3190fe2df7f98d34c8e83bbf7f6c279b192b7d08",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "medusajs/medusa",
+    "sha": "0b97a96ea0d32ff3f4b18dbeeeeba9e763600a15",
+    "path": "packages/core/core-flows/src/inventory/steps/adjust-inventory-levels.ts",
+    "url": "https://github.com/medusajs/medusa/blob/0b97a96ea0d32ff3f4b18dbeeeeba9e763600a15/packages/core/core-flows/src/inventory/steps/adjust-inventory-levels.ts",
+    "bytes": 2796,
+    "sha256": "a594a091d6d825ce02415429765dda59dca5dfb814c62202aad65ff0f0757acb",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "medusajs/medusa",
+    "sha": "0b97a96ea0d32ff3f4b18dbeeeeba9e763600a15",
+    "path": "packages/core/core-flows/src/order/steps/confirm-order-changes.ts",
+    "url": "https://github.com/medusajs/medusa/blob/0b97a96ea0d32ff3f4b18dbeeeeba9e763600a15/packages/core/core-flows/src/order/steps/confirm-order-changes.ts",
+    "bytes": 1561,
+    "sha256": "a2b80377da3a0d6934fb09f21b388ff37952df9437170f8d4b56889876f6a953",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "medusajs/medusa",
+    "sha": "0b97a96ea0d32ff3f4b18dbeeeeba9e763600a15",
+    "path": "integration-tests/modules/__tests__/order/workflows/return/items.spec.ts",
+    "url": "https://github.com/medusajs/medusa/blob/0b97a96ea0d32ff3f4b18dbeeeeba9e763600a15/integration-tests/modules/__tests__/order/workflows/return/items.spec.ts",
+    "bytes": 6711,
+    "sha256": "5e0b7b7928da921ae4a7d96e8a5725208f5f3e29fe9d1fec874b202762771bef",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "vendure-ecommerce/vendure",
+    "sha": "530fa0afad87c449635d3864b604de93d7dd0a43",
+    "path": "packages/core/src/api/middleware/auth-guard.ts",
+    "url": "https://github.com/vendure-ecommerce/vendure/blob/530fa0afad87c449635d3864b604de93d7dd0a43/packages/core/src/api/middleware/auth-guard.ts",
+    "bytes": 12089,
+    "sha256": "10641f383d2d214b839bcbe26146786effbd9c5f574128ff2b14ae4a91d17c94",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "vendure-ecommerce/vendure",
+    "path": "packages/core/e2e/channel-permissions.e2e-spec.ts",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "repo": "tryton/tryton",
+    "sha": "8a743492cd18002a2c47f877e87aa32d79360c78",
+    "path": "modules/stock/COPYRIGHT",
+    "url": "https://github.com/tryton/tryton/blob/8a743492cd18002a2c47f877e87aa32d79360c78/modules/stock/COPYRIGHT",
+    "bytes": 871,
+    "sha256": "6e51777abfd8593a829ad309d2ba0aeb9d079c40edad3aa6b87c6df1341d6234",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "tryton/tryton",
+    "sha": "8a743492cd18002a2c47f877e87aa32d79360c78",
+    "path": "modules/stock/LICENSE",
+    "url": "https://github.com/tryton/tryton/blob/8a743492cd18002a2c47f877e87aa32d79360c78/modules/stock/LICENSE",
+    "bytes": 35147,
+    "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "tryton/tryton",
+    "path": "modules/stock/tests/scenario_shipment_out_return.rst",
+    "error": "HTTP Error 404: Not Found"
+  }
+]

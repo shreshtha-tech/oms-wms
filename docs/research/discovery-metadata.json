@@ -1,0 +1,317 @@
+{
+  "retrieved_at": "2026-10-14T20:26:28.680704+00:00",
+  "repositories": [
+    {
+      "repo": "frappe/erpnext",
+      "sha": "655186714ce8b163cf32effc1ab4f335b99df7ca",
+      "branch": "develop",
+      "license": "GPL-3.0",
+      "archived": false,
+      "pushed_at": "2026-10-14T20:14:18Z",
+      "status": "metadata only; source not yet inspected"
+    },
+    {
+      "repo": "odoo/odoo",
+      "sha": "993abab95278f488f47c231be38d9cbc85213c41",
+      "branch": "20.0",
+      "license": "NOASSERTION",
+      "archived": false,
+      "pushed_at": "2026-10-14T20:22:43Z",
+      "status": "metadata only; source not yet inspected"
+    },
+    {
+      "repo": "apache/ofbiz-framework",
+      "sha": "b8b72d556e829d4a0818f8a4fed57e0750efcacb",
+      "branch": "trunk",
+      "license": "Apache-2.0",
+      "archived": false,
+      "pushed_at": "2026-10-14T15:08:03Z",
+      "status": "metadata only; source not yet inspected"
+    },
+    {
+      "repo": "openboxes/openboxes",
+      "sha": "94f393a240347209ad88fa6b48124e0238dd17ad",
+      "branch": "develop",
+      "license": "EPL-1.0",
+      "archived": false,
+      "pushed_at": "2026-10-14T20:11:21Z",
+      "status": "metadata only; source not yet inspected"
+    },
+    {
+      "repo": "tryton/tryton",
+      "sha": "8a743492cd18002a2c47f877e87aa32d79360c78",
+      "branch": "main",
+      "license": null,
+      "archived": false,
+      "pushed_at": "2026-10-13T23:04:24Z",
+      "status": "metadata only; source not yet inspected"
+    },
+    {
+      "repo": "metasfresh/metasfresh",
+      "sha": "56dd881b972af4edb071e4f1261a55a8b1a9c4d7",
+      "branch": "new_dawn_uat",
+      "license": null,
+      "archived": false,
+      "pushed_at": "2026-10-14T20:18:59Z",
+      "status": "metadata only; source not yet inspected"
+    },
+    {
+      "repo": "medusajs/medusa",
+      "sha": "0b97a96ea0d32ff3f4b18dbeeeeba9e763600a15",
+      "branch": "develop",
+      "license": "NOASSERTION",
+      "archived": false,
+      "pushed_at": "2026-10-14T11:37:37Z",
+      "status": "metadata only; source not yet inspected"
+    },
+    {
+      "repo": "vendure-ecommerce/vendure",
+      "sha": "530fa0afad87c449635d3864b604de93d7dd0a43",
+      "branch": "master",
+      "license": "NOASSERTION",
+      "archived": false,
+      "pushed_at": "2026-10-14T16:18:59Z",
+      "status": "metadata only; source not yet inspected"
+    },
+    {
+      "repo": "saleor/saleor",
+      "sha": "925b69959a97c9deda7cdc85092494896d0aa1f4",
+      "branch": "main",
+      "license": "BSD-3-Clause",
+      "archived": false,
+      "pushed_at": "2026-10-14T15:08:11Z",
+      "status": "metadata only; source not yet inspected"
+    },
+    {
+      "repo": "spree/spree",
+      "sha": "03ac3fb4f06e88099376bd8bdb5064f8e2a5f47e",
+      "branch": "main",
+      "license": "BSD-3-Clause",
+      "archived": false,
+      "pushed_at": "2026-10-14T19:33:20Z",
+      "status": "metadata only; source not yet inspected"
+    },
+    {
+      "repo": "solidusio/solidus",
+      "error": "HTTP Error 403: rate limit exceeded"
+    },
+    {
+      "repo": "BroadleafCommerce/BroadleafCommerce",
+      "sha": "ea8e0f9086ff1e5ff52caa22d43b23f81b72e22f",
+      "branch": "develop-7.0.x",
+      "license": null,
+      "archived": false,
+      "pushed_at": "2026-10-14T19:17:20Z",
+      "status": "metadata only; source not yet inspected"
+    },
+    {
+      "repo": "temporalio/temporal",
+      "sha": "6a17938fd23ed6aa681af2689384b472c37952a6",
+      "branch": "main",
+      "license": "MIT",
+      "archived": false,
+      "pushed_at": "2026-10-14T20:17:00Z",
+      "status": "metadata only; source not yet inspected"
+    },
+    {
+      "repo": "debezium/debezium",
+      "sha": "2f84b29c03638d261823172d1d8bfa9ca3a99824",
+      "branch": "main",
+      "license": "Apache-2.0",
+      "archived": false,
+      "pushed_at": "2026-10-14T18:52:01Z",
+      "status": "metadata only; source not yet inspected"
+    },
+    {
+      "repo": "apache/camel",
+      "sha": "1afa3af6f48b54763b2982726ccb7e29cba93948",
+      "branch": "main",
+      "license": "Apache-2.0",
+      "archived": false,
+      "pushed_at": "2026-10-14T19:52:19Z",
+      "status": "metadata only; source not yet inspected"
+    },
+    {
+      "repo": "apache/kafka",
+      "sha": "e58847b4d46869704e87b071eb2b8b96cffe93a3",
+      "branch": "trunk",
+      "license": "Apache-2.0",
+      "archived": false,
+      "pushed_at": "2026-10-14T20:17:52Z",
+      "status": "metadata only; source not yet inspected"
+    },
+    {
+      "repo": "rabbitmq/rabbitmq-server",
+      "sha": "795ff80a4e97f7f26b9ee1392c23ed645c9097c8",
+      "branch": "main",
+      "license": "NOASSERTION",
+      "archived": false,
+      "pushed_at": "2026-10-14T14:06:10Z",
+      "status": "metadata only; source not yet inspected"
+    },
+    {
+      "repo": "nats-io/nats-server",
+      "sha": "64dda80fdd87b41b2afcdc5faf5d846db6c189b0",
+      "branch": "main",
+      "license": "Apache-2.0",
+      "archived": false,
+      "pushed_at": "2026-10-14T16:59:31Z",
+      "status": "metadata only; source not yet inspected"
+    },
+    {
+      "repo": "open-telemetry/opentelemetry-js",
+      "sha": "2fbb404a7e5d439df57c0b678faf0d3822556d23",
+      "branch": "main",
+      "license": "Apache-2.0",
+      "archived": false,
+      "pushed_at": "2026-10-14T20:13:56Z",
+      "status": "metadata only; source not yet inspected"
+    },
+    {
+      "repo": "timgit/pg-boss",
+      "sha": "b53278b0afea34aa9110c6b0ebd927cee48dd4ae",
+      "branch": "master",
+      "license": "MIT",
+      "archived": false,
+      "pushed_at": "2026-10-14T17:16:07Z",
+      "status": "metadata only; source not yet inspected"
+    },
+    {
+      "repo": "taskforcesh/bullmq",
+      "sha": "03655d4b8aa77682df93dd70bd20c60c5769c894",
+      "branch": "master",
+      "license": "MIT",
+      "archived": false,
+      "pushed_at": "2026-10-14T17:46:30Z",
+      "status": "metadata only; source not yet inspected"
+    },
+    {
+      "repo": "graphile/worker",
+      "sha": "4cda192c5df254392a1dff350e5d73f7d2c18a85",
+      "branch": "main",
+      "license": "MIT",
+      "archived": false,
+      "pushed_at": "2026-10-09T17:01:12Z",
+      "status": "metadata only; source not yet inspected"
+    },
+    {
+      "repo": "Shopify/shopify-app-js",
+      "sha": "e409d06d03aebb88c3b0af85ea6b0120e439fd6b",
+      "branch": "main",
+      "license": "MIT",
+      "archived": false,
+      "pushed_at": "2026-10-14T14:18:07Z",
+      "status": "metadata only; source not yet inspected"
+    },
+    {
+      "repo": "woocommerce/woocommerce",
+      "sha": "5f57267f9f8bd40d2e12d84d2207c399910d8869",
+      "branch": "trunk",
+      "license": "NOASSERTION",
+      "archived": false,
+      "pushed_at": "2026-10-14T20:24:57Z",
+      "status": "metadata only; source not yet inspected"
+    },
+    {
+      "repo": "woocommerce/woocommerce-rest-api",
+      "sha": "88ff745b300488d9d2145fa1ab73a2715558530a",
+      "branch": "master",
+      "license": null,
+      "archived": true,
+      "pushed_at": "2021-06-21T09:33:24Z",
+      "status": "metadata only; source not yet inspected"
+    },
+    {
+      "repo": "Automattic/woocommerce-webhooks",
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "repo": "amazon-php/sp-api-sdk",
+      "error": "HTTP Error 403: rate limit exceeded"
+    },
+    {
+      "repo": "saleor/saleor-app-sdk",
+      "error": "HTTP Error 403: rate limit exceeded"
+    },
+    {
+      "repo": "OWASP/ASVS",
+      "error": "HTTP Error 403: rate limit exceeded"
+    },
+    {
+      "repo": "OWASP/API-Security",
+      "error": "HTTP Error 403: rate limit exceeded"
+    },
+    {
+      "repo": "OAI/OpenAPI-Specification",
+      "error": "HTTP Error 403: rate limit exceeded"
+    },
+    {
+      "repo": "github/codeql",
+      "error": "HTTP Error 403: rate limit exceeded"
+    },
+    {
+      "repo": "ossf/scorecard",
+      "error": "HTTP Error 403: rate limit exceeded"
+    },
+    {
+      "repo": "anchore/syft",
+      "error": "HTTP Error 403: rate limit exceeded"
+    },
+    {
+      "repo": "anchore/grype",
+      "error": "HTTP Error 403: rate limit exceeded"
+    },
+    {
+      "repo": "aquasecurity/trivy",
+      "error": "HTTP Error 403: rate limit exceeded"
+    },
+    {
+      "repo": "sigstore/cosign",
+      "error": "HTTP Error 403: rate limit exceeded"
+    },
+    {
+      "repo": "guacsec/guac",
+      "error": "HTTP Error 403: rate limit exceeded"
+    },
+    {
+      "repo": "node-casbin/node-casbin",
+      "error": "HTTP Error 403: rate limit exceeded"
+    },
+    {
+      "repo": "openfga/openfga",
+      "error": "HTTP Error 403: rate limit exceeded"
+    },
+    {
+      "repo": "cerbos/cerbos",
+      "error": "HTTP Error 403: rate limit exceeded"
+    },
+    {
+      "repo": "keycloak/keycloak",
+      "error": "HTTP Error 403: rate limit exceeded"
+    },
+    {
+      "repo": "directus/directus",
+      "error": "HTTP Error 403: rate limit exceeded"
+    },
+    {
+      "repo": "payloadcms/payload",
+      "error": "HTTP Error 403: rate limit exceeded"
+    },
+    {
+      "repo": "bagisto/bagisto",
+      "error": "HTTP Error 403: rate limit exceeded"
+    },
+    {
+      "repo": "shopware/shopware",
+      "error": "HTTP Error 403: rate limit exceeded"
+    },
+    {
+      "repo": "akeneo/pim-community-dev",
+      "error": "HTTP Error 403: rate limit exceeded"
+    },
+    {
+      "repo": "reactioncommerce/reaction",
+      "error": "HTTP Error 403: rate limit exceeded"
+    }
+  ]
+}

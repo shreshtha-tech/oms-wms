@@ -1,0 +1,161 @@
+[
+  {
+    "repo": "OWASP/ASVS",
+    "sha": "5cf9b032440be53ce345ab3c130fda46ba1ce7a2",
+    "path": "5.0/en/0x08-V8-Authorization.md",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "repo": "OWASP/ASVS",
+    "sha": "5cf9b032440be53ce345ab3c130fda46ba1ce7a2",
+    "path": "5.0/en/0x16-V16-Security-Logging-and-Error-Handling.md",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "repo": "OWASP/ASVS",
+    "sha": "5cf9b032440be53ce345ab3c130fda46ba1ce7a2",
+    "path": "LICENSE.md",
+    "url": "https://github.com/OWASP/ASVS/blob/5cf9b032440be53ce345ab3c130fda46ba1ce7a2/LICENSE.md",
+    "bytes": 20138,
+    "sha256": "28a9529c7d0bb4dc51f4bf5c116a3d16ef247a052f7591466768ddf563fd1cf5",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "OAI/OpenAPI-Specification",
+    "sha": "69d8b7953c3259e243cf746388a0951b89649763",
+    "path": "versions/3.1.1.md",
+    "url": "https://github.com/OAI/OpenAPI-Specification/blob/69d8b7953c3259e243cf746388a0951b89649763/versions/3.1.1.md",
+    "bytes": 212540,
+    "sha256": "a612d2b72d422925616b2cabfa7acc0419ffaaf4b0eb42bfb11dc9b804f92749",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "OAI/OpenAPI-Specification",
+    "sha": "69d8b7953c3259e243cf746388a0951b89649763",
+    "path": "LICENSE",
+    "url": "https://github.com/OAI/OpenAPI-Specification/blob/69d8b7953c3259e243cf746388a0951b89649763/LICENSE",
+    "bytes": 11345,
+    "sha256": "4948367c65e1ce06690e2cadc6e86fce1a6a6db55ef874ce4b78c0f472ce5f13",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "open-telemetry/opentelemetry-js",
+    "sha": "2fbb404a7e5d439df57c0b678faf0d3822556d23",
+    "path": "packages/opentelemetry-sdk-trace-base/src/BasicTracerProvider.ts",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "repo": "open-telemetry/opentelemetry-js",
+    "sha": "2fbb404a7e5d439df57c0b678faf0d3822556d23",
+    "path": "packages/opentelemetry-sdk-trace-base/test/common/BasicTracerProvider.test.ts",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "repo": "open-telemetry/opentelemetry-js",
+    "sha": "2fbb404a7e5d439df57c0b678faf0d3822556d23",
+    "path": "LICENSE",
+    "url": "https://github.com/open-telemetry/opentelemetry-js/blob/2fbb404a7e5d439df57c0b678faf0d3822556d23/LICENSE",
+    "bytes": 11357,
+    "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "ossf/scorecard",
+    "sha": "a1fe90aafa9169f150b2733fb608f6551077b371",
+    "path": "checks/pinned_dependencies.go",
+    "url": "https://github.com/ossf/scorecard/blob/a1fe90aafa9169f150b2733fb608f6551077b371/checks/pinned_dependencies.go",
+    "bytes": 2168,
+    "sha256": "8e247de6f8100b6ecec284b6a6efb3a1dd1cb40e0efc1abdfc8e62e3a2540e43",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "ossf/scorecard",
+    "sha": "a1fe90aafa9169f150b2733fb608f6551077b371",
+    "path": "checks/pinned_dependencies_test.go",
+    "url": "https://github.com/ossf/scorecard/blob/a1fe90aafa9169f150b2733fb608f6551077b371/checks/pinned_dependencies_test.go",
+    "bytes": 2031,
+    "sha256": "29ad508283433d9946ead20b68d2dd5787f1bc8ee6e9ce01e7ec30664cef5d00",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "ossf/scorecard",
+    "sha": "a1fe90aafa9169f150b2733fb608f6551077b371",
+    "path": "LICENSE",
+    "url": "https://github.com/ossf/scorecard/blob/a1fe90aafa9169f150b2733fb608f6551077b371/LICENSE",
+    "bytes": 11355,
+    "sha256": "61324beb8841ff62645c758ff5b121164592ec163056dda34d76a0526a0b3b5e",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "aquasecurity/trivy",
+    "sha": "088b9706d7e3af33ef1a8d2dee305370df714293",
+    "path": "pkg/scanner/local/scan.go",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "repo": "aquasecurity/trivy",
+    "sha": "088b9706d7e3af33ef1a8d2dee305370df714293",
+    "path": "pkg/scanner/local/scan_test.go",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "repo": "aquasecurity/trivy",
+    "sha": "088b9706d7e3af33ef1a8d2dee305370df714293",
+    "path": "LICENSE",
+    "url": "https://github.com/aquasecurity/trivy/blob/088b9706d7e3af33ef1a8d2dee305370df714293/LICENSE",
+    "bytes": 11357,
+    "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "frappe/frappe",
+    "sha": "4857b04809270c03c5e3dced4908168c15bed516",
+    "path": "frappe/permissions.py",
+    "url": "https://github.com/frappe/frappe/blob/4857b04809270c03c5e3dced4908168c15bed516/frappe/permissions.py",
+    "bytes": 29321,
+    "sha256": "390922a724b7dc50093bdad10a2fcd1e055b05ed4be22d91c60f30db7adc4e44",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "frappe/frappe",
+    "sha": "4857b04809270c03c5e3dced4908168c15bed516",
+    "path": "frappe/tests/test_permissions.py",
+    "url": "https://github.com/frappe/frappe/blob/4857b04809270c03c5e3dced4908168c15bed516/frappe/tests/test_permissions.py",
+    "bytes": 31673,
+    "sha256": "41837de9693c4b3b6dc78b3eb25d846bc2c762b0c1cf7e259222d5d76a39f9d5",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "frappe/frappe",
+    "sha": "4857b04809270c03c5e3dced4908168c15bed516",
+    "path": "license.txt",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "README.md",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/README.md",
+    "bytes": 2031,
+    "sha256": "63f5a33e3c054553bb0136de7ef67b98d395d87e840b14f78b1e25845258fc08",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/README.md",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/README.md",
+    "bytes": 62675,
+    "sha256": "1efdbf47170e4af9948a8c17ca137f915c8868f535a25c0d5fd79837b7b34ce9",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "LICENSE.md",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/LICENSE.md",
+    "bytes": 1054,
+    "sha256": "0ad41a6f2c5525c2f94cbe404947a932c365b78efecafde3c2dfb7189d3c1d80",
+    "status": "retrieved; pending reading"
+  }
+]

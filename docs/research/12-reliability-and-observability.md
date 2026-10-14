@@ -1,0 +1,19 @@
+# Reliability and observability
+
+Status: IN PROGRESS. Evidence LOC-003/007/008/010/013/017/018, SUP-001, UP-003/005/009/010/011. No workload, capacity, RPO, RTO or latency SLO invented.
+
+Existing mechanisms worth retaining: payload-hash replay checks, transactionally inserted tasks, aggregate checkpoints, leased claims, held provider uncertainty, independent readback, bounded log/metric dimensions and migration checksum verification. These are source mechanisms; only the separate confirmed-fix fixture results are recorded as executed evidence.
+
+Telemetry (LOC-013) uses AsyncLocalStorage request IDs, allowlisted fields, matched route names, fixed histogram buckets and bounded maps. This helps avoid payload/URL leakage and unbounded metric series, but process restart loses counters. No cross-process traces, retention guarantee or durable audit provenance follows from this implementation. The current lockfile has no OpenTelemetry package (SUP-001); any adoption needs exact exporter/instrumentation versions, privacy assertions and a demonstrated correlation need.
+
+Operations endpoint (LOC-017) reports pending/retry count/age, dead count and heartbeat age. It omits held and processing work from this queue summary. Publication attention is exposed elsewhere, so the scoped recommendation is to include held uncertainty and expired/long-running claims in the operational picture and connect them to reviewed recovery actions (R-07), not to claim the entire system lacks visibility. Hard-coded thresholds in operations.js are implementation defaults, not approved business SLOs.
+
+Provider retry (LOC-008) is process-local and caps numeric Retry-After waits to five seconds. Persistent task backoff and account/operation-wide quota coordination must be distinguished from this per-call wrapper. No configured outage or retry storm was reproduced. Validate admission/scheduling through deterministic clock/fault fixtures and actual endpoint contracts before changing behavior (R-04).
+
+Queue comparison: pg-boss has explicit expiry/failure retry and backoff assertions (UP-005); Graphile separates batch payload failures and task-release failure (UP-010); Camel keeps duplicate completion ownership distinct (UP-009). These justify tests for local lease ownership, poison isolation, attempt exhaustion and observer failure, not immediate queue replacement. Debezium requires a CDC insert-event contract and retention/offset operations that are not established for mutable ci_outbox (UP-011).
+
+Migration verification (LOC-010) now records hashes only after the whole existing replay sequence and index postconditions succeed. Owned PostgreSQL fixture results do not prove a configured production schema upgrade. Render source declares preDeployCommand inventory:migrate and separate web/worker services; no hosted service, rollout, health configuration or rollback behavior was contacted or verified.
+
+Recovery (LOC-018): Mongo backup exports bounded/provenance-bearing files with checksum manifests but explicitly sets consistentSnapshot false. A checksum-valid logical export is not evidence of a transactionally consistent restore or cross-database recovery point. Design an approved recovery contract for PostgreSQL ledger/outbox, Mongo operational state, bridge checkpoints, credentials/key custody, indexes and uncertain provider attempts. Replaying restored outbound work must not duplicate remote effects. Run only owned fixtures and record source-vs-restored invariants after owner-approved RPO/RTO/workload definitions (R-08).
+
+Pending proof: source-level backup/restore failure tests, PostgreSQL backup/PITR policy, durable log access/retention, independent worker lifecycle and SQS visibility recovery, hosted scrape/export behavior, fairness/backpressure under approved load, bounded growth and sustained outage drain. No production-readiness declaration is made.

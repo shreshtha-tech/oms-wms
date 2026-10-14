@@ -1,0 +1,154 @@
+[
+  {
+    "repo": "saleor/saleor",
+    "sha": "925b69959a97c9deda7cdc85092494896d0aa1f4",
+    "path": "saleor/account/lock_objects.py",
+    "bytes": 268,
+    "sha256": "4496811bc5b1f4d2dcd90b100db1f5f91cfba9303b5d0c2705c11bf61ce500e8",
+    "url": "https://github.com/saleor/saleor/blob/925b69959a97c9deda7cdc85092494896d0aa1f4/saleor/account/lock_objects.py"
+  },
+  {
+    "repo": "saleor/saleor",
+    "sha": "925b69959a97c9deda7cdc85092494896d0aa1f4",
+    "path": "saleor/app/lock_objects.py",
+    "bytes": 337,
+    "sha256": "4b6fa96d368dcdca44c65fe1b057886b947ef5e6ade7c84fe7b96778c1be3436",
+    "url": "https://github.com/saleor/saleor/blob/925b69959a97c9deda7cdc85092494896d0aa1f4/saleor/app/lock_objects.py"
+  },
+  {
+    "repo": "saleor/saleor",
+    "sha": "925b69959a97c9deda7cdc85092494896d0aa1f4",
+    "path": "saleor/attribute/lock_objects.py",
+    "bytes": 833,
+    "sha256": "c3ae5456272f5bf3388dd492a3f9f570470ae7a2f5b06b19a477034168319b9a",
+    "url": "https://github.com/saleor/saleor/blob/925b69959a97c9deda7cdc85092494896d0aa1f4/saleor/attribute/lock_objects.py"
+  },
+  {
+    "repo": "saleor/saleor",
+    "sha": "925b69959a97c9deda7cdc85092494896d0aa1f4",
+    "path": "saleor/checkout/lock_objects.py",
+    "bytes": 366,
+    "sha256": "3d1a3abb63bdb91ba8e47df567c1832e6c25990033c7f22b1408fd65ddeea5aa",
+    "url": "https://github.com/saleor/saleor/blob/925b69959a97c9deda7cdc85092494896d0aa1f4/saleor/checkout/lock_objects.py"
+  },
+  {
+    "repo": "saleor/saleor",
+    "sha": "925b69959a97c9deda7cdc85092494896d0aa1f4",
+    "path": "saleor/giftcard/lock_objects.py",
+    "bytes": 491,
+    "sha256": "7f53687eb9ce316d22941a4c70140dbd3a34069628310bc936467ce503582e50",
+    "url": "https://github.com/saleor/saleor/blob/925b69959a97c9deda7cdc85092494896d0aa1f4/saleor/giftcard/lock_objects.py"
+  },
+  {
+    "repo": "saleor/saleor",
+    "sha": "925b69959a97c9deda7cdc85092494896d0aa1f4",
+    "path": "saleor/giftcard/tests/test_lock_objects.py",
+    "bytes": 311,
+    "sha256": "c425bfc13dcae428c854778eaa2192cfa2cf0c8f0e29e75c53b5ddb6f217517b",
+    "url": "https://github.com/saleor/saleor/blob/925b69959a97c9deda7cdc85092494896d0aa1f4/saleor/giftcard/tests/test_lock_objects.py"
+  },
+  {
+    "repo": "saleor/saleor",
+    "sha": "925b69959a97c9deda7cdc85092494896d0aa1f4",
+    "path": "saleor/menu/lock_objects.py",
+    "bytes": 392,
+    "sha256": "cdcd250a12a878eadd9a1cf0531377406ce3794fdc0dde329f13dcdb56cbb49e",
+    "url": "https://github.com/saleor/saleor/blob/925b69959a97c9deda7cdc85092494896d0aa1f4/saleor/menu/lock_objects.py"
+  },
+  {
+    "repo": "saleor/saleor",
+    "sha": "925b69959a97c9deda7cdc85092494896d0aa1f4",
+    "path": "saleor/order/lock_objects.py",
+    "bytes": 344,
+    "sha256": "58bac20448e31dea6ba67eb17873e5f40c574c957b7dc411e2520c2846059e04",
+    "url": "https://github.com/saleor/saleor/blob/925b69959a97c9deda7cdc85092494896d0aa1f4/saleor/order/lock_objects.py"
+  },
+  {
+    "repo": "saleor/saleor",
+    "sha": "925b69959a97c9deda7cdc85092494896d0aa1f4",
+    "path": "saleor/page/lock_objects.py",
+    "bytes": 187,
+    "sha256": "3ae70ffe2afdca45f87f071b1598879eb9ec9d236991f764e8a083e5c79e0213",
+    "url": "https://github.com/saleor/saleor/blob/925b69959a97c9deda7cdc85092494896d0aa1f4/saleor/page/lock_objects.py"
+  },
+  {
+    "repo": "saleor/saleor",
+    "sha": "925b69959a97c9deda7cdc85092494896d0aa1f4",
+    "path": "saleor/payment/lock_objects.py",
+    "bytes": 1239,
+    "sha256": "ca2f5bb27d314d68510c629f37cdb2b42c7e3edf9ceb740f7a064160990aa3ec",
+    "url": "https://github.com/saleor/saleor/blob/925b69959a97c9deda7cdc85092494896d0aa1f4/saleor/payment/lock_objects.py"
+  },
+  {
+    "repo": "saleor/saleor",
+    "sha": "925b69959a97c9deda7cdc85092494896d0aa1f4",
+    "path": "saleor/product/lock_objects.py",
+    "bytes": 969,
+    "sha256": "4a1d76c97d78b99b53eea2cbbc9bb1ee6bc7ef84addb22ba25d508465afc6fb5",
+    "url": "https://github.com/saleor/saleor/blob/925b69959a97c9deda7cdc85092494896d0aa1f4/saleor/product/lock_objects.py"
+  },
+  {
+    "repo": "saleor/saleor",
+    "sha": "925b69959a97c9deda7cdc85092494896d0aa1f4",
+    "path": "saleor/warehouse/lock_objects.py",
+    "bytes": 530,
+    "sha256": "ec0d8a1c61b0b4a3d9d6db023754979c465d9e37d5db6877573fb944ee710d99",
+    "url": "https://github.com/saleor/saleor/blob/925b69959a97c9deda7cdc85092494896d0aa1f4/saleor/warehouse/lock_objects.py"
+  },
+  {
+    "repo": "saleor/saleor",
+    "sha": "925b69959a97c9deda7cdc85092494896d0aa1f4",
+    "path": "saleor/warehouse/tests/fixtures/allocation.py",
+    "bytes": 3577,
+    "sha256": "f38e535f4b3ba3daa3507675949c47a3774a9301fb3798ebba27dcb473cb0a3b",
+    "url": "https://github.com/saleor/saleor/blob/925b69959a97c9deda7cdc85092494896d0aa1f4/saleor/warehouse/tests/fixtures/allocation.py"
+  },
+  {
+    "repo": "saleor/saleor",
+    "sha": "925b69959a97c9deda7cdc85092494896d0aa1f4",
+    "path": "saleor/warehouse/tests/fixtures/preorder_allocation.py",
+    "bytes": 519,
+    "sha256": "c9dabc47bb0104dfb1033a8ddca6064e4a3f6c51429cbeb96c0d748ed57c3a40",
+    "url": "https://github.com/saleor/saleor/blob/925b69959a97c9deda7cdc85092494896d0aa1f4/saleor/warehouse/tests/fixtures/preorder_allocation.py"
+  },
+  {
+    "repo": "saleor/saleor",
+    "sha": "925b69959a97c9deda7cdc85092494896d0aa1f4",
+    "path": "saleor/warehouse/tests/test_preorder_reservations_management.py",
+    "bytes": 9186,
+    "sha256": "d863e2a4dd6b1489afa063b22607c25ab38cde6133533e03d5d90e8e4d074f09",
+    "url": "https://github.com/saleor/saleor/blob/925b69959a97c9deda7cdc85092494896d0aa1f4/saleor/warehouse/tests/test_preorder_reservations_management.py"
+  },
+  {
+    "repo": "saleor/saleor",
+    "sha": "925b69959a97c9deda7cdc85092494896d0aa1f4",
+    "path": "saleor/warehouse/tests/test_stock_reservations_management.py",
+    "bytes": 11677,
+    "sha256": "1c3793373f86b39582a7a662a8f68a570019bf80ff7434a4bdc5752fb908ecb0",
+    "url": "https://github.com/saleor/saleor/blob/925b69959a97c9deda7cdc85092494896d0aa1f4/saleor/warehouse/tests/test_stock_reservations_management.py"
+  },
+  {
+    "repo": "medusajs/medusa",
+    "sha": "0b97a96ea0d32ff3f4b18dbeeeeba9e763600a15",
+    "path": "ENTERPRISE-LICENSE.md",
+    "bytes": 5975,
+    "sha256": "2e0b6e1a06fc2fbc9d4f6bb57cf61ea707bb470711f8c068acc42b85fd30b5d4",
+    "url": "https://github.com/medusajs/medusa/blob/0b97a96ea0d32ff3f4b18dbeeeeba9e763600a15/ENTERPRISE-LICENSE.md"
+  },
+  {
+    "repo": "medusajs/medusa",
+    "sha": "0b97a96ea0d32ff3f4b18dbeeeeba9e763600a15",
+    "path": "packages/core/core-flows/src/cart/steps/reserve-inventory.ts",
+    "bytes": 3319,
+    "sha256": "003c881a7324d6e4fcdc035fdb64b1b52af6b001ffb766dbebeb2ea669b60b78",
+    "url": "https://github.com/medusajs/medusa/blob/0b97a96ea0d32ff3f4b18dbeeeeba9e763600a15/packages/core/core-flows/src/cart/steps/reserve-inventory.ts"
+  },
+  {
+    "repo": "medusajs/medusa",
+    "sha": "0b97a96ea0d32ff3f4b18dbeeeeba9e763600a15",
+    "path": "packages/modules/inventory/integration-tests/__tests__/inventory-module-service.spec.ts",
+    "bytes": 39922,
+    "sha256": "9c296be3464462c56561e162d68cd91ca8fc99cf58f83e9c7421d8645dfffd68",
+    "url": "https://github.com/medusajs/medusa/blob/0b97a96ea0d32ff3f4b18dbeeeeba9e763600a15/packages/modules/inventory/integration-tests/__tests__/inventory-module-service.spec.ts"
+  }
+]

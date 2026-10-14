@@ -1,0 +1,19 @@
+# Confirmed-defect fixes — 2026-10-15
+
+User authorized “fix all” and clarified “Fix confirmed defects from this review.” This permits the scoped code changes below; the broader architecture research remains incomplete. Current HEAD at validation: `9fe3fc3d54c2c3fe2a7ac3c6154814f74ec41bf0`. The branch remains fix/flipkart-order-intake-20261009. The earlier baseline commit remains historical; no Git staging, commit, push or deployment was performed by this agent.
+
+| Defect/gap | Change | Evidence |
+|---|---|---|
+| Browser performs per-SKU writes before import endpoint rejects processing | src/eretail/masters/SkuImport.tsx now sends only the import request; removes browser CSV mutation loop, fabricated success counts and unsupported capability copy | Actual component browser regression PASS; explicit memory API provenance and integrity fixtures PASS |
+| Legacy import tests expect fabricated 201/history | scripts/verify-sku-import-integrity.mjs checks 501 with unchanged SKUs and no history; scripts/verify-sku-import.mjs is now a disposable component browser regression with no credentials or configured stores | PASS; browser layout and HTTP client use fixture adapters, so this is not full configured application E2E proof |
+| Migration runner has no record of the SQL revision verified | inventory/migration-history.js and inventory/db.js record SHA-256 per SQL file after the complete sequence/index postconditions succeed; reject changed/missing recorded migrations before business DDL replay | PASS on disposable PostgreSQL 18: fresh 29-file sequence, repeated history, altered checksum, newer unknown migration, unjournaled-schema adoption with preserved rows, concurrent runners, injected SQL failure and repair/retry |
+| npm dependency updates absent | .github/dependabot.yml adds npm weekly updates while preserving devcontainer updates; adds GitHub Actions updates | YAML parse/ecosystem assertions PASS; service execution NOT RUN |
+| No repository workflow found | .github/workflows/ci.yml adds locked dependency installation without lifecycle scripts, TypeScript, memory contracts, owned PostgreSQL recovery checks and isolated browser check. Checkout/setup-node are pinned to public v7 hashes resolved with credential helpers disabled; token read-only, credential persistence disabled | YAML shape/permissions/pinning assertions PASS; actual hosted runner execution NOT RUN |
+
+Migration history is deliberately a record of successful verification, not a skip ledger. Existing idempotent SQL still replays under the existing advisory session lock; missing history does not claim any historical migration is already applied. The full history is written atomically after every SQL file and the concurrent-index validity checks pass. A crash before recording retains replay/repair semantics. It does not prove that a whole legacy migration sequence is atomic, nor establish configured-schema compatibility. Existing databases were not contacted. Historical SQL files were not edited.
+
+The SKU import processor remains unavailable and returns HTTP 501 SKU_IMPORT_PROCESSOR_UNAVAILABLE. This fix prevents hidden writes; it does not implement a file ingestion pipeline. A server-owned validated, durable import is still future work.
+
+All local verification used Node v26.5.0, within the declared engine range. The default /usr/local/bin/node v20.14.0 remains outside the supported range; no user runtime installation or global selection was changed. The initial browser attempt could not find the installed Playwright revision; the successful run used installed Chrome. No browser download was needed locally.
+
+See confirmed-defect-validation.json for exact commands, outcomes, scope and source hashes. Remote CI, provider calls, configured databases, load and disaster-recovery evidence remain NOT RUN. This document does not declare the full forensic research mission complete.

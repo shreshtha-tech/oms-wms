@@ -1,0 +1,46 @@
+name: Repository checks
+
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: repository-checks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Install locked dependencies without lifecycle scripts
+        run: npm ci --ignore-scripts
+      - name: TypeScript
+        run: node node_modules/typescript/bin/tsc --noEmit -p tsconfig.app.json
+      - name: Isolated SKU server contracts
+        run: |
+          node scripts/verify-sku-import-provenance.mjs
+          node scripts/verify-sku-import-integrity.mjs
+      - name: Migration history and recovery on owned PostgreSQL
+        shell: bash
+        run: |
+          pg_initdb="$(rg --files /usr/lib/postgresql -g initdb | sort -V | tail -n 1)"
+          test -n "$pg_initdb"
+          export PG_BIN_DIR="$(dirname "$pg_initdb")"
+          test -x "$PG_BIN_DIR/postgres"
+          node scripts/verify-migration-history.mjs
+      - name: Install test browser
+        run: npm exec -- playwright install --with-deps chromium
+      - name: Isolated SKU browser regression
+        run: node scripts/verify-sku-import.mjs

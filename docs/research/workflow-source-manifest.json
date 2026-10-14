@@ -1,0 +1,221 @@
+[
+  {
+    "repo": "saleor/saleor",
+    "sha": "925b69959a97c9deda7cdc85092494896d0aa1f4",
+    "path": "saleor/graphql/order/mutations/fulfillment_return_products.py",
+    "url": "https://github.com/saleor/saleor/blob/925b69959a97c9deda7cdc85092494896d0aa1f4/saleor/graphql/order/mutations/fulfillment_return_products.py",
+    "bytes": 9841,
+    "sha256": "b928efad5822efde5f02622cbef56d3f3277047dad6520e5ce150037f96c2fe5",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "saleor/saleor",
+    "sha": "925b69959a97c9deda7cdc85092494896d0aa1f4",
+    "path": "saleor/graphql/order/mutations/fulfillment_refund_and_return_product_base.py",
+    "url": "https://github.com/saleor/saleor/blob/925b69959a97c9deda7cdc85092494896d0aa1f4/saleor/graphql/order/mutations/fulfillment_refund_and_return_product_base.py",
+    "bytes": 10139,
+    "sha256": "e9d09558f3b5c1c6d134af40a2532e5c2bf9e655a633d544ba1c5f54a925c1e8",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "saleor/saleor",
+    "sha": "925b69959a97c9deda7cdc85092494896d0aa1f4",
+    "path": "saleor/graphql/order/tests/mutations/test_fulfillment_return_products.py",
+    "url": "https://github.com/saleor/saleor/blob/925b69959a97c9deda7cdc85092494896d0aa1f4/saleor/graphql/order/tests/mutations/test_fulfillment_return_products.py",
+    "bytes": 44834,
+    "sha256": "15f01374aedc8d1a3dee2871c6f4b53856ba1e0fc008dc123cdaba6418da42f3",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "saleor/saleor",
+    "sha": "925b69959a97c9deda7cdc85092494896d0aa1f4",
+    "path": "saleor/order/actions.py",
+    "url": "https://github.com/saleor/saleor/blob/925b69959a97c9deda7cdc85092494896d0aa1f4/saleor/order/actions.py",
+    "bytes": 74528,
+    "sha256": "77526abd4b0688d17b0e8e184c34bec1104565ed3eeea65964ce615dce24e08d",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "saleor/saleor",
+    "sha": "925b69959a97c9deda7cdc85092494896d0aa1f4",
+    "path": "saleor/warehouse/reservations.py",
+    "url": "https://github.com/saleor/saleor/blob/925b69959a97c9deda7cdc85092494896d0aa1f4/saleor/warehouse/reservations.py",
+    "bytes": 14876,
+    "sha256": "a33fc0f4f73d07206897f5cb5e29e0838ea09dd9dbe681b7d1f7797587956fb5",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "medusajs/medusa",
+    "sha": "0b97a96ea0d32ff3f4b18dbeeeeba9e763600a15",
+    "path": "packages/medusa/src/api/admin/returns/[id]/receive/confirm/route.ts",
+    "url": "https://github.com/medusajs/medusa/blob/0b97a96ea0d32ff3f4b18dbeeeeba9e763600a15/packages/medusa/src/api/admin/returns/[id]/receive/confirm/route.ts",
+    "bytes": 1181,
+    "sha256": "38cf6ac65676493af30e791090db6ded9ec67537ba3644ce6d6392f5f2db904d",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "medusajs/medusa",
+    "sha": "0b97a96ea0d32ff3f4b18dbeeeeba9e763600a15",
+    "path": "packages/core/core-flows/src/order/workflows/return/confirm-receive-return-request.ts",
+    "url": "https://github.com/medusajs/medusa/blob/0b97a96ea0d32ff3f4b18dbeeeeba9e763600a15/packages/core/core-flows/src/order/workflows/return/confirm-receive-return-request.ts",
+    "bytes": 11739,
+    "sha256": "d610474192764ae5fe1e390d7e63f04e8b1c1bbb6576e3b6a1e57eee4709a49b",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "medusajs/medusa",
+    "sha": "0b97a96ea0d32ff3f4b18dbeeeeba9e763600a15",
+    "path": "packages/core/core-flows/src/order/workflows/return/receive-complete-return.ts",
+    "url": "https://github.com/medusajs/medusa/blob/0b97a96ea0d32ff3f4b18dbeeeeba9e763600a15/packages/core/core-flows/src/order/workflows/return/receive-complete-return.ts",
+    "bytes": 3112,
+    "sha256": "2b64d7eadaa9052acac11e27ec3623cfd7276bfea650c472b18209e0e015d313",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "odoo/odoo",
+    "sha": "993abab95278f488f47c231be38d9cbc85213c41",
+    "path": "addons/stock/wizard/stock_picking_return.py",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "repo": "odoo/odoo",
+    "sha": "993abab95278f488f47c231be38d9cbc85213c41",
+    "path": "addons/stock/models/stock_picking.py",
+    "url": "https://github.com/odoo/odoo/blob/993abab95278f488f47c231be38d9cbc85213c41/addons/stock/models/stock_picking.py",
+    "bytes": 105941,
+    "sha256": "806727f5a5522a5755a3ae70d3e5ddb308ad5edefff543ec9b494230474c4ba7",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "odoo/odoo",
+    "sha": "993abab95278f488f47c231be38d9cbc85213c41",
+    "path": "addons/stock/tests/test_return_picking.py",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "repo": "vendure-ecommerce/vendure",
+    "sha": "530fa0afad87c449635d3864b604de93d7dd0a43",
+    "path": "packages/core/src/api/resolvers/admin/order.resolver.ts",
+    "url": "https://github.com/vendure-ecommerce/vendure/blob/530fa0afad87c449635d3864b604de93d7dd0a43/packages/core/src/api/resolvers/admin/order.resolver.ts",
+    "bytes": 8261,
+    "sha256": "265189c48634d369a22f8067977a277d61b10c65e59828e9fb9b9a1ceb453640",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "vendure-ecommerce/vendure",
+    "sha": "530fa0afad87c449635d3864b604de93d7dd0a43",
+    "path": "packages/core/src/service/services/order.service.ts",
+    "url": "https://github.com/vendure-ecommerce/vendure/blob/530fa0afad87c449635d3864b604de93d7dd0a43/packages/core/src/service/services/order.service.ts",
+    "bytes": 121080,
+    "sha256": "27636d660bfeb6fc433b4295121a58cb8f93c13fc7b3c03654d62179e83e98d6",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "vendure-ecommerce/vendure",
+    "sha": "530fa0afad87c449635d3864b604de93d7dd0a43",
+    "path": "packages/core/src/api/decorators/allow.decorator.ts",
+    "url": "https://github.com/vendure-ecommerce/vendure/blob/530fa0afad87c449635d3864b604de93d7dd0a43/packages/core/src/api/decorators/allow.decorator.ts",
+    "bytes": 2027,
+    "sha256": "98728cbf552031b15a28502e5272d82684b155789dadb96770a2103a9535fed0",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "vendure-ecommerce/vendure",
+    "sha": "530fa0afad87c449635d3864b604de93d7dd0a43",
+    "path": "packages/core/src/api/guards/auth.guard.ts",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "repo": "vendure-ecommerce/vendure",
+    "sha": "530fa0afad87c449635d3864b604de93d7dd0a43",
+    "path": "packages/core/src/service/services/role.service.ts",
+    "url": "https://github.com/vendure-ecommerce/vendure/blob/530fa0afad87c449635d3864b604de93d7dd0a43/packages/core/src/service/services/role.service.ts",
+    "bytes": 21760,
+    "sha256": "14c409d8ee818588b1f569e868608012fcab54475ffc588531b703f125e5970a",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "apache/ofbiz-framework",
+    "sha": "b8b72d556e829d4a0818f8a4fed57e0750efcacb",
+    "path": "applications/product/entitydef/entitymodel.xml",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "repo": "apache/ofbiz-framework",
+    "sha": "b8b72d556e829d4a0818f8a4fed57e0750efcacb",
+    "path": "applications/product/servicedef/services_inventory.xml",
+    "url": "https://github.com/apache/ofbiz-framework/blob/b8b72d556e829d4a0818f8a4fed57e0750efcacb/applications/product/servicedef/services_inventory.xml",
+    "bytes": 4869,
+    "sha256": "cb99860eab6f2bc1e2a83ed68bd4639c1a7a289ab8875916b3e2861682096757",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "apache/ofbiz-framework",
+    "sha": "b8b72d556e829d4a0818f8a4fed57e0750efcacb",
+    "path": "applications/product/src/main/java/org/apache/ofbiz/product/inventory/InventoryServices.java",
+    "url": "https://github.com/apache/ofbiz-framework/blob/b8b72d556e829d4a0818f8a4fed57e0750efcacb/applications/product/src/main/java/org/apache/ofbiz/product/inventory/InventoryServices.java",
+    "bytes": 58058,
+    "sha256": "f1a40473bac5106f83dfea6e4d64654c93b816d31a2fb468d7777bff75bc41e7",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "apache/ofbiz-framework",
+    "sha": "b8b72d556e829d4a0818f8a4fed57e0750efcacb",
+    "path": "LICENSE",
+    "url": "https://github.com/apache/ofbiz-framework/blob/b8b72d556e829d4a0818f8a4fed57e0750efcacb/LICENSE",
+    "bytes": 11906,
+    "sha256": "cbac9a0fde0598111b821378374122ab895b7f5963767e4928e85ebabab13cda",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "tryton/tryton",
+    "sha": "8a743492cd18002a2c47f877e87aa32d79360c78",
+    "path": "modules/stock/move.py",
+    "url": "https://github.com/tryton/tryton/blob/8a743492cd18002a2c47f877e87aa32d79360c78/modules/stock/move.py",
+    "bytes": 75904,
+    "sha256": "693db44e9d68ec11652bc850ba929a066c6a4e344f8fbd1ce4ac13f673420e49",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "tryton/tryton",
+    "sha": "8a743492cd18002a2c47f877e87aa32d79360c78",
+    "path": "modules/stock/shipment.py",
+    "url": "https://github.com/tryton/tryton/blob/8a743492cd18002a2c47f877e87aa32d79360c78/modules/stock/shipment.py",
+    "bytes": 120580,
+    "sha256": "501529cae6bb99b9713602faabc4cb5e8f427537660f3ea4ce62950a63aaa644",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "tryton/tryton",
+    "sha": "8a743492cd18002a2c47f877e87aa32d79360c78",
+    "path": "modules/stock/tests/test_module.py",
+    "url": "https://github.com/tryton/tryton/blob/8a743492cd18002a2c47f877e87aa32d79360c78/modules/stock/tests/test_module.py",
+    "bytes": 69589,
+    "sha256": "f51e1ef6c3d494dba6e61bb616c41aa533edd88787c495cfb5d0bff2408532a3",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "tryton/tryton",
+    "sha": "8a743492cd18002a2c47f877e87aa32d79360c78",
+    "path": "COPYRIGHT",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "repo": "tryton/tryton",
+    "sha": "8a743492cd18002a2c47f877e87aa32d79360c78",
+    "path": "LICENSE",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "repo": "metasfresh/metasfresh",
+    "sha": "56dd881b972af4edb071e4f1261a55a8b1a9c4d7",
+    "path": "backend/de.metas.handlingunits/src/main/java/de/metas/handlingunits/reservation/HUReservationService.java",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "repo": "metasfresh/metasfresh",
+    "sha": "56dd881b972af4edb071e4f1261a55a8b1a9c4d7",
+    "path": "LICENSE.md",
+    "error": "HTTP Error 404: Not Found"
+  }
+]

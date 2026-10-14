@@ -1,0 +1,1509 @@
+{
+  "inspection_date": "2026-10-15",
+  "head": "9fe3fc3d54c2c3fe2a7ac3c6154814f74ec41bf0",
+  "branch": "fix/flipkart-order-intake-20261009",
+  "package": {
+    "name": "d-mills-global-console",
+    "type": "module",
+    "engines": {
+      "node": "^22.12.0 || ^24.0.0 || ^26.0.0"
+    },
+    "dependencies": {
+      "@aws-sdk/client-sqs": "^3.1138.0",
+      "@tailwindcss/vite": "^4.2.1",
+      "csv-parse": "^7.0.2",
+      "dompurify": "^3.4.16",
+      "dotenv": "^16.6.1",
+      "exceljs": "^4.4.0",
+      "express": "^4.22.2",
+      "fast-xml-parser": "^5.11.1",
+      "framer-motion": "^12.35.0",
+      "lucide-react": "^0.577.0",
+      "mongodb": "^6.21.0",
+      "pdfkit": "^0.20.2",
+      "pg": "^8.23.0",
+      "react": "^19.2.0",
+      "react-dom": "^19.2.0",
+      "react-router-dom": "^7.13.1",
+      "tailwindcss": "^4.2.1"
+    },
+    "devDependencies": {
+      "@eslint/js": "^9.39.1",
+      "@types/node": "^24.13.3",
+      "@types/react": "^19.2.7",
+      "@types/react-dom": "^19.2.3",
+      "@vitejs/plugin-react": "^5.1.1",
+      "concurrently": "^9.2.4",
+      "eslint": "^9.39.1",
+      "eslint-plugin-react-hooks": "^7.0.1",
+      "eslint-plugin-react-refresh": "^0.4.24",
+      "globals": "^16.5.0",
+      "playwright": "^1.62.1",
+      "typescript": "~5.9.3",
+      "typescript-eslint": "^8.48.0",
+      "vite": "^7.3.1"
+    },
+    "scripts": {
+      "mongo:inventory": "node scripts/mongo-inventory.mjs",
+      "mongo:backup": "node scripts/mongo-backup.mjs",
+      "mongo:restore": "node scripts/mongo-restore.mjs",
+      "mongo:ensure-indexes": "node scripts/mongo-ensure-indexes.mjs",
+      "test:mongo-safety": "node scripts/verify-mongo-safety.mjs",
+      "test:mongo-read-boundary": "node scripts/verify-mongo-read-boundary.mjs",
+      "test:mongo-session-boundary": "node scripts/verify-mongo-session-boundary.mjs",
+      "test:whatsapp-total-deadline": "node scripts/verify-whatsapp-total-deadline.mjs",
+      "test:http-shutdown": "node scripts/verify-http-shutdown.mjs",
+      "test:inventory-tenant-middleware": "node scripts/verify-inventory-tenant-middleware.mjs",
+      "test:balance-read-boundary": "node scripts/verify-balance-read-boundary.mjs",
+      "test:inventory-summary-boundary": "node scripts/verify-inventory-summary-boundary.mjs",
+      "test:latency-histograms": "node scripts/verify-latency-histograms.mjs",
+      "test:http-latency-integration": "node scripts/verify-http-latency-integration.mjs",
+      "test:terms-html-sanitizer": "node scripts/verify-terms-html-sanitizer.mjs",
+      "test:validation-master-inputs": "node scripts/verify-validation-master-inputs.mjs",
+      "test:mongo-mutation-boundary": "node scripts/verify-mongo-mutation-boundary.mjs",
+      "flipkart:probe-orders": "node scripts/flipkart-probe-orders.mjs",
+      "dev": "concurrently -n web,api,inventory -c cyan,magenta,yellow \"vite\" \"node server.js\" \"node scripts/inventory-worker-supervisor.mjs\"",
+      "dev:server": "node server.js",
+      "inventory:migrate": "node scripts/inventory-migrate.mjs",
+      "inventory:worker": "node scripts/inventory-worker.mjs",
+      "inventory:amazon-sqs": "node scripts/inventory-amazon-sqs.mjs",
+      "inventory:reconcile": "node scripts/inventory-reconcile.mjs",
+      "inventory:register-account": "node scripts/inventory-register-account.mjs",
+      "inventory:shopify-discover": "node scripts/inventory-shopify-discover.mjs",
+      "inventory:shopify-stage-catalog": "node scripts/inventory-shopify-stage-catalog.mjs",
+      "inventory:import-sku-workbook": "node scripts/inventory-import-sku-workbook.mjs",
+      "inventory:shopify-connect": "node scripts/inventory-shopify-connect.mjs",
+      "test:seller-connections-ui": "node scripts/verify-seller-connections-ui.mjs",
+      "test:unified-orders": "node scripts/verify-unified-orders.mjs",
+      "test:unified-orders-isolated": "node scripts/run-isolated-unified-orders.mjs",
+      "test:seller-connections": "node scripts/verify-seller-connections.mjs",
+      "test:connection-readiness": "node scripts/verify-connection-readiness.mjs",
+      "test:shopify-order-observation": "node scripts/verify-shopify-order-observation.mjs",
+      "test:shopify-order-observation-isolated": "node scripts/run-isolated-shopify-observation.mjs",
+      "test:connection-authorization": "node scripts/verify-connection-authorization.mjs",
+      "test:sales-programs": "node scripts/verify-sales-programs.mjs",
+      "test:central-inventory": "node scripts/verify-central-inventory.mjs",
+      "test:central-inventory-api": "node scripts/verify-central-inventory-api.mjs",
+      "test:inventory-publish-order": "node scripts/verify-inventory-publish-order.mjs",
+      "dev:all": "npm run dev",
+      "build": "vite build",
+      "typecheck": "tsc -b",
+      "test:vendor-master": "node scripts/verify-vendor-master.mjs",
+      "test:vendor-integrity": "node scripts/verify-vendor-integrity.mjs",
+      "test:isolated-browser-workflow": "node scripts/verify-isolated-browser-workflow.mjs",
+      "test:tax-application-workflow": "node scripts/verify-tax-application-workflow.mjs",
+      "test:tax-code-workflow": "node scripts/verify-tax-code-workflow.mjs",
+      "test:customer-integrity": "node scripts/verify-customer-integrity.mjs",
+      "test:transporter-integrity": "node scripts/verify-transporter-integrity.mjs",
+      "test:vendor-enquiry-parity": "node scripts/verify-vendor-enquiry-parity.mjs",
+      "test:customer-enquiry-parity": "node scripts/verify-customer-enquiry-parity.mjs",
+      "test:common-import": "node scripts/verify-common-import.mjs",
+      "test:global-screen-shell": "node scripts/verify-global-screen-shell.mjs",
+      "test:global-responsive-shell": "node scripts/verify-global-responsive-shell.mjs",
+      "test:global-feedback-shell": "node scripts/verify-global-feedback-shell.mjs",
+      "test:global-grid-loading": "node scripts/verify-global-grid-loading.mjs",
+      "test:global-dialog-navigation": "node scripts/verify-global-dialog-navigation.mjs",
+      "test:global-controls-keyboard": "node scripts/verify-global-controls-keyboard.mjs",
+      "test:global-menu": "node scripts/verify-global-menu.mjs",
+      "test:global-login": "node scripts/verify-global-login-contract.mjs",
+      "test:global-header-search": "node scripts/verify-global-header-search.mjs",
+      "test:global-header-dialogs": "node scripts/verify-global-header-dialogs.mjs",
+      "test:seller-panel-dashboard": "node scripts/verify-seller-panel-dashboard.mjs",
+      "test:eretail-dashboard": "node scripts/verify-eretail-dashboard.mjs",
+      "test:customer-master": "node scripts/verify-customer-master.mjs",
+      "test:transporter-master": "node scripts/verify-transporter-master.mjs",
+      "test:transporter-enquiry-parity": "node scripts/verify-transporter-enquiry-parity.mjs",
+      "test:client-master": "node scripts/verify-client-master.mjs",
+      "test:client-master-workflow": "node scripts/verify-client-master-workflow.mjs",
+      "test:customer-group": "node scripts/verify-customer-group.mjs",
+      "test:customer-group-workflow": "node scripts/verify-customer-group-workflow.mjs",
+      "test:manage-coupons": "node scripts/verify-manage-coupons.mjs",
+      "test:tax-group": "node scripts/verify-tax-group.mjs",
+      "test:tax-group-workflow": "node scripts/verify-tax-group-workflow.mjs",
+      "test:tax-category": "node scripts/verify-tax-category.mjs",
+      "test:tax-category-workflow": "node scripts/verify-tax-category-workflow.mjs",
+      "test:tax-application": "node scripts/verify-tax-application.mjs",
+      "test:tax-code": "node scripts/verify-tax-code.mjs",
+      "test:tax-zone": "node scripts/verify-tax-zone.mjs",
+      "test:tax-zone-workflow": "node scripts/verify-tax-zone-workflow.mjs",
+      "test:sku-master-workflow": "node scripts/verify-sku-master-workflow.mjs",
+      "test:sku-master": "node scripts/verify-sku-master.mjs",
+      "test:sku-import": "node scripts/verify-sku-import.mjs",
+      "test:sku-company-link": "ISOLATED_BROWSER_FOCUS=sku-company-link node scripts/verify-isolated-browser-workflow.mjs",
+      "test:merchandising-hierarchy": "node scripts/verify-merchandising-hierarchy.mjs",
+      "test:manage-attribute": "node scripts/verify-manage-attribute.mjs",
+      "test:attribute-set": "node scripts/verify-attribute-set.mjs",
+      "test:vendor-sku-catalog": "node scripts/verify-vendor-sku-catalog.mjs",
+      "test:vendor-sku-loc-catalog": "node scripts/verify-vendor-sku-loc-catalog.mjs",
+      "test:generate-vouchers": "npm run test:voucher-guard",
+      "test:organization-hierarchy": "node scripts/verify-organization-hierarchy.mjs",
+      "test:location": "node scripts/verify-location.mjs",
+      "test:store-group": "node scripts/verify-store-group.mjs",
+      "test:other-masters": "ISOLATED_BROWSER_FOCUS=other-masters node scripts/verify-isolated-browser-workflow.mjs",
+      "test:sales-promotion-guard": "ISOLATED_BROWSER_FOCUS=sales-promotion node scripts/verify-isolated-browser-workflow.mjs",
+      "test:coupon-guard": "ISOLATED_BROWSER_FOCUS=coupons node scripts/verify-isolated-browser-workflow.mjs",
+      "test:tally-configuration": "node scripts/verify-tally-configuration.mjs",
+      "test:pricing-event": "node scripts/verify-pricing-event.mjs",
+      "test:price-zone": "node scripts/verify-price-zone.mjs",
+      "test:external-apps": "node scripts/verify-external-apps.mjs",
+      "test:external-apps-more-configuration": "node scripts/verify-external-apps-more-configuration.mjs",
+      "test:order-refund": "node scripts/verify-order-refund.mjs",
+      "test:oms-rules": "ISOLATED_BROWSER_FOCUS=oms-rules node scripts/verify-isolated-browser-workflow.mjs",
+      "test:master-order-enquiry": "node scripts/verify-master-order-enquiry.mjs",
+      "test:global-order-search": "node scripts/verify-global-order-search.mjs",
+      "test:cod-reconciliation": "ISOLATED_BROWSER_FOCUS=cod-reconciliation node scripts/verify-isolated-browser-workflow.mjs",
+      "test:sku-moderation": "ISOLATED_BROWSER_FOCUS=sku-moderation node scripts/verify-isolated-browser-workflow.mjs",
+      "test:wms-zone": "node scripts/verify-wms-zone.mjs",
+      "test:picker-zone-preference": "node scripts/verify-picker-zone-preference.mjs",
+      "test:bin-enquiry": "node scripts/verify-bin-enquiry.mjs",
+      "test:bin-editor": "node scripts/verify-bin-editor.mjs",
+      "test:lottable-validation": "node scripts/verify-lottable-validation.mjs",
+      "test:receipt-validation": "node scripts/verify-receipt-validation.mjs",
+      "test:putaway-enquiry": "node scripts/verify-putaway-enquiry.mjs",
+      "test:sku-label-print": "node scripts/verify-sku-label-print.mjs",
+      "test:putaway-rules": "node scripts/verify-putaway-rules.mjs",
+      "test:allocation-strategies": "node scripts/verify-allocation-strategies.mjs",
+      "test:cycle-count-waves": "node scripts/verify-cycle-count-waves.mjs",
+      "test:manage-awb": "node scripts/verify-manage-awb.mjs",
+      "test:transporter-preferences": "node scripts/verify-transporter-preferences.mjs",
+      "test:service-pin-codes": "node scripts/verify-service-pin-codes.mjs",
+      "test:order-allocation": "node scripts/verify-order-allocation.mjs",
+      "test:manage-manifests": "node scripts/verify-manage-manifests.mjs",
+      "test:sku-grading": "node scripts/verify-sku-grading.mjs",
+      "test:delivery-shipping": "node scripts/verify-delivery-shipping.mjs",
+      "test:bulk-order-update": "node scripts/verify-bulk-order-update.mjs",
+      "test:manage-picklists": "node scripts/verify-manage-picklists.mjs",
+      "test:manage-picking": "node scripts/verify-manage-picking.mjs",
+      "test:delivery-split": "node scripts/verify-delivery-split.mjs",
+      "test:shipment-handover": "node scripts/verify-shipment-handover.mjs",
+      "test:return-without-order": "node scripts/verify-return-without-order.mjs",
+      "test:order-acknowledgement": "node scripts/verify-order-acknowledgement.mjs",
+      "test:consolidate-ewb": "node scripts/verify-consolidate-ewb.mjs",
+      "test:sort-to-box": "node scripts/verify-sort-to-box.mjs",
+      "test:inbound-gate-pass": "node scripts/verify-inbound-gate-pass.mjs",
+      "test:inbound-enquiry": "node scripts/verify-inbound-enquiry.mjs",
+      "test:inbound-create-edit": "node scripts/verify-inbound-create-edit.mjs",
+      "test:inbound-realtime": "node scripts/verify-inbound-realtime.mjs",
+      "test:inbound-qc": "node scripts/verify-inbound-qc.mjs",
+      "test:inventory-view": "node scripts/verify-inventory-view.mjs",
+      "test:inventory-move-history": "node scripts/verify-inventory-move-history.mjs",
+      "test:inventory-move": "node scripts/verify-inventory-move.mjs",
+      "test:inventory-move-scan": "node scripts/verify-inventory-move-scan.mjs",
+      "test:cycle-count": "node scripts/verify-cycle-count.mjs",
+      "test:legacy-stock-write-blocks": "node scripts/verify-legacy-stock-write-blocks.mjs",
+      "test:bin-audit": "node scripts/verify-bin-audit.mjs",
+      "test:bulk-lottables": "node scripts/verify-bulk-lottables.mjs",
+      "test:wms-dedicated-menu-routing": "node scripts/verify-wms-dedicated-menu-routing.mjs",
+      "test:order-enquiry": "node scripts/verify-order-enquiry.mjs",
+      "test:order-maintenance": "node scripts/verify-order-maintenance.mjs",
+      "test:market-order-view": "node scripts/verify-market-order-view.mjs",
+      "test:kitting-order": "node scripts/verify-kitting-order.mjs",
+      "test:single-location": "node scripts/verify-single-location.mjs",
+      "test:po-enquiry": "ISOLATED_BROWSER_FOCUS=po-enquiry node scripts/verify-isolated-browser-workflow.mjs",
+      "test:po-revision": "ISOLATED_BROWSER_FOCUS=po-revision node scripts/verify-isolated-browser-workflow.mjs",
+      "test:voucher-guard": "ISOLATED_BROWSER_FOCUS=vouchers node scripts/verify-isolated-browser-workflow.mjs",
+      "test:back-order-integrity": "node scripts/verify-back-order-integrity.mjs",
+      "test:po-otb-integrity": "node scripts/verify-po-otb-integrity.mjs",
+      "test:order-enquiry-integrity": "node scripts/verify-order-enquiry-integrity.mjs",
+      "test:mongo-isolated-workflows": "node scripts/verify-mongo-isolated-workflows.mjs",
+      "test:manage-asn": "node scripts/verify-manage-asn.mjs",
+      "test:vendor-promotions": "node scripts/verify-vendor-promotions.mjs",
+      "test:purchase-charge-masters": "node scripts/verify-purchase-charge-masters.mjs",
+      "test:category-buyers": "node scripts/verify-category-buyers.mjs",
+      "test:ars-sku-location": "node scripts/verify-ars-sku-location.mjs",
+      "test:ars-rules": "node scripts/verify-ars-rules.mjs",
+      "test:ars-integrity": "node scripts/verify-ars-integrity.mjs",
+      "test:ars-execution-log": "node scripts/verify-ars-execution-log.mjs",
+      "test:ars-settings": "node scripts/verify-ars-settings.mjs",
+      "test:manage-channels": "node scripts/verify-manage-channels.mjs",
+      "test:sku-channel-listing": "ISOLATED_BROWSER_FOCUS=sku-channel-listing node scripts/verify-isolated-browser-workflow.mjs",
+      "test:sku-barcode": "node scripts/verify-sku-barcode.mjs",
+      "test:sku-group": "ISOLATED_BROWSER_FOCUS=sku-group node scripts/verify-isolated-browser-workflow.mjs",
+      "start": "node server.js",
+      "seed": "node scripts/seed.js",
+      "lint": "eslint .",
+      "preview": "vite preview",
+      "inventory:shopify-stock-check": "node scripts/inventory-shopify-stock-check.mjs",
+      "test:central-inventory-files": "node scripts/verify-central-inventory-files.mjs",
+      "test:stock-publication-isolated": "node scripts/run-isolated-stock-publication.mjs",
+      "test:amazon-location-discovery": "node scripts/verify-amazon-location-discovery.mjs",
+      "test:workbook-inspector": "node scripts/verify-workbook-inspector.mjs",
+      "test:opening-stock-validation": "node scripts/verify-opening-stock-validation.mjs",
+      "test:opening-stock-isolated": "node scripts/run-isolated-opening-stock.mjs",
+      "inventory:opening-stock-dry-run": "node scripts/dry-run-opening-stock.mjs",
+      "test:central-inventory-ui": "node scripts/verify-central-inventory-ui.mjs",
+      "test:central-inventory-ui-isolated": "node scripts/run-owned-central-inventory-ui.mjs",
+      "test:download-pdf": "node scripts/verify-download-pdf.mjs",
+      "test:download-workbook": "node scripts/verify-download-workbook.mjs",
+      "test:inbound-realtime-integrity": "node scripts/verify-inbound-realtime-integrity.mjs",
+      "test:mp-inventory-log": "node scripts/verify-mp-inventory-log.mjs",
+      "test:amazon-mfn-integrity": "node scripts/verify-amazon-mfn-api.mjs",
+      "test:transhipment-integrity": "node scripts/verify-transhipment.mjs",
+      "test:transhipment-old-integrity": "node scripts/verify-transhipment-old.mjs",
+      "test:ajio-integrity": "node scripts/verify-ajio-api.mjs",
+      "test:returns-integrity": "node scripts/verify-returns-integrity.mjs",
+      "test:dispatch-checkpoint": "node scripts/verify-dispatch-checkpoint.mjs",
+      "test:legacy-fulfillment-write-blocks": "node scripts/verify-legacy-fulfillment-write-blocks.mjs",
+      "test:reliability": "node scripts/verify-mongo-reliability.mjs && node scripts/verify-postgres-reliability.mjs && node scripts/verify-provider-reliability.mjs",
+      "test:reliability-mongo-isolated": "node scripts/run-isolated-mongo-reliability.mjs",
+      "test:reliability-extended": "node scripts/run-reliability-extended-gates.mjs",
+      "test:reliability-postgres-failures": "node scripts/verify-postgres-failure-injection.mjs",
+      "test:reliability-mongo-startup": "node scripts/run-isolated-mongo-reliability.mjs scripts/verify-mongo-startup-recovery.mjs",
+      "test:reliability-mongo-timeout": "node scripts/run-isolated-mongo-reliability.mjs scripts/verify-mongo-timeout-fixture.mjs",
+      "test:reliability-purchase-orders": "node scripts/run-isolated-mongo-reliability.mjs scripts/verify-purchase-order-reliability.mjs",
+      "test:shell-quote-boundary": "node scripts/verify-shell-quote-boundary.mjs",
+      "test:exceljs-uuid-override": "node scripts/verify-exceljs-uuid-override.mjs",
+      "test:download-update-boundary": "node scripts/verify-download-update-boundary.mjs",
+      "test:api-outcome-boundary": "node scripts/verify-api-outcome-boundary.mjs",
+      "test:receipt-poll-boundary": "node scripts/verify-receipt-poll-boundary.mjs",
+      "test:inbound-csv-boundary": "node scripts/verify-inbound-csv-boundary.mjs",
+      "test:inbound-import-inputs": "node scripts/verify-inbound-import-inputs.mjs",
+      "test:publication-recovery-boundary": "node scripts/verify-publication-recovery-boundary.mjs",
+      "test:restore-batch-boundary": "node scripts/verify-restore-batch-boundary.mjs",
+      "test:backup-line-boundary": "node scripts/verify-backup-line-boundary.mjs",
+      "test:restore-manifest-boundary": "node scripts/verify-restore-manifest-boundary.mjs",
+      "test:drift-count-boundary": "node scripts/verify-drift-count-boundary.mjs",
+      "test:stock-lock-cleanup": "node scripts/verify-stock-lock-cleanup.mjs",
+      "test:auth-refresh-race": "node scripts/verify-auth-refresh-race.mjs",
+      "test:auth-refresh-browser": "node scripts/verify-auth-refresh-browser.mjs",
+      "test:login-input-boundary": "node scripts/verify-login-input-boundary.mjs",
+      "test:ledger-contention-owned": "node scripts/run-phase-b-isolated.mjs scripts/measure-owned-ledger-contention.mjs",
+      "test:ledger-input-boundary": "node scripts/verify-ledger-input-boundary.mjs",
+      "test:postgres-transaction-cleanup": "node scripts/verify-postgres-transaction-cleanup.mjs",
+      "test:receipt-envelope-boundary": "node scripts/verify-receipt-envelope-boundary.mjs",
+      "test:receipt-index-tool": "node scripts/verify-receipt-index-tool.mjs",
+      "test:admin-csv-boundary": "node scripts/verify-admin-csv-boundary.mjs",
+      "test:admin-create-identity": "node scripts/verify-admin-create-identity.mjs",
+      "test:admin-api-key-projection": "node scripts/verify-admin-api-key-projection.mjs",
+      "test:browser-csv-boundary": "node scripts/verify-browser-csv-boundary.mjs",
+      "test:zone-picker-csv": "node scripts/verify-zone-picker-csv.mjs",
+      "test:zone-picker-mutation": "node scripts/verify-zone-picker-mutation.mjs",
+      "test:pg-cleanup-scheduler": "node scripts/verify-pg-cleanup-scheduler.mjs",
+      "test:exports-boundary": "node scripts/verify-exports.mjs",
+      "flipkart:fetch-orders": "node scripts/flipkart-fetch-orders.mjs",
+      "verify:flipkart-orders": "node scripts/verify-flipkart-orders.mjs"
+    }
+  },
+  "legacy_route_count": 159,
+  "legacy_routes": [
+    {
+      "path": "/api/skus",
+      "handler": "skus",
+      "source": "./api/skus.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/partners",
+      "handler": "partners",
+      "source": "./api/partners.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/sale-orders",
+      "handler": "saleOrders",
+      "source": "./api/sale-orders.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/back-orders",
+      "handler": "backOrders",
+      "source": "./api/back-orders.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/jsonOrderExits",
+      "handler": "globalHeaderSearch",
+      "source": "./api/global-header-search.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/seller-panel-dashboard",
+      "handler": "sellerPanelDashboard",
+      "source": "./api/seller-panel-dashboard.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/purchase-orders",
+      "handler": "purchaseOrders",
+      "source": "./api/purchase-orders.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/po-revision",
+      "handler": "poRevision",
+      "source": "./api/po-revision.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/purchase-order-comments",
+      "handler": "purchaseOrderComments",
+      "source": "./api/purchase-order-comments.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/purchase-order-tags",
+      "handler": "purchaseOrderTags",
+      "source": "./api/purchase-order-tags.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/purchase-order-inbound",
+      "handler": "purchaseOrderInbound",
+      "source": "./api/purchase-order-inbound.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/purchase-order-asn",
+      "handler": "purchaseOrderAsn",
+      "source": "./api/purchase-order-asn.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/grn",
+      "handler": "grn",
+      "source": "./api/grn.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/asn-enquiry",
+      "handler": "asnEnquiry",
+      "source": "./api/asn-enquiry.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/manage-asn",
+      "handler": "manageAsn",
+      "source": "./api/manage-asn.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/vendor-promotions",
+      "handler": "vendorPromotions",
+      "source": "./api/vendor-promotions.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/purchase-charge-masters",
+      "handler": "purchaseChargeMasters",
+      "source": "./api/purchase-charge-masters.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/chargeMasterSearch",
+      "handler": "purchaseChargeMasters",
+      "source": "./api/purchase-charge-masters.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/jsonPOChargeDetailGrid",
+      "handler": "purchaseChargeMasters",
+      "source": "./api/purchase-charge-masters.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/saveUpdatePOCharges",
+      "handler": "purchaseChargeMasters",
+      "source": "./api/purchase-charge-masters.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/delUpdatePOCharges",
+      "handler": "purchaseChargeMasters",
+      "source": "./api/purchase-charge-masters.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/category-buyers",
+      "handler": "categoryBuyers",
+      "source": "./api/category-buyers.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/categoryBuyerSearch",
+      "handler": "categoryBuyers",
+      "source": "./api/category-buyers.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/catBuyerSaveBS",
+      "handler": "categoryBuyers",
+      "source": "./api/category-buyers.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/inventory",
+      "handler": "inventory",
+      "source": "./api/inventory.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/inventory-ops",
+      "handler": "inventoryOps",
+      "source": "./api/inventory-ops.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/transfers",
+      "handler": "transfers",
+      "source": "./api/transfers.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/sto-enquiry",
+      "handler": "stoEnquiry",
+      "source": "./api/sto-enquiry.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/sto-editor",
+      "handler": "stoEditor",
+      "source": "./api/sto-editor.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/user-enquiry",
+      "handler": "userEnquiry",
+      "source": "./api/user-enquiry.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/user-editor",
+      "handler": "userEditor",
+      "source": "./api/user-editor.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/role-editor",
+      "handler": "roleEditor",
+      "source": "./api/role-editor.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/order-import",
+      "handler": "orderImport",
+      "source": "./api/order-import.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/common-import",
+      "handler": "commonImport",
+      "source": "./api/common-import.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/exports",
+      "handler": "exportsApi",
+      "source": "./api/exports.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/settings",
+      "handler": "settingsApi",
+      "source": "./api/settings.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/returns",
+      "handler": "returns",
+      "source": "./api/returns.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/fulfillment",
+      "handler": "fulfillment",
+      "source": "./api/fulfillment.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/picklists",
+      "handler": "picklists",
+      "source": "./api/picklists.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/shipments",
+      "handler": "shipments",
+      "source": "./api/shipments.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/generic",
+      "handler": "generic",
+      "source": "./api/generic.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/reports",
+      "handler": "reports",
+      "source": "./api/reports.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/downloads",
+      "handler": "downloads",
+      "source": "./api/downloads.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/channels",
+      "handler": "channels",
+      "source": "./api/channels.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/sku-channel-links",
+      "handler": "skuChannelLinks",
+      "source": "./api/sku-channel-links.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/dashboard",
+      "handler": "dashboard",
+      "source": "./api/dashboard.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/platforms",
+      "handler": "platforms",
+      "source": "./api/platforms.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/vendors",
+      "handler": "vendors",
+      "source": "./api/vendors.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/jsonVendorEnquirySearch",
+      "handler": "vendors",
+      "source": "./api/vendors.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/taxcodes",
+      "handler": "taxcodes",
+      "source": "./api/taxcodes.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/coupons",
+      "handler": "coupons",
+      "source": "./api/coupons.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/fetchCouponEnquiryData",
+      "handler": "coupons",
+      "source": "./api/coupons.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/taxapp",
+      "handler": "taxapp",
+      "source": "./api/taxapp.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/skubarcode",
+      "handler": "skubarcode",
+      "source": "./api/skubarcode.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/customers",
+      "handler": "customers",
+      "source": "./api/customers.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/jsonCustEnqSearch",
+      "handler": "customers",
+      "source": "./api/customers.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/transporters",
+      "handler": "transporters",
+      "source": "./api/transporters.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/jsonTransporterEnquirySearch",
+      "handler": "transporters",
+      "source": "./api/transporters.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/clients",
+      "handler": "clients",
+      "source": "./api/clients.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/jsonClientMasterEnquirySearch",
+      "handler": "clients",
+      "source": "./api/clients.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/customer-groups",
+      "handler": "customerGroups",
+      "source": "./api/customer-groups.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/jsonCustGroupSearch",
+      "handler": "customerGroups",
+      "source": "./api/customer-groups.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/tax-categories",
+      "handler": "taxCategories",
+      "source": "./api/tax-categories.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/tax-groups",
+      "handler": "taxGroups",
+      "source": "./api/tax-groups.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/tax-zones",
+      "handler": "taxZones",
+      "source": "./api/tax-zones.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/org-hierarchy",
+      "handler": "orgHierarchy",
+      "source": "./api/org-hierarchy.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/locations",
+      "handler": "locations",
+      "source": "./api/locations.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/store-groups",
+      "handler": "storeGroups",
+      "source": "./api/store-groups.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/sku-imports",
+      "handler": "skuImports",
+      "source": "./api/sku-imports.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/sku-company-links",
+      "handler": "skuCompanyLinks",
+      "source": "./api/sku-company-links.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/sku-groups",
+      "handler": "skuGroups",
+      "source": "./api/sku-groups.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/merch-hierarchy",
+      "handler": "merchHierarchy",
+      "source": "./api/merch-hierarchy.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/attribute-sets",
+      "handler": "attributeSets",
+      "source": "./api/attribute-sets.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/vendor-sku-catalog",
+      "handler": "vendorSkuCatalog",
+      "source": "./api/vendor-sku-catalog.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/vendor-sku-loc-catalog",
+      "handler": "vendorSkuLocCatalog",
+      "source": "./api/vendor-sku-loc-catalog.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/manage-attributes",
+      "handler": "manageAttributes",
+      "source": "./api/manage-attributes.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/pricing-events",
+      "handler": "pricingEvents",
+      "source": "./api/pricing-events.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/price-zones",
+      "handler": "priceZones",
+      "source": "./api/price-zones.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/external-apps",
+      "handler": "externalApps",
+      "source": "./api/external-apps.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/external-app-definitions",
+      "handler": "externalAppDefinitions",
+      "source": "./api/external-app-definitions.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/saveDefinition",
+      "handler": "externalAppDefinitions",
+      "source": "./api/external-app-definitions.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/testSMSConnection",
+      "handler": "externalAppConnections",
+      "source": "./api/external-app-connections.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/jsonExternalAppsSearch",
+      "handler": "externalApps",
+      "source": "./api/external-apps.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/getRewardMasterDataForExtAppId",
+      "handler": "externalApps",
+      "source": "./api/external-apps.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/checkTaxIntConfigured",
+      "handler": "externalApps",
+      "source": "./api/external-apps.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/saveExternalAppsData",
+      "handler": "externalApps",
+      "source": "./api/external-apps.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/order-refunds",
+      "handler": "orderRefunds",
+      "source": "./api/order-refunds.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/oms-rules",
+      "handler": "omsRules",
+      "source": "./api/oms-rules.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/master-orders",
+      "handler": "masterOrders",
+      "source": "./api/master-orders.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/order-enquiry",
+      "handler": "orderEnquiry",
+      "source": "./api/order-enquiry.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/order-maintenance",
+      "handler": "orderMaintenance",
+      "source": "./api/order-maintenance.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/kitting-orders",
+      "handler": "kittingOrders",
+      "source": "./api/kitting-orders.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/global-order-search",
+      "handler": "globalOrderSearch",
+      "source": "./api/global-order-search.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/cod-reconciliation",
+      "handler": "codReconciliation",
+      "source": "./api/cod-reconciliation.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/sku-moderation",
+      "handler": "skuModeration",
+      "source": "./api/sku-moderation.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/wms-zones",
+      "handler": "wmsZones",
+      "source": "./api/wms-zones.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/picker-zone-preferences",
+      "handler": "pickerZonePreferences",
+      "source": "./api/picker-zone-preferences.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/bin-enquiry",
+      "handler": "binEnquiry",
+      "source": "./api/bin-enquiry.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/bin-editor",
+      "handler": "binEditor",
+      "source": "./api/bin-editor.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/lottable-validations",
+      "handler": "lottableValidations",
+      "source": "./api/lottable-validations.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/receipt-validations",
+      "handler": "receiptValidations",
+      "source": "./api/receipt-validations.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/sku-label-print",
+      "handler": "skuLabelPrint",
+      "source": "./api/sku-label-print.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/putaway-rules",
+      "handler": "putawayRules",
+      "source": "./api/putaway-rules.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/putaway-enquiry",
+      "handler": "putawayEnquiry",
+      "source": "./api/putaway-enquiry.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/dispatch-checkpoint",
+      "handler": "dispatchCheckpoint",
+      "source": "./api/dispatch-checkpoint.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/sku-grading",
+      "handler": "skuGrading",
+      "source": "./api/sku-grading.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/discrepancy-enquiry",
+      "handler": "discrepancyEnquiry",
+      "source": "./api/discrepancy-enquiry.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/bulk-upload",
+      "handler": "bulkUpload",
+      "source": "./api/bulk-upload.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/mp-inventory-log",
+      "handler": "mpInventoryLog",
+      "source": "./api/mp-inventory-log.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/lpn-enquiry",
+      "handler": "lpnEnquiry",
+      "source": "./api/lpn-enquiry.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/transhipment",
+      "handler": "transhipment",
+      "source": "./api/transhipment.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/transhipment-old",
+      "handler": "transhipmentOld",
+      "source": "./api/transhipment-old.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/qc-params-mapping",
+      "handler": "qcParamsMapping",
+      "source": "./api/qc-params-mapping.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/rtv-enquiry",
+      "handler": "rtvEnquiry",
+      "source": "./api/rtv-enquiry.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/vendor-return-editor",
+      "handler": "vendorReturnEditor",
+      "source": "./api/vendor-return-editor.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/customer-return-enquiry",
+      "handler": "customerReturnEnquiry",
+      "source": "./api/customer-return-enquiry.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/customer-return-editor",
+      "handler": "customerReturnEditor",
+      "source": "./api/customer-return-editor.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/return-otc",
+      "handler": "returnOtc",
+      "source": "./api/return-otc.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/global-returns-search",
+      "handler": "globalReturnsSearch",
+      "source": "./api/global-returns-search.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/return-without-order",
+      "handler": "returnWithoutOrder",
+      "source": "./api/return-without-order.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/allocation-strategies",
+      "handler": "allocationStrategies",
+      "source": "./api/allocation-strategies.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/cycle-count-waves",
+      "handler": "cycleCountWaves",
+      "source": "./api/cycle-count-waves.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/manage-awb",
+      "handler": "manageAwb",
+      "source": "./api/manage-awb.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/transporter-preferences",
+      "handler": "transporterPreferences",
+      "source": "./api/transporter-preferences.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/service-pin-codes",
+      "handler": "servicePinCodes",
+      "source": "./api/service-pin-codes.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/order-allocation",
+      "handler": "orderAllocation",
+      "source": "./api/order-allocation.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/manage-manifests",
+      "handler": "manageManifests",
+      "source": "./api/manage-manifests.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/delivery-shipping",
+      "handler": "deliveryShipping",
+      "source": "./api/delivery-shipping.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/bulk-order-update",
+      "handler": "bulkOrderUpdate",
+      "source": "./api/bulk-order-update.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/manage-picklists",
+      "handler": "managePicklists",
+      "source": "./api/manage-picklists.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/manage-picking",
+      "handler": "managePicking",
+      "source": "./api/manage-picking.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/delivery-split",
+      "handler": "deliverySplit",
+      "source": "./api/delivery-split.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/shipment-handover",
+      "handler": "shipmentHandoverReceive",
+      "source": "./api/shipment-handover.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/order-acknowledgement",
+      "handler": "orderAcknowledgementApi",
+      "source": "./api/order-acknowledgement.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/consolidate-ewb",
+      "handler": "consolidateEwb",
+      "source": "./api/consolidate-ewb.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/sort-to-box",
+      "handler": "sortToBox",
+      "source": "./api/sort-to-box.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/inbound-gate-pass",
+      "handler": "inboundGatePass",
+      "source": "./api/inbound-gate-pass.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/inbound-enquiry",
+      "handler": "inboundEnquiry",
+      "source": "./api/inbound-enquiry.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/inbound-create-edit",
+      "handler": "inboundCreateEdit",
+      "source": "./api/inbound-create-edit.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/inbound-realtime",
+      "handler": "inboundRealtime",
+      "source": "./api/inbound-realtime.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/inbound-qc",
+      "handler": "inboundQc",
+      "source": "./api/inbound-qc.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/inventory-move-history",
+      "handler": "inventoryMoveHistory",
+      "source": "./api/inventory-move-history.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/inventory-move",
+      "handler": "inventoryMove",
+      "source": "./api/inventory-move.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/inventory-move-scan",
+      "handler": "inventoryMoveScan",
+      "source": "./api/inventory-move-scan.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/cycle-count",
+      "handler": "cycleCount",
+      "source": "./api/cycle-count.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/bin-audit",
+      "handler": "binAudit",
+      "source": "./api/bin-audit.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/bulk-lottables",
+      "handler": "bulkLottables",
+      "source": "./api/bulk-lottables.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/admin",
+      "handler": "admin",
+      "source": "./api/admin.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/admin-parity",
+      "handler": "adminParity",
+      "source": "./api/admin-parity.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/tally-config",
+      "handler": "tallyConfig",
+      "source": "./api/tally-config.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/procurement",
+      "handler": "procurement",
+      "source": "./api/procurement.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/ars",
+      "handler": "ars",
+      "source": "./api/ars.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/fetchArsAttributes",
+      "handler": "ars",
+      "source": "./api/ars.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/addAndUpdateArsAttributes",
+      "handler": "ars",
+      "source": "./api/ars.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/bulkUpdateArsAttributes",
+      "handler": "ars",
+      "source": "./api/ars.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/downloadArsAttribute",
+      "handler": "ars",
+      "source": "./api/ars.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/ajio",
+      "handler": "ajio",
+      "source": "./api/ajio.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/amazon-mfn",
+      "handler": "amazonMfn",
+      "source": "./api/amazon-mfn.js",
+      "source_exists": true
+    },
+    {
+      "path": "/api/vin-lister",
+      "handler": "vinLister",
+      "source": "./api/vin-lister.js",
+      "source_exists": true
+    }
+  ],
+  "migrations": [
+    {
+      "path": "db/migrations/001_central_inventory.sql",
+      "sha256": "aa0bd65e44a169db30f68c193b028314ed275f3635d728ec568ece7ee979c64a",
+      "tables": [
+        "ci_master_sku",
+        "ci_location",
+        "ci_channel_account",
+        "ci_channel_mapping",
+        "ci_inventory_balance",
+        "ci_inventory_event",
+        "ci_reservation",
+        "ci_channel_stock",
+        "ci_outbox",
+        "ci_ingress",
+        "ci_sync_cursor"
+      ],
+      "concurrent_index": false
+    },
+    {
+      "path": "db/migrations/002_order_line_state.sql",
+      "sha256": "0214d10618ce13e16be7ae7ae08195e029945b9dd9d610c2ed97892634323f30",
+      "tables": [
+        "ci_order_line_state"
+      ],
+      "concurrent_index": false
+    },
+    {
+      "path": "db/migrations/003_stock_alerts.sql",
+      "sha256": "71ce54aa86686b80f8ecc668b2d75a6c444fb23aeb6b714b4da357c499ad8b3c",
+      "tables": [
+        "ci_alert_rule",
+        "ci_stock_alert"
+      ],
+      "concurrent_index": false
+    },
+    {
+      "path": "db/migrations/004_catalog_workbook.sql",
+      "sha256": "c0c34355feea0a190d5eb70c39563c7424e3f657149376a642c19991745ad29d",
+      "tables": [
+        "ci_catalog_source_row"
+      ],
+      "concurrent_index": false
+    },
+    {
+      "path": "db/migrations/005_inventory_imports.sql",
+      "sha256": "c62cdc3a5d8c8cdad1495601e7688aec9b1152c22797f87418df382f12b06baf",
+      "tables": [
+        "ci_import_batch",
+        "ci_stock_observation"
+      ],
+      "concurrent_index": false
+    },
+    {
+      "path": "db/migrations/006_seller_connections.sql",
+      "sha256": "0f84a96f494f59a8c7c15d0a271046a3dc9c435e174dfe46769a71616e145289",
+      "tables": [
+        "ci_connection_oauth",
+        "ci_sync_attempt",
+        "ci_connection_location",
+        "ci_agent_pairing"
+      ],
+      "concurrent_index": false
+    },
+    {
+      "path": "db/migrations/007_unified_orders.sql",
+      "sha256": "feef951d11f4fbaf31ed6ed5786f4d3d81bfdb565fafbbd2ef8b000706bb880f",
+      "tables": [
+        "ci_unified_order",
+        "ci_unified_order_line",
+        "ci_order_timeline",
+        "ci_alert_recipient",
+        "ci_order_alert",
+        "ci_return_case"
+      ],
+      "concurrent_index": false
+    },
+    {
+      "path": "db/migrations/008_whatsapp_delivery.sql",
+      "sha256": "27e5da68d38d78ff9d4a8714071a89db49f515143ee938c3ba9cf86f5436e8df",
+      "tables": [],
+      "concurrent_index": false
+    },
+    {
+      "path": "db/migrations/009_return_receipts.sql",
+      "sha256": "24396401e029768977d0bd9f4c32d0907595318f51b43861a7a352d2a32c512b",
+      "tables": [
+        "ci_return_receipt"
+      ],
+      "concurrent_index": false
+    },
+    {
+      "path": "db/migrations/010_service_heartbeat.sql",
+      "sha256": "4418b445f7dbd237d5b0dee8408bec9bc13e60f1596eb8b55a4e084105c66bf6",
+      "tables": [
+        "ci_service_heartbeat"
+      ],
+      "concurrent_index": false
+    },
+    {
+      "path": "db/migrations/011_live_inventory_updates.sql",
+      "sha256": "a2694e3a5da834ad3de431f05d6686c90d927a754f24d6e79c7937c88d614b36",
+      "tables": [],
+      "concurrent_index": false
+    },
+    {
+      "path": "db/migrations/012_live_order_revisions.sql",
+      "sha256": "30f4c886eb76e38cf38e3704c044967c345886ce5c34d644f0b98533e2e8566f",
+      "tables": [],
+      "concurrent_index": false
+    },
+    {
+      "path": "db/migrations/013_persistent_sessions.sql",
+      "sha256": "efc3b532c2337c8a4efa65504751cd1044d02c02c07c90083e7589516429f69d",
+      "tables": [
+        "ci_auth_session"
+      ],
+      "concurrent_index": false
+    },
+    {
+      "path": "db/migrations/014_sales_programs.sql",
+      "sha256": "240baa1606a9c5527a7e67bb9fbaec125a631bf16eb47648a5f42984e238da0c",
+      "tables": [
+        "ci_sales_program",
+        "ci_program_order",
+        "ci_program_stock"
+      ],
+      "concurrent_index": false
+    },
+    {
+      "path": "db/migrations/015_immediate_order_whatsapp.sql",
+      "sha256": "e69af7bfc17b3b4256b56bf11ee322935c382dffc572886fcc4a4ba6fa8087a4",
+      "tables": [
+        "ci_whatsapp_cutover"
+      ],
+      "concurrent_index": false
+    },
+    {
+      "path": "db/migrations/016_whatsapp_recipient_verification.sql",
+      "sha256": "aa482f9c1ec848aff91b4e65efaafb1f62811029bacfccf19d53d647588e1953",
+      "tables": [
+        "ci_whatsapp_verification_cutover",
+        "ci_recipient_verification"
+      ],
+      "concurrent_index": false
+    },
+    {
+      "path": "db/migrations/017_order_alert_teams.sql",
+      "sha256": "df708310c2912315da94010335cac6b913e5237dffa47e3c21ec1da46e0edb35",
+      "tables": [
+        "ci_alert_team",
+        "ci_alert_team_member",
+        "ci_alert_sku_group",
+        "ci_alert_sku_group_member",
+        "ci_alert_team_rule",
+        "ci_order_alert_source"
+      ],
+      "concurrent_index": false
+    },
+    {
+      "path": "db/migrations/018_alert_admin_actions.sql",
+      "sha256": "8a3541baef55641bf17bc5a56c994c5e5e02e667a816983ccd37c7bf42ea2e4f",
+      "tables": [
+        "ci_alert_admin_audit",
+        "ci_alert_test_attempt"
+      ],
+      "concurrent_index": false
+    },
+    {
+      "path": "db/migrations/019_reliability_login.sql",
+      "sha256": "ec9fb2dfc18ba8d8fdd33f4666cc237c53db7159add8eccd2cd228edc32fb0be",
+      "tables": [
+        "ci_login_rate_limit"
+      ],
+      "concurrent_index": false
+    },
+    {
+      "path": "db/migrations/020_domain_event_receipts.sql",
+      "sha256": "ce8e036aaa5225c7486a92ae9c947b75ae9bcf3e7adfbae66298fbf7aa130d19",
+      "tables": [
+        "ci_event_receipt",
+        "ci_event_checkpoint",
+        "ci_domain_outbox",
+        "ci_receipt_authorization"
+      ],
+      "concurrent_index": false
+    },
+    {
+      "path": "db/migrations/021_alert_once_and_partial_review.sql",
+      "sha256": "fe5dbf22d70e04c492115af99e62f24b1d841f414dd661b8533f652d80159e09",
+      "tables": [
+        "ci_order_alert_once"
+      ],
+      "concurrent_index": false
+    },
+    {
+      "path": "db/migrations/022_provider_dispatch_authority.sql",
+      "sha256": "a432383ecfdd18927a4471ecd088cb44ecdb40383c3914c2c71c76ca32e56bad",
+      "tables": [
+        "ci_provider_authority_audit",
+        "ci_provider_authority_cutover",
+        "ci_dispatch_review",
+        "ci_dispatch_evidence"
+      ],
+      "concurrent_index": false
+    },
+    {
+      "path": "db/migrations/023_controlled_opening_stock.sql",
+      "sha256": "58e2a61991e7ca8db7ff4a08d64d642ce045693793627dd9d64885a7cf2e7aed",
+      "tables": [
+        "ci_opening_stock_batch",
+        "ci_opening_stock_line",
+        "ci_opening_stock_audit"
+      ],
+      "concurrent_index": false
+    },
+    {
+      "path": "db/migrations/024_publication_uncertainty.sql",
+      "sha256": "35d370d6a3576a85accd688c7b61646f8459796e0addbd5a7bdd55df03da7bb7",
+      "tables": [],
+      "concurrent_index": false
+    },
+    {
+      "path": "db/migrations/025_stock_publication_evidence.sql",
+      "sha256": "ea986b612c8f3bed3337249fcc6f8ac7fc838c4ad093d3e80235ab3c972a42be",
+      "tables": [],
+      "concurrent_index": false
+    },
+    {
+      "path": "db/migrations/026_receipt_bridge_claims.sql",
+      "sha256": "61273f9fa4462cef143552afd2c8bbeb99f39b77c136be2b3fbc39ac7cb36d74",
+      "tables": [],
+      "concurrent_index": false
+    },
+    {
+      "path": "db/migrations/027_receipt_result_claim_index.sql",
+      "sha256": "e18c77ba8e67a86355181261fd2fcefc0274ddb843c4dc6d26d79c92cf4f9c00",
+      "tables": [],
+      "concurrent_index": true
+    },
+    {
+      "path": "db/migrations/028_receipt_expired_claim_index.sql",
+      "sha256": "4c6a85516bceb96a01678cbffb1cf6da0768db6c3accaecdbd70b9dae1d87f4e",
+      "tables": [],
+      "concurrent_index": true
+    },
+    {
+      "path": "db/migrations/029_scope_provider_authority_cutover.sql",
+      "sha256": "4d8528162fbc6bdd7f9f70a72afa5d126a3bb697ec07ec7390ebe64da337c96e",
+      "tables": [],
+      "concurrent_index": false
+    }
+  ],
+  "source_counts": {
+    "api": 159,
+    "inventory": 62,
+    "reliability": 10,
+    "src": 186,
+    "scripts": 494,
+    "tests": 0,
+    ".github": 2
+  },
+  "verifier_script_count": 330,
+  "lockfile_package_count": 533,
+  "scope": "Static source/configuration inventory only; not route behavior/security/runtime coverage."
+}

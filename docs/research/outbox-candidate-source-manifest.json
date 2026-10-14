@@ -1,0 +1,1001 @@
+[
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "__tests__/jest.config.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/__tests__/jest.config.ts",
+    "bytes": 155,
+    "sha256": "cb633aef9a3e9c1f5504e97a60e6009a026778d4b52cf2ef499c8bad45d610dd",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "__tests__/src/polling-outbox-inbox.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/__tests__/src/polling-outbox-inbox.spec.ts",
+    "bytes": 38345,
+    "sha256": "56cc5eac12f6556cbcc47c46ac17d3b2694f5d2bf6105f285e4c7b6314dce3be",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "__tests__/src/replication-outbox-inbox.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/__tests__/src/replication-outbox-inbox.spec.ts",
+    "bytes": 29649,
+    "sha256": "0004271a190896fa8506b4bc352b8267bf3c0ec9c208573dc216ea7cd38f7151",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "__tests__/src/replication-resilience.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/__tests__/src/replication-resilience.spec.ts",
+    "bytes": 8295,
+    "sha256": "1ef991c8574b9a7ae09f7626714331512738824ece1b2bc140634f3b1d650ffb",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "__tests__/src/test-utils/configs.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/__tests__/src/test-utils/configs.ts",
+    "bytes": 2344,
+    "sha256": "8fdc6109eebe38c644fadaf9f12354213c6f576b43e6eb838d20f068b2f264c8",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "__tests__/src/test-utils/index.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/__tests__/src/test-utils/index.ts",
+    "bytes": 85,
+    "sha256": "7595eef00ba6cfc5470153a01b459a05bdf39da0d3655892b6162b2f243db1bf",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "__tests__/src/test-utils/setup-test-db.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/__tests__/src/test-utils/setup-test-db.ts",
+    "bytes": 6181,
+    "sha256": "1716674685695361483c859ec2c258c67ae6384e466a7529dc5f63f811204277",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "__tests__/src/test-utils/utils.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/__tests__/src/test-utils/utils.ts",
+    "bytes": 1756,
+    "sha256": "9814682d980364f233bec5da0d5c34c292260e653a727421481e88871050c312",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "examples/rabbitmq/consumer/setup/init-db.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/examples/rabbitmq/consumer/setup/init-db.ts",
+    "bytes": 5548,
+    "sha256": "82a4bef7236f067760a6dcfda9031f445b68d7ef5bf522bbde2e7f6c623da462",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "examples/rabbitmq/consumer/src/config.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/examples/rabbitmq/consumer/src/config.ts",
+    "bytes": 5029,
+    "sha256": "c0f65986fefb1bc3d6e198042a0dda851f5b5769dda16e81b3dab40af6bec1dc",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "examples/rabbitmq/consumer/src/index.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/examples/rabbitmq/consumer/src/index.ts",
+    "bytes": 2836,
+    "sha256": "7e4e66f8bd5f1beb7194f69c2279cb2e1b78e3a911ad32f27d131f497ddc5588",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "examples/rabbitmq/consumer/src/logger.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/examples/rabbitmq/consumer/src/logger.ts",
+    "bytes": 953,
+    "sha256": "672740c72ca6a22516f45b78c82f65e07f8eff5bc392ec4ba8761b099a999b72",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "examples/rabbitmq/consumer/src/rabbitmq-config.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/examples/rabbitmq/consumer/src/rabbitmq-config.ts",
+    "bytes": 2901,
+    "sha256": "51c4c2560ac468a06e887b70587168fa1395c3b881b745a11eb6497ba58be99f",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "examples/rabbitmq/consumer/src/rabbitmq-handler.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/examples/rabbitmq/consumer/src/rabbitmq-handler.ts",
+    "bytes": 3874,
+    "sha256": "ca28bfda8724f56a941b143a0799b714c9d6c2f5983133fa83d6ec5206fcfb20",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "examples/rabbitmq/consumer/src/receive-movie.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/examples/rabbitmq/consumer/src/receive-movie.ts",
+    "bytes": 2035,
+    "sha256": "823d866a20b7550a47fafb22809820140373aed03001b9fff27260d2bb14008f",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "examples/rabbitmq/producer/setup/init-db.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/examples/rabbitmq/producer/setup/init-db.ts",
+    "bytes": 6355,
+    "sha256": "f215cfb31155006b64384ef6ef14135011a456b0d7e4df9744d1a34d44faa89f",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "examples/rabbitmq/producer/src/add-movies.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/examples/rabbitmq/producer/src/add-movies.ts",
+    "bytes": 2971,
+    "sha256": "d95f0a47b79a834d84c5f98f3e47ef01c4cb791b5d32b2930a7f34f076ce62fa",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "examples/rabbitmq/producer/src/config.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/examples/rabbitmq/producer/src/config.ts",
+    "bytes": 4885,
+    "sha256": "a0958bdd40acfbdcb6da33fe65a60e7ccc4e99f96293374b6c54e79f5ad4b09b",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "examples/rabbitmq/producer/src/index.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/examples/rabbitmq/producer/src/index.ts",
+    "bytes": 2472,
+    "sha256": "055994c90787af6d61fd87103470eb245628ae3af4bf05bcc3fc0243475876bd",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "examples/rabbitmq/producer/src/logger.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/examples/rabbitmq/producer/src/logger.ts",
+    "bytes": 953,
+    "sha256": "672740c72ca6a22516f45b78c82f65e07f8eff5bc392ec4ba8761b099a999b72",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "examples/rabbitmq/producer/src/rabbitmq-config.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/examples/rabbitmq/producer/src/rabbitmq-config.ts",
+    "bytes": 1979,
+    "sha256": "3c1d1762f7ffa9cc8b0c304aa467477175b0b56bd0755fee29b493841c97949f",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "examples/rabbitmq/producer/src/rabbitmq-publisher.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/examples/rabbitmq/producer/src/rabbitmq-publisher.ts",
+    "bytes": 1966,
+    "sha256": "7069bfeaa2b52734e31ea2c2950280b38ec05de205123577e2269ede9ca7b749",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "examples/setup/out/example-trx-polling.sql",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/examples/setup/out/example-trx-polling.sql",
+    "bytes": 9826,
+    "sha256": "707a42a91eda307a4b82ab302b2d37241e1e548ccb745d85e3bf1d3923513447",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "examples/setup/out/example-trx-replication.sql",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/examples/setup/out/example-trx-replication.sql",
+    "bytes": 4482,
+    "sha256": "e87745adcab533af82987a3f7a90a10d84f404f157b23a18d57dd750afa430ce",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "examples/setup/src/index.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/examples/setup/src/index.ts",
+    "bytes": 8882,
+    "sha256": "c256560e4961867fe2d52f13a842b953ef0880ba08b02c570f1893a94906eace",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/jest.config.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/jest.config.ts",
+    "bytes": 319,
+    "sha256": "37141a45f33e09fedd548808994910a890af0711552b7b59c4627fe2b3ae7252",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/common/database.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/common/database.spec.ts",
+    "bytes": 2248,
+    "sha256": "0c00556eaf46324437f8eb6cc49ef58aa767c6b02fed2efa0c99d57f5d32f066",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/common/database.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/common/database.ts",
+    "bytes": 952,
+    "sha256": "64a6170615284de34879f1d4748073794df24467baa63b068aee7afe64b720c9",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/common/env-settings.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/common/env-settings.spec.ts",
+    "bytes": 8441,
+    "sha256": "65f9cf42e821b956f323f6acbeb1784cb83d710ecd9eebea1534792779939bc3",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/common/env-settings.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/common/env-settings.ts",
+    "bytes": 5164,
+    "sha256": "870420095463dd28f3733312d0423c7f68479e4c1c8518b2b25368c34b5acde3",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/common/error.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/common/error.spec.ts",
+    "bytes": 4008,
+    "sha256": "2bca419632dcee63797fe3a3feea2fa807eba0ef1148cc1aa9d102426f7fe3c6",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/common/error.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/common/error.ts",
+    "bytes": 2576,
+    "sha256": "08873d06d93fb6652afab215ff1251e5725ccc3024845a36f0d4bebb8cec0766",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/common/listener-config.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/common/listener-config.spec.ts",
+    "bytes": 12405,
+    "sha256": "61e66a8dc0bc480c0c115ae14266534a0ec7f9e74de9aef28b5fbf660cb230bb",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/common/listener-config.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/common/listener-config.ts",
+    "bytes": 10279,
+    "sha256": "e14eec37cc32aee33755ca8281e7bdd0becd96014f1c34043d4d4acb62bc3185",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/common/logger.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/common/logger.spec.ts",
+    "bytes": 2914,
+    "sha256": "cd4e4cfe39e413e280750b9e483d41a1b1d48d0d58593433b1d31d310b6f02e2",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/common/logger.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/common/logger.ts",
+    "bytes": 1393,
+    "sha256": "f76ec41c98d8ec8c233929272d429185d0cf57ea8c170fe49e6f56c14db51fc5",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/common/utils.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/common/utils.spec.ts",
+    "bytes": 11361,
+    "sha256": "8fc8ddb66e77bf965778257779944bab6e7397b159c660b8335664901292284d",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/common/utils.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/common/utils.ts",
+    "bytes": 8780,
+    "sha256": "ffc21cabb730a7eaf2aa4f69b9ad36516a70630cc537fae990a33a447a72cab7",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/handler/create-error-handler.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/handler/create-error-handler.spec.ts",
+    "bytes": 16476,
+    "sha256": "19c2079e76b302eb3fc3602f1843b518024ddc28b735fc664df097825cb876f7",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/handler/create-error-handler.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/handler/create-error-handler.ts",
+    "bytes": 6126,
+    "sha256": "e41522e53891077c7f10a6b6d4dda0ac3ac4380e8c98e8d5412d31efda85d87c",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/handler/create-message-handler.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/handler/create-message-handler.spec.ts",
+    "bytes": 23995,
+    "sha256": "d548fbe0b37c10ac6deecfc31b6482d3db51f0dac6db164d5e525f14e0805a57",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/handler/create-message-handler.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/handler/create-message-handler.ts",
+    "bytes": 8160,
+    "sha256": "788ccc58fd7b87cd4acae81c1448fdd96a9a799d79885ffdfe7778b96dfd5475",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/handler/general-message-handler.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/handler/general-message-handler.ts",
+    "bytes": 1655,
+    "sha256": "86f5364804e9168d6b8975b318db4c72f9b174d5cafd252680b43587f5ccde18",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/handler/handler-strategies.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/handler/handler-strategies.ts",
+    "bytes": 1861,
+    "sha256": "8c1e056753d9412b300937f25687015318842bb6dae66a5139a89eda4c1b0741",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/handler/message-handler-selector.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/handler/message-handler-selector.spec.ts",
+    "bytes": 2672,
+    "sha256": "23ee8ba5aa023c158271c97a3951f90360b77774dae981b8dbb066f629010e69",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/handler/message-handler-selector.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/handler/message-handler-selector.ts",
+    "bytes": 2421,
+    "sha256": "51c84fc35ecd51b5e163cdbc232f6829befc1e9f9cc40c14b5f717727eb9bc02",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/handler/transactional-message-handler.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/handler/transactional-message-handler.ts",
+    "bytes": 369,
+    "sha256": "424a4a53b11e285be0ffc892c7317a4512bbd90d9955f6a5576d7b0a274f8124",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/index.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/index.ts",
+    "bytes": 4279,
+    "sha256": "ea86cbd14e8310e217f21af86580a58807abc7bd2b20343b02866ba38ebd4ef2",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/message/increase-message-finished-attempts.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/message/increase-message-finished-attempts.spec.ts",
+    "bytes": 1173,
+    "sha256": "a5d2386088ca459fd935cdd985c4150cd6880f9a06d357626e42443f4095d633",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/message/increase-message-finished-attempts.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/message/increase-message-finished-attempts.ts",
+    "bytes": 845,
+    "sha256": "6c20419be822961c9934f6c1a3fc84e826cd892eb67276719b90e9664f7b1cc7",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/message/initialize-message-storage.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/message/initialize-message-storage.spec.ts",
+    "bytes": 6553,
+    "sha256": "1c48dae243a8ee44eebc57b45206b37bf045afa078569fca38e86111c79494b7",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/message/initialize-message-storage.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/message/initialize-message-storage.ts",
+    "bytes": 3411,
+    "sha256": "ae16397c5a8a36d92ae7bc4da11e3e50c2da7b103e5ef4c75fb0be9529647d13",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/message/initiate-message-processing.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/message/initiate-message-processing.spec.ts",
+    "bytes": 6613,
+    "sha256": "1fcbc517da1eba41178f30999ab4d3396e048a0881b711c5ea3b891052703690",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/message/initiate-message-processing.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/message/initiate-message-processing.ts",
+    "bytes": 4354,
+    "sha256": "869e7a9321959638346438259ddebadcf34deec60e2dd2a79d5cb3f0a2fbd871",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/message/mark-message-abandoned.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/message/mark-message-abandoned.spec.ts",
+    "bytes": 1057,
+    "sha256": "34d168163463063de0c72e5e1594410fbe21eacc07686ed32bdb04a3ea66aea4",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/message/mark-message-abandoned.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/message/mark-message-abandoned.ts",
+    "bytes": 908,
+    "sha256": "942fc4141f678a82dbf0f72c109d5408252c6fb6405cf32cc5319aedf92dcc85",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/message/mark-message-completed.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/message/mark-message-completed.spec.ts",
+    "bytes": 1121,
+    "sha256": "89f7fc819febfdc98a3f744a0ebf1ba7fc05c120081783846863eafd8394f18f",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/message/mark-message-completed.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/message/mark-message-completed.ts",
+    "bytes": 958,
+    "sha256": "d5d05bc4d1df4015787cbf0486fd69dbfa519931e017d4c323a4008a04be668d",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/message/message-cleanup.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/message/message-cleanup.spec.ts",
+    "bytes": 4937,
+    "sha256": "719bb88dafc2143fdda47556cb863eeaec35d574233bff346536e15c477deb1f",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/message/message-cleanup.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/message/message-cleanup.ts",
+    "bytes": 3677,
+    "sha256": "a2e60329f3f5c2c61c30227d7aae00c65a1c9fcbee8341c29079047a0fbde221",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/message/started-attempts-increment.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/message/started-attempts-increment.spec.ts",
+    "bytes": 4262,
+    "sha256": "2bc0ef16c90144faa7a3537db272a88824ccbc3670e28944965830f386f4e189",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/message/started-attempts-increment.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/message/started-attempts-increment.ts",
+    "bytes": 2978,
+    "sha256": "c198f07fceb65087a3f0763e55329fa2d6f391e2e47b678182cf6a1f9984f438",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/message/transactional-message.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/message/transactional-message.ts",
+    "bytes": 2741,
+    "sha256": "6bc3a42b5d35183b205580d5ca5c1bdf1096ed59c9e7b8d03be7fdab184130dd",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/polling/config.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/polling/config.spec.ts",
+    "bytes": 16433,
+    "sha256": "c87bca2d41421ee71f82d82958eee66eb77bc3fdd8e78b2c93653d38bf2345d5",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/polling/config.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/polling/config.ts",
+    "bytes": 7611,
+    "sha256": "7e206161e9d46bf2e09eb8852298b644cca9d6879c10e18c91ccd8449f167ea1",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/polling/next-messages.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/polling/next-messages.spec.ts",
+    "bytes": 8720,
+    "sha256": "742eafdb1aa274656b7413ffcd0924455e3b8d8dce349d1fc888d8314a1cb47b",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/polling/next-messages.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/polling/next-messages.ts",
+    "bytes": 2697,
+    "sha256": "9ae460d7f264944424dc36fa650c0caca11d00e6cf8b7d840633e5a91da5a35d",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/polling/polling-message-listener.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/polling/polling-message-listener.spec.ts",
+    "bytes": 33879,
+    "sha256": "a2a68b49c4bcc8cb73726488344b038813ea89623caa51dca2f51dc3e919697a",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/polling/polling-message-listener.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/polling/polling-message-listener.ts",
+    "bytes": 8592,
+    "sha256": "12191b2fba96efb23513b549f1526ef3eecd6d799b766a6782b8858e49986385",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/polling/polling-strategies.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/polling/polling-strategies.ts",
+    "bytes": 372,
+    "sha256": "c1757a7709ee9164c4aeda52047361d5074fe464bfbf27c7487de4f30fd7fbc6",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/polling/strategies/batch-size-strategy.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/polling/strategies/batch-size-strategy.spec.ts",
+    "bytes": 745,
+    "sha256": "fc2936d8a0443fb52b9ea566b6da510c86b8510ff477c374b9d7d8ffa42e8784",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/polling/strategies/batch-size-strategy.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/polling/strategies/batch-size-strategy.ts",
+    "bytes": 1247,
+    "sha256": "931b03cf1534ea5066c3f609728632d3e1a991f4040775fc213a9ae0fc334108",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/replication/acknowledge-manager.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/replication/acknowledge-manager.spec.ts",
+    "bytes": 7346,
+    "sha256": "38dc16f53784d4542f1db5e69a618b3f2a332ef5d7a40c9445e3fe0178fef494",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/replication/acknowledge-manager.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/replication/acknowledge-manager.ts",
+    "bytes": 3243,
+    "sha256": "d9a75b01215d5b2e74dd5c58bfeb0fb4ddcc887132f543157bd089ba928b494e",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/replication/concurrency-controller/concurrency-controller.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/replication/concurrency-controller/concurrency-controller.ts",
+    "bytes": 485,
+    "sha256": "c6d68d0db546be69da58ac6667acbdcfcc36149943588956b99297b8451608c4",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/replication/concurrency-controller/create-full-concurrency-controller.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/replication/concurrency-controller/create-full-concurrency-controller.spec.ts",
+    "bytes": 1833,
+    "sha256": "2104e1d9d0c393fba6ce1736bc104322bb12d2dd4a071b29ee27e261569dbdcd",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/replication/concurrency-controller/create-full-concurrency-controller.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/replication/concurrency-controller/create-full-concurrency-controller.ts",
+    "bytes": 563,
+    "sha256": "56959bd622dcb80b27f73e9b80eec29657fbb90f35a9d31c8d66dcf0852a24f1",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/replication/concurrency-controller/create-multi-concurrency-controller.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/replication/concurrency-controller/create-multi-concurrency-controller.spec.ts",
+    "bytes": 11544,
+    "sha256": "1f99df102ec4e4c867bcc0b9721946fae2538c4fa6656cb18209b327ff67127a",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/replication/concurrency-controller/create-multi-concurrency-controller.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/replication/concurrency-controller/create-multi-concurrency-controller.ts",
+    "bytes": 2490,
+    "sha256": "15a9e98a4d27e189b128375ab35e8c82df9d75dbeca5f46cee765d9d0361fa5a",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/replication/concurrency-controller/create-mutex-concurrency-controller.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/replication/concurrency-controller/create-mutex-concurrency-controller.spec.ts",
+    "bytes": 2374,
+    "sha256": "e4ff0dc040ba14444ddc5c4d441542d49b46b84321b8a6b1e888aa0aa4de5ae9",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/replication/concurrency-controller/create-mutex-concurrency-controller.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/replication/concurrency-controller/create-mutex-concurrency-controller.ts",
+    "bytes": 487,
+    "sha256": "c9f4abe80e8883878c1f65f9c132b122b855f9bf489763809975aa99e075def1",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/replication/concurrency-controller/create-segment-mutex-concurrency-controller.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/replication/concurrency-controller/create-segment-mutex-concurrency-controller.spec.ts",
+    "bytes": 3962,
+    "sha256": "72ab606908cee090800680b52017348bf26773005fcfb339c66b5e5db92a2450",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/replication/concurrency-controller/create-segment-mutex-concurrency-controller.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/replication/concurrency-controller/create-segment-mutex-concurrency-controller.ts",
+    "bytes": 1122,
+    "sha256": "6b49f7a38737da50cb33c7265fae0656ddef801d5a1913d8d42b19cfe41470eb",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/replication/concurrency-controller/create-semaphore-concurrency-controller.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/replication/concurrency-controller/create-semaphore-concurrency-controller.spec.ts",
+    "bytes": 2793,
+    "sha256": "5be151135600bdd592bfaf2ed63016566e58b10a930e6568a345cbd861139291",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/replication/concurrency-controller/create-semaphore-concurrency-controller.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/replication/concurrency-controller/create-semaphore-concurrency-controller.ts",
+    "bytes": 795,
+    "sha256": "37b21be8b232dfa7819908f37b0cae0f467561a6624e924709310e953fce5420",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/replication/config.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/replication/config.spec.ts",
+    "bytes": 15867,
+    "sha256": "e8c2aa47836baceba9e5d57e7c06ce3ea46b7e1a89b55f5dfde927855db3de82",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/replication/config.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/replication/config.ts",
+    "bytes": 7711,
+    "sha256": "1b046ed16d0bff64294826adb13008a9cdef47a284d7bd2e3cbf623b64381f22",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/replication/logical-replication-listener.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/replication/logical-replication-listener.spec.ts",
+    "bytes": 26256,
+    "sha256": "7c9160d04b4e96394c15dea71f7fb5267fa3344de4dd357d5380571e3c27a169",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/replication/logical-replication-listener.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/replication/logical-replication-listener.ts",
+    "bytes": 15919,
+    "sha256": "a6f3da520b445d47970e2885c80d7ae05421aefd62c50ed4152ba0d013ce2572",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/replication/replication-message-listener.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/replication/replication-message-listener.spec.ts",
+    "bytes": 40235,
+    "sha256": "a4962a7b6098e49fa718bef7fe099a5aa2fcecd179b981afde4bdded40e8f87b",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/replication/replication-message-listener.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/replication/replication-message-listener.ts",
+    "bytes": 4309,
+    "sha256": "dc4b6b931335842d16a7be5c30982fcf7c42ce2c4f5279df6e261ce7abbdd531",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/replication/replication-strategies.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/replication/replication-strategies.ts",
+    "bytes": 1246,
+    "sha256": "697767479277c2d38bd22ca8cc2a382901ef6de2c7565ccd87cb4d9db9247754",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/replication/strategies/concurrency-strategy.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/replication/strategies/concurrency-strategy.spec.ts",
+    "bytes": 1434,
+    "sha256": "aa83a6060a3b934723e2a4d1e3da4fccffc7534f664df6c57d6e3605714a02dc",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/replication/strategies/concurrency-strategy.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/replication/strategies/concurrency-strategy.ts",
+    "bytes": 512,
+    "sha256": "be959055d1b3abc20a25153897c6e35604e030175d8dbb73aaead02b34703e52",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/replication/strategies/listener-restart-strategy.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/replication/strategies/listener-restart-strategy.spec.ts",
+    "bytes": 5371,
+    "sha256": "17fa4a86cb7cae9b28196e85650d2036cbfe5a0961fb1367d91bd90ff9f8e448",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/replication/strategies/listener-restart-strategy.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/replication/strategies/listener-restart-strategy.ts",
+    "bytes": 4410,
+    "sha256": "f7e8269029f978ce19b404957bb74951852393a082485013954debf73312ef92",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/setup/database-setup-exporter.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/setup/database-setup-exporter.spec.ts",
+    "bytes": 17536,
+    "sha256": "b187524cd4866b46563bf44760b86860f065e067b49ae3afc111f064f0ea4ea1",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/setup/database-setup-exporter.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/setup/database-setup-exporter.ts",
+    "bytes": 2080,
+    "sha256": "1ec2a0a83ccf87b76eba894c3a50579fff6b9c75ab7444ed7fa06d4306a75f94",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/setup/database-setup.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/setup/database-setup.ts",
+    "bytes": 7816,
+    "sha256": "bd5f5068c027fde012da43ebfe9b64e0280d6a62e27d4adc8445e29b889f7ca8",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/strategies/message-not-found-retry-strategy.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/strategies/message-not-found-retry-strategy.spec.ts",
+    "bytes": 1221,
+    "sha256": "2843852f2346a6f78fb4fa3c89c14d4eeddb9a2a2ba7d2ded9279e00e0eb2511",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/strategies/message-not-found-retry-strategy.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/strategies/message-not-found-retry-strategy.ts",
+    "bytes": 1659,
+    "sha256": "d1efa981e709e085e47b903a34663a7c8053d81089d098aa8e3931ed0f472ad7",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/strategies/message-processing-db-client-strategy.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/strategies/message-processing-db-client-strategy.spec.ts",
+    "bytes": 2952,
+    "sha256": "79be99e74ecf68d4e8be425efcb7fd2a1b9f94c69f40590586d0e12fda935505",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/strategies/message-processing-db-client-strategy.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/strategies/message-processing-db-client-strategy.ts",
+    "bytes": 1942,
+    "sha256": "62be6414a272ef07f62d3e789656092a6db63ea850a6c164a9899be89c2d3b50",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/strategies/message-processing-timeout-strategy.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/strategies/message-processing-timeout-strategy.spec.ts",
+    "bytes": 596,
+    "sha256": "859485aca9c0ae51dcace51f043ced0e89990e53b77241185198b0b39bf5b9d3",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/strategies/message-processing-timeout-strategy.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/strategies/message-processing-timeout-strategy.ts",
+    "bytes": 800,
+    "sha256": "ff7ae2b1cac2c4b785b8d7b321f1d9d034b1bfb4b2355cd15818bf743eeff214",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/strategies/message-processing-transaction-level-strategy.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/strategies/message-processing-transaction-level-strategy.spec.ts",
+    "bytes": 591,
+    "sha256": "e236d44e4c52d2d60f528049500ba4f4cff750ed3f907be56d3f61228d097301",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/strategies/message-processing-transaction-level-strategy.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/strategies/message-processing-transaction-level-strategy.ts",
+    "bytes": 756,
+    "sha256": "bde435c884e2446b56c23338e236d8d8f81ef919b9e1eac6e09fa408e4a21d1f",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/strategies/message-retry-strategy.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/strategies/message-retry-strategy.spec.ts",
+    "bytes": 3506,
+    "sha256": "9af0353f91ce2e8c6bf4de8c3e21189373448a37241b8c2858e96510a0c1b1e6",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/strategies/message-retry-strategy.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/strategies/message-retry-strategy.ts",
+    "bytes": 2328,
+    "sha256": "cc31e8b097b896ab5eebd23644f5af724b64c0e03085d6ec33d1ef415f1a6ec6",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/strategies/poisonous-message-retry-strategy.spec.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/strategies/poisonous-message-retry-strategy.spec.ts",
+    "bytes": 1596,
+    "sha256": "e5957e8d79b7cf2dd99c35343a4c2a8795ac3a21ef59cf402fe8b7bedc184852",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "path": "lib/src/strategies/poisonous-message-retry-strategy.ts",
+    "url": "https://github.com/Zehelein/pg-transactional-outbox/blob/5556d4532961907ac88d1fdd4c6c02ca9c6bc35d/lib/src/strategies/poisonous-message-retry-strategy.ts",
+    "bytes": 1222,
+    "sha256": "54aa665b1567279fe6db48bb020964dbbd27c5e3dd2773a2ca8862acac4ecbd8",
+    "status": "retrieved; pending reading"
+  }
+]

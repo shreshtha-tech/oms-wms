@@ -1,0 +1,51 @@
+[
+  {
+    "repo": "OWASP/ASVS",
+    "requested_ref": "refs/tags/v5.0.0_release",
+    "sha": "5cf9b032440be53ce345ab3c130fda46ba1ce7a2",
+    "exit_code": 0,
+    "error": null
+  },
+  {
+    "repo": "OAI/OpenAPI-Specification",
+    "requested_ref": "refs/tags/3.1.1",
+    "sha": "69d8b7953c3259e243cf746388a0951b89649763",
+    "exit_code": 0,
+    "error": null
+  },
+  {
+    "repo": "open-telemetry/opentelemetry-js",
+    "requested_ref": "refs/heads/main",
+    "sha": "2fbb404a7e5d439df57c0b678faf0d3822556d23",
+    "exit_code": 0,
+    "error": null
+  },
+  {
+    "repo": "ossf/scorecard",
+    "requested_ref": "refs/heads/main",
+    "sha": "a1fe90aafa9169f150b2733fb608f6551077b371",
+    "exit_code": 0,
+    "error": null
+  },
+  {
+    "repo": "aquasecurity/trivy",
+    "requested_ref": "refs/heads/main",
+    "sha": "088b9706d7e3af33ef1a8d2dee305370df714293",
+    "exit_code": 0,
+    "error": null
+  },
+  {
+    "repo": "Zehelein/pg-transactional-outbox",
+    "requested_ref": "refs/heads/master",
+    "sha": "5556d4532961907ac88d1fdd4c6c02ca9c6bc35d",
+    "exit_code": 0,
+    "error": null
+  },
+  {
+    "repo": "frappe/frappe",
+    "requested_ref": "refs/heads/develop",
+    "sha": "4857b04809270c03c5e3dced4908168c15bed516",
+    "exit_code": 0,
+    "error": null
+  }
+]

@@ -1,0 +1,46 @@
+[
+  {
+    "repo": "saleor/saleor",
+    "error": "HTTP Error 403: rate limit exceeded"
+  },
+  {
+    "repo": "vendure-ecommerce/vendure",
+    "error": "HTTP Error 403: rate limit exceeded"
+  },
+  {
+    "repo": "medusajs/medusa",
+    "error": "HTTP Error 403: rate limit exceeded"
+  },
+  {
+    "repo": "spree/spree",
+    "error": "HTTP Error 403: rate limit exceeded"
+  },
+  {
+    "repo": "debezium/debezium",
+    "error": "HTTP Error 403: rate limit exceeded"
+  },
+  {
+    "repo": "openboxes/openboxes",
+    "error": "HTTP Error 403: rate limit exceeded"
+  },
+  {
+    "repo": "graphile/worker",
+    "error": "HTTP Error 403: rate limit exceeded"
+  },
+  {
+    "repo": "Shopify/shopify-app-js",
+    "error": "HTTP Error 403: rate limit exceeded"
+  },
+  {
+    "repo": "apache/ofbiz-framework",
+    "error": "HTTP Error 403: rate limit exceeded"
+  },
+  {
+    "repo": "tryton/tryton",
+    "error": "HTTP Error 403: rate limit exceeded"
+  },
+  {
+    "repo": "metasfresh/metasfresh",
+    "error": "HTTP Error 403: rate limit exceeded"
+  }
+]

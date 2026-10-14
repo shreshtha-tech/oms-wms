@@ -1,0 +1,395 @@
+[
+  {
+    "repo": "saleor/saleor",
+    "sha": "925b69959a97c9deda7cdc85092494896d0aa1f4",
+    "path": "LICENSE",
+    "url": "https://github.com/saleor/saleor/blob/925b69959a97c9deda7cdc85092494896d0aa1f4/LICENSE",
+    "sha256": "70e2aa4451206e213dc32078c07ca703c7c2b6e9a8e63803ee11db4deea7313b",
+    "bytes": 1562,
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "saleor/saleor",
+    "sha": "925b69959a97c9deda7cdc85092494896d0aa1f4",
+    "path": "saleor/warehouse/management.py",
+    "url": "https://github.com/saleor/saleor/blob/925b69959a97c9deda7cdc85092494896d0aa1f4/saleor/warehouse/management.py",
+    "sha256": "03cbde44b995b5607d1d9e56d296abb34ba7dca2b87ab1dfe7547330a969dacf",
+    "bytes": 39533,
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "saleor/saleor",
+    "sha": "925b69959a97c9deda7cdc85092494896d0aa1f4",
+    "path": "saleor/warehouse/models.py",
+    "url": "https://github.com/saleor/saleor/blob/925b69959a97c9deda7cdc85092494896d0aa1f4/saleor/warehouse/models.py",
+    "sha256": "ad06d50def8e2e2ad19cae3a22ef6da1661c3cd66a51dab125b2aec110a8214c",
+    "bytes": 25647,
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "saleor/saleor",
+    "sha": "925b69959a97c9deda7cdc85092494896d0aa1f4",
+    "path": "saleor/warehouse/tests/test_management.py",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "repo": "saleor/saleor",
+    "sha": "925b69959a97c9deda7cdc85092494896d0aa1f4",
+    "path": "saleor/warehouse/tests/test_stock.py",
+    "url": "https://github.com/saleor/saleor/blob/925b69959a97c9deda7cdc85092494896d0aa1f4/saleor/warehouse/tests/test_stock.py",
+    "sha256": "5f004fcf300edf5252aff14fefe0b90e1eeab1018a2badc8d021dacfc6fe5772",
+    "bytes": 8327,
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "frappe/erpnext",
+    "sha": "655186714ce8b163cf32effc1ab4f335b99df7ca",
+    "path": "license.txt",
+    "url": "https://github.com/frappe/erpnext/blob/655186714ce8b163cf32effc1ab4f335b99df7ca/license.txt",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+    "bytes": 35149,
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "frappe/erpnext",
+    "sha": "655186714ce8b163cf32effc1ab4f335b99df7ca",
+    "path": "erpnext/stock/stock_ledger.py",
+    "url": "https://github.com/frappe/erpnext/blob/655186714ce8b163cf32effc1ab4f335b99df7ca/erpnext/stock/stock_ledger.py",
+    "sha256": "f6720fb8ce7bbfdb2b33f827cb3a18fc51fea697a623d5e63d59e377fe9735ef",
+    "bytes": 107573,
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "frappe/erpnext",
+    "sha": "655186714ce8b163cf32effc1ab4f335b99df7ca",
+    "path": "erpnext/stock/doctype/stock_reservation_entry/stock_reservation_entry.py",
+    "url": "https://github.com/frappe/erpnext/blob/655186714ce8b163cf32effc1ab4f335b99df7ca/erpnext/stock/doctype/stock_reservation_entry/stock_reservation_entry.py",
+    "sha256": "802af943f5d788956e3f4692be2e48c5abaff5e2e3ae7cf9dc6dd72ebc84a5f2",
+    "bytes": 64421,
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "frappe/erpnext",
+    "sha": "655186714ce8b163cf32effc1ab4f335b99df7ca",
+    "path": "erpnext/stock/doctype/stock_reservation_entry/test_stock_reservation_entry.py",
+    "url": "https://github.com/frappe/erpnext/blob/655186714ce8b163cf32effc1ab4f335b99df7ca/erpnext/stock/doctype/stock_reservation_entry/test_stock_reservation_entry.py",
+    "sha256": "5cda8b1058e19b9938edb53aadb862c7c29398d7d3e811cf6ac53d7f30eede13",
+    "bytes": 42177,
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "odoo/odoo",
+    "sha": "993abab95278f488f47c231be38d9cbc85213c41",
+    "path": "LICENSE",
+    "url": "https://github.com/odoo/odoo/blob/993abab95278f488f47c231be38d9cbc85213c41/LICENSE",
+    "sha256": "abc09dad5f84a76e1b0279237053cae16c03228ab27d8d467677054c2bd17eeb",
+    "bytes": 43529,
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "odoo/odoo",
+    "sha": "993abab95278f488f47c231be38d9cbc85213c41",
+    "path": "addons/stock/models/stock_quant.py",
+    "url": "https://github.com/odoo/odoo/blob/993abab95278f488f47c231be38d9cbc85213c41/addons/stock/models/stock_quant.py",
+    "sha256": "d9fd7b6b1c627e7080305ebfc74a080fcdc77c424d942e5478472ca1e73ca783",
+    "bytes": 82804,
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "odoo/odoo",
+    "sha": "993abab95278f488f47c231be38d9cbc85213c41",
+    "path": "addons/stock/models/stock_move.py",
+    "url": "https://github.com/odoo/odoo/blob/993abab95278f488f47c231be38d9cbc85213c41/addons/stock/models/stock_move.py",
+    "sha256": "9960a71a8c477c7df67d0e364313e239dd4e15d9e94b17df05fad1c470b1f8f4",
+    "bytes": 162390,
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "odoo/odoo",
+    "sha": "993abab95278f488f47c231be38d9cbc85213c41",
+    "path": "addons/stock/tests/test_quant.py",
+    "url": "https://github.com/odoo/odoo/blob/993abab95278f488f47c231be38d9cbc85213c41/addons/stock/tests/test_quant.py",
+    "sha256": "fc5463bd6f3d2feeca09438ce8f6fa325ac383cee2eb405f7f4c40e2d50421b0",
+    "bytes": 90835,
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "openboxes/openboxes",
+    "sha": "94f393a240347209ad88fa6b48124e0238dd17ad",
+    "path": "LICENSE",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "repo": "openboxes/openboxes",
+    "sha": "94f393a240347209ad88fa6b48124e0238dd17ad",
+    "path": "grails-app/services/org/pih/warehouse/inventory/InventoryService.groovy",
+    "url": "https://github.com/openboxes/openboxes/blob/94f393a240347209ad88fa6b48124e0238dd17ad/grails-app/services/org/pih/warehouse/inventory/InventoryService.groovy",
+    "sha256": "0ca103195938ed98164ad5e2e68b3ea7f446f865ba0f7fcd580b16464f0ba351",
+    "bytes": 144659,
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "openboxes/openboxes",
+    "sha": "94f393a240347209ad88fa6b48124e0238dd17ad",
+    "path": "grails-app/domain/org/pih/warehouse/inventory/InventoryItem.groovy",
+    "url": "https://github.com/openboxes/openboxes/blob/94f393a240347209ad88fa6b48124e0238dd17ad/grails-app/domain/org/pih/warehouse/inventory/InventoryItem.groovy",
+    "sha256": "ea8f48b0334b698807b7377cb66ebf1c167bee4a2fb129f9e2e453a63778fbe4",
+    "bytes": 4746,
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "medusajs/medusa",
+    "sha": "0b97a96ea0d32ff3f4b18dbeeeeba9e763600a15",
+    "path": "LICENSE",
+    "url": "https://github.com/medusajs/medusa/blob/0b97a96ea0d32ff3f4b18dbeeeeba9e763600a15/LICENSE",
+    "sha256": "cf67cc556c17e0b00dc0c74a3d71db8dec9aae98af747a2503803a640fba9bb5",
+    "bytes": 1402,
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "medusajs/medusa",
+    "sha": "0b97a96ea0d32ff3f4b18dbeeeeba9e763600a15",
+    "path": "packages/core/core-flows/src/inventory/steps/reserve-inventory.ts",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "repo": "medusajs/medusa",
+    "sha": "0b97a96ea0d32ff3f4b18dbeeeeba9e763600a15",
+    "path": "packages/modules/inventory/src/services/inventory-module.ts",
+    "url": "https://github.com/medusajs/medusa/blob/0b97a96ea0d32ff3f4b18dbeeeeba9e763600a15/packages/modules/inventory/src/services/inventory-module.ts",
+    "sha256": "70a34133f7802d5417ee49a21060e122cc9dd9ef98130424daa9703f4f167bb1",
+    "bytes": 34533,
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "medusajs/medusa",
+    "sha": "0b97a96ea0d32ff3f4b18dbeeeeba9e763600a15",
+    "path": "packages/modules/inventory/src/models/reservation-item.ts",
+    "url": "https://github.com/medusajs/medusa/blob/0b97a96ea0d32ff3f4b18dbeeeeba9e763600a15/packages/modules/inventory/src/models/reservation-item.ts",
+    "sha256": "3cffe2b3c405ba1b9d5eb09adf14fadcd2a7d9de52a59ffef9cc60bcb7f96b74",
+    "bytes": 1153,
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "vendure-ecommerce/vendure",
+    "sha": "530fa0afad87c449635d3864b604de93d7dd0a43",
+    "path": "LICENSE",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "repo": "vendure-ecommerce/vendure",
+    "sha": "530fa0afad87c449635d3864b604de93d7dd0a43",
+    "path": "packages/core/src/service/services/stock-level.service.ts",
+    "url": "https://github.com/vendure-ecommerce/vendure/blob/530fa0afad87c449635d3864b604de93d7dd0a43/packages/core/src/service/services/stock-level.service.ts",
+    "sha256": "31ca2c80271a362abbbd69cc801c9ca7ca607814e157bfe10b046abac6e28d1d",
+    "bytes": 21298,
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "vendure-ecommerce/vendure",
+    "sha": "530fa0afad87c449635d3864b604de93d7dd0a43",
+    "path": "packages/core/src/service/services/stock-movement.service.ts",
+    "url": "https://github.com/vendure-ecommerce/vendure/blob/530fa0afad87c449635d3864b604de93d7dd0a43/packages/core/src/service/services/stock-movement.service.ts",
+    "sha256": "9efa43dac6856f12f491159a1eacf46a504f7bb6af632c50f53f30bd8cb619b2",
+    "bytes": 23675,
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "vendure-ecommerce/vendure",
+    "sha": "530fa0afad87c449635d3864b604de93d7dd0a43",
+    "path": "packages/core/src/config/order/default-order-process.ts",
+    "url": "https://github.com/vendure-ecommerce/vendure/blob/530fa0afad87c449635d3864b604de93d7dd0a43/packages/core/src/config/order/default-order-process.ts",
+    "sha256": "6b0b706b1f6a090e625eab9f37be29f0400d712a30076bbac7575524553d66b4",
+    "bytes": 23853,
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "spree/spree",
+    "sha": "03ac3fb4f06e88099376bd8bdb5064f8e2a5f47e",
+    "path": "LICENSE.md",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "repo": "spree/spree",
+    "sha": "03ac3fb4f06e88099376bd8bdb5064f8e2a5f47e",
+    "path": "core/app/models/spree/stock/quantifier.rb",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "repo": "spree/spree",
+    "sha": "03ac3fb4f06e88099376bd8bdb5064f8e2a5f47e",
+    "path": "core/app/models/spree/stock_item.rb",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "repo": "spree/spree",
+    "sha": "03ac3fb4f06e88099376bd8bdb5064f8e2a5f47e",
+    "path": "core/app/models/spree/order.rb",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "repo": "timgit/pg-boss",
+    "sha": "b53278b0afea34aa9110c6b0ebd927cee48dd4ae",
+    "path": "LICENSE",
+    "url": "https://github.com/timgit/pg-boss/blob/b53278b0afea34aa9110c6b0ebd927cee48dd4ae/LICENSE",
+    "sha256": "51ad77d655782ec9ea2a624529a37f25cb82bd41ae38d85d15cdb0d4dd9c5689",
+    "bytes": 1076,
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "timgit/pg-boss",
+    "sha": "b53278b0afea34aa9110c6b0ebd927cee48dd4ae",
+    "path": "src/plans.ts",
+    "url": "https://github.com/timgit/pg-boss/blob/b53278b0afea34aa9110c6b0ebd927cee48dd4ae/src/plans.ts",
+    "sha256": "87b24d303ade43c0de116a029523ec099d4554cf7e7cc66d5e3dcda5c3398a29",
+    "bytes": 292066,
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "timgit/pg-boss",
+    "sha": "b53278b0afea34aa9110c6b0ebd927cee48dd4ae",
+    "path": "test/retryTest.ts",
+    "url": "https://github.com/timgit/pg-boss/blob/b53278b0afea34aa9110c6b0ebd927cee48dd4ae/test/retryTest.ts",
+    "sha256": "c21ad48dd9ba15cd8a712e0bd22679ae6d981bea4862fc3a06d2f9f22e9eddca",
+    "bytes": 7086,
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "graphile/worker",
+    "sha": "4cda192c5df254392a1dff350e5d73f7d2c18a85",
+    "path": "LICENSE.md",
+    "url": "https://github.com/graphile/worker/blob/4cda192c5df254392a1dff350e5d73f7d2c18a85/LICENSE.md",
+    "sha256": "5f7f00de2e8dfd3ec501aff969bba01cb4860b90787223035673022e7aef7bb1",
+    "bytes": 1091,
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "graphile/worker",
+    "sha": "4cda192c5df254392a1dff350e5d73f7d2c18a85",
+    "path": "src/sql/000001.sql",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "repo": "graphile/worker",
+    "sha": "4cda192c5df254392a1dff350e5d73f7d2c18a85",
+    "path": "src/sql/000011.sql",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "repo": "graphile/worker",
+    "sha": "4cda192c5df254392a1dff350e5d73f7d2c18a85",
+    "path": "src/worker.ts",
+    "url": "https://github.com/graphile/worker/blob/4cda192c5df254392a1dff350e5d73f7d2c18a85/src/worker.ts",
+    "sha256": "4cc48b50511d46eb80be8663d1086596401464163b3ebb2f81a087340604153d",
+    "bytes": 12094,
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "debezium/debezium",
+    "sha": "2f84b29c03638d261823172d1d8bfa9ca3a99824",
+    "path": "LICENSE.txt",
+    "url": "https://github.com/debezium/debezium/blob/2f84b29c03638d261823172d1d8bfa9ca3a99824/LICENSE.txt",
+    "sha256": "58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd",
+    "bytes": 11357,
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "debezium/debezium",
+    "sha": "2f84b29c03638d261823172d1d8bfa9ca3a99824",
+    "path": "debezium-core/src/main/java/io/debezium/transforms/outbox/EventRouter.java",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "repo": "debezium/debezium",
+    "sha": "2f84b29c03638d261823172d1d8bfa9ca3a99824",
+    "path": "debezium-core/src/main/java/io/debezium/transforms/outbox/EventRouterDelegate.java",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "repo": "Shopify/shopify-app-js",
+    "sha": "e409d06d03aebb88c3b0af85ea6b0120e439fd6b",
+    "path": "LICENSE.md",
+    "url": "https://github.com/Shopify/shopify-app-js/blob/e409d06d03aebb88c3b0af85ea6b0120e439fd6b/LICENSE.md",
+    "sha256": "02c96d735e2af8e432430895dc78b34553ae4a1f0c3d1579f56fd4cea146cb7b",
+    "bytes": 1078,
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Shopify/shopify-app-js",
+    "sha": "e409d06d03aebb88c3b0af85ea6b0120e439fd6b",
+    "path": "packages/apps/shopify-api/lib/webhooks/validate.ts",
+    "url": "https://github.com/Shopify/shopify-app-js/blob/e409d06d03aebb88c3b0af85ea6b0120e439fd6b/packages/apps/shopify-api/lib/webhooks/validate.ts",
+    "sha256": "b95dc942041bc38f8d50c197a546388f08ce66e766dbc08779cfda8dad37bbb9",
+    "bytes": 5417,
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "Shopify/shopify-app-js",
+    "sha": "e409d06d03aebb88c3b0af85ea6b0120e439fd6b",
+    "path": "packages/apps/shopify-api/lib/webhooks/process.ts",
+    "url": "https://github.com/Shopify/shopify-app-js/blob/e409d06d03aebb88c3b0af85ea6b0120e439fd6b/packages/apps/shopify-api/lib/webhooks/process.ts",
+    "sha256": "2bee8ed6bc185f4bdf6f1e976e4a85a4a768084c41d099828c0d126a3ccd1f90",
+    "bytes": 6054,
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "woocommerce/woocommerce",
+    "sha": "5f57267f9f8bd40d2e12d84d2207c399910d8869",
+    "path": "LICENSE",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "repo": "woocommerce/woocommerce",
+    "sha": "5f57267f9f8bd40d2e12d84d2207c399910d8869",
+    "path": "plugins/woocommerce/includes/class-wc-webhook.php",
+    "url": "https://github.com/woocommerce/woocommerce/blob/5f57267f9f8bd40d2e12d84d2207c399910d8869/plugins/woocommerce/includes/class-wc-webhook.php",
+    "sha256": "d517a7166235f291f2fc12b1d2e8eccbc36005a34c407b44886fb45fe39356de",
+    "bytes": 33510,
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "woocommerce/woocommerce",
+    "sha": "5f57267f9f8bd40d2e12d84d2207c399910d8869",
+    "path": "plugins/woocommerce/includes/wc-stock-functions.php",
+    "url": "https://github.com/woocommerce/woocommerce/blob/5f57267f9f8bd40d2e12d84d2207c399910d8869/plugins/woocommerce/includes/wc-stock-functions.php",
+    "sha256": "62226f0c2e4ba3f7f433e9a2ff050e494000dab50855433924cfd9bd836bd9c8",
+    "bytes": 18443,
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "apache/camel",
+    "sha": "1afa3af6f48b54763b2982726ccb7e29cba93948",
+    "path": "LICENSE.txt",
+    "url": "https://github.com/apache/camel/blob/1afa3af6f48b54763b2982726ccb7e29cba93948/LICENSE.txt",
+    "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "bytes": 11358,
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "apache/camel",
+    "sha": "1afa3af6f48b54763b2982726ccb7e29cba93948",
+    "path": "core/camel-core-processor/src/main/java/org/apache/camel/processor/idempotent/IdempotentConsumer.java",
+    "url": "https://github.com/apache/camel/blob/1afa3af6f48b54763b2982726ccb7e29cba93948/core/camel-core-processor/src/main/java/org/apache/camel/processor/idempotent/IdempotentConsumer.java",
+    "sha256": "4294bc7726017572d2b45f6760ec95a859fc643d97e0f06307828196728261c5",
+    "bytes": 10984,
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "nats-io/nats-server",
+    "sha": "64dda80fdd87b41b2afcdc5faf5d846db6c189b0",
+    "path": "LICENSE",
+    "url": "https://github.com/nats-io/nats-server/blob/64dda80fdd87b41b2afcdc5faf5d846db6c189b0/LICENSE",
+    "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "bytes": 11357,
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "nats-io/nats-server",
+    "sha": "64dda80fdd87b41b2afcdc5faf5d846db6c189b0",
+    "path": "server/consumer.go",
+    "url": "https://github.com/nats-io/nats-server/blob/64dda80fdd87b41b2afcdc5faf5d846db6c189b0/server/consumer.go",
+    "sha256": "45bcf2836f6976277b7870eaf522b478a79cac2692befbd07c9f0ed8b886e94c",
+    "bytes": 210852,
+    "status": "retrieved; pending reading"
+  }
+]

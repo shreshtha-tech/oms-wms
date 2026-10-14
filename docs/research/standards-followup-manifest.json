@@ -1,0 +1,47 @@
+[
+  {
+    "repo": "OWASP/ASVS",
+    "sha": "5cf9b032440be53ce345ab3c130fda46ba1ce7a2",
+    "path": "5.0/en/0x17-V8-Authorization.md",
+    "url": "https://github.com/OWASP/ASVS/blob/5cf9b032440be53ce345ab3c130fda46ba1ce7a2/5.0/en/0x17-V8-Authorization.md",
+    "bytes": 5920,
+    "sha256": "60c188b1703cab2086841d8f1b4adc0ededf66ed38c676a11bb92347646b5330",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "OWASP/ASVS",
+    "sha": "5cf9b032440be53ce345ab3c130fda46ba1ce7a2",
+    "path": "5.0/en/0x25-V16-Security-Logging-and-Error-Handling.md",
+    "url": "https://github.com/OWASP/ASVS/blob/5cf9b032440be53ce345ab3c130fda46ba1ce7a2/5.0/en/0x25-V16-Security-Logging-and-Error-Handling.md",
+    "bytes": 8174,
+    "sha256": "23b0c0d4a54cc62a53e8669cbd15bb97f323249e9d837d3055f95873b2ef1652",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "frappe/frappe",
+    "sha": "4857b04809270c03c5e3dced4908168c15bed516",
+    "path": "LICENSE",
+    "url": "https://github.com/frappe/frappe/blob/4857b04809270c03c5e3dced4908168c15bed516/LICENSE",
+    "bytes": 1118,
+    "sha256": "bc6001a54ffcc4ab520424d7dbb85b293578efcdcb7d8f8055e00dddf942e5d7",
+    "status": "retrieved; pending reading"
+  },
+  {
+    "repo": "open-telemetry/opentelemetry-js",
+    "sha": "2fbb404a7e5d439df57c0b678faf0d3822556d23",
+    "path": "packages/sdk-trace-base/src/BasicTracerProvider.ts",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "repo": "open-telemetry/opentelemetry-js",
+    "sha": "2fbb404a7e5d439df57c0b678faf0d3822556d23",
+    "path": "packages/sdk-trace-base/src/export/BatchSpanProcessorBase.ts",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "repo": "open-telemetry/opentelemetry-js",
+    "sha": "2fbb404a7e5d439df57c0b678faf0d3822556d23",
+    "path": "packages/sdk-trace-base/test/common/BasicTracerProvider.test.ts",
+    "error": "HTTP Error 404: Not Found"
+  }
+]

@@ -1,0 +1,99 @@
+{
+  "date": "2026-10-15",
+  "head_at_validation": "9fe3fc3d54c2c3fe2a7ac3c6154814f74ec41bf0",
+  "authorization": "User: fix all; clarified: Fix confirmed defects from this review",
+  "files": [
+    {
+      "path": "src/eretail/masters/SkuImport.tsx",
+      "sha256": "df4fd089c9b82f01a8f983f8c6107117da6cd09fae8d5ae4dcfce93e660f20db"
+    },
+    {
+      "path": "scripts/verify-sku-import.mjs",
+      "sha256": "17e696b6c1f2ac63e8b6549d121fa27db5cf1e5f9a699254df39c86b1c638f18"
+    },
+    {
+      "path": "scripts/verify-sku-import-integrity.mjs",
+      "sha256": "321679b9daf751baf2fc237f92088377b0dc6dab3a623a758d5899d3b3bc8b35"
+    },
+    {
+      "path": "inventory/db.js",
+      "sha256": "7e03f7348fca9d8bbb56feb75605496fb0c1b29b63cbd0f5bee3d27ae6ebf4ff"
+    },
+    {
+      "path": "inventory/migration-history.js",
+      "sha256": "058ff1e6d65ce24a95a46274c80258be881688ff1716f91bb9219e07224275b3"
+    },
+    {
+      "path": "scripts/verify-migration-history.mjs",
+      "sha256": "0d02649d30abc4f5a7acae312be12b185edf99a9040dcf24d2454d4da67bbf0c"
+    },
+    {
+      "path": ".github/dependabot.yml",
+      "sha256": "8f9d433aefe2bda05903b8a2a6daf32d34ba1965f27e6d606bd4103499766ee5"
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "857ec4f5ed7794b268451ce760df8e727b00f1565aadd9edb8ae2fe7eeaa495b"
+    }
+  ],
+  "checks": [
+    {
+      "check": "SKU import provenance",
+      "command": "/opt/homebrew/bin/node scripts/verify-sku-import-provenance.mjs",
+      "result": "PASS",
+      "scope": "explicit empty-memory fixture"
+    },
+    {
+      "check": "SKU import integrity",
+      "command": "/opt/homebrew/bin/node scripts/verify-sku-import-integrity.mjs",
+      "result": "PASS",
+      "scope": "explicit empty-memory fixture"
+    },
+    {
+      "check": "SKU browser boundary",
+      "command": "PLAYWRIGHT_CHROMIUM_EXECUTABLE='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' /opt/homebrew/bin/node scripts/verify-sku-import.mjs",
+      "result": "PASS",
+      "scope": "actual component; fixture layout/HTTP adapter; loopback server; no configured datastore"
+    },
+    {
+      "check": "Migration history and recovery",
+      "command": "/opt/homebrew/bin/node scripts/verify-migration-history.mjs",
+      "result": "PASS",
+      "scope": "owned disposable PostgreSQL 18 cluster; includes legacy schema adoption and existing migration-recovery verifier"
+    },
+    {
+      "check": "TypeScript",
+      "command": "/opt/homebrew/bin/node node_modules/typescript/bin/tsc --noEmit -p tsconfig.app.json",
+      "result": "PASS",
+      "scope": "application TypeScript"
+    },
+    {
+      "check": "Isolated store guard",
+      "command": "/opt/homebrew/bin/node scripts/verify-phase-b-guard.mjs",
+      "result": "PASS",
+      "scope": "guard fixtures only"
+    },
+    {
+      "check": "Diff whitespace",
+      "command": "git diff --check",
+      "result": "PASS",
+      "scope": "unstaged tracked diff"
+    },
+    {
+      "check": "CI/dependency YAML",
+      "command": "js-yaml parse and assertions",
+      "result": "PASS",
+      "scope": "parsing, trigger, permission, immutable action references and dependency ecosystems only"
+    },
+    {
+      "check": "Hosted CI",
+      "result": "NOT RUN",
+      "scope": "configuration created locally; no push performed"
+    },
+    {
+      "check": "Configured/provider/production verification",
+      "result": "NOT RUN",
+      "scope": "no existing database or provider contacted"
+    }
+  ]
+}
