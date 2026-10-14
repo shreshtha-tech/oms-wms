@@ -1,6 +1,6 @@
 # Research methodology
 
-Status: IN PROGRESS. Follow phases 1–10 in the supplied mission; no application changes before explicit approval.
+Status: research synthesis completed within the scope in completion-audit.md. Follow phases 1–10 in the supplied mission; no application changes before explicit approval.
 
 1. Capture actual local root, branch, dirty status and source hashes without reading secrets. Expand service/schema/test/CI mapping.
 2. Discover candidates independently by domain, implementation symbol, official ecosystem modules and defect history. Record unsuccessful searches as well as hits.

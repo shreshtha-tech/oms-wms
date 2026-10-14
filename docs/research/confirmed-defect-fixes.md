@@ -17,3 +17,7 @@ The SKU import processor remains unavailable and returns HTTP 501 SKU_IMPORT_PRO
 All local verification used Node v26.5.0, within the declared engine range. The default /usr/local/bin/node v20.14.0 remains outside the supported range; no user runtime installation or global selection was changed. The initial browser attempt could not find the installed Playwright revision; the successful run used installed Chrome. No browser download was needed locally.
 
 See confirmed-defect-validation.json for exact commands, outcomes, scope and source hashes. Remote CI, provider calls, configured databases, load and disaster-recovery evidence remain NOT RUN. This document does not declare the full forensic research mission complete.
+
+## Later CI revision
+
+The CI row above describes the earlier validated snapshot, not current hosted proof. Current HEAD 3f5df4d721ae9970a3725e84e93d105550e13977 subsequently adds disposable services, build and all registered tests with retained results. npm ci now enables lifecycle scripts; upload-artifact uses @v4 while checkout/setup-node remain hash-pinned. Do not carry the earlier all-action-pinning/ignore-scripts assertions forward. Current workflow was read, NOT executed in hosted CI during this research; see LOC-011. No application edit made in this phase.

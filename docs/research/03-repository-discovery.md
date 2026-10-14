@@ -1,14 +1,14 @@
 # Repository discovery and triage
 
-Status: IN PROGRESS. This applies objective relevance/access/compatibility criteria to all 24 successful metadata candidates. Recent pushed_at is metadata, not a maintenance-quality or security verdict. 48 attempted candidates are retained in [longlist](03-repository-longlist.md).
+Status: research synthesis completed within the scope in completion-audit.md. This applies objective relevance/access/compatibility criteria to all 24 successful metadata candidates. Recent pushed_at is metadata, not a maintenance-quality or security verdict. 48 attempted candidates are retained in [longlist](03-repository-longlist.md).
 
 | Repository | Disposition | Reason / source quality / compatibility |
 |---|---|---|
 | [frappe/erpnext](https://github.com/frappe/erpnext) | shortlist | reservation/ledger/batch source and tests available; GPL pattern study |
 | [odoo/odoo](https://github.com/odoo/odoo) | shortlist | physical quant dimensions and moves available; ORM transaction trace still incomplete |
-| [apache/ofbiz-framework](https://github.com/apache/ofbiz-framework) | follow-up | ERP entity/service source needed for competing WMS flows; not yet read |
+| [apache/ofbiz-framework](https://github.com/apache/ofbiz-framework) | follow-up | prepare/complete transfer service source read (UP-016); full transaction/tests remain scoped |
 | [openboxes/openboxes](https://github.com/openboxes/openboxes) | shortlist | WMS lot/expiry source available; actual balance writer/tests need tracing |
-| [tryton/tryton](https://github.com/tryton/tryton) | follow-up | official module source location/license needs resolution |
+| [tryton/tryton](https://github.com/tryton/tryton) | follow-up | official stock module source, return scenario and GPLv3+ text read (UP-015) |
 | [metasfresh/metasfresh](https://github.com/metasfresh/metasfresh) | follow-up | ERP allocation/warehouse evidence needed; metadata alone insufficient |
 | [medusajs/medusa](https://github.com/medusajs/medusa) | shortlist | TypeScript workflow/inventory source and tests; explicit Enterprise exclusions |
 | [vendure-ecommerce/vendure](https://github.com/vendure-ecommerce/vendure) | shortlist | TypeScript ordered locks and explicit concurrency tests; GPL/VCL and test configuration limits |
@@ -21,7 +21,7 @@ Status: IN PROGRESS. This applies objective relevance/access/compatibility crite
 | [apache/kafka](https://github.com/apache/kafka) | defer | metadata only; no measured need for new broker/orchestrator/telemetry runtime; source, tests and operating cost not yet assessed |
 | [rabbitmq/rabbitmq-server](https://github.com/rabbitmq/rabbitmq-server) | defer | metadata only; no measured need for new broker/orchestrator/telemetry runtime; source, tests and operating cost not yet assessed |
 | [nats-io/nats-server](https://github.com/nats-io/nats-server) | defer | metadata only; no measured need for new broker/orchestrator/telemetry runtime; source, tests and operating cost not yet assessed |
-| [open-telemetry/opentelemetry-js](https://github.com/open-telemetry/opentelemetry-js) | defer | metadata only; no measured need for new broker/orchestrator/telemetry runtime; source, tests and operating cost not yet assessed |
+| [open-telemetry/opentelemetry-js](https://github.com/open-telemetry/opentelemetry-js) | defer | bounded queue/export source/tests read (UP-025); adoption deferred until demonstrated correlation need |
 | [timgit/pg-boss](https://github.com/timgit/pg-boss) | shortlist | PostgreSQL job SQL and retry tests; compare patterns before replacing queue |
 | [taskforcesh/bullmq](https://github.com/taskforcesh/bullmq) | defer | metadata only; no measured need for new broker/orchestrator/telemetry runtime; source, tests and operating cost not yet assessed |
 | [graphile/worker](https://github.com/graphile/worker) | focused | Node/PostgreSQL worker failure isolation; matching SQL/tests not yet read |
@@ -31,4 +31,4 @@ Status: IN PROGRESS. This applies objective relevance/access/compatibility crite
 
 Strongest 7 comparative candidates: Saleor, ERPNext, Odoo, Medusa, Vendure, OpenBoxes and pg-boss. Focused infrastructure/connector readings add alternative mechanisms, not automatic adoption. No star count influenced triage.
 
-Additional independently discovered leads: [Zehelein/pg-transactional-outbox](https://github.com/Zehelein/pg-transactional-outbox), [SoloCron/no-oversell](https://github.com/SoloCron/no-oversell), [CS-Nithin/multi-vendor-inventory-booking-system](https://github.com/CS-Nithin/multi-vendor-inventory-booking-system), [Dekshith14/allo](https://github.com/Dekshith14/allo). All remain DOCUMENTED ONLY until actual source/test/license review.
+Additional independently discovered leads: [Zehelein/pg-transactional-outbox](https://github.com/Zehelein/pg-transactional-outbox), [SoloCron/no-oversell](https://github.com/SoloCron/no-oversell), [CS-Nithin/multi-vendor-inventory-booking-system](https://github.com/CS-Nithin/multi-vendor-inventory-booking-system), [Dekshith14/allo](https://github.com/Dekshith14/allo). Zehelein now has pinned source/license/tests and a linked PostgreSQL workflow trace (UP-019). The other small leads remain DOCUMENTED ONLY.

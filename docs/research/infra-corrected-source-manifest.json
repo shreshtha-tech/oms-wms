@@ -1,0 +1,66 @@
+[
+  {
+    "repo": "open-telemetry/opentelemetry-js",
+    "sha": "2fbb404a7e5d439df57c0b678faf0d3822556d23",
+    "path": "packages/sdk-trace/src/export/BatchSpanProcessorBase.ts",
+    "url": "https://github.com/open-telemetry/opentelemetry-js/blob/2fbb404a7e5d439df57c0b678faf0d3822556d23/packages/sdk-trace/src/export/BatchSpanProcessorBase.ts",
+    "sha256": "a2314d5639c41d22f3c73fddfc1c3931f341e75b2639ab71b83351d220705255",
+    "bytes": 8226
+  },
+  {
+    "repo": "open-telemetry/opentelemetry-js",
+    "sha": "2fbb404a7e5d439df57c0b678faf0d3822556d23",
+    "path": "packages/sdk-trace/src/platform/node/export/BatchSpanProcessor.ts",
+    "url": "https://github.com/open-telemetry/opentelemetry-js/blob/2fbb404a7e5d439df57c0b678faf0d3822556d23/packages/sdk-trace/src/platform/node/export/BatchSpanProcessor.ts",
+    "sha256": "7a1fc8c11cbc4231ded24efdd24e6f42d56e5e0e319b6a5acd9f5af46c445402",
+    "bytes": 361
+  },
+  {
+    "repo": "open-telemetry/opentelemetry-js",
+    "sha": "2fbb404a7e5d439df57c0b678faf0d3822556d23",
+    "path": "packages/sdk-trace/test/common/export/BatchSpanProcessorBase.test.ts",
+    "url": "https://github.com/open-telemetry/opentelemetry-js/blob/2fbb404a7e5d439df57c0b678faf0d3822556d23/packages/sdk-trace/test/common/export/BatchSpanProcessorBase.test.ts",
+    "sha256": "6b7c7f0629995a690d24ae62c9e8af703ca310da1a6b29556f70ff145c0a9962",
+    "bytes": 27478
+  },
+  {
+    "repo": "aquasecurity/trivy",
+    "sha": "088b9706d7e3af33ef1a8d2dee305370df714293",
+    "path": "pkg/scan/local/service.go",
+    "url": "https://github.com/aquasecurity/trivy/blob/088b9706d7e3af33ef1a8d2dee305370df714293/pkg/scan/local/service.go",
+    "sha256": "b3b366818c0c1c6e758a2929e4af0f639968a3a37906c4f589861ae6817ca3de",
+    "bytes": 19410
+  },
+  {
+    "repo": "aquasecurity/trivy",
+    "sha": "088b9706d7e3af33ef1a8d2dee305370df714293",
+    "path": "pkg/scan/local/service_test.go",
+    "url": "https://github.com/aquasecurity/trivy/blob/088b9706d7e3af33ef1a8d2dee305370df714293/pkg/scan/local/service_test.go",
+    "sha256": "95ee0599db3a380c4e431e3e6fbb4ea1ca4414e540c23fcb0bb1baef6b679b9d",
+    "bytes": 52834
+  },
+  {
+    "repo": "aquasecurity/trivy",
+    "sha": "088b9706d7e3af33ef1a8d2dee305370df714293",
+    "path": "pkg/commands/artifact/run.go",
+    "url": "https://github.com/aquasecurity/trivy/blob/088b9706d7e3af33ef1a8d2dee305370df714293/pkg/commands/artifact/run.go",
+    "sha256": "cc0b6298cb08cdb7be49edfa18fcbb604a3861aca2b5336d2bb9a45edfb6a13b",
+    "bytes": 27745
+  },
+  {
+    "repo": "woocommerce/woocommerce",
+    "sha": "5f57267f9f8bd40d2e12d84d2207c399910d8869",
+    "path": "license.txt",
+    "url": "https://github.com/woocommerce/woocommerce/blob/5f57267f9f8bd40d2e12d84d2207c399910d8869/license.txt",
+    "sha256": "0456bc198ec932405f567d2cea8f0f2cf7cb5b05ed5a321c3ce112a3eefdda1d",
+    "bytes": 19288
+  },
+  {
+    "repo": "woocommerce/woocommerce",
+    "sha": "5f57267f9f8bd40d2e12d84d2207c399910d8869",
+    "path": "plugins/woocommerce/license.txt",
+    "url": "https://github.com/woocommerce/woocommerce/blob/5f57267f9f8bd40d2e12d84d2207c399910d8869/plugins/woocommerce/license.txt",
+    "sha256": "03fdcdce033d6d7c061234e447195bf50fdaf3724708eb712dd4d90a6279ba12",
+    "bytes": 36318
+  }
+]

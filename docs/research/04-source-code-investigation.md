@@ -1,6 +1,6 @@
 # Source-code investigation
 
-Status: IN PROGRESS. Twelve repository records below describe bounded source readings, not twelve complete end-to-end workflow audits. Exact mandatory fields are maintained in evidence.json. Upstream tests were read, not executed.
+Status: research synthesis completed within the scope in completion-audit.md. Twelve repository records below describe bounded source readings, not twelve complete end-to-end workflow audits. Exact mandatory fields are maintained in evidence.json. Upstream tests were read, not executed.
 
 ## UP-001 — saleor/saleor
 
@@ -451,3 +451,7 @@ Limits: Test assertions read for queued/no-stock-before-commit, injected commit 
 License: Local project
 
 Applicability: Preserve existing bridge as a strong foundation; improve actor/permission/recovery evidence rather than replace it.
+
+## Additional audit evidence
+
+UP-021/022/023 are detailed in [audit-history-comparison.md](audit-history-comparison.md), with exact source/test revisions in evidence.json. LOC-020 and expanded UP-002/007/015 assertion scope are in [warehouse architecture](06-warehouse-architecture.md). Reading upstream tests is not execution.

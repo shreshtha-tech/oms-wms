@@ -1,6 +1,6 @@
 # Existing-project gap analysis
 
-Status: IN PROGRESS. Source correctness assessments are bounded to named mechanisms. Whole-system correctness requires all caller and failure paths; research gaps are not automatically missing implementation.
+Status: research synthesis completed within the scope in completion-audit.md. Source correctness assessments are bounded to named mechanisms. Whole-system correctness requires all caller and failure paths; research gaps are not automatically missing implementation.
 
 | Capability | Classification | Exact local evidence | Action / supporting external evidence |
 |---|---|---|---|
@@ -23,3 +23,7 @@ Status: IN PROGRESS. Source correctness assessments are bounded to named mechani
 | DR/load/restore readiness | Cannot determine yet | No current executed source-to-operational evidence established | R-08 requires approved workloads/RPO/RTO and isolated restore proof; no invented targets |
 
 This table supersedes any interpretation that the application is empty or needs wholesale replacement. No current evidence justifies changing React/Express, splitting microservices, replacing PostgreSQL or introducing a broker.
+
+Runtime refinement: LOC-016 is now an implemented concurrency/reliability defect reproduced under forced scheduling, not merely an inferred risk. Stock atomic rollback and replay remained correct in the fixture. Prioritize shared lock ordering under R-02 without replacing the ledger. See lock-order-reproduction.md.
+
+LOC-021: Amazon2021 PATCH default burst is implemented as10 versus current published5. Offline actual adapter accepts six calls without clock advance; account-specific quota not queried. Implemented with quota/reliability contract risk, no stock-corruption finding. Proposed R-04 fix awaits roadmap approval.

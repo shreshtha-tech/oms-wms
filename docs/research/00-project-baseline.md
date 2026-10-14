@@ -1,6 +1,6 @@
 # Project baseline — 2026-10-15
 
-Status: IN PROGRESS. Research only; no application implementation authorized.
+Status: historical baseline retained. Current research completion and latest source hashes are in completion-audit.md and current-research-source-snapshot-after-ci.json.
 
 Repository: `/Users/shreshthagupta/AI-Workspaces/oms-wms`. The supplied Downloads cwd is absent. Branch: `fix/flipkart-order-intake-20261009`. HEAD: `332743b0d0bdf21fc46bcda4eb327e8c2dda03fe`.
 

@@ -1,0 +1,13 @@
+{
+  "status": "PASS FOR RESEARCH_ARTIFACTS",
+  "evidence_records": 61,
+  "missing_evidence_ids": [],
+  "missing_relative_links": [],
+  "current_application_snapshot_drift": [],
+  "unexpected_unstaged_application_changes": [],
+  "preserved_preexisting_submodule": "ponytail; same gitlink SHA, dirty state already present at original baseline",
+  "adversarial_specs": 13,
+  "scored_roadmap_rows": 10,
+  "upstream_configured_provider_hosted_load_restore": "NOT RUN; see completion-audit.md",
+  "head": "3f5df4d721ae9970a3725e84e93d105550e13977"
+}

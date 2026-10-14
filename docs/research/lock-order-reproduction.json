@@ -1,0 +1,85 @@
+{
+  "date": "2026-10-15",
+  "scope": "Owned disposable PostgreSQL; actual receiveCentralInboundStock and processInventoryTask/shopify path; synthetic data; forced first-lock interleaving",
+  "provider_calls": 0,
+  "first_locks": [
+    "ffffffff-ffff-4fff-8fff-ffffffffffff",
+    "00000000-0000-4000-8000-000000000001"
+  ],
+  "outcomes": [
+    {
+      "operation": "inbound_receipt",
+      "status": "rejected",
+      "error_code": "40P01"
+    },
+    {
+      "operation": "shopify_order",
+      "status": "fulfilled",
+      "error_code": null
+    }
+  ],
+  "after_deadlock": {
+    "balances": [
+      {
+        "sku": "A",
+        "on_hand": 10,
+        "reserved_order": 1
+      },
+      {
+        "sku": "B",
+        "on_hand": 10,
+        "reserved_order": 1
+      }
+    ],
+    "events": [
+      {
+        "event_type": "count",
+        "n": 2
+      },
+      {
+        "event_type": "reserve",
+        "n": 2
+      }
+    ],
+    "reservations": 2
+  },
+  "after_retry_and_replay": {
+    "balances": [
+      {
+        "sku": "A",
+        "on_hand": 11,
+        "reserved_order": 1
+      },
+      {
+        "sku": "B",
+        "on_hand": 11,
+        "reserved_order": 1
+      }
+    ],
+    "events": [
+      {
+        "event_type": "count",
+        "n": 2
+      },
+      {
+        "event_type": "inbound_receipt",
+        "n": 2
+      },
+      {
+        "event_type": "reserve",
+        "n": 2
+      }
+    ],
+    "reservations": 2
+  },
+  "reproduction": "CONFIRMED",
+  "lock_order_consistency": "FAIL",
+  "atomic_rollback": "PASS",
+  "same_identity_recovery": "PASS",
+  "exact_replay": "PASS",
+  "source_hashes": {
+    "inventory/ledger.js": "a8080747b83aaaeb1cfceff127ab0bdb77a60d33f22ee514e1482da938242e44",
+    "inventory/workers.js": "46d28599f2ec6d0c60e3e9970e2fe533b740b69de02f95433b83bb99a79ba3d9",
+    "inventory/wms-operations.js": "75111d807170465f90e87b6d84579a2ca68e49542e31d66aa2395924cd52ec10"
+  }
+}

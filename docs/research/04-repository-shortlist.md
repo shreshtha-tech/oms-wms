@@ -1,6 +1,6 @@
 # Repository discovery and triage
 
-Status: IN PROGRESS. This applies objective relevance/access/compatibility criteria to all 24 successful metadata candidates. Recent pushed_at is metadata, not a maintenance-quality or security verdict. 48 attempted candidates are retained in [longlist](03-repository-longlist.md).
+Status: research synthesis completed within the scope in completion-audit.md. This applies objective relevance/access/compatibility criteria to all 24 successful metadata candidates. Recent pushed_at is metadata, not a maintenance-quality or security verdict. 48 attempted candidates are retained in [longlist](03-repository-longlist.md).
 
 | Repository | Disposition | Reason / source quality / compatibility |
 |---|---|---|

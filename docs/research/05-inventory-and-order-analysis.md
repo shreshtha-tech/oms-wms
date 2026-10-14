@@ -1,6 +1,6 @@
 # Inventory and order analysis
 
-Status: IN PROGRESS. Recommendations below are provisional and traceable; source verification is not system certification.
+Status: research synthesis completed within the scope in completion-audit.md. Recommendations below are provisional and traceable; source verification is not system certification.
 
 The authoritative quantity model is already PostgreSQL Central Inventory (LOC-001). on_hand minus order/cart reservations, damaged, quarantined and safety stock yields sellable quantity, floored at zero. Safe-integer/nonnegative and aggregate-allocation checks occur under SKU and balance row locks; a payload hash distinguishes exact replay from changed request identity. Reservation rows have active/released/consumed transitions and exact quantity checks. Existing ledger behavior should be retained and verified across every writer, not replaced because an upstream system has a larger feature list.
 
@@ -19,3 +19,9 @@ Payment state, provider status, warehouse workflow, reservation lifecycle and re
 Returns in local return-service.js bind stock receipt to original order mapping and centrally consumed quantity across return cases (LOC-005). External refund observations only record return cases; a refund must not independently increase physical stock. Missing physical condition/QC and operation authorization proof remain critical gaps (LOC-006). Next comparative question: how do mature return APIs bind refunded, received, inspected, scrapped, and restocked quantities under concurrent partial returns?
 
 Lot/batch/serial/expiry are not established in the core local SKU/location balance key. Odoo quant identity includes lot/package/owner/location (UP-002); OpenBoxes lot identity is product-wide while quantities are transient/facility-derived (UP-008). Adding dimensions requires an approved authority/migration/reconciliation contract; copying UI fields would not create physical tracking.
+
+## State recomputation versus transition commands
+
+Saleor order/utils.py at UP-001/013 revision locks the order in an atomic block before refreshing status. determine_order_status derives unfulfilled/partially returned/returned/partially fulfilled/fulfilled from quantity aggregates and awaiting approval. This is a projection rule, not an authorization decision. restock_fulfillment_lines calls increase_stock for tracked variants and decreases fulfilled quantity; the helper alone does not prove caller idempotency or physical QC. Keep those scopes separate.
+
+Vendure default-order-process.ts at UP-004 revision has an explicit transition graph plus configurable checks for payments, cancellation and fulfillment. A named status or transition table is not sufficient evidence if configured guards can differ. Local provider-authoritative status and reservation revisions must retain their own ordering and identity rules (LOC-003/007); no replacement state-machine dependency is justified by this comparison.

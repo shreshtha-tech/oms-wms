@@ -1,6 +1,6 @@
-# Target architecture — provisional
+# Target architecture
 
-Status: IN PROGRESS; pending remaining source/failure/security comparisons and user roadmap approval. No new application implementation authorized.
+Status: source-backed research synthesis complete; implementation requires roadmap approval. Scope/unknowns are recorded in completion-audit.md.
 
 Retain React/Vite + Express and the PostgreSQL Central Inventory authority (LOC-001). Keep operational Mongo data ownership explicit, with durable validated bridge events/checkpoints where a business workflow crosses the boundary (LOC-003/004). A bridge is not a cross-database transaction; acceptance and projection completion must be separate observable states.
 
@@ -15,3 +15,5 @@ Operational design should build on current bounded logs and job states: durable 
 Runtime additions deferred: Temporal, Kafka, NATS, RabbitMQ, Debezium, a separate authorization service and generalized multitenancy. Reconsider only against measured queue/consumer/workflow/isolation needs. Debezium requires a dedicated immutable event contract if introduced; mutable task status rows do not match its insert-event assumptions (UP-011).
 
 First proposed implementation after approval: R-01 return-approval authorization and provenance, with no new stock semantics. See 14-implementation-roadmap.md for acceptance and boundaries.
+
+Detailed competing models: strongest-seven-comparison.md, ledger-and-state-comparison.md, audit-history-comparison.md, provider-endpoint-contract-review.md, local-receipt-workflow-trace.md and upstream linked traces. Preserve local conflict detection and uncertainty rather than adopt weaker policies from a mature-looking repository.

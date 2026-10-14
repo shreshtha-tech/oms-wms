@@ -1,6 +1,6 @@
 # Integration patterns
 
-Status: IN PROGRESS. Current official-contract refresh is bounded to the cited pages; a complete provider integration audit remains open.
+Status: research synthesis completed within the scope in completion-audit.md. Current official-contract refresh is bounded to the cited pages; a complete provider integration audit remains open.
 
 | Integration | Source/contract evidence | What it establishes | Outstanding proof |
 |---|---|---|---|

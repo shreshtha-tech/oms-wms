@@ -1,0 +1,9 @@
+# Bounded telemetry and scanner coverage
+
+UP-025/026 contain exact commit-pinned source/test/license links. Source assertions read, upstream code NOT RUN; no dependency introduced.
+
+OpenTelemetry BatchSpanProcessor accepts sampled spans, drops at maxQueueSize, exports bounded batches, suppresses exporter self-tracing and exposes flush/shutdown. Tests assert queue cap, dropped-span reporting and exporter failure handling. Removed export batches are not a durable audit spool. A collector/exporter may add retries, but this source does not establish durable retention. R-07 should keep audit records independent and configure redaction, sampling, resource identity, bounded metric attributes, queue/drop/export-error visibility and orderly shutdown. Local AsyncLocalStorage/bounded metrics already provide useful structure (LOC-013); trace propagation across inbox/outbox can be added only with reviewed payload metadata and privacy tests.
+
+Trivy ScanTarget is option-dependent: disabled vulnerability/SBOM scanning returns no vulnerability results; excluded OS/library types are not scanned; unsupported OS is distinct from ordinary scanning failure. Layer/library errors are covered by explicit expected-error tests. R-09 needs target+lock/container digest, scanner revision, selected analyzers/package types, advisory DB freshness, exclusions, scan errors and exit policy retained with results. Empty findings are not universal coverage. No live advisory matching, scanner CLI execution, false-negative benchmark or supply-chain integrity claim follows from reading this code.
+
+Woo license resolution now demonstrates why file scope matters: root license.txt says GPLv2-or-later; plugins/woocommerce/license.txt says GPLv3-or-later at the same revision. Root metadata alone is insufficient. No copied implementation code. Exact future reuse requires component/file notice review.

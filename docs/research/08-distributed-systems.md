@@ -1,6 +1,6 @@
 # Distributed systems
 
-Status: IN PROGRESS. Evidence: LOC-001/002/003/007/008/010 and UP-003/005/009/010/011.
+Status: research synthesis completed within the scope in completion-audit.md. Evidence: LOC-001/002/003/007/008/010 and UP-003/005/009/010/011.
 
 Keep the PostgreSQL ledger and transactional outbox as the default consistency boundary (LOC-001). A DB transaction cannot include an arbitrary marketplace request; at-least-once execution must be paired with stable operation identity, outcome evidence and reconciliation. The local publication path already distinguishes unknown remote state, acknowledged but unread-back, mismatch and confirmed reconciliation (LOC-007). Do not replace that distinction with generic safe retry.
 

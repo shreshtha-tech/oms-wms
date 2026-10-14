@@ -1,0 +1,104 @@
+{
+  "date": "2026-10-15",
+  "head": "3f5df4d721ae9970a3725e84e93d105550e13977",
+  "branch": "fix/flipkart-order-intake-20261009",
+  "files": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "0db73fb38027fa000d71992ba9fece3c55e94de6678a8a382443bfda01fc826f"
+    },
+    {
+      "path": "api/auth-session.js",
+      "sha256": "3a59b24a4472112e2ce2db4f8e4832b2056d425c1b79a1eef3736e88127ecf59"
+    },
+    {
+      "path": "inventory/connection-readiness.js",
+      "sha256": "ecea108b9f98fcd2585c0931ed589898dd316390740abdfa56705725941a94b9"
+    },
+    {
+      "path": "inventory/domain-events.js",
+      "sha256": "c63df778a471c133623b4cf7514d12d0b65bcf21840d0684e55fd38b676b8b4b"
+    },
+    {
+      "path": "inventory/flipkart-order-observation.js",
+      "sha256": "ef2c231f7fd59150ae7d00d1a5e39c62482e59b0bfbc9ac7c191b767450a5dfe"
+    },
+    {
+      "path": "inventory/flipkart-orders.js",
+      "sha256": "100e7f5f655736d4a42de3524240e954487090ee4d97fbe5550d3828ab628eff"
+    },
+    {
+      "path": "inventory/http.js",
+      "sha256": "91456dd56ef5a87aa7179a7402a41b0a81139dacb2dac6eb7b491f6c793c2a3b"
+    },
+    {
+      "path": "inventory/ingress.js",
+      "sha256": "e370aa6f004f6160740848b443d2492e523b69e12a153aa80ec11b8190d4a61e"
+    },
+    {
+      "path": "inventory/ledger.js",
+      "sha256": "a8080747b83aaaeb1cfceff127ab0bdb77a60d33f22ee514e1482da938242e44"
+    },
+    {
+      "path": "inventory/migration-history.js",
+      "sha256": "058ff1e6d65ce24a95a46274c80258be881688ff1716f91bb9219e07224275b3"
+    },
+    {
+      "path": "inventory/return-service.js",
+      "sha256": "a98a03aa4efcd9c60319083d661a715dbc5a17bc355651bef33a9ba5f42ee3f3"
+    },
+    {
+      "path": "inventory/tenant-boundary.js",
+      "sha256": "de351e5b1c9a8579bf288a6e4f4cdb78dc69af8df8b16cdf686d820637153e68"
+    },
+    {
+      "path": "inventory/unified-orders.js",
+      "sha256": "9a91044d9a96b017ad31b1528afa13ca2569af6e4c38c1da2b574cc9bf0649cc"
+    },
+    {
+      "path": "inventory/wms-operations.js",
+      "sha256": "75111d807170465f90e87b6d84579a2ca68e49542e31d66aa2395924cd52ec10"
+    },
+    {
+      "path": "inventory/workers.js",
+      "sha256": "46d28599f2ec6d0c60e3e9970e2fe533b740b69de02f95433b83bb99a79ba3d9"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "9c37097a1a50be06c90ee8cf6b6c2fb3f2604894e9d022b47b1fb937d2ddd60d"
+    },
+    {
+      "path": "reliability/operations.js",
+      "sha256": "b563858e4e19bf691bbe375ef3c08235d0fe82879ce71c1d19299fccb5fd72ab"
+    },
+    {
+      "path": "reliability/provider-call.js",
+      "sha256": "0645afa243995fce552c903d225aaf8868d198d0dcf531a51d67e14524642f90"
+    },
+    {
+      "path": "reliability/telemetry.js",
+      "sha256": "df80739c59fdf940858caaeb87d991bdc32a9946ed50f434be6d22efd1dab3c6"
+    },
+    {
+      "path": "render.yaml",
+      "sha256": "b7e09e73df916918d9a0753fcb82b853defcd3d66eca5575929b3d4299776767"
+    },
+    {
+      "path": "scripts/mongo-backup.mjs",
+      "sha256": "2916804a769bdf8681d439e297d2b22c92c49350c1dcbdb6cc6608f47e9eefe9"
+    },
+    {
+      "path": "server.js",
+      "sha256": "c56e75ef7a57c2f3ee1d123c3a240a239c983603d44fa6dc90fcd0d4cbb00712"
+    },
+    {
+      "path": "src/eretail/masters/SkuImport.tsx",
+      "sha256": "df4fd089c9b82f01a8f983f8c6107117da6cd09fae8d5ae4dcfce93e660f20db"
+    },
+    {
+      "path": "scripts/run-ci-tests.mjs",
+      "sha256": "6edd7adf66dc3a067c06a5ddc5182b76e24fa46426f7e73b7226f7b65af91040"
+    }
+  ],
+  "scope": "Fresh research observation; historical validation remains in prior snapshots. No application edit performed."
+}

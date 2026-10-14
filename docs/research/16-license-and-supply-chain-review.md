@@ -1,6 +1,6 @@
 # License and supply-chain review
 
-Status: IN PROGRESS. This records exact public source-license declarations, not a legal clearance, artifact provenance guarantee, or completed dependency/advisory audit. No upstream implementation has been copied into the application. Source archives are inert research material.
+Status: research synthesis completed within the scope in completion-audit.md. This records exact public source-license declarations, not a legal clearance, artifact provenance guarantee, or completed dependency/advisory audit. No upstream implementation has been copied into the application. Source archives are inert research material.
 
 | Repository | Inspected revision license | Finding | Reuse decision/limit |
 |---|---|---|---|
@@ -15,14 +15,16 @@ Status: IN PROGRESS. This records exact public source-license declarations, not 
 | Shopify/shopify-app-js | [LICENSE.md](https://github.com/Shopify/shopify-app-js/blob/e409d06d03aebb88c3b0af85ea6b0120e439fd6b/LICENSE.md) | MIT | Root text read; official validator is not a durable OMS integration. |
 | apache/camel | [LICENSE.txt](https://github.com/apache/camel/blob/1afa3af6f48b54763b2982726ccb7e29cba93948/LICENSE.txt) | Apache-2.0 | Root license and source header read; NOTICE/dependency inventory needed for any reuse. |
 | debezium/debezium | [LICENSE.txt](https://github.com/debezium/debezium/blob/2f84b29c03638d261823172d1d8bfa9ca3a99824/LICENSE.txt) | Apache-2.0 | Root text read; NOTICE/component obligations and actual CDC operations review pending. |
-| woocommerce/woocommerce | [unresolved](https://github.com/woocommerce/woocommerce) | UNVERIFIED in current source retrieval | Root LICENSE guess failed. No code copying or adoption claim. |
+| woocommerce/woocommerce | [root license.txt](https://github.com/woocommerce/woocommerce/blob/5f57267f9f8bd40d2e12d84d2207c399910d8869/license.txt) and plugins/woocommerce/license.txt | Root GPLv2+; plugin GPLv3+ | Both texts read; preserve file-specific obligations. No code copied. |
 
 Evidence IDs: UP-001 through UP-012. Corresponding revision and retrieval hashes are recorded in evidence.json and retrieval manifests. License labels from GitHub metadata alone are not treated as verified text. Any proposed copying requires file-scoped notice/exception review; none is currently authorized.
 
 Local dependency snapshot SUP-001: 533 non-root lockfile records, 533 integrity fields and 371 license declarations. These counts came from parsing the current package-lock.json, not inspecting every resolved package. Missing declarations require review, not an automatic unlicensed verdict. No current package advisory matching or artifact signature/SBOM verification performed.
 
-Existing CI uses immutable official action references, read-only token permissions, no credential persistence, npm ci --ignore-scripts and isolated tests (LOC-011). Hosted execution and branch protection/required checks are unverified. Dependabot npm/actions coverage is configuration only. No scanner framework is adopted merely because it appears in the discovery list.
+Current CI keeps checkout/setup-node immutable references, read-only token permissions and no credential persistence. It now runs npm ci with lifecycle scripts, disposable database services and all registered tests; upload-artifact@v4 and major container tags are mutable (LOC-011). Earlier ignore-scripts/all-pinned observations describe prior snapshots. Hosted execution and branch protection/required checks are unverified. Dependabot npm/actions coverage is configuration only. No scanner framework is adopted merely because it appears in the discovery list.
 
 Required remaining review: full resolved package license/notice and advisory matching; npm/pnpm lock ownership policy; lifecycle/native-build needs; official scanner and CodeQL version/action scope; container base/SBOM/provenance if containers are actually used; signed build/release requirements; secret scanning and permissions; update/migration rehearsal. R-09 remains evidence-gated.
 
 Additional source review: Tryton stock module COPYRIGHT and LICENSE were retrieved/read at 8a743492cd18002a2c47f877e87aa32d79360c78; module declares GPLv3 or later (UP-015). OFBiz LICENSE and source headers were retrieved at b8b72d556e829d4a0818f8a4fed57e0750efcacb; source declares Apache-2.0 (UP-016). No application code reused. Metasfresh guessed source/license paths returned 404 and remain unresolved; no license inferred.
+
+Corrected pinned paths now establish bounded OpenTelemetry export and Trivy scan-scope/error mechanisms (UP-025/026). See observability-and-scanner-source-review.md; source reading does not certify the local resolved dependency tree.

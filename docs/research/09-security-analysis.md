@@ -1,6 +1,6 @@
 # Security analysis
 
-Status: IN PROGRESS. Findings are source-scoped; no production credentials, configured account changes or exploit traffic used.
+Status: research synthesis completed within the scope in completion-audit.md. Findings are source-scoped; no production credentials, configured account changes or exploit traffic used.
 
 The current server authenticates the private /api mount, then inventory/http.js binds a single configured tenant (LOC-012). Selected Central Inventory and connection mutations use requirePermission. This proves neither a general multi-tenant model nor complete operation/object/warehouse authorization.
 

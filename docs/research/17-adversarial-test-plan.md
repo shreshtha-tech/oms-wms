@@ -158,4 +158,6 @@ Common fixture boundary: generated tenant/account/request identities, independen
 - Audit assertions: deadlock/conflict observable without success for aborted work; original request identity retained.
 - Recovery: retry only the whole aborted operation with stable identity; prove no duplicate event/alert/publication effect.
 - Proposed test location: scripts/verify-cross-writer-lock-order.mjs. Not implemented under research-only policy.
-- Evidence: LOC-001/007/016, UP-004/007. This scenario is INFERRED and NOT RUN.
+- Evidence: LOC-001/007/016, UP-004/007. This scenario was initially inferred; the execution update below supersedes that status.
+
+S13 execution update: research fixture docs/research/fixtures/lock-order-research.mjs exists and was executed against actual local functions on disposable PostgreSQL. It reproduced 40P01 and passed rollback/retry/replay assertions; see lock-order-reproduction.json. The previously proposed scripts/ path remains unimplemented. No load or hosted result inferred.

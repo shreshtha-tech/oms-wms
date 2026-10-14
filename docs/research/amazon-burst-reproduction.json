@@ -1,0 +1,40 @@
+{
+  "scope": "Offline actual AmazonConnector with stub fetch and fixed clock; rateControl omitted to isolate its built-in limiter; no DB or provider access",
+  "result": "CONFIRMED_LOCAL_LIMITER_ACCEPTS_SIX_WITHOUT_CLOCK_ADVANCE",
+  "documentedDefaultBurst": 5,
+  "observedRequests": 6,
+  "remainingTokens": 4,
+  "calls": [
+    {
+      "method": "PATCH",
+      "path": "/listings/2021-08-01/items/synthetic-seller/synthetic-sku",
+      "time": 1000000
+    },
+    {
+      "method": "PATCH",
+      "path": "/listings/2021-08-01/items/synthetic-seller/synthetic-sku",
+      "time": 1000000
+    },
+    {
+      "method": "PATCH",
+      "path": "/listings/2021-08-01/items/synthetic-seller/synthetic-sku",
+      "time": 1000000
+    },
+    {
+      "method": "PATCH",
+      "path": "/listings/2021-08-01/items/synthetic-seller/synthetic-sku",
+      "time": 1000000
+    },
+    {
+      "method": "PATCH",
+      "path": "/listings/2021-08-01/items/synthetic-seller/synthetic-sku",
+      "time": 1000000
+    },
+    {
+      "method": "PATCH",
+      "path": "/listings/2021-08-01/items/synthetic-seller/synthetic-sku",
+      "time": 1000000
+    }
+  ],
+  "sourceSha256": "9c3a1231957db23f0af87efa153c996ae4dfa8ceb3f931f8429ce1b6da204cb1"
+}

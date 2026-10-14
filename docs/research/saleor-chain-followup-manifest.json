@@ -1,0 +1,42 @@
+[
+  {
+    "repo": "saleor/saleor",
+    "sha": "925b69959a97c9deda7cdc85092494896d0aa1f4",
+    "path": "saleor/core/utils/events.py",
+    "sha256": "815c0b36ef5b0aa04457aa5021efc185e7509dbd70bb791ea1244bd535b48d18",
+    "bytes": 979,
+    "url": "https://github.com/saleor/saleor/blob/925b69959a97c9deda7cdc85092494896d0aa1f4/saleor/core/utils/events.py"
+  },
+  {
+    "repo": "saleor/saleor",
+    "sha": "925b69959a97c9deda7cdc85092494896d0aa1f4",
+    "path": "saleor/plugins/manager.py",
+    "sha256": "5718cf9e444ae715b0cad1c17e4c695dfc510ae3245f3c01fc91863ac1c99dcf",
+    "bytes": 109089,
+    "url": "https://github.com/saleor/saleor/blob/925b69959a97c9deda7cdc85092494896d0aa1f4/saleor/plugins/manager.py"
+  },
+  {
+    "repo": "saleor/saleor",
+    "sha": "925b69959a97c9deda7cdc85092494896d0aa1f4",
+    "path": "saleor/plugins/webhook/plugin.py",
+    "sha256": "4f23de65f46d8696fb5a14a6bb697e422e388f7212354066623b2939f9ad2b01",
+    "bytes": 125089,
+    "url": "https://github.com/saleor/saleor/blob/925b69959a97c9deda7cdc85092494896d0aa1f4/saleor/plugins/webhook/plugin.py"
+  },
+  {
+    "repo": "saleor/saleor",
+    "sha": "925b69959a97c9deda7cdc85092494896d0aa1f4",
+    "path": "saleor/core/models.py",
+    "sha256": "0606745ca01a897d48d89ee768eac5bb623de583aae945b6458bb52bc870cb94",
+    "bytes": 8080,
+    "url": "https://github.com/saleor/saleor/blob/925b69959a97c9deda7cdc85092494896d0aa1f4/saleor/core/models.py"
+  },
+  {
+    "repo": "saleor/saleor",
+    "sha": "925b69959a97c9deda7cdc85092494896d0aa1f4",
+    "path": "saleor/webhook/transport/utils.py",
+    "sha256": "b895872eae62ee33b5a0ef6c67504f0d084052ebe24d25cd99778c86c1783a4d",
+    "bytes": 26803,
+    "url": "https://github.com/saleor/saleor/blob/925b69959a97c9deda7cdc85092494896d0aa1f4/saleor/webhook/transport/utils.py"
+  }
+]
