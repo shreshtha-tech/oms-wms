@@ -57,6 +57,13 @@ export function buildFile(format: FormatKey, title: string, data: ExportData): {
   throw new Error('Unsupported export format.');
 }
 
+export function buildBoundedCsv(title: string, data: ExportData): string {
+  if (data.columns.length > 64 || data.rows.length > 1000) throw new Error('Export exceeds the supported CSV size. Narrow the search.');
+  const content = buildFile('csv', title, data).content;
+  if (new TextEncoder().encode(content).byteLength > 1024 * 1024) throw new Error('Export exceeds the supported CSV size. Narrow the search.');
+  return content;
+}
+
 export function humanSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;

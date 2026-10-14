@@ -19,7 +19,7 @@ export async function recordIncomingOrder(db,{tenantId,accountId,platform,event,
  const summary=platform==='amazon'?source?.Summary:null;
  const externalId=clean(platform==='amazon'?source?.AmazonOrderId:source?.id,120);
  if(!externalId)return null;
- const cancelled=topic==='orders/cancelled'||Boolean(source?.cancelled_at)||['cancelled','failed','Canceled'].includes(summary?.OrderStatus||source?.status);
+ const cancelled=topic==='orders/cancelled'||Boolean(source?.cancelled_at)||['cancelled','failed'].includes(String(summary?.OrderStatus||source?.status||'').toLowerCase());
  const providerStatus=clean(summary?.OrderStatus||source?.status||topic,60);
  const city=clean(source?.shipping_address?.city||source?.shipping?.city,120);
  const pincode=clean(source?.shipping_address?.zip||source?.shipping?.postcode,20);

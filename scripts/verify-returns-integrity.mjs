@@ -107,6 +107,20 @@ assert.deepEqual(await find('inventory', { sku_code: skuCode }), stockBefore.inv
 assert.deepEqual(await find('sku_transactions'), stockBefore.skuTransactions, 'Return workflows must not create stock transactions.');
 assert.deepEqual(await find('stock_adjustments'), stockBefore.stockAdjustments, 'Return workflows must not create stock adjustments.');
 
+const beforeLegacyWrites = await find('returns');
+const forgedLegacyCreate = await call(returns, 'POST', {
+  rma_no: 'FORGED-RETURN', order_no: 'UNRELATED-ORDER', sku_code: 'PHANTOM-SKU', qty: 999, status: 'Shipped',
+});
+assert.equal(forgedLegacyCreate.code, 501);
+assert.match(forgedLegacyCreate.body.error, /no record was created/i);
+const legacyTarget = beforeLegacyWrites.find(row => row.id === legacyVendorCase.id);
+const forgedLegacyUpdate = await call(returns, 'PUT', { id: legacyVendorCase.id, status: 'Shipped', kind: 'customer', arbitrary: 'caller' });
+assert.equal(forgedLegacyUpdate.code, 501);
+assert.equal((await findOneReturn(legacyVendorCase.id)).status, legacyTarget.status);
+const forgedLegacyDelete = await call(returns, 'DELETE', { id: legacyVendorCase.id });
+assert.equal(forgedLegacyDelete.code, 501);
+assert.deepEqual(await find('returns'), beforeLegacyWrites, 'Untyped legacy mutations must not create, rewrite, or remove return records');
+
 const customerUi = await readFile(new URL('../src/eretail/returns/CustomerReturnEditor.tsx', import.meta.url), 'utf8');
 const vendorUi = await readFile(new URL('../src/eretail/returns/VendorReturnEditor.tsx', import.meta.url), 'utf8');
 const noOrderUi = await readFile(new URL('../src/eretail/returns/ReturnWithoutOrder.tsx', import.meta.url), 'utf8');
@@ -115,7 +129,7 @@ assert.match(customerUi, /disabled=\{x!=='Save Eway Bill'\|\|!f\.id\}/);
 assert.match(vendorUi, /does not move Central Inventory stock or send a shipment/);
 assert.match(vendorUi, /disabled=\{x!=='Save Eway Bill'\|\|!f\.id\}/);
 assert.match(noOrderUi, /Confirm changes the document status only/);
-console.log('PASS Returns: customer, vendor, and no-order records can be saved/confirmed in isolated memory; unsupported receipt, refund, and shipment actions fail closed; no stock rows or transactions change.');
+console.log('PASS Returns: typed customer/vendor/no-order flows retain their current behavior, untyped legacy create/update/delete reject without mutation, unsupported physical actions fail closed, and no stock rows or transactions change.');
 
 async function findOneReturn(id) {
   return (await find('returns', { id }))[0];

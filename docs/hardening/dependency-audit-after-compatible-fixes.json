@@ -1,0 +1,130 @@
+{
+  "auditReportVersion": 2,
+  "vulnerabilities": {
+    "concurrently": {
+      "name": "concurrently",
+      "severity": "critical",
+      "isDirect": true,
+      "via": [
+        "shell-quote"
+      ],
+      "effects": [],
+      "range": ">=9.2.3",
+      "nodes": [
+        "node_modules/concurrently"
+      ],
+      "fixAvailable": {
+        "name": "concurrently",
+        "version": "9.2.1",
+        "isSemVerMajor": true
+      }
+    },
+    "exceljs": {
+      "name": "exceljs",
+      "severity": "moderate",
+      "isDirect": true,
+      "via": [
+        "uuid"
+      ],
+      "effects": [],
+      "range": ">=3.5.0",
+      "nodes": [
+        "node_modules/exceljs"
+      ],
+      "fixAvailable": {
+        "name": "exceljs",
+        "version": "3.4.0",
+        "isSemVerMajor": true
+      }
+    },
+    "shell-quote": {
+      "name": "shell-quote",
+      "severity": "critical",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1241332,
+          "name": "shell-quote",
+          "dependency": "shell-quote",
+          "title": "shell-quote: `quote()` command injection via a line terminator in a token after a `{ comment }` token",
+          "url": "https://github.com/advisories/GHSA-pqg4-j6r4-53mv",
+          "severity": "critical",
+          "cwe": [
+            "CWE-78"
+          ],
+          "cvss": {
+            "score": 8.1,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H"
+          },
+          "range": ">=1.8.4 <1.11.0"
+        }
+      ],
+      "effects": [
+        "concurrently"
+      ],
+      "range": "1.8.4 - 1.10.0",
+      "nodes": [
+        "node_modules/shell-quote"
+      ],
+      "fixAvailable": {
+        "name": "concurrently",
+        "version": "9.2.1",
+        "isSemVerMajor": true
+      }
+    },
+    "uuid": {
+      "name": "uuid",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1119441,
+          "name": "uuid",
+          "dependency": "uuid",
+          "title": "uuid: Missing buffer bounds check in v3/v5/v6 when buf is provided",
+          "url": "https://github.com/advisories/GHSA-w5hq-g745-h8pq",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-787",
+            "CWE-1285"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N"
+          },
+          "range": "<11.1.1"
+        }
+      ],
+      "effects": [
+        "exceljs"
+      ],
+      "range": "<11.1.1",
+      "nodes": [
+        "node_modules/uuid"
+      ],
+      "fixAvailable": {
+        "name": "exceljs",
+        "version": "3.4.0",
+        "isSemVerMajor": true
+      }
+    }
+  },
+  "metadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 2,
+      "high": 0,
+      "critical": 2,
+      "total": 4
+    },
+    "dependencies": {
+      "prod": 289,
+      "dev": 168,
+      "optional": 78,
+      "peer": 0,
+      "peerOptional": 0,
+      "total": 533
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import { sendDatabaseUnavailable, cors, find, insert, update, updateWhere } from './mongo.js';
+import { sendDatabaseUnavailable, cors, find, saveValidationMaster } from './mongo.js';
 import { currentUser } from './auth-session.js';
 
 const text = (value) => String(value ?? '').trim();
@@ -78,7 +78,6 @@ export default async function handler(req, res) {
       if (req.method === 'POST' && byCode) return res.status(409).json({ error: 'Receipt Validation Code already exists.' });
       if (req.method === 'PUT' && !existing) return res.status(404).json({ error: 'Receipt Validation was not found.' });
       if (req.method === 'PUT' && byCode && existing.id !== byCode.id) return res.status(409).json({ error: 'Receipt Validation Code already exists.' });
-      if (body.isDefault) await updateWhere('generic_records', { module: 'receipt-validation' }, { isDefault: false });
       const actor = currentUser(req)?.username || 'unknown';
       const fields = {
         module: 'receipt-validation', code, receiving_validation_code: code, name: text(body.description), description: text(body.description),
@@ -89,15 +88,16 @@ export default async function handler(req, res) {
       };
       for (const key of boolKeys) fields[key] = body[key] === true;
       if (existing) {
-        const changed = await update('generic_records', existing.id, fields);
-        return res.json({ row: normalize(changed[0]), jsonMessage: 'Data saved successfully.' });
+        const row = await saveValidationMaster(existing.id, fields);
+        return res.json({ row: normalize(row), jsonMessage: 'Data saved successfully.' });
       }
-      const row = await insert('generic_records', { ...fields, created_by: actor, created_date: new Date().toISOString() });
+      const row = await saveValidationMaster(null, { ...fields, created_by: actor, created_date: new Date().toISOString() });
       return res.status(201).json({ row: normalize(row), jsonMessage: 'Data saved successfully.' });
     }
     return res.status(405).json({ error: 'Method not allowed' });
   } catch (error) {
     if (sendDatabaseUnavailable(res, error)) return;
+    if ([400, 404, 409].includes(error?.statusCode)) return res.status(error.statusCode).json({ error: error.message });
     console.error('Receipt Validation error:', { name: error?.name, code: error?.code });
     return res.status(500).json({ error: error.message });
   }

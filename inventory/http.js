@@ -1,3 +1,5 @@
+import { readTenantBalances } from './balance-read.js';
+import { inventoryTenantBoundary } from './tenant-boundary.js';
 import { decodeStockSnapshotUpload } from './snapshot-upload.js';
 import { recordOrderWebhookEvidence, validateWebhookOrderIdentity } from './webhook-evidence.js';
 import { sendDatabaseError } from '../reliability/api-errors.js';
@@ -51,13 +53,13 @@ inventoryPublic.post('/shopify/webhook',express.raw({type:'application/json',lim
     return res.status(202).json(result);
   }catch(error){if(sendDatabaseError(res,error))return;return res.status(error.status||500).json({error:error.status?error.message:'Inventory webhook unavailable'});}
 });
-inventoryPrivate.use((req,res,next)=>{res.set('Cache-Control','no-store, no-cache, must-revalidate, private');res.set('Pragma','no-cache');const allowed=process.env.INVENTORY_ALLOWED_TENANT_ID;if(!allowed)return res.status(503).json({error:'Inventory tenant is not configured'});const supplied=[req.body?.tenantId,req.query.tenantId];if(supplied.some(value=>value!==undefined&&(typeof value!=='string'||value!==allowed)))return res.status(403).json({error:'Inventory tenant denied'});req.inventoryTenantId=allowed;next();});
+inventoryPrivate.use(inventoryTenantBoundary);
 inventoryPrivate.use('/central',centralInventoryApi);
 inventoryPrivate.use('/connections',sellerConnectionsApi);
 inventoryPrivate.use('/unified',unifiedOrdersApi);
 // Ledger events must originate in a workflow that validates the business
 // transition and owns its request key. No external event-ingest contract exists.
 inventoryPrivate.post('/events',(_req,res)=>res.status(501).json({error:'Direct inventory events are unavailable; use an approved count, receipt, transfer, order, or return workflow.'}));
-inventoryPrivate.get('/balances',async(req,res)=>{try{const tenantId=String(req.query.tenantId||'');if(!tenantId)return res.status(400).json({error:'tenantId required'});const rows=await inventoryPool().query('SELECT *,greatest(0,on_hand-reserved_order-reserved_cart-damaged-quarantined-safety_stock) AS sellable FROM ci_inventory_balance WHERE tenant_id=$1 ORDER BY master_sku_id,location_id',[tenantId]);res.json(rows.rows);}catch(error){if(sendDatabaseError(res,error))return;res.status(503).json({error:'Inventory database unavailable'});}});
+inventoryPrivate.get('/balances',async(req,res)=>{try{res.json(await readTenantBalances(inventoryPool(),req.inventoryTenantId));}catch(error){if(error?.code==='BALANCE_RESULT_LIMIT')return res.status(413).json({error:error.code,message:error.message});if(sendDatabaseError(res,error))return;res.status(503).json({error:'Inventory database unavailable'});}});
 inventoryPrivate.get('/drift',async(req,res)=>{try{res.json(await inventoryDrift(req.inventoryTenantId));}catch{res.status(503).json({error:'Inventory database unavailable'});}});
 inventoryPrivate.post('/partner-stock-file',async(req,res)=>{try{const {accountId}=req.body;const upload=decodeStockSnapshotUpload(req.body);res.status(202).json(await ingestPartnerStockFile({tenantId:req.inventoryTenantId,accountId,...upload}));}catch(error){if(error?.code==='SNAPSHOT_ORDERING_CONTRACT_UNVERIFIED')return res.status(501).json({error:error.code,message:'Partner stock snapshot import is unavailable until an approved provider ordering contract is established.'});if(sendDatabaseError(res,error))return;res.status(400).json({error:'Stock snapshot could not be accepted. Verify the file format and approved account/SKU/location mappings.'});}});

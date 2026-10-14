@@ -1,5 +1,5 @@
 import { connectionRequestOriginAllowed } from '../inventory/connection-origin.js';
-import { metricSnapshot, requestTelemetry } from './telemetry.js';
+import { metricSnapshot, latencySnapshot, requestTelemetry } from './telemetry.js';
 export { requestTelemetry };
 export function mutationOriginGuard(req, res, next) {
   if (!['POST','PUT','PATCH','DELETE'].includes(req.method)) return next();
@@ -23,4 +23,4 @@ export function protectAsyncRoutes(router) {
     layer.handle = wrapped;
   }
 }
-export function internalMetrics(_req, res) { res.json({ metrics: metricSnapshot() }); }
+export function internalMetrics(_req, res) { res.json({ metrics: metricSnapshot(), latencyHistograms: latencySnapshot() }); }

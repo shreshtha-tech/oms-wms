@@ -4,6 +4,7 @@ import SalesPrograms, { programName } from './SalesPrograms';
 import AlertTeams from './AlertTeams';
 import OrderAlerts from './OrderAlerts';
 import { platformRequirements } from './platformRequirements';
+import MongoStatusBanner from '../components/MongoStatusBanner';
 
 type Order={id:string;sales_program:string|null;platform:string;external_order_id:string;provider_status:string;work_status:string;first_seen_at:string;dispatch_by:string|null;city:string|null;pincode:string|null;amount:string|null;currency:string|null;payment_mode:string|null;items:{sku:string;quantity:number;title:string|null}[];last_event:string|null;pending_alerts:number};
 type Timeline={event_type:string;detail:unknown;occurred_at:string};
@@ -37,6 +38,7 @@ export default function UnifiedOrders({view}:{view:'orders'|'returns'|'team'|'he
  const filtered=useMemo(()=>orders.filter(o=>(!platform||o.platform===platform)&&(!status||o.work_status===status)&&`${o.external_order_id} ${o.city||''} ${o.pincode||''} ${o.items.map(i=>i.sku).join(' ')}`.toLowerCase().includes(query.toLowerCase())),[orders,platform,status,query]);
  return <section className="ci-card unified-panel">
   <div className="ci-toolbar"><h2>{view==='orders'?'Unified orders':view==='returns'?'Returns':view==='team'?'Mobile team':'Connection and alert health'}</h2><button disabled={busy} onClick={()=>void load().catch(e=>setError(e.message))}>Refresh</button></div>
+  {view==='health'&&<MongoStatusBanner/>}
   {error&&<p role="alert" className="ci-message ci-error">{error}</p>}
   {view==='orders'&&<><p>Orders are observed from authorized seller feeds or reports. Fulfillment status changes are paused until provider authorization or verified offline pick, pack, and dispatch handover evidence is connected. An observed or reserved order does not confirm physical dispatch.</p>
    <div className="ci-toolbar"><label>Search order, SKU or city<input value={query} onChange={e=>setQuery(e.target.value)}/></label><label>Platform<select value={platform} onChange={e=>setPlatform(e.target.value)}><option value="">All</option>{[...new Set(orders.map(o=>o.platform))].map(p=><option key={p}>{p}</option>)}</select></label><label>Status<select value={status} onChange={e=>setStatus(e.target.value)}><option value="">All</option>{['new','accepted','packed','dispatched','cancelled','returned'].map(s=><option key={s}>{s}</option>)}</select></label></div>

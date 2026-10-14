@@ -6,7 +6,7 @@ process.env.NODE_ENV='test';process.env.DMILLS_REQUIRE_PERSISTENCE='false';
 const store=await import('../api/mongo.js');assert.equal(await store.waitForDataReady(),mongoFixture?'mongo':'memory');
 const handler=(await import('../api/generic.js')).default;
 const call=async(method,body)=>{const res={statusCode:200,status(code){this.statusCode=code;return this;},json(value){this.value=value;return this;},setHeader(){}};await handler({method,body},res);return res;};
-const modules=['tax-group','tax-category','customer-group','vouchers','other-masters-fixture','sales-promotion','sku-group','sku-company-link','org-hierarchy','location'];
+const modules=['tax-group','tax-category','customer-group','vouchers','other-masters-fixture','sales-promotion','sku-group','sku-company-link','org-hierarchy','location','sku-import'];
 let assertions=0;
 for(const module of modules){
  const protectedRow=await store.insert('generic_records',{module,code:'FIXTURE',name:'Preserve'});

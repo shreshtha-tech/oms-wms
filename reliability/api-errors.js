@@ -2,7 +2,9 @@
 // constraint detail, connection strings, or the rejected row's contents.
 export function sendDatabaseError(res, error) {
  let status, code, message;
- if (error?.code === 'DATABASE_UNAVAILABLE') {
+ if (error?.code === 'DATABASE_COMMIT_UNCERTAIN') {
+  status=503;code=error.code;message='The transaction commit outcome is unknown. Preserve the request identity and reconcile its result before retrying.';
+ } else if (error?.code === 'DATABASE_UNAVAILABLE') {
   status=503;code=error.code;message='The database dependency is temporarily unavailable.';
  } else if (error?.code === 'DATABASE_TIMEOUT') {
   status=504;code=error.code;message='The database operation timed out. Please try again.';

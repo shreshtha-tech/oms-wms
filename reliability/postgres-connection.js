@@ -2,10 +2,11 @@ import pg from 'pg';
 import { increment, logEvent } from './telemetry.js';
 export const postgresUnavailable = () => Object.assign(new Error('PostgreSQL data is temporarily unavailable.'), { code: 'DATABASE_UNAVAILABLE', database: 'postgresql', status: 503, statusCode: 503 });
 export const isPostgresConnectivityError = error => /^(08|53|57P0)/.test(String(error?.code || ''))
+  || error?.code === '25P03'
   || ['ECONNREFUSED','ECONNRESET','ETIMEDOUT','EPIPE','ENOTFOUND','EAI_AGAIN'].includes(error?.code)
-  || /connection (?:terminated|timeout)|timeout exceeded when trying to connect|pool.*ended/i.test(error?.message || '');
+  || /connection (?:terminated|timeout)|timeout exceeded when trying to connect|pool.*ended|client has encountered a connection error and is not queryable|client was closed and is not queryable/i.test(error?.message || '');
 export function createPostgresConnection(options, Pool = pg.Pool) {
-  const pool = new Pool({ max: 10, connectionTimeoutMillis: 8000, idleTimeoutMillis: 30000, statement_timeout: 15000, ...options });
+  const pool = new Pool({ max: 10, connectionTimeoutMillis: 8000, idleTimeoutMillis: 30000, statement_timeout: 15000, idle_in_transaction_session_timeout: 60000, ...options });
   let state = 'STARTING', lastCode = null;
   const transition = next => { if (state !== next) { logEvent('database_state', { database: 'postgresql', previous: state, state: next }); state = next; } };
   const failed = error => {

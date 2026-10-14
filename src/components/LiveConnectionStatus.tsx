@@ -29,7 +29,7 @@ export default function LiveConnectionStatus({accounts,onConnect}:{accounts:Acco
   </div>}
   <details>
    <summary className="flex cursor-pointer flex-wrap items-center justify-between gap-2 font-semibold">
-    <span>Connection status · show platform details</span><span className="rounded bg-slate-100 px-2 py-1 text-sm font-medium text-slate-700">{liveCount} of {platformRequirements.length} order feeds ready · {notLive} need setup</span>
+    <span>Connection status · show platform details</span><span className="rounded bg-slate-100 px-2 py-1 text-sm font-medium text-slate-700">{liveCount} of {platformRequirements.length} order feeds ready · {notLive} not fully verified</span>
    </summary>
    <div className="mt-3 max-h-80 overflow-y-auto rounded border border-slate-200">
     <ul className="divide-y divide-slate-200">

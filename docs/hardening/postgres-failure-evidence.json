@@ -1,0 +1,200 @@
+{
+  "generatedAt": "2026-10-08T20:41:16.405Z",
+  "status": "PASS",
+  "layer": "OWNED_FRESH_LOOPBACK_POSTGRES",
+  "runtime": "v20.14.0",
+  "serverVersion": "18.3 (Homebrew)",
+  "fixtureConfiguration": {
+    "maxConnections": 1,
+    "acquisitionTimeoutMs": 150,
+    "statementTimeoutMs": 150,
+    "idleTransactionInjectionMs": 150
+  },
+  "idleTransactionTimeout": "1min",
+  "receiptClaimPlan": {
+    "rows": 21002,
+    "withoutIndex": {
+      "executionMs": 1.458,
+      "scans": [
+        {
+          "type": "ModifyTable",
+          "index": null,
+          "rows": 1,
+          "removed": 0,
+          "sharedReads": 0,
+          "localHits": 253
+        },
+        {
+          "type": "Seq Scan",
+          "index": null,
+          "rows": 1,
+          "removed": 20000,
+          "sharedReads": 0,
+          "localHits": 247
+        },
+        {
+          "type": "Index Scan",
+          "index": "ci_domain_outbox_pkey",
+          "rows": 1,
+          "removed": 0,
+          "sharedReads": 0,
+          "localHits": 3
+        }
+      ]
+    },
+    "withIndex": {
+      "executionMs": 0.059,
+      "scans": [
+        {
+          "type": "ModifyTable",
+          "index": null,
+          "rows": 1,
+          "removed": 0,
+          "sharedReads": 0,
+          "localHits": 11
+        },
+        {
+          "type": "Index Scan",
+          "index": "receipt_claim_fixture_idx",
+          "rows": 1,
+          "removed": 0,
+          "sharedReads": 0,
+          "localHits": 1
+        },
+        {
+          "type": "Index Scan",
+          "index": "ci_domain_outbox_pkey",
+          "rows": 1,
+          "removed": 0,
+          "sharedReads": 0,
+          "localHits": 3
+        }
+      ]
+    },
+    "expiredWithoutIndex": {
+      "executionMs": 0.142,
+      "scans": [
+        {
+          "type": "ModifyTable",
+          "index": null,
+          "rows": 1,
+          "removed": 0,
+          "sharedReads": 0,
+          "localHits": 34
+        },
+        {
+          "type": "Bitmap Heap Scan",
+          "index": null,
+          "rows": 1,
+          "removed": 1001,
+          "sharedReads": 0,
+          "localHits": 23
+        },
+        {
+          "type": "Index Scan",
+          "index": "ci_domain_outbox_pkey",
+          "rows": 1,
+          "removed": 0,
+          "sharedReads": 0,
+          "localHits": 3
+        }
+      ]
+    },
+    "expiredWithIndex": {
+      "executionMs": 0.058,
+      "scans": [
+        {
+          "type": "ModifyTable",
+          "index": null,
+          "rows": 1,
+          "removed": 0,
+          "sharedReads": 0,
+          "localHits": 14
+        },
+        {
+          "type": "Index Scan",
+          "index": "receipt_expired_fixture_idx",
+          "rows": 1,
+          "removed": 0,
+          "sharedReads": 0,
+          "localHits": 1
+        },
+        {
+          "type": "Index Scan",
+          "index": "ci_domain_outbox_pkey",
+          "rows": 1,
+          "removed": 0,
+          "sharedReads": 0,
+          "localHits": 3
+        }
+      ]
+    }
+  },
+  "results": [
+    {
+      "name": "pool-exhaustion-and-acquisition-recovery",
+      "result": "PASS",
+      "durationMs": 158
+    },
+    {
+      "name": "statement-timeout-and-transaction-rollback",
+      "result": "PASS",
+      "durationMs": 157
+    },
+    {
+      "name": "terminated-active-backend-rolls-back-and-recovers",
+      "result": "PASS",
+      "durationMs": 12
+    },
+    {
+      "name": "business-constraint-not-retried-or-misclassified",
+      "result": "PASS",
+      "durationMs": 5
+    },
+    {
+      "name": "idle-transaction-termination-rolls-back-and-recovers",
+      "result": "PASS",
+      "durationMs": 157
+    },
+    {
+      "name": "aggregate-inventory-summary-tenant-and-stock-semantics",
+      "result": "PASS",
+      "durationMs": 15
+    },
+    {
+      "name": "publication-recovery-bounds-lock-skipping-rollback-and-tenant-isolation",
+      "result": "PASS",
+      "durationMs": 28
+    },
+    {
+      "name": "reconciliation-keyset-pages-cover-wrap-and-isolate-tenants",
+      "result": "PASS",
+      "durationMs": 12
+    },
+    {
+      "name": "stock-lock-backend-loss-preserves-result-and-recovers-pool",
+      "result": "PASS",
+      "durationMs": 17
+    },
+    {
+      "name": "actual-commit-ack-loss-is-uncertain-with-one-committed-result",
+      "result": "PASS",
+      "durationMs": 9
+    },
+    {
+      "name": "receipt-result-claim-plan-under-disposable-backlog",
+      "result": "PASS",
+      "durationMs": 129
+    },
+    {
+      "name": "readiness-detects-missing-publication-column",
+      "result": "PASS",
+      "durationMs": 254
+    }
+  ],
+  "limitations": [
+    "Test deadlines override production defaults.",
+    "No configured store, inventory ledger, provider, HTTP server, staging or production accessed.",
+    "No load capacity, percentile SLO, full database outage/restart or restore claim."
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "inspection_date": "2026-10-09",
+  "checkout": "/Users/shreshthagupta/AI-Workspaces/oms-wms",
+  "branch": "fix/flipkart-order-intake-20261009",
+  "base_head": "332743b0d0bdf21fc46bcda4eb327e8c2dda03fe",
+  "scope": "Current dirty worktree source for the active SKU CreateUpdate UI route, request helper, SKU/import/generic APIs, collection registry, unreferenced RecordedSkuImport and related verifiers/package command. Source inspection plus explicit memory verifiers only; no configured Mongo database was contacted.",
+  "files": {
+    "src/App.tsx": "f3688f3382f717ee5af23d9374fff52b8a58638303853b953beec3d22e57e9ae",
+    "src/eretail/masters/SkuImport.tsx": "72c9e4fa8b0748a9d946a3eddd935c005613df1d6411ae9a3b869e1051d79a15",
+    "src/eretail/masters/RecordedSkuWorkflows.tsx": "5fc0e18085ecd4310b2300737985973c9b39e82164af3163d7f6eb096b48708c",
+    "src/lib/api.ts": "0e0a332e4e018bf714ae03170ad3067fd27c4e16300eef10ff8fdc190b2e9f39",
+    "api/sku-imports.js": "c3b8779951baca6c24fc92d34bb41a56eda65b2fbce6c8aef15d4bc4d2e777d1",
+    "api/skus.js": "54fa47641113257294cfb28004759824a5401ef0a9f8c7fe734fadef8a2d16fd",
+    "api/generic.js": "70446df57ba948c74d0211ca03117584836d92c2c3eb3224c7d27ec319ab7ed8",
+    "api/mongo-collections.js": "30438e0b84d43383b5ecdf69670d39760d77939f3cd9fa7d469358d3a9e5ef1f",
+    "api/mongo.js": "1cf750b47386c62a540ca2488c978204f9f6daa65910185a8d06e3c5d3484a67",
+    "scripts/verify-sku-import-provenance.mjs": "7bdf9cb493f858b20f830184503f8b5aff04edd2259de5abec0dfb2b990d3b39",
+    "scripts/verify-sku-import-integrity.mjs": "6b13609cd92dc4d302649985669032108092a8fd42a9fe72363b94d3536979ba",
+    "scripts/verify-sku-import.mjs": "dc9967d605f763377d4f364929fcdb7ca400c3a256e5ddcaa7bd52ed3194990b",
+    "package.json": "84e0eba5961d91aa7c8425a4ed17730e0c6ce314251d49518fa0af1c19b5a2c0"
+  }
+}

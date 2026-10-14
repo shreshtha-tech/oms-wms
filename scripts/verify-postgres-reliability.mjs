@@ -10,6 +10,7 @@ class Pool extends EventEmitter {
 }
 const connection = createPostgresConnection({}, Pool);
 assert.equal(config.max, 10); assert.equal(config.connectionTimeoutMillis, 8000); assert.equal(config.statement_timeout, 15000);
+assert.equal(config.idle_in_transaction_session_timeout, 60000);
 await connection.probe(); assert.equal(connection.status().state, 'READY');
 failure = Object.assign(new Error('secret transport'), { code: 'ECONNRESET' });
 connection.pool.emit('error', failure); assert.equal(connection.status().state, 'DEGRADED');
@@ -23,5 +24,9 @@ await assert.rejects(client.query('slow transaction operation'), error => error.
 failure = undefined; await client.query('recovered transaction'); client.release();
 failure = Object.assign(new Error('duplicate'), { code: '23505' }); await assert.rejects(connection.pool.query('insert'), error => error.code === '23505');
 failure = Object.assign(new Error('timeout'), { code: '57014' }); await assert.rejects(connection.pool.query('slow'), error => error.status === 504);
+for (const error of [Object.assign(new Error('private idle transaction'), { code: '25P03' }), new Error('Client has encountered a connection error and is not queryable'), new Error('Client was closed and is not queryable')]) {
+  failure = error;
+  await assert.rejects(connection.pool.query('terminated'), error => error.code === 'DATABASE_UNAVAILABLE' && error.status === 503);
+}
 await connection.pool.end(); assert.equal(connection.status().state, 'STOPPED');
 console.log('PASS PostgreSQL: bounded pool, idle failure, safe 503, recovery, constraint preservation, query timeout, shutdown');

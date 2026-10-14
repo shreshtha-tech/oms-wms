@@ -15,13 +15,23 @@ export class AmazonConnector {
     const response=await this.fetcher(`${this.endpoint}${path}`,{method,headers:{'x-amz-access-token':await this.accessToken(),'Content-Type':'application/json','User-Agent':'CentralInventory/1.0 (Language=JavaScript)'},body:body?JSON.stringify(body):undefined,signal:AbortSignal.timeout(20000)});
     const data=await response.json().catch(()=>null);if(!response.ok)throw Object.assign(new Error(`Amazon SP-API failure (${response.status})`),{providerStatus:response.status,diagnostic:data});if(data===null||typeof data!=='object')throw new Error('Amazon returned an invalid JSON response');return data;
   }
-  async patchMfnQuantity({sellerSku,quantity,productType='PRODUCT',fulfillmentChannelCode='DEFAULT'}){
+  async patchMfnQuantity({sellerSku,quantity,productType='PRODUCT',fulfillmentChannelCode}){
     if(!Number.isSafeInteger(quantity)||quantity<0)throw new TypeError('Quantity must be a nonnegative integer');
+    if(typeof fulfillmentChannelCode!=='string'||!fulfillmentChannelCode.trim())throw new TypeError('An approved fulfillment channel code is required');
     // Default documented usage plan: 5 requests/s, burst 10, per connector instance.
     const now=Date.now();this.patchTokens=Math.min(10,this.patchTokens+Math.max(0,now-this.nextPatchAt)/200);this.nextPatchAt=now;
     if(this.patchTokens<1){await new Promise(r=>setTimeout(r,Math.ceil((1-this.patchTokens)*200)));this.patchTokens=1;}this.patchTokens--;
     const path=`/listings/2021-08-01/items/${encodeURIComponent(this.sellerId)}/${encodeURIComponent(sellerSku)}?marketplaceIds=${encodeURIComponent(this.marketplaceId)}`;
     return this.request(path,{method:'PATCH',body:{productType,patches:[{op:'replace',path:'/attributes/fulfillment_availability',value:[{fulfillment_channel_code:fulfillmentChannelCode,quantity}]}]}});
+  }
+  async getMfnQuantity({sellerSku,fulfillmentChannelCode}){
+    if(typeof fulfillmentChannelCode!=='string'||!fulfillmentChannelCode.trim())throw new TypeError('An approved fulfillment channel code is required');
+    const path=`/listings/2021-08-01/items/${encodeURIComponent(this.sellerId)}/${encodeURIComponent(sellerSku)}?marketplaceIds=${encodeURIComponent(this.marketplaceId)}&includedData=fulfillmentAvailability`;
+    const item=await this.request(path);
+    if(item.sku!==sellerSku||!Array.isArray(item.fulfillmentAvailability))throw new Error('Amazon listing identity or fulfillment availability is unavailable');
+    const matches=item.fulfillmentAvailability.filter(entry=>entry.fulfillmentChannelCode===fulfillmentChannelCode);
+    if(matches.length!==1||!Number.isSafeInteger(matches[0].quantity)||matches[0].quantity<0)throw new Error('Amazon MFN quantity is missing or ambiguous');
+    return matches[0].quantity;
   }
   async getFbaInventory({nextToken,granularityId=this.marketplaceId}={}){
     const query=new URLSearchParams({granularityType:'Marketplace',granularityId,marketplaceIds:this.marketplaceId,details:'true'});if(nextToken)query.set('nextToken',nextToken);

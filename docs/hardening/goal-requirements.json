@@ -1,0 +1,458 @@
+{
+  "sourceSha256": "356a2504426ec6855a57cedbf911b25c17b2a1873a764312251b630c715972ed",
+  "scope": "Original 50-part production hardening specification; no requirements removed or narrowed.",
+  "overallCompletion": "NOT_PROVEN",
+  "preamble": "You are now the Principal Production Engineer, SRE, Application Security Architect, Distributed Systems Engineer, Database Reliability Engineer, Performance Engineer and Red-Team Defensive Reviewer for the Agon eRetail / OMS / WMS / Central Inventory platform.\n\nThis task is NOT primarily about adding business features.\n\nThe business functionality is being implemented separately.\n\nYour objective here is to make the existing application capable of operating continuously under realistic enterprise load while preserving:\n\n* inventory correctness\n* order correctness\n* tenant isolation\n* provider isolation\n* authentication\n* authorization\n* transaction integrity\n* queue integrity\n* webhook integrity\n* notification integrity\n* data provenance\n* recovery\n* observability\n* controlled latency\n* controlled resource usage\n* graceful degradation\n\nThe target is NOT “pretend that failures cannot happen”.\n\nThe target is:\n\nNO SILENT CORRUPTION\nNO UNSAFE RETRY\nNO UNKNOWN FAILURE WITHOUT RECOVERY PATH\nNO SECURITY BYPASS\nNO CROSS-TENANT DATA ACCESS\nNO DUPLICATE PHYSICAL STOCK MOVEMENT\nNO DOUBLE RESERVATION\nNO DOUBLE NOTIFICATION\nNO UNBOUNDED QUEUE GROWTH\nNO UNBOUNDED MEMORY GROWTH\nNO CONNECTION POOL EXHAUSTION WITHOUT CONTROL\nNO THREAD/WORKER STARVATION\nNO UNBOUNDED PROVIDER RETRY\nNO SINGLE DEPENDENCY FAILURE COLLAPSING THE WHOLE SYSTEM\nNO FALSE SUCCESS\n\nAnd:\n\nBOUNDED LATENCY\nBOUNDED RETRIES\nBOUNDED MEMORY\nBOUNDED CONNECTIONS\nBOUNDED QUEUE RETENTION\nBOUNDED PAYLOAD SIZE\nBOUNDED JOB EXECUTION\nBOUNDED CONCURRENCY\nGRACEFUL DEGRADATION\nAUTOMATIC RECOVERY WHERE SAFE\nEXPLICIT RECONCILIATION WHERE AUTOMATIC RECOVERY IS NOT SAFE\n\nDo not promise “zero failures”.\nEngineer the system so failures are contained, visible, recoverable and incapable of silently corrupting business truth.\n\n============================================================",
+  "parts": [
+    {
+      "number": 1,
+      "title": "READ THE ENTIRE CURRENT SYSTEM",
+      "sourceStartLine": 64,
+      "sourceEndLine": 120,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 1 — READ THE ENTIRE CURRENT SYSTEM\n=======================================\n\nRead the repository and the latest forensic reports before changing code.\n\nInspect:\n\n* frontend\n* backend\n* Express middleware\n* API routes\n* authentication\n* authorization\n* tenant resolution\n* provider accounts\n* provider adapters\n* webhook ingress\n* polling\n* workers\n* queues\n* inbox/outbox\n* Central Inventory ledger\n* PostgreSQL\n* MongoDB\n* Redis/cache if present\n* notification system\n* WhatsApp\n* file uploads\n* Excel/XLSX\n* CSV\n* XML\n* report generation\n* exports\n* migrations\n* deployment\n* Render configuration\n* health probes\n* readiness\n* shutdown\n* logging\n* monitoring\n* tests\n* fixture runners\n* scripts\n* cron/schedulers\n* background jobs\n* feature flags\n* legacy routes\n* legacy database writers\n* direct SQL\n* direct Mongo mutations\n\nDo not assume current code is safe merely because previous tests passed.\n\nFind the actual attack surface and failure surface.\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 2,
+      "title": "DEFINE THE NON-NEGOTIABLE SAFETY INVARIANTS",
+      "sourceStartLine": 121,
+      "sourceEndLine": 166,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 2 — DEFINE THE NON-NEGOTIABLE SAFETY INVARIANTS\n====================================================\n\nThe following are hard invariants.\n\nA failed operation must never silently become success.\n\nA timed-out operation must never automatically become “not executed”.\n\nAn external provider mutation that may already have succeeded must enter UNKNOWN_REMOTE_STATE until reconciled.\n\nA provider observation must never overwrite Central Inventory physical truth.\n\nA retry must never duplicate a physical stock movement.\n\nAn exact order replay must never create a second reservation.\n\nAn exact notification replay must never create a second logical notification.\n\nA return replay must never restore physical stock twice.\n\nA cancellation replay must never release stock twice.\n\nA mapping update must never redirect an already-created reservation to another SKU/location.\n\nA worker must never execute another tenant's task.\n\nA provider account must never access another tenant.\n\nA notification callback must never update another sender/account/tenant.\n\nNo request may cause unbounded database work.\n\nNo request may cause unbounded memory growth.\n\nNo provider may cause infinite retry loops.\n\nNo user input may become executable code.\n\nNo secret may appear in logs, URLs, responses, browser persistence or error messages.\n\nNo public endpoint may expose operational internals.\n\nNo security decision may depend only on frontend behavior.\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 3,
+      "title": "PERFORMANCE / LOW-LATENCY ENGINEERING",
+      "sourceStartLine": 167,
+      "sourceEndLine": 238,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 3 — PERFORMANCE / LOW-LATENCY ENGINEERING\n==============================================\n\nDo not claim “no lag”.\n\nInstead establish measurable latency objectives.\n\nFor every critical path measure:\n\nORDER_INGEST\nORDER_NORMALIZATION\nRESERVATION\nINVENTORY_MUTATION\nOUTBOX_ENQUEUE\nWORKER_START\nPROVIDER_REQUEST\nPROVIDER_ACK\nPROVIDER_READBACK\nRECONCILIATION\nWHATSAPP_ACCEPT\nWHATSAPP_DELIVERY_CALLBACK\nUI_VISIBLE_UPDATE\n\nMeasure:\n\np50\np95\np99\nmaximum observed\n\nDo not use average latency as the primary reliability metric.\n\nIdentify:\n\n* N+1 queries\n* unnecessary provider calls\n* duplicate DB reads\n* repeated mapping resolution\n* unbounded joins\n* missing indexes\n* sequential provider requests that can safely be bounded/concurrent\n* synchronous work on request path\n* heavy ExcelJS/XLSX processing on the main request\n* expensive serialization\n* large JSON payloads\n* unnecessary React rerenders\n* polling too aggressively\n* polling too infrequently\n* browser waterfalls\n* duplicate API requests\n* repeated dashboard refreshes\n* expensive count queries\n* full-table scans\n* unbounded search\n* offset pagination on large tables\n* large report generation in request/response cycle\n\nCritical user requests must not wait on slow providers unless the business operation truly requires synchronous provider confirmation.\n\nPrefer:\n\nREQUEST\n→ durable local commit\n→ immediate response\n→ worker\n→ provider\n→ readback\n→ UI status\n\nwhere business semantics permit.\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 4,
+      "title": "DATABASE PERFORMANCE",
+      "sourceStartLine": 239,
+      "sourceEndLine": 293,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 4 — DATABASE PERFORMANCE\n=============================\n\nAudit every PostgreSQL query.\n\nIdentify:\n\n* missing indexes\n* wrong composite indexes\n* sequential scans\n* high-cardinality filters without indexes\n* joins without supporting indexes\n* lock contention\n* long transactions\n* idle-in-transaction sessions\n* excessive row locking\n* advisory-lock contention\n* deadlock potential\n* connection pool exhaustion\n* oversized transactions\n* unbounded result sets\n* inefficient ORDER BY\n* COUNT(*) on huge datasets\n* unnecessary DISTINCT\n* repeated lookup queries\n* hot rows\n\nPay particular attention to:\n\nci_inventory_event\nci_inventory_balance\nci_reservation\nci_unified_order\nci_unified_order_line\nprovider accounts\nprovider mappings\npublication tasks\nnotification tasks\nreconciliation tables\ninbox/outbox\nlease tables\naudit tables\n\nFor every critical query:\n\nEXPLAIN\nEXPLAIN ANALYZE where safe\nindex coverage\nrow estimates\nlock behavior\n\nDo not introduce indexes blindly.\nMeasure and justify them.\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 5,
+      "title": "CONNECTION POOLS",
+      "sourceStartLine": 294,
+      "sourceEndLine": 339,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 5 — CONNECTION POOLS\n=========================\n\nAudit PostgreSQL and MongoDB connection handling.\n\nGuarantee:\n\n* bounded pool size\n* connection timeout\n* acquisition timeout\n* query timeout\n* idle timeout where appropriate\n* clean release\n* transaction cleanup\n* broken connection removal\n* bounded reconnect\n* single-flight reconnect where appropriate\n* shutdown drain\n* no connection leak\n* no retry storm\n\nTest:\n\npool exhaustion\ndatabase outage\ndatabase restart\nterminated backend\nslow query\nhung transaction\nnetwork failure\nconnection reset\nrecovery\n\nExpected behavior:\n\nreadiness = unavailable when critical dependency is unavailable\n\nliveness remains valid while process itself is healthy\n\nrequests fail fast with truthful status\n\nno connection pool poisoning\n\nautomatic recovery where safe\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 6,
+      "title": "DATABASE DEADLOCK / CONCURRENCY DEFENSE",
+      "sourceStartLine": 340,
+      "sourceEndLine": 369,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 6 — DATABASE DEADLOCK / CONCURRENCY DEFENSE\n================================================\n\nIdentify every pair of transactions that can lock overlapping rows.\n\nStandardize lock ordering.\n\nFind:\n\n* deadlock cycles\n* inconsistent lock acquisition order\n* row hot spots\n* long-held locks\n* transaction work performed while external network requests are pending\n\nNEVER hold an important database transaction open while waiting indefinitely for a provider API.\n\nProvider calls should generally occur outside the database transaction unless the design explicitly requires otherwise.\n\nWhere remote operations interact with local state, use:\n\noutbox\nidempotency\nstate machine\nreadback\nreconciliation\n\nrather than pretending to have distributed ACID.\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 7,
+      "title": "MEMORY SAFETY",
+      "sourceStartLine": 370,
+      "sourceEndLine": 411,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 7 — MEMORY SAFETY\n======================\n\nFind every source of unbounded memory.\n\nAudit:\n\n* request body size\n* uploaded Excel files\n* CSV\n* JSON\n* XML\n* multipart forms\n* provider responses\n* webhook bodies\n* report exports\n* queues\n* caches\n* arrays accumulating across pagination\n* retry buffers\n* log buffers\n* browser state\n* WebSocket/event subscriptions if present\n\nRequire:\n\n* maximum body size\n* maximum file size\n* maximum row count\n* maximum XML size\n* maximum XML nesting/tag count\n* maximum provider response size\n* streaming for large files where appropriate\n* paginated processing\n* bounded arrays\n* queue retention limits\n* cache eviction\n* cancellation\n\nDo not load a massive production workbook entirely into memory if streaming can be used safely.\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 8,
+      "title": "API SECURITY",
+      "sourceStartLine": 412,
+      "sourceEndLine": 457,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 8 — API SECURITY\n=====================\n\nAudit every endpoint.\n\nFor each endpoint verify:\n\nauthentication\nauthorization\ntenant ownership\nobject ownership\ninput validation\nmethod validation\ncontent type\nbody size\ntimeout\nrate limiting\nerror sanitization\nresponse filtering\naudit trail\n\nTest:\n\nanonymous\nexpired session\nwrong role\nwrong tenant\nwrong account\nwrong object ID\nmalformed body\nextra fields\nunexpected types\nlarge payload\nduplicate request\nreplayed request\nrapid request burst\n\nNever rely on:\n\nfrontend hiding a button\nfrontend disabling a button\nfrontend filtering a dropdown\n\nAll security must be server enforced.\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 9,
+      "title": "BOLA / IDOR / TENANT ISOLATION",
+      "sourceStartLine": 458,
+      "sourceEndLine": 507,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 9 — BOLA / IDOR / TENANT ISOLATION\n=======================================\n\nBuild an explicit security graph.\n\nTest:\n\nTenant A user\n→ Tenant B order\n\nTenant A user\n→ Tenant B SKU\n\nTenant A user\n→ Tenant B inventory\n\nTenant A user\n→ Tenant B provider account\n\nTenant A user\n→ Tenant B location\n\nTenant A worker\n→ Tenant B queue\n\nTenant A WhatsApp callback\n→ Tenant B alert\n\nTenant A provider webhook\n→ Tenant B account\n\nTenant A reconciliation case\n→ Tenant B case\n\nAll must fail.\n\nAlso test:\n\nchanging IDs\nchanging UUIDs\nchanging provider IDs\nchanging mapping IDs\nchanging account IDs\nchanging location IDs\nchanging query parameters\nchanging request body tenant fields\n\nClient-provided tenant/account identity must never override server-owned authorization context.\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 10,
+      "title": "PROVIDER SECURITY",
+      "sourceStartLine": 508,
+      "sourceEndLine": 539,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 10 — PROVIDER SECURITY\n===========================\n\nFor every provider call:\n\n* validate account ownership\n* validate tenant\n* use stored credential\n* enforce allowed destination\n* prevent SSRF\n* prevent DNS rebinding\n* prevent internal-network access\n* require TLS\n* bound connection timeout\n* bound response timeout\n* bound response size\n* classify errors\n* redact secrets\n\nNever allow arbitrary user-supplied URLs.\n\nNever disable certificate verification.\n\nNever log Authorization headers.\n\nNever log access tokens.\n\nNever log webhook secrets.\n\nNever expose provider credential material to frontend clients.\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 11,
+      "title": "WEBHOOK SECURITY",
+      "sourceStartLine": 540,
+      "sourceEndLine": 575,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 11 — WEBHOOK SECURITY\n==========================\n\nFor every webhook:\n\nraw-body preservation\nsignature verification\ntimestamp verification where provider supports it\nreplay protection\ndelivery ID\npayload digest\ntenant/account binding\nprovider identity validation\nsize limit\nschema validation\nduplicate handling\nchanged-body conflict\nsafe response\n\nDo not process business effects before authentication and identity verification.\n\nTest:\n\nwrong signature\nmissing signature\nchanged body\nreplayed delivery\nold delivery\nfuture timestamp\nforeign tenant\nforeign account\nmalformed payload\noversized payload\nprovider schema change\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 12,
+      "title": "POLLING SAFETY",
+      "sourceStartLine": 576,
+      "sourceEndLine": 606,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 12 — POLLING SAFETY\n========================\n\nEvery poller must have:\n\nbounded interval\ndurable cursor\npagination\noverlap policy\nbackoff\nrate limit control\ntimeout\ncircuit breaker where appropriate\ncheckpoint\ngap detection\nstale cursor detection\nconcurrency control\n\nNever allow multiple workers to hammer the same provider/account indefinitely.\n\nUse:\n\nprovider/account lock\nor lease\nor bounded concurrency\n\nwhere required.\n\nPolling must not starve interactive user requests.\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 13,
+      "title": "RATE LIMIT / RETRY CONTROL",
+      "sourceStartLine": 607,
+      "sourceEndLine": 648,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 13 — RATE LIMIT / RETRY CONTROL\n====================================\n\nBuild provider-specific retry classification.\n\nRetry only when safe.\n\nRetryable:\n\ntransient network failure\nprovider 429\nselected temporary 5xx\nconnection reset\n\nNot automatically retryable:\n\nauthentication failure\nauthorization failure\nvalidation failure\npermanent 4xx\nunknown mutation outcome\n\nUnknown mutation outcome:\n\nUNKNOWN_REMOTE_STATE\n→ reconcile/readback\n→ only then decide next action\n\nImplement:\n\nexponential backoff\njitter\nretry cap\naccount-level pacing\ncircuit breaker\ndead-letter\n\nAvoid synchronized retry storms.\n\nTest large simultaneous failures.\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 14,
+      "title": "CASCADING FAILURE CONTROL",
+      "sourceStartLine": 649,
+      "sourceEndLine": 687,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 14 — CASCADING FAILURE CONTROL\n===================================\n\nAssume a marketplace provider is unavailable for 30 minutes.\n\nThe system must NOT:\n\n* block web requests\n* exhaust worker threads\n* exhaust DB connections\n* retry infinitely\n* fill memory with pending objects\n* generate millions of duplicate tasks\n* spam WhatsApp\n* mark orders successful incorrectly\n* mark stock reconciled\n* collapse unrelated providers\n\nProvider A failure must not bring down:\n\nProvider B\nCentral Inventory reads\nlocal order search\nadmin UI\nother queues\nauthentication\nhealth endpoints\n\nUse isolation:\n\nprovider/account concurrency limits\nbounded queues\nseparate worker pools where justified\ncircuit breakers\nbackpressure\ndead-letter\nrate limiting\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 15,
+      "title": "QUEUE SAFETY",
+      "sourceStartLine": 688,
+      "sourceEndLine": 722,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 15 — QUEUE SAFETY\n======================\n\nEvery queue must have:\n\nmaximum concurrency\nmaximum retry attempts\nretry schedule\nlease\nvisibility timeout\ndead-letter\npoison handling\ntenant isolation\nprovider/account isolation\nbackpressure\nqueue-age monitoring\nretention policy\n\nTest:\n\n1 task\n1,000 tasks\n100,000 tasks\npoison task\nslow task\nblocked provider\nworker crash\nworker restart\ntwo workers\nfive workers\nprovider outage\n\nNo queue may grow forever without operator visibility.\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 16,
+      "title": "WORKER CRASH SAFETY",
+      "sourceStartLine": 723,
+      "sourceEndLine": 764,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 16 — WORKER CRASH SAFETY\n=============================\n\nInject crashes at:\n\nbefore transaction\nduring transaction\nafter transaction\nafter reservation\nafter outbox\nbefore provider request\nafter provider request\nafter provider success\nbefore provider response\nafter provider response\nbefore audit\nafter audit\nbefore task completion\n\nRequired result:\n\nno duplicate physical movement\n\nno duplicate reservation\n\nno duplicate notification\n\nno lost task\n\nno permanent processing lease\n\nno false success\n\nrecoverable state\n\nIf remote success is uncertain:\n\nUNKNOWN_REMOTE_STATE\n\nthen reconciliation.\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 17,
+      "title": "ORDER/INVENTORY SAFETY",
+      "sourceStartLine": 765,
+      "sourceEndLine": 796,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 17 — ORDER/INVENTORY SAFETY\n================================\n\nSimulate multiple marketplaces selling the same SKU.\n\nExample:\n\nOpening stock = 10\n\nShopify order = 6\nFlipkart order = 5\nAmazon order = 4\n\nSend simultaneously.\n\nThe system must guarantee that committed reservations cannot exceed sellable stock.\n\nDo not solve by trusting application-level “check first”.\n\nUse database transactional correctness.\n\nRepeat with:\n\n* two locations\n* pack size\n* same order replay\n* webhook/poll overlap\n* cancellation race\n* dispatch race\n* return race\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 18,
+      "title": "INVENTORY PUBLICATION SAFETY",
+      "sourceStartLine": 797,
+      "sourceEndLine": 827,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 18 — INVENTORY PUBLICATION SAFETY\n======================================\n\nFor every provider inventory mutation:\n\nexpected local quantity\n→ publication identity\n→ provider request\n→ provider result\n→ readback\n→ reconciliation\n\nIf request times out:\n\ndo NOT blindly resend.\n\nIf provider was potentially successful:\n\nUNKNOWN_REMOTE_STATE\n\nRead provider.\n\nMatch:\nRECONCILED\n\nMismatch:\nREQUIRES_RECONCILIATION\n\nThis is mandatory.\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 19,
+      "title": "WHATSAPP RESILIENCE",
+      "sourceStartLine": 828,
+      "sourceEndLine": 859,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 19 — WHATSAPP RESILIENCE\n=============================\n\nWhatsApp failure must never break order correctness.\n\nTest:\n\nMeta unavailable\nMeta 429\nMeta 500\nMeta timeout\nmessage accepted but response lost\nDB fails after send\nworker crashes after send\nduplicate callback\ndelayed callback\nwrong callback sender\nforeign tenant callback\n\nGuarantee:\n\norder remains committed\n\ninventory remains correct\n\nnotification remains recoverable\n\nunknown external status remains UNKNOWN\n\nno duplicate notification is created blindly\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 20,
+      "title": "FRONTEND PERFORMANCE",
+      "sourceStartLine": 860,
+      "sourceEndLine": 898,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 20 — FRONTEND PERFORMANCE\n==============================\n\nAudit every critical page.\n\nFind:\n\n* duplicate API requests\n* waterfall requests\n* unnecessary polling\n* aggressive polling\n* stale response overwrite\n* memory leaks\n* subscriptions not cleaned\n* timers not cleared\n* large lists rendered at once\n* large tables without virtualization/pagination\n* unnecessary rerenders\n* expensive calculations on main thread\n* huge bundle imports\n* unnecessary ExcelJS loading\n* large JSON payloads\n\nUse:\n\nserver-side pagination\ncursor pagination\nvirtualization for large grids\ndebounced search\nrequest cancellation\nstale-response fencing\ncache where safe\nlazy loading\ncode splitting\nincremental loading\n\nDo not cache authoritative inventory in a way that can become business truth.\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 21,
+      "title": "BROWSER NETWORK RESILIENCE",
+      "sourceStartLine": 899,
+      "sourceEndLine": 929,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 21 — BROWSER NETWORK RESILIENCE\n====================================\n\nFor every mutation:\n\n* cancellation support\n* timeout\n* retry only where safe\n* draft preservation\n* duplicate click prevention\n* stale request fencing\n* clear error state\n* reconnect behavior\n\nTest:\n\nslow 3G\nrequest timeout\nrequest cancellation\nbrowser refresh\ntab duplicate\ndouble click\nnetwork disconnect\nnetwork reconnect\nsession expiration\nserver 503\nserver 429\n\nNo user action should silently disappear.\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 22,
+      "title": "INPUT / FILE SECURITY",
+      "sourceStartLine": 930,
+      "sourceEndLine": 968,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 22 — INPUT / FILE SECURITY\n===============================\n\nAudit:\n\nExcel\nXLSX\nCSV\nXML\nPDF\nJSON\nmultipart uploads\n\nProtect against:\n\nzip bombs\ndecompression bombs\ngiant files\ngiant row counts\nformula injection\npath traversal\nmalformed XLSX\nmalicious XML\nXXE\nentity expansion\ndeep XML nesting\noversized base64\nprototype pollution\nparser crashes\n\nNever trust file extension alone.\n\nNever write uploaded filenames directly to filesystem paths.\n\nNever execute spreadsheet formulas.\n\nNever echo full imported content into errors/logs.\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 23,
+      "title": "SECRET SECURITY",
+      "sourceStartLine": 969,
+      "sourceEndLine": 1013,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 23 — SECRET SECURITY\n=========================\n\nAudit:\n\nenvironment variables\ndatabase credentials\nprovider credentials\nOAuth tokens\nWhatsApp tokens\nwebhook secrets\nencryption keys\nlogs\nerror messages\nresponses\nbrowser state\nlocalStorage\nsessionStorage\nIndexedDB\nURLs\nquery strings\ndownloads\nreports\nanalytics\n\nNo secret may appear in:\n\n* logs\n* stack traces\n* UI responses\n* HTML\n* browser storage\n* source maps\n* exported diagnostics\n* URLs\n\nCredential encryption must provide integrity.\n\nDo not store plaintext provider credentials unless explicitly required and securely isolated.\n\nInvestigate historical documents and old database records for legacy plaintext credentials.\n\nDo not automatically print secret matches.\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 24,
+      "title": "SESSION SECURITY",
+      "sourceStartLine": 1014,
+      "sourceEndLine": 1043,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 24 — SESSION SECURITY\n==========================\n\nVerify:\n\nSecure\nHttpOnly\nSameSite\nexpiration\nrotation\nrevocation\nsession fixation defense\nlogout invalidation\nconcurrent sessions policy\nlogin throttling\nbrute-force protection\npassword handling\n\nTest:\n\nexpired session\nrevoked session\nreused session\nrotated session\nstolen cookie simulation\nsession fixation\nrapid login\npassword spray\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 25,
+      "title": "AUTHORIZATION MATRIX",
+      "sourceStartLine": 1044,
+      "sourceEndLine": 1073,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 25 — AUTHORIZATION MATRIX\n==============================\n\nCreate a role × operation matrix.\n\nAt minimum:\n\nViewer\nOperator\nWarehouse\nInventory Manager\nMarketplace Manager\nFinance\nAdmin\nSystem Worker\n\nFor every critical mutation determine:\n\nallowed?\ndenied?\ntenant scope?\nlocation scope?\nprovider scope?\naudit required?\n\nDo not assume Admin ≠ Operator is sufficient.\n\nInventory and provider credentials are high-risk operations.\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 26,
+      "title": "API ABUSE DEFENSE",
+      "sourceStartLine": 1074,
+      "sourceEndLine": 1105,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 26 — API ABUSE DEFENSE\n===========================\n\nTest:\n\nburst requests\nexpensive queries\nlarge page sizes\nlarge date ranges\nrepeated exports\nrepeated imports\nrepeated provider verification\npoll trigger abuse\nreconcile-all abuse\nretry endpoint abuse\nwebhook replay flooding\nlogin flooding\n\nApply:\n\nrate limits\npagination limits\ntimeouts\ncost controls\nrole restrictions\njob queues for expensive work\ncooldowns\ndeduplication\n\nDo not allow an operator endpoint to create an unbounded background workload.\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 27,
+      "title": "REPORT / EXPORT SECURITY",
+      "sourceStartLine": 1106,
+      "sourceEndLine": 1127,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 27 — REPORT / EXPORT SECURITY\n==================================\n\nAudit every report.\n\nEnsure:\n\n* authorization\n* tenant filtering\n* data minimization\n* pagination\n* large export queueing\n* output escaping\n* formula injection prevention\n* file size limits\n* export ownership\n* audit trail\n* expiration of generated files\n\nNever let a user export another tenant's inventory/orders.\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 28,
+      "title": "DEPENDENCY / SUPPLY CHAIN SECURITY",
+      "sourceStartLine": 1128,
+      "sourceEndLine": 1164,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 28 — DEPENDENCY / SUPPLY CHAIN SECURITY\n============================================\n\nInspect:\n\npackage.json\nlockfiles\ndirect dependencies\ntransitive high-risk packages\nunused packages\nold vulnerable frameworks\n\nCheck for:\n\n* dangerous dynamic eval\n* child_process misuse\n* shell injection\n* unsafe deserialization\n* prototype pollution\n* unsafe regex\n* vulnerable parsers\n* arbitrary file writes\n* dependency confusion\n* outdated crypto libraries\n\nDo not blindly upgrade everything.\n\nFor every dependency upgrade verify:\n\ntypecheck\nbuild\ntests\nbrowser\nprovider\nmigration compatibility\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 29,
+      "title": "REGEX / CPU EXHAUSTION",
+      "sourceStartLine": 1165,
+      "sourceEndLine": 1180,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 29 — REGEX / CPU EXHAUSTION\n================================\n\nSearch for catastrophic regex patterns.\n\nTest:\n\nextremely long input\npathological strings\nlarge JSON\nlarge CSV\nlarge XML\n\nNo user-controlled input should cause disproportionate CPU consumption.\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 30,
+      "title": "LOGGING / OBSERVABILITY",
+      "sourceStartLine": 1181,
+      "sourceEndLine": 1221,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 30 — LOGGING / OBSERVABILITY\n=================================\n\nEvery critical event should have:\n\nrequest_id\ncorrelation_id\ntenant_id where safe\nprovider_account_id where safe\noperation\nstatus\nduration\nerror_category\n\nNever log secrets.\n\nNever log raw provider tokens.\n\nNever log entire customer payloads unnecessarily.\n\nCreate durable operational metrics for:\n\norder lag\nworker lag\nqueue depth\nqueue oldest age\nprovider failure rate\nprovider latency\ninventory publication age\nreadback mismatch\nreconciliation age\nWhatsApp delivery age\nDB pool usage\nworker heartbeat\nHTTP latency\n5xx rate\n429 rate\n\nMetrics must survive process restarts through persistent monitoring infrastructure where required.\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 31,
+      "title": "HEALTH MODEL",
+      "sourceStartLine": 1222,
+      "sourceEndLine": 1255,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 31 — HEALTH MODEL\n======================\n\nImplement separate:\n\nLIVENESS\nREADINESS\nDEGRADED CAPABILITY\n\nExample:\n\nWeb application:\nHEALTHY\n\nMongo:\nUNAVAILABLE\n\nShopify:\nHEALTHY\n\nFlipkart:\nBLOCKED\n\nWhatsApp:\nDEGRADED\n\nCentral Inventory:\nHEALTHY\n\nDo not let one provider failure make the entire application appear dead.\n\nDo not report READY when a mandatory production dependency is unavailable.\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 32,
+      "title": "DISASTER RECOVERY",
+      "sourceStartLine": 1256,
+      "sourceEndLine": 1289,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 32 — DISASTER RECOVERY\n===========================\n\nProve:\n\nbackup\nrestore\ndatabase recovery\nmigration rollback\nqueue recovery\noutbox recovery\nworker restart\nprovider reconciliation after restore\ninventory reconstruction from events\n\nMeasure:\n\nRPO\nRTO\n\nDemonstrate recovery, not configuration.\n\nAfter restore prove:\n\ninventory balances\nreservations\norders\noutbox\nnotifications\nreconciliation cases\n\nare internally consistent.\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 33,
+      "title": "DEPLOYMENT SAFETY",
+      "sourceStartLine": 1290,
+      "sourceEndLine": 1323,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 33 — DEPLOYMENT SAFETY\n===========================\n\nAudit:\n\nbuild\nmigration\nstartup\nreadiness\nliveness\nworker\nweb\nshutdown\nrestart\nrollback\nsecret injection\nenvironment isolation\nproxy\nHTTPS\nwebhook URL\nqueue\n\nDeployment must support:\n\nold client + new server compatibility where needed\nadditive migration\nsafe rollback\ndrain\ngraceful shutdown\nworker lease recovery\n\nNever perform destructive schema changes without verified migration strategy.\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 34,
+      "title": "CAPACITY / LOAD TEST",
+      "sourceStartLine": 1324,
+      "sourceEndLine": 1369,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 34 — CAPACITY / LOAD TEST\n==============================\n\nCreate a realistic workload model from expected launch traffic.\n\nAt minimum test:\n\nnormal sustained traffic\npeak traffic\nburst traffic\nprovider slowdown\nprovider outage\ndatabase slowdown\nqueue backlog\nmultiple providers simultaneously\n\nMeasure:\n\nCPU\nmemory\nDB utilization\nDB pool\nworker throughput\nqueue age\norder latency\nreservation latency\npublication latency\nreadback latency\nnotification latency\nerror rate\nretry amplification\n\nDo not declare scalable because one test run passes.\n\nFind the point at which:\n\nlatency\nerror rate\nqueue age\nresource utilization\n\nbecome unacceptable.\n\nDocument safe operating limits.\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 35,
+      "title": "CHAOS / FAILURE CAMPAIGN",
+      "sourceStartLine": 1370,
+      "sourceEndLine": 1411,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 35 — CHAOS / FAILURE CAMPAIGN\n==================================\n\nRun controlled failure injections:\n\nDATABASE DOWN\nDATABASE SLOW\nDATABASE CONNECTION RESET\nMONGO DOWN\nPOSTGRES DOWN\nPROVIDER DOWN\nPROVIDER 429\nPROVIDER 500\nPROVIDER TIMEOUT\nPROVIDER DNS FAILURE\nPROVIDER AUTH FAILURE\nWORKER CRASH\nWORKER RESTART\nQUEUE BACKLOG\nDOUBLE WORKER\nWEBHOOK FLOOD\nWEBHOOK DUPLICATE\nPOLL OVERLAP\nNETWORK PARTITION\nREMOTE SUCCESS + LOCAL TIMEOUT\nREMOTE READBACK MISMATCH\nWHATSAPP OUTAGE\nWHATSAPP CALLBACK DELAY\nMIGRATION FAILURE\nHOST RESTART\n\nFor every test record:\n\nfailure injected\nexpected behavior\nactual behavior\ndata state\nrecovery time\nremaining manual work\nwhether business truth changed incorrectly\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 36,
+      "title": "SECURITY RED TEAM CAMPAIGN",
+      "sourceStartLine": 1412,
+      "sourceEndLine": 1455,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 36 — SECURITY RED TEAM CAMPAIGN\n====================================\n\nConduct a defensive application-security campaign across:\n\nauthentication\nauthorization\ntenant isolation\nprovider accounts\ninventory\norders\nreturns\nWhatsApp\nuploads\nexports\nwebhooks\nOAuth\npublic callbacks\nlegacy APIs\n\nTry controlled:\n\nIDOR\nBOLA\nprivilege escalation\ntenant breakout\nreplay\nsignature bypass\nCSRF\nSSRF\npath traversal\ninjection\nprototype pollution\nXSS\nresource exhaustion\nrate-limit bypass\nsession abuse\nsecret disclosure\n\nDo not perform destructive exploitation against real production infrastructure.\n\nUse disposable/staging targets.\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 37,
+      "title": "PERFORMANCE ANTI-PATTERNS",
+      "sourceStartLine": 1456,
+      "sourceEndLine": 1484,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 37 — PERFORMANCE ANTI-PATTERNS\n===================================\n\nSearch specifically for:\n\nawait inside large loops\nsequential provider calls\nunbounded Promise.all\nPromise.all over unbounded database results\nlarge arrays\nrecursive retry\nsetInterval without lifecycle cleanup\ntimers without cleanup\nunbounded event listeners\nunbounded queue insertion\nsynchronous CPU-heavy work in request handlers\nlarge JSON serialization\nrepeated SELECT queries\nN+1 ORM/database patterns\nfull Mongo scans\nfull PostgreSQL scans\nunbounded regex\nunbounded file reads\n\nFix with bounded concurrency and streaming where appropriate.\n\nNever replace an N+1 problem with an unbounded parallel request storm.\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 38,
+      "title": "CACHE SAFETY",
+      "sourceStartLine": 1485,
+      "sourceEndLine": 1510,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 38 — CACHE SAFETY\n======================\n\nAudit every cache.\n\nCaching is allowed for:\n\nUI metadata\nstatic references\nnon-authoritative provider metadata\nread-only dashboards\n\nCaching must NOT silently become the source of truth for:\n\nphysical stock\nreservation\norder status transitions\nprovider mutation status\n\nEvery authoritative read must have an explicit freshness policy.\n\nInvalidate safely.\n\nDo not serve dangerously stale inventory as current stock.\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 39,
+      "title": "BROWSER / UI SECURITY",
+      "sourceStartLine": 1511,
+      "sourceEndLine": 1531,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 39 — BROWSER / UI SECURITY\n===============================\n\nAudit:\n\nDOM XSS\nunsafe HTML\ndangerous links\ndownload handling\nfile URLs\nprovider URLs\nexternal redirects\nsecret fields\nclipboard usage\nbrowser storage\nroute guards\npermission rendering\n\nFrontend authorization is never sufficient.\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 40,
+      "title": "RECONCILIATION AS A SAFETY NET",
+      "sourceStartLine": 1532,
+      "sourceEndLine": 1552,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 40 — RECONCILIATION AS A SAFETY NET\n========================================\n\nAny situation that cannot be safely resolved automatically must create durable reconciliation work.\n\nExamples:\n\nUNKNOWN_REMOTE_STATE\nMISMATCH\nSTALE_OBSERVATION\nMISSING_EVENT\nMISSING_MAPPING\nPROVIDER_REVISION_CONFLICT\nFAILED_RETURN\nUNKNOWN_NOTIFICATION\n\nNever hide uncertainty.\n\nNever silently choose a side.\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 41,
+      "title": "NO-COLLAPSE PRINCIPLE",
+      "sourceStartLine": 1553,
+      "sourceEndLine": 1595,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 41 — NO-COLLAPSE PRINCIPLE\n===============================\n\nThe platform must degrade by capability, not collapse globally.\n\nExample:\n\nFlipkart unavailable:\n\nFlipkart:\nDEGRADED\n\nShopify:\nHEALTHY\n\nCentral Inventory:\nHEALTHY\n\nAmazon:\nHEALTHY\n\nWhatsApp:\nHEALTHY\n\nThe entire application must not become unavailable merely because one provider is down.\n\nSimilarly:\n\nWhatsApp unavailable\n≠\norders unavailable.\n\nProvider inventory readback unavailable\n≠\nCentral Inventory corrupted.\n\nMongo legacy unavailable\n≠\nPostgreSQL Central Inventory unavailable.\n\nUse dependency isolation.\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 42,
+      "title": "UI TRUTHFULNESS UNDER FAILURE",
+      "sourceStartLine": 1596,
+      "sourceEndLine": 1631,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 42 — UI TRUTHFULNESS UNDER FAILURE\n=======================================\n\nFor every screen distinguish:\n\nLOADING\nEMPTY\nAVAILABLE\nSTALE\nBLOCKED\nUNAVAILABLE\nFAILED\nUNKNOWN\nRECONCILIATION_REQUIRED\n\nNever convert:\n\ndatabase failure\ninto empty table.\n\nNever convert:\n\nprovider forbidden\ninto “0 locations”.\n\nNever convert:\n\ntimeout\ninto success.\n\nNever convert:\n\nunknown remote state\ninto failed.\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 43,
+      "title": "SECURITY + PERFORMANCE REGRESSION SUITE",
+      "sourceStartLine": 1632,
+      "sourceEndLine": 1666,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 43 — SECURITY + PERFORMANCE REGRESSION SUITE\n=================================================\n\nCreate permanent tests for:\n\nTENANT_A → TENANT_B\nROLE_A → ADMIN_OPERATION\nDOUBLE_ORDER\nDOUBLE_RESERVATION\nDOUBLE_RETURN\nDOUBLE_NOTIFICATION\nDOUBLE_PUBLISH\nPROVIDER_TIMEOUT\nPROVIDER_429\nPROVIDER_500\nWORKER_CRASH\nDATABASE_CRASH\nPOOL_EXHAUSTION\nLARGE_UPLOAD\nMALFORMED_XML\nMALFORMED_XLSX\nLARGE_QUERY\nLARGE_EXPORT\nWEBHOOK_REPLAY\nWEBHOOK_FLOOD\nSESSION_EXPIRE\nSESSION_REUSE\nSSRF_ATTEMPT\nPATH_TRAVERSAL\nXSS_ATTEMPT\nRESOURCE_EXHAUSTION\nSTALE_PROVIDER_READ\nREMOTE_SUCCESS_LOCAL_FAILURE\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 44,
+      "title": "PRODUCTION SECURITY BASELINE",
+      "sourceStartLine": 1667,
+      "sourceEndLine": 1685,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 44 — PRODUCTION SECURITY BASELINE\n======================================\n\nBefore final approval verify:\n\n* no known critical/high application vulnerability remains unexplained\n* no secret exposure path is known\n* no tenant breakout path is known\n* no arbitrary provider URL path exists\n* no unsafe direct inventory writer exists\n* no unsafe retry of uncertain mutations exists\n* no unbounded request body exists\n* no unbounded upload exists\n* no unbounded queue exists\n* no infinite retry exists\n* no unrestricted expensive admin endpoint exists\n* no security decision exists only in frontend code\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 45,
+      "title": "PERFORMANCE BASELINE",
+      "sourceStartLine": 1686,
+      "sourceEndLine": 1714,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 45 — PERFORMANCE BASELINE\n==============================\n\nEstablish measurable targets for:\n\nAPI p95\nAPI p99\norder ingestion\nreservation\ninventory query\npublication\nreadback\nreconciliation\nWhatsApp enqueue\noperations dashboard load\n\nCreate a baseline report.\n\nNever claim “zero lag”.\n\nInstead report:\n\nTARGET\nOBSERVED\nLOAD\nENVIRONMENT\nLIMITATION\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 46,
+      "title": "FINAL PRODUCTION GATE",
+      "sourceStartLine": 1715,
+      "sourceEndLine": 1767,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 46 — FINAL PRODUCTION GATE\n===============================\n\nProduction cannot be approved merely because:\n\nbuild passes\ntypecheck passes\nunit tests pass\nfixture tests pass\n\nRequire:\n\nsecurity evidence\nperformance evidence\nfailure evidence\nreal provider evidence\nstaging evidence\ndeployment evidence\nrecovery evidence\n\nRequired final statuses:\n\nSECURITY\nPASS / BLOCKED\n\nPERFORMANCE\nPASS / BLOCKED\n\nRELIABILITY\nPASS / BLOCKED\n\nDATA INTEGRITY\nPASS / BLOCKED\n\nTENANT ISOLATION\nPASS / BLOCKED\n\nPROVIDER RESILIENCE\nPASS / BLOCKED\n\nQUEUE RESILIENCE\nPASS / BLOCKED\n\nDISASTER RECOVERY\nPASS / BLOCKED\n\nOBSERVABILITY\nPASS / BLOCKED\n\nDEPLOYMENT\nPASS / BLOCKED\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 47,
+      "title": "REQUIRED REPORTS",
+      "sourceStartLine": 1768,
+      "sourceEndLine": 1787,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 47 — REQUIRED REPORTS\n==========================\n\nCreate:\n\ndocs/PRODUCTION_SECURITY_HARDENING_REPORT.md\ndocs/PERFORMANCE_BASELINE_REPORT.md\ndocs/LOAD_TEST_REPORT.md\ndocs/FAILURE_INJECTION_REPORT.md\ndocs/CHAOS_RECOVERY_REPORT.md\ndocs/TENANT_ISOLATION_REPORT.md\ndocs/API_SECURITY_MATRIX.md\ndocs/PROVIDER_RESILIENCE_MATRIX.md\ndocs/DATABASE_PERFORMANCE_REPORT.md\ndocs/QUEUE_RELIABILITY_REPORT.md\ndocs/DISASTER_RECOVERY_REPORT.md\ndocs/DEPLOYMENT_RESILIENCE_REPORT.md\ndocs/PRODUCTION_HARDENING_RELEASE_GATE.md\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 48,
+      "title": "EVERY CHANGE MUST BE EVIDENCE-BACKED",
+      "sourceStartLine": 1788,
+      "sourceEndLine": 1824,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 48 — EVERY CHANGE MUST BE EVIDENCE-BACKED\n==============================================\n\nFor every repair record:\n\nproblem\nroot cause\nsource file\nfunction/route\ndatabase object\nchange\nwhy the change is safe\ntest\nfailure injection\nsecurity impact\nperformance impact\nregression result\n\nDo not report:\n\n“fixed”\n\nwithout evidence.\n\nUse:\n\nIMPLEMENTED\nTESTED\nSTRESS-TESTED\nSECURITY-TESTED\nFAILURE-TESTED\nREAL-ENVIRONMENT-VERIFIED\nSTAGING-VERIFIED\n\nas separate states.\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 49,
+      "title": "ABSOLUTE RULES",
+      "sourceStartLine": 1825,
+      "sourceEndLine": 1860,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 49 — ABSOLUTE RULES\n========================\n\nNEVER:\n\ndisable TLS verification\nadd fake provider success\nadd fake inventory\nadd fake locations\nweaken authentication\nweaken authorization\nremove tenant checks\nremove signature validation\ndisable rate limits\nremove timeouts\nallow infinite retry\nblindly retry unknown provider mutations\nhide provider failure\nhide queue backlog\nhide reconciliation mismatches\nconvert errors to empty data\nuse frontend-only authorization\nstore secrets in browser persistence unnecessarily\nlog secrets\nreturn secrets to frontend\nperform unbounded Promise.all\nperform unbounded pagination\nhold DB transactions while waiting indefinitely for providers\nmake Central Inventory dependent on WhatsApp\nmake all marketplace providers dependent on one provider\nallow one dependency outage to collapse the whole service\nrewrite historical inventory/events automatically\ndelete audit evidence\nchange tests only to make them pass\n\n============================================================",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    },
+    {
+      "number": 50,
+      "title": "FINAL ENGINEERING QUESTION",
+      "sourceStartLine": 1861,
+      "sourceEndLine": 1936,
+      "completion": "NOT_PROVEN",
+      "originalText": "PART 50 — FINAL ENGINEERING QUESTION\n====================================\n\nAt the end, answer this:\n\nCan Agon continue operating safely when:\n\n* one marketplace is unavailable?\n* multiple marketplaces fail simultaneously?\n* provider response latency increases 20x?\n* provider returns 429 for 20 minutes?\n* database connections are exhausted?\n* one worker crashes?\n* two workers race?\n* webhook delivery is duplicated?\n* webhook delivery is missing?\n* polling overlaps webhook?\n* provider accepts a mutation but the response is lost?\n* provider readback disagrees?\n* WhatsApp goes down?\n* Mongo goes down?\n* PostgreSQL becomes slow?\n* a large Excel workbook is uploaded?\n* a malicious file is uploaded?\n* an attacker changes tenant IDs?\n* an attacker changes object IDs?\n* a session expires during a mutation?\n* a user double-clicks a destructive action?\n* deployment restarts during processing?\n* database restore occurs?\n* queue backlog becomes very large?\n\nFor each answer provide:\n\nEXPECTED\nCURRENT\nEVIDENCE\nREMAINING RISK\nRECOMMENDED CONTROL\n\nFinal requirement:\n\nDo not claim that the system cannot fail.\n\nProve that failures are:\nDETECTED\nBOUNDED\nISOLATED\nAUDITABLE\nRECOVERABLE\nOR EXPLICITLY RECONCILABLE\n\nThe production objective is:\n\nA failure may interrupt a capability.\n\nA failure must NOT silently corrupt business truth.\n\nA security attack may be rejected.\n\nA provider may become unavailable.\n\nA worker may crash.\n\nA network may fail.\n\nA database may restart.\n\nBut the platform must preserve:\ninventory integrity\norder integrity\ntenant isolation\nauditability\nrecovery\nand truthful operator state.\n",
+      "evidenceAssessment": "Pending requirement-by-requirement assessment; focused passing tests cannot establish this whole part."
+    }
+  ]
+}

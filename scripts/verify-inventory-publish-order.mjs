@@ -26,7 +26,12 @@ try {
   await db.query("INSERT INTO ci_channel_account(id,tenant_id,platform,external_account_id,status,encrypted_credentials,credential_iv,credential_tag) VALUES($1,$2,'shopify','race-test.myshopify.com','active',$3,$4,$5)", [account, tenant, credentials.encrypted, credentials.iv, credentials.tag]);
   await db.query("INSERT INTO ci_channel_mapping(id,tenant_id,account_id,master_sku_id,external_sku,listing_id,external_location_id,internal_location_id,active) VALUES($1,$2,$3,$4,'RACE-SKU','gid://shopify/InventoryItem/1','gid://shopify/Location/1',$5,true)", [mapping, tenant, account, sku, location]);
   const base = { tenantId: tenant, masterSkuId: sku, locationId: location, source: 'test' };
-  await applyInventoryEvent({ ...base, eventKey: 'opening', eventType: 'count', delta_on_hand: 500 });
+  const firstEvent=await applyInventoryEvent({ ...base, eventKey: 'opening', eventType: 'count', delta_on_hand: 500 });
+  const taskForEvent=async eventId=>{
+    const claimed=await db.query(`UPDATE ci_outbox SET status='processing',attempts=attempts+1,lease_until=now()+interval '2 minutes'
+      WHERE tenant_id=$1 AND task_type='publish_stock' AND payload->>'eventId'=$2 AND status IN ('pending','retry') RETURNING *`,[tenant,eventId]);
+    assert.equal(claimed.rowCount,1,'Each publication needs a durable claimed outbox task');return claimed.rows[0];
+  };
   const fetcher = async (_url, options) => {
     const request = JSON.parse(options.body);
     if (request.query.startsWith('query')) return { ok: true, status: 200, json: async () => ({ data: { inventoryItem: { inventoryLevels: { nodes: [{ location: { id: 'gid://shopify/Location/1' }, quantities: [{ name: 'available', quantity: remote }] }] } } } }) };
@@ -36,11 +41,10 @@ try {
     remote = quantity;
     return { ok: true, status: 200, json: async () => ({ data: { inventorySetQuantities: { userErrors: [] } } }) };
   };
-  const task = eventId => ({ tenant_id: tenant, account_id: account, mapping_id: mapping, payload: { eventId } });
-  const older = publishStockTask(task('opening'),{fetcher});
+  const older = publishStockTask(await taskForEvent(firstEvent.eventId),{fetcher});
   await firstMutation;
-  await applyInventoryEvent({ ...base, eventKey: 'sale-five', eventType: 'reserve', delta_reserved_order: 5, reservation: { action: 'reserve', orderId: 'ORDER-1', lineId: 'LINE-1', quantity: 5 } });
-  const newer = publishStockTask(task('sale-five'),{fetcher});
+  const secondEvent=await applyInventoryEvent({ ...base, eventKey: 'sale-five', eventType: 'reserve', delta_reserved_order: 5, reservation: { action: 'reserve', orderId: 'ORDER-1', lineId: 'LINE-1', quantity: 5 } });
+  const newer = publishStockTask(await taskForEvent(secondEvent.eventId),{fetcher});
   releaseFirst();
   await Promise.all([older, newer]);
   assert.deepEqual(mutations.map(x => x.quantity), [500, 495]);
@@ -56,7 +60,8 @@ try {
   assert.equal(drift.mismatched, 1);
   const repair = await db.query("SELECT id FROM ci_outbox WHERE tenant_id=$1 AND mapping_id=$2 AND payload->>'source'='shopify_reconcile' ORDER BY id DESC LIMIT 1", [tenant, mapping]);
   assert.equal(repair.rowCount, 1);
-  await publishStockTask(task('reconcile'),{fetcher});
+  const repairTask=(await db.query("UPDATE ci_outbox SET status='processing',attempts=attempts+1,lease_until=now()+interval '2 minutes' WHERE tenant_id=$1 AND id=$2 RETURNING *",[tenant,repair.rows[0].id])).rows[0];
+  await publishStockTask(repairTask,{fetcher});
   assert.equal(remote, 495);
   console.log('PASS inventory publication order and Shopify readback: overlapping sale ends at 495 and drift is corrected');
 } finally {

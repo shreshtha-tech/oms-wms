@@ -1,6 +1,5 @@
 import { useRequestFailure } from '../lib/requestFailures';
 import RequestErrorState from '../components/RequestErrorState';
-import MongoStatusBanner from '../components/MongoStatusBanner';
 import { useState, useEffect, ReactNode } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, X, LogOut, User, Search, Maximize2, Flag, Download, MapPin, Asterisk } from 'lucide-react';
@@ -81,6 +80,16 @@ export default function Shell({
   const [activityOpen, setActivityOpen] = useState(false);
   const [passwords, setPasswords] = useState({ old: '', next: '', confirm: '' });
   const [passwordError, setPasswordError] = useState('');
+  const [signOutError, setSignOutError] = useState('');
+  const [signingOut, setSigningOut] = useState(false);
+  const signOut = async () => {
+    if (signingOut) return;
+    setSigningOut(true);
+    setSignOutError('');
+    try { await logout(); nav('/'); }
+    catch (error) { setSignOutError(error instanceof Error ? error.message : 'Sign-out outcome is unknown. Check your session before retrying.'); }
+    finally { setSigningOut(false); }
+  };
 
   const requestedScreens = openScreens && openScreens.length ? openScreens : [{ label: breadcrumb.split('>').pop()!.trim(), to: '#' }];
   // Each persistent route frame owns its tab identity.  Do not infer the
@@ -246,8 +255,9 @@ export default function Shell({
                   <button onClick={() => { setUserMenu(false); nav('/app/profile'); }} className="h-[34px] border bg-white px-[12px] text-sm">Profile</button>
                   <button title="Change Password" onClick={() => { setUserMenu(false); setPasswords({ old: '', next: '', confirm: '' }); setPasswordError(''); setPasswordOpen(true); }} className="h-[34px] w-[40px] border bg-white">⌘</button>
                   <button title="User Activity Log" onClick={() => { setUserMenu(false); setActivityOpen(true); }} className="h-[34px] w-[40px] border bg-white">▦</button>
-                  <button onClick={() => { void logout().finally(() => nav('/')); }} className="ml-auto flex h-[34px] items-center gap-1 border bg-white px-[12px] text-sm"><LogOut size={14} /> Sign out</button>
+                  <button onClick={() => void signOut()} disabled={signingOut} className="ml-auto flex h-[34px] items-center gap-1 border bg-white px-[12px] text-sm"><LogOut size={14} /> {signingOut ? 'Signing out…' : 'Sign out'}</button>
                 </div>
+                {signOutError && <div role="alert" className="px-3 pb-2 text-xs text-rose-700">{signOutError}</div>}
               </div>
             )}
           </div>
@@ -278,7 +288,7 @@ export default function Shell({
 
         <div className="flex min-h-0 min-w-0 flex-1 flex-col">
           {/* The LIVE module runs inside an iframe: fixed dialogs are bounded by the module viewport and cannot cover shell navigation. */}
-          <main className="relative min-h-0 flex-1 overflow-y-auto p-4" style={{ transform: 'translateZ(0)' }}><MongoStatusBanner />{requestFailure && <RequestErrorState error={requestFailure.error} onRetry={() => { void requestFailure.retry().then(() => window.dispatchEvent(new Event('api-recovered'))).catch(() => {}); }} />}<div hidden={!!requestFailure}>{children}</div></main>
+          <main className="relative min-h-0 flex-1 overflow-y-auto p-4" style={{ transform: 'translateZ(0)' }}>{requestFailure && <RequestErrorState error={requestFailure.error} onRetry={() => { void requestFailure.retry().then(() => window.dispatchEvent(new Event('api-recovered'))).catch(() => {}); }} />}<div hidden={!!requestFailure}>{children}</div></main>
         </div>
       </div>
       <footer className="ml-[50px] flex h-[19px] shrink-0 items-center bg-white px-[15px] text-[11px] text-[#444]">

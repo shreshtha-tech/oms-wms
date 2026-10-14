@@ -37,9 +37,9 @@ export function connectionReadiness(account, runtime = {}) {
     orders = !verified
       ? item('blocked', 'Verify Shopify access', 'The current provider authorization is not verified.')
       : orderEnabled && webhookReady && webhookAt
-        ? item('live', 'Order webhook delivery confirmed', workerHealthy ? 'Signed order events are accepted; the one-minute API poll is available for recovery.' : 'Signed order events are accepted, but the recovery poll worker is offline or stale.', webhookAt || orderCursorAt)
+        ? item('partial', 'Signed order webhook delivery observed', workerHealthy ? 'Signed order events were accepted. The Shopify poll currently records observations and does not recover missed reservation work.' : 'Signed order events were accepted, but the inventory worker is offline or stale; polling does not recover missed reservation work.', webhookAt || orderCursorAt)
         : orderEnabled && workerHealthy && isFresh(orderCursorAt, 20)
-          ? item('live', 'Order polling active', 'The worker has completed a recent Shopify order read.', orderCursorAt)
+          ? item('partial', 'Order observation poll completed', 'The worker completed a recent Shopify order read, but this poll does not enqueue reservation work for missed webhooks.', orderCursorAt)
           : orderEnabled && webhookReady
             ? item('starting', 'Order webhook registered; delivery unconfirmed', 'Registration is recorded, but no accepted signed order callback has been confirmed.')
           : orderEnabled && workerHealthy
@@ -62,7 +62,7 @@ export function connectionReadiness(account, runtime = {}) {
       : item('blocked', 'Stock publishing remains gated', 'Credentials alone do not publish stock. Physical counts, exact SKU/location approval, activation, and a healthy worker are required.', runtime.lastInventoryWriteAt);
   } else if (platform === 'woocommerce') {
     orders = verified && settings.orderObservationEnabled === true && webhookReady && webhookAt
-      ? item('live', 'Signed order webhook delivery confirmed', workerHealthy ? 'Read-only order events are accepted; the inventory worker is healthy for stock processing.' : 'Read-only order events are accepted directly; inventory reservation and stock tasks need the worker.', webhookAt)
+      ? item('partial', 'Signed order webhook delivery observed', workerHealthy ? 'Signed order events were accepted and the inventory worker is healthy; general missed-event recovery polling is not implemented.' : 'Signed order events were accepted, but the inventory worker is offline or stale and general recovery polling is not implemented.', webhookAt)
       : verified && settings.orderObservationEnabled === true && webhookReady
         ? item('starting', 'Order webhook registered; delivery unconfirmed', 'Registration is recorded, but no accepted signed order callback has been confirmed.')
       : item(verified ? 'setup_required' : 'blocked', verified ? 'Order feed not active' : 'Verify WooCommerce access', settings.orderFeedSetupError || 'Register the signed WooCommerce order webhooks.', webhookAt);
@@ -85,7 +85,15 @@ export function connectionReadiness(account, runtime = {}) {
       : item('setup_required', 'Read-only observation not enabled', 'Verify the SP-API account, then enable its scheduled observation.');
     inventoryWrite = item('blocked', 'Activation is not available', 'An Amazon publish adapter exists, but the connection activation flow currently permits only Shopify and WooCommerce.');
   } else if (platform === 'flipkart' || platform === 'snapdeal' || platform === 'zoho_pos') {
-    orders = item('unsupported', 'No automatic order feed', 'The current connector verifies a provider sample; it does not ingest live orders.');
+    orders = platform==='flipkart' && orderEnabled
+      ? settings.flipkartOrderError
+        ? item('blocked', 'Flipkart retrieval incomplete', settings.flipkartOrderError, settings.lastFlipkartOrderObservationAt)
+      : settings.flipkartHistoryCompletedAt && settings.flipkartCancellationHistoryCompletedAt
+          ? item('partial', 'Flipkart history scan completed', workerHealthy && isFresh(settings.lastFlipkartOrderObservationAt,20) ? 'Seller-fulfilled order-date and cancellation-date history was scanned for the configured range and recent observations are fresh. Stock reservations and Flipkart Advantage coverage require separate contracts.' : 'Historical scans completed, but recent polling or worker health is unconfirmed. Start the inventory worker and inspect the last successful observation.', settings.lastFlipkartOrderObservationAt)
+          : item('starting', 'Flipkart historical retrieval in progress', workerHealthy ? `Scanning order and cancellation history backwards to ${settings.flipkartHistoryFrom || '1970-01-01'}. Progress is saved only after a complete date window.` : 'Start the inventory worker to retrieve queued Flipkart history.', settings.lastFlipkartOrderObservationAt)
+      : platform==='flipkart'
+        ? item('setup_required', 'Flipkart order retrieval not enabled', 'Enable historical order retrieval from Manage Connection.')
+        : item('unsupported', 'No automatic order feed', 'The current connector verifies a provider sample; it does not ingest live orders.');
     returns = item('unsupported', 'No automatic returns feed', 'No return-event connector is implemented for this platform.');
     inventoryRead = settings.observationEnabled === true && verified && isFresh(runtime.lastObservationAt, 20)
       ? item('partial', 'Sample observation only', 'The scheduled job rechecked the verified sample; it does not reconcile the full SKU/location catalog.', runtime.lastObservationAt)
@@ -110,11 +118,47 @@ export function connectionReadiness(account, runtime = {}) {
     inventoryWrite = item('blocked', 'No automatic stock publication', 'Partner authorization, a machine-readable stock contract, and a verified write/readback adapter are required.');
   }
 
-  return {
+  const readiness = {
     credentials: item(verified ? 'verified' : account.connection_state === 'token_expired' ? 'blocked' : 'not_verified', verified ? 'Provider credentials verified' : account.connection_state === 'token_expired' ? 'Provider authorization expired' : 'Provider credentials not verified', verified ? 'Identity and provider access were checked.' : 'Saving setup information is not provider authentication.', account.verified_at),
     orders,
     returns,
     inventoryRead,
     inventoryWrite,
+  };
+  const providerLocationObserved = Array.isArray(account.verification?.locations) && account.verification.locations.length > 0;
+  const webhookPlatform = ['shopify','woocommerce'].includes(platform);
+  const webhook = webhookPlatform
+    ? webhookAt && webhookReady && verified
+      ? item('partial','Signed order delivery observed','An accepted signed order callback was recorded; missed-event recovery is not yet proven.',webhookAt)
+      : item('setup_required','Signed order webhook unconfirmed','Registration and accepted order delivery must both be verified.',webhookAt)
+    : item('unverified','Webhook capability unverified','No provider-specific signed webhook contract and hosted delivery evidence are established.');
+  const polling = platform === 'shopify'
+    ? orderEnabled && workerHealthy && isFresh(orderCursorAt,20)
+      ? item('partial','Observation poll completed','Recent provider order observation does not recover missed reservation work.',orderCursorAt)
+      : item('setup_required','Observation poll not confirmed','A recent provider read is required; this poll still cannot replace webhook recovery.',orderCursorAt)
+    : item('unverified','Order recovery polling unverified','No complete provider-specific missed-order recovery poll is established.');
+  return {
+    ...readiness,
+    capabilities: {
+      AUTH: readiness.credentials,
+      IDENTITY: verified && account.external_account_id
+        ? item('partial','Account identity recorded','A credential probe and external account identifier are recorded; account ownership and full scope remain separate checks.',account.verified_at)
+        : item('unverified','Account identity unverified','No current provider identity evidence is recorded.'),
+      CATALOG: item('unverified','Catalog coverage unverified','Provider catalog discovery and complete SKU matching are not proven for this account.'),
+      LOCATION: providerLocationObserved
+        ? item('partial','Provider locations observed','Returned provider locations do not establish approved Central Inventory location mappings.',account.verified_at)
+        : item('unverified','Location contract unverified','No provider location read and approved internal mapping are established.'),
+      LISTING: item('unverified','Listing coverage unverified','Exact provider listing, pack and SKU mapping coverage is not proven.'),
+      ORDER_FEED: orders,
+      RETURN_FEED: returns,
+      CANCELLATION: item('unverified','Cancellation lifecycle unverified','Provider cancellation delivery, authorization and stock release are not proven end to end.'),
+      FULFILLMENT: item('unverified','Fulfillment lifecycle unverified','Package custody, provider shipment evidence and exact deduction are not proven end to end.'),
+      INVENTORY_READ: inventoryRead,
+      INVENTORY_WRITE: inventoryWrite,
+      INVENTORY_READBACK: item('unverified','Independent readback unverified','A successful read or publication task does not prove mapping-level post-write quantity reconciliation.'),
+      WEBHOOK: webhook,
+      POLLING: polling,
+      RECONCILIATION: item('unverified','Reconciliation unverified','No complete target, acknowledgement, independent readback and mismatch-repair cycle is proven.'),
+    },
   };
 }

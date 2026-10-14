@@ -1,6 +1,7 @@
 import { sendDatabaseUnavailable, cors, find, findOne, insert, updateAdminIfVersion, removeAdminIfVersion } from './mongo.js';
 import { currentUser } from './auth-session.js';
 import { channelRows, locations } from './catalogs.js';
+import { adminApiKeyView } from './admin-api-key-view.js';
 
 const USERS = 'user';
 const ROLES = 'role';
@@ -9,7 +10,7 @@ const PULLS = 'force-pull';
 const APIS = 'api-key';
 const AUDIT = 'audit';
 const storedKey='[stored]';
-const adminView=row=>({...row,version:row.version??0,...(row.type===APIS?{apiKey:row.apiKey?storedKey:''}:{})});
+const adminView=row=>row.type===APIS?adminApiKeyView(row):({...row,version:row.version??0});
 
 const now = () => new Date().toISOString();
 const typeRows = async (type) => find('admin_records', { type }, { sort: { id: 1 } });
@@ -48,6 +49,7 @@ export default async function handler(req, res) {
       return res.json(rows.map(adminView));
     }
     if (req.method === 'POST') {
+      if (!req.body || typeof req.body !== 'object' || Array.isArray(req.body)) return bad(res, 'An Admin record object is required');
       if (action === 'force-pull') {
         const { location, orders, addWhHo } = req.body;
         if (!location) return bad(res, 'Location is Mandatory');
@@ -56,7 +58,9 @@ export default async function handler(req, res) {
         if (orderList.length > 20) return bad(res, 'Max 20 order numbers are allowed');
         return res.status(501).json({ error: 'Order pull requires a configured channel integration.' });
       }
-      const { type, ...payload } = req.body;
+      const { type, id, ...payload } = req.body;
+      // Existing create forms send id: 0. Only the store allocates a real ID.
+      if (id !== undefined && id !== null && id !== 0 && id !== '') return res.status(400).json({ error: 'New Admin record identity is server allocated.' });
       if (![USERS, ROLES, IMPORTS, APIS].includes(type)) return bad(res, 'Unsupported Admin record type');
       if (type === USERS) {
         if (!payload.username || !payload.firstName || !payload.lastName || !payload.title) return bad(res, 'User Name, First Name, Last Name and Title are Mandatory');

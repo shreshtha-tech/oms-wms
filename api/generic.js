@@ -11,6 +11,7 @@ const isSkuGroupModule = (value) => String(value || '').trim().toLowerCase() ===
 const isSkuCompanyLinkModule = (value) => String(value || '').trim().toLowerCase() === 'sku-company-link';
 const isOrganizationModule = (value) => String(value || '').trim().toLowerCase() === 'org-hierarchy';
 const isLocationModule = (value) => String(value || '').trim().toLowerCase() === 'location';
+const isSkuImportModule = (value) => String(value || '').trim().toLowerCase() === 'sku-import';
 const voucherUnavailable = 'Voucher issuance is unavailable until unique codes, eligibility, redemption, audit, and permissions are verified.';
 const otherMasterUnavailable = 'Other Masters changes are unavailable until each catalog\'s fields, references, validation, permissions, and consumers are verified.';
 const salesPromotionUnavailable = 'Sales Promotion changes are unavailable until the POS rule, eligibility, discount, audit, and approval contracts are verified.';
@@ -18,7 +19,7 @@ const skuGroupUnavailable = 'SKU Group changes must use the dedicated SKU Group 
 const skuCompanyLinkUnavailable = 'SKU Company Link changes must use the dedicated API so company, location, SKU, and audit validation is applied.';
 const organizationUnavailable = 'Organization Hierarchy changes must use the dedicated API so required fields, parent validation, and cycle checks are applied.';
 const locationUnavailable = 'Location changes must use the dedicated API so required fields and location-code checks are applied.';
-const blockedMessage = (module) => String(module || '').trim().toLowerCase() === 'tax-group' ? 'Tax Group changes must use the dedicated API so code components, validation and deletion guards are applied.' : String(module || '').trim().toLowerCase() === 'tax-category' ? 'Tax Category changes must use the dedicated API so HSN/SAC uniqueness and SKU/Tax Application reference guards are applied.' : String(module || '').trim().toLowerCase() === 'customer-group' ? 'Customer Group changes must use the dedicated API so membership, assignment and deletion guards are applied.' : isVoucherModule(module) ? voucherUnavailable : isOtherMasterModule(module) ? otherMasterUnavailable : isSalesPromotionModule(module) ? salesPromotionUnavailable : isSkuGroupModule(module) ? skuGroupUnavailable : isSkuCompanyLinkModule(module) ? skuCompanyLinkUnavailable : isOrganizationModule(module) ? organizationUnavailable : isLocationModule(module) ? locationUnavailable : '';
+const blockedMessage = (module) => String(module || '').trim().toLowerCase() === 'tax-group' ? 'Tax Group changes must use the dedicated API so code components, validation and deletion guards are applied.' : String(module || '').trim().toLowerCase() === 'tax-category' ? 'Tax Category changes must use the dedicated API so HSN/SAC uniqueness and SKU/Tax Application reference guards are applied.' : String(module || '').trim().toLowerCase() === 'customer-group' ? 'Customer Group changes must use the dedicated API so membership, assignment and deletion guards are applied.' : isVoucherModule(module) ? voucherUnavailable : isOtherMasterModule(module) ? otherMasterUnavailable : isSalesPromotionModule(module) ? salesPromotionUnavailable : isSkuGroupModule(module) ? skuGroupUnavailable : isSkuCompanyLinkModule(module) ? skuCompanyLinkUnavailable : isOrganizationModule(module) ? organizationUnavailable : isLocationModule(module) ? locationUnavailable : isSkuImportModule(module) ? 'SKU import records require server-owned file processing; generic writes cannot claim a completed import.' : '';
 
 export default async function handler(req, res) {
   if (cors(req, res)) return;
@@ -60,5 +61,5 @@ export default async function handler(req, res) {
     }
     res.status(405).json({ error: 'Method not allowed' });
   } catch (err) {
-    if (sendDatabaseUnavailable(res, err)) return; console.error('API error:', { name: err?.name, code: err?.code }); res.status(500).json({ error: err.message }); }
+    if (sendDatabaseUnavailable(res, err)) return; console.error('API error:', { name: err?.name, code: err?.code }); res.status(500).json({ error: 'Master data operation failed.' }); }
 }

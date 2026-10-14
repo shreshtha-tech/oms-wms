@@ -16,6 +16,9 @@ import { currentUser } from './auth-session.js';
 import { persistenceRequired } from './storage-policy.js';
 import { resolveMongoConfiguration } from './mongo-config.js';
 import { mongoHealthPayload } from './mongo-health.js';
+import { readMongoRows, readMongoOne, checkMongoReadBudget, mongoDocumentBytes, mongoResultLimit } from './mongo-read.js';
+import { withMongoSession } from './mongo-session.js';
+import { validateMongoUpdate, updateMongoDocuments, updateMongoQuery, mongoMutationBudget } from './mongo-mutation.js';
 
 const URI = process.env.MONGODB_URI || '';
 const mongoConfiguration = resolveMongoConfiguration();
@@ -58,9 +61,117 @@ async function getDb() {
 // Persistent domain effects never use the optional memory store.
 export async function mongoDomainTransaction(operation) {
   const db = await getDb();
-  const session = mongoClient.startSession();
-  try { return await session.withTransaction(() => operation(db, session)); }
-  finally { await session.endSession(); }
+  return connection.run(() => withMongoSession(mongoClient, session => operation(db, session)));
+}
+export async function updateWmsZonePickers(id, pickers, action, modifiedBy = 'unknown') {
+  if (!Number.isSafeInteger(id) || id <= 0 || !Array.isArray(pickers) || pickers.length < 1 || pickers.length > 200 ||
+      pickers.some(picker => typeof picker !== 'string' || !picker.trim() || picker.length > 100) ||
+      !['link-pickers', 'unlink-pickers'].includes(action)) {
+    throw Object.assign(new Error('Invalid zone-picker mutation.'), { code: 'DATABASE_MUTATION_INVALID', status: 400, statusCode: 400 });
+  }
+  await ensureReady();
+  const unique = [...new Set(pickers.map(picker => picker.trim()))];
+  const audit = { modified_by: String(modifiedBy).slice(0, 100), modified_date: new Date().toISOString() };
+  if (mode === 'memory') {
+    const row = mem.generic_records.find(record => record.id === id && record.module === 'wms-zone');
+    if (!row) return null;
+    if (row.linked_pickers != null && !Array.isArray(row.linked_pickers)) throw Object.assign(new Error('Legacy zone picker data requires migration.'), { code: 'WMS_ZONE_PICKERS_LEGACY', status: 409, statusCode: 409 });
+    const current = row.linked_pickers || [];
+    const next = action === 'link-pickers' ? [...current, ...unique.filter(picker => !current.includes(picker))] : current.filter(picker => !unique.includes(picker));
+    if (action === 'link-pickers' && next.length > 1000) throw Object.assign(new Error('Zone picker link limit exceeded.'), { code: 'WMS_ZONE_PICKERS_LIMIT', status: 413, statusCode: 413 });
+    row.linked_pickers = next;
+    Object.assign(row, audit);
+    return { ...row, linked_pickers: [...row.linked_pickers] };
+  }
+  const collection = (await getDb()).collection('generic_records');
+  const operation = action === 'link-pickers'
+    ? { $addToSet: { linked_pickers: { $each: unique } }, $set: audit }
+    : { $pull: { linked_pickers: { $in: unique } }, $set: audit };
+  const currentArray = { $cond: [{ $isArray: '$linked_pickers' }, '$linked_pickers', []] };
+  const capacityFilter = action === 'link-pickers' ? { $expr: { $lte: [
+    { $add: [{ $size: currentArray }, { $size: { $setDifference: [{ $literal: unique }, currentArray] } }] },
+    1000,
+  ] } } : {};
+  return connection.run(() => collection.findOneAndUpdate(
+    { id, module: 'wms-zone', $or: [{ linked_pickers: { $exists: false } }, { linked_pickers: { $type: 'array' } }], ...capacityFilter }, operation,
+    { returnDocument: 'after', includeResultMetadata: false, timeoutMS: 15000, maxTimeMS: 15000 },
+  ));
+}
+export async function bulkLinkWmsZonePickers(links, modifiedBy = 'unknown') {
+  const invalid = (message, code = 'WMS_ZONE_BULK_INVALID', statusCode = 400) => Object.assign(new Error(message), { code, status: statusCode, statusCode });
+  if (!Array.isArray(links) || links.length < 1 || links.length > 200) throw invalid('Invalid zone-picker batch.');
+  const grouped = new Map();
+  const seen = new Set();
+  for (const link of links) {
+    if (!link || !Number.isSafeInteger(link.id) || link.id <= 0 || typeof link.zone !== 'string' || !link.zone.trim() || link.zone.length > 100 ||
+        typeof link.picker !== 'string' || !link.picker.trim() || link.picker.length > 100) throw invalid('Invalid zone-picker batch.');
+    const zone = link.zone.trim(), picker = link.picker.trim();
+    const key = JSON.stringify([link.id, picker]);
+    if (seen.has(key)) throw invalid('Duplicate zone-picker link.');
+    seen.add(key);
+    const group = grouped.get(link.id) || { id: link.id, zone, pickers: [] };
+    if (group.zone !== zone) throw invalid('Conflicting zone identity.');
+    group.pickers.push(picker);
+    grouped.set(link.id, group);
+  }
+  const groups = [...grouped.values()];
+  const audit = { modified_by: String(modifiedBy).slice(0, 100), modified_date: new Date().toISOString() };
+  await ensureReady();
+  const check = (records) => {
+    const byId = new Map(records.map(record => [record.id, record]));
+    if (records.length !== groups.length || byId.size !== groups.length) throw invalid('Zone was not found or is ambiguous.', 'WMS_ZONE_BULK_CONFLICT', 409);
+    for (const group of groups) {
+      const row = byId.get(group.id);
+      if (!row || row.module !== 'wms-zone' || String(row.zone_code || row.code || '') !== group.zone) throw invalid('Zone identity changed.', 'WMS_ZONE_BULK_CONFLICT', 409);
+      if (Object.hasOwn(row, 'linked_pickers') && !Array.isArray(row.linked_pickers)) throw invalid('Legacy zone picker data requires migration.', 'WMS_ZONE_PICKERS_LEGACY', 409);
+      const current = row.linked_pickers || [];
+      if (current.length + group.pickers.filter(picker => !current.includes(picker)).length > 1000) throw invalid('Zone picker link limit exceeded.', 'WMS_ZONE_PICKERS_LIMIT', 413);
+    }
+    return byId;
+  };
+  if (mode === 'memory') {
+    const byId = check(mem.generic_records.filter(record => grouped.has(record.id) && record.module === 'wms-zone'));
+    for (const group of groups) {
+      const row = byId.get(group.id);
+      const current = row.linked_pickers || [];
+      row.linked_pickers = [...current, ...group.pickers.filter(picker => !current.includes(picker))];
+      Object.assign(row, audit);
+    }
+    return { zones: groups.length, links: links.length };
+  }
+  return mongoDomainTransaction(async (db, session) => {
+    const collection = db.collection('generic_records');
+    check(await readMongoRows(collection, { id: { $in: groups.map(group => group.id) }, module: 'wms-zone' }, { session }));
+    for (const group of groups) {
+      const result = await collection.updateOne({ id: group.id, module: 'wms-zone' },
+        { $addToSet: { linked_pickers: { $each: group.pickers } }, $set: audit }, { session });
+      if (result.matchedCount !== 1) throw invalid('Zone identity changed.', 'WMS_ZONE_BULK_CONFLICT', 409);
+    }
+    return { zones: groups.length, links: links.length };
+  });
+}
+export async function findWmsPickerCandidates(codes) {
+  if (!Array.isArray(codes) || codes.length < 1 || codes.length > 200 || codes.some(code => typeof code !== 'string' || !code.trim() || code.length > 100)) {
+    throw Object.assign(new Error('Invalid picker lookup.'), { code: 'WMS_ZONE_BULK_INVALID', status: 400, statusCode: 400 });
+  }
+  const wanted = [...new Set(codes.map(code => code.trim()))];
+  await ensureReady();
+  if (mode === 'memory') {
+    const rows = mem.generic_records.filter(row => row.module === 'user-enquiry' && wanted.includes(row.code));
+    if (rows.length > 1000) throw mongoResultLimit();
+    let bytes = 0;
+    for (const row of rows) { bytes += mongoDocumentBytes(row); checkMongoReadBudget(0, bytes); }
+    return rows.map(row => ({ ...row }));
+  }
+  return connection.run(async () => {
+    const rows = await readMongoRows((await getDb()).collection('generic_records'), { module: 'user-enquiry', code: { $in: wanted } }, { limit: 1001 });
+    if (rows.length > 1000) throw mongoResultLimit();
+    return rows;
+  });
+}
+export async function mongoIndexSpecifications(collection) {
+  const db = await getDb();
+  return connection.run(() => db.collection(collection).listIndexes({ maxTimeMS: 15000, timeoutMS: 15000 }).toArray());
 }
 async function ensureReady() {
   if (connection) { await getDb(); return; }
@@ -69,12 +180,12 @@ async function ensureReady() {
 }
 
 async function nextId(db, c) {
-  const top = await db.collection(c).find({}, { projection: { id: 1 } }).sort({ id: -1 }).limit(1).toArray();
-  await db.collection('_counters').updateOne({ _id: c }, { $max: { seq: Number(top[0]?.id) || 0 } }, { upsert: true });
+  const top = await db.collection(c).findOne({}, { projection: { id: 1 }, sort: { id: -1 }, timeoutMS: 15000, maxTimeMS: 15000 });
+  await db.collection('_counters').updateOne({ _id: c }, { $max: { seq: Number(top?.id) || 0 } }, { upsert: true, timeoutMS: 15000, maxTimeMS: 15000 });
   const r = await db.collection('_counters').findOneAndUpdate(
-    { _id: c }, { $inc: { seq: 1 } }, { upsert: true, returnDocument: 'after' }
+    { _id: c }, { $inc: { seq: 1 } }, { upsert: true, returnDocument: 'after', includeResultMetadata: false, timeoutMS: 15000, maxTimeMS: 15000 }
   );
-  const doc = r.value || r; // driver version differences
+  const doc = r; // Explicit document result for the installed Mongo driver.
   return doc.seq;
 }
 
@@ -110,10 +221,7 @@ async function findImpl(collection, query = {}, { sort, projection } = {}) {
   await ensureReady();
   if (mode === 'mongo') {
     const db = await getDb();
-    let cur = db.collection(collection).find(query);
-    if (sort) cur = cur.sort(sort);
-    if (projection) cur = cur.project(projection);
-    const docs = await cur.toArray();
+    const docs = await readMongoRows(db.collection(collection), query, { sort, projection });
     return docs.map(stripId);
   }
   let rows = mem[collection].filter((r) => matches(r, query));
@@ -121,6 +229,8 @@ async function findImpl(collection, query = {}, { sort, projection } = {}) {
     const [field, dir] = Object.entries(sort)[0];
     rows = [...rows].sort((a, b) => (a[field] > b[field] ? 1 : -1) * dir);
   }
+  checkMongoReadBudget(rows.length, 0);
+  let bytes = 0;
   return rows.map((r) => {
     const doc = { ...r };
     if (projection) {
@@ -131,13 +241,20 @@ async function findImpl(collection, query = {}, { sort, projection } = {}) {
         for (const [key, value] of Object.entries(projection)) if (value === 0) delete doc[key];
       }
     }
+    bytes += mongoDocumentBytes(doc);
+    checkMongoReadBudget(0, bytes);
     return doc;
   });
 }
 
 async function findOneImpl(collection, query = {}) {
-  const rows = await find(collection, query);
-  return rows[0] || null;
+  if (collection === 'products') collection = 'skus';
+  await ensureReady();
+  if (mode === 'mongo') return stripId(await readMongoOne((await getDb()).collection(collection), query));
+  const row = mem[collection].find(row => matches(row, query));
+  if (!row) return null;
+  checkMongoReadBudget(1, mongoDocumentBytes(row));
+  return { ...row };
 }
 
 async function ensureIndexImpl(collection, keys, options) {
@@ -147,6 +264,7 @@ async function ensureIndexImpl(collection, keys, options) {
 }
 
 async function insertImpl(collection, doc) {
+  if (doc?.id != null) throw Object.assign(new Error('New record identity is allocated by the data store.'), { code: 'DATABASE_MUTATION_INVALID', status: 400, statusCode: 400 });
   await ensureReady();
   if (collection === 'purchase_orders' && typeof doc.po_no === 'string') {
     if (mode === 'mongo') {
@@ -163,15 +281,13 @@ async function insertImpl(collection, doc) {
   if (mode === 'mongo') {
     const db = await getDb();
     const id = await nextId(db, collection);
-    const full = { id, ...doc };
-    if (full.id == null) full.id = id;
+    const full = { ...doc, id };
     await db.collection(collection).insertOne(full);
     return stripId(full);
   }
   if (collection === 'skus' && mem[collection].some(row => String(row.sku_code).toLowerCase() === String(doc.sku_code).toLowerCase())) throw Object.assign(new Error('SKU Code already exists'), { code: 11000 });
   const id = ++memSeq[collection];
-  const full = { id, ...doc };
-  if (full.id == null) full.id = id;
+  const full = { ...doc, id };
   mem[collection].push(full);
   return { ...full };
 }
@@ -219,9 +335,9 @@ async function updateVendorWithAuditImpl(id, fields, auditEntry) {
   if (mode === 'mongo') {
     const result = await (await getDb()).collection('vendors').findOneAndUpdate(
       { id, $or: [{ audit: { $type: 'array' } }, { audit: { $exists: false } }] },
-      { $set: changes, $push: { audit: auditEntry } }, { returnDocument: 'after' },
+      { $set: changes, $push: { audit: auditEntry } }, { returnDocument: 'after', includeResultMetadata: false, timeoutMS: 15000, maxTimeMS: 15000 },
     );
-    const row = result?.value || result;
+    const row = result;
     if (row?.id == null) throw Object.assign(new Error('Vendor is missing or audit history requires repair.'), { status: 409 });
     return stripId(row);
   }
@@ -236,17 +352,19 @@ async function updateVendorWithAuditImpl(id, fields, auditEntry) {
 
 // Update by matching numeric id(s). ids can be a single id or an array.
 async function updateImpl(collection, ids, fields) {
+  const list = validateMongoUpdate(ids, fields);
+  if (!list.length) return [];
   await ensureReady();
-  const list = Array.isArray(ids) ? ids : [ids];
   if (mode === 'mongo') {
     const db = await getDb();
-    await db.collection(collection).updateMany({ id: { $in: list } }, { $set: fields });
-    const docs = await db.collection(collection).find({ id: { $in: list } }).toArray();
+    const docs = await updateMongoDocuments(db.collection(collection), list, fields, mongoClient);
     return docs.map(stripId);
   }
-  const updated = [];
+  const selected = new Set(list);
+  const updated = mem[collection].filter(row => selected.has(row.id)).map(row => ({ ...row, ...fields }));
+  if (list.length > 1) checkMongoReadBudget(updated.length, updated.reduce((bytes, row) => bytes + mongoDocumentBytes(row), 0));
   mem[collection] = mem[collection].map((r) => {
-    if (list.includes(r.id)) { const n = { ...r, ...fields }; updated.push(n); return n; }
+    if (selected.has(r.id)) return { ...r, ...fields };
     return r;
   });
   return updated.map((r) => ({ ...r }));
@@ -255,6 +373,7 @@ async function updateImpl(collection, ids, fields) {
 // Atomically move a GRN between receipt states. A stale handler must not
 // replace a newer staged/committed request after a cross-database boundary.
 async function transitionGrnReceiptImpl(id, expected, fields) {
+  validateMongoUpdate(id, fields);
   await ensureReady();
   const optionalExpected = ['draft_revision', 'row_version', 'asn_no', 'inbound_no']
     .filter(field => Object.prototype.hasOwnProperty.call(expected, field));
@@ -269,9 +388,9 @@ async function transitionGrnReceiptImpl(id, expected, fields) {
       { id, status: expected.status ?? null,
         central_request_id: expected.central_request_id ?? null,
         central_receipt_status: expected.central_receipt_status ?? null, ...optionalQuery },
-      { $set: fields }, { returnDocument: 'after' },
+      { $set: fields }, { returnDocument: 'after', includeResultMetadata: false, timeoutMS: 15000, maxTimeMS: 15000 },
     );
-    const doc = result?.value || result;
+    const doc = result;
     return doc?.id == null ? null : stripId(doc);
   }
   const row = mem.grn.find(matchesExpected);
@@ -282,27 +401,31 @@ async function transitionGrnReceiptImpl(id, expected, fields) {
 
 // Update rows matching an arbitrary query (used e.g. by GRN -> PO close).
 async function updateWhereImpl(collection, query, fields) {
+  validateMongoUpdate([], fields);
   await ensureReady();
   if (mode === 'mongo') {
     const db = await getDb();
-    await db.collection(collection).updateMany(query, { $set: fields });
+    await updateMongoQuery(db.collection(collection), query, fields, mongoClient);
     return;
   }
+  const count = mem[collection].filter(row => matches(row, query)).length;
+  if (count > mongoMutationBudget.ids) throw Object.assign(new Error('Query update exceeds the supported batch size.'), { code: 'DATABASE_MUTATION_LIMIT', status: 413, statusCode: 413 });
   mem[collection] = mem[collection].map((r) => (matches(r, query) ? { ...r, ...fields } : r));
 }
 
 // Atomically attach an SKU only while a seller listing is still unmapped.
 // Missing and empty values are both treated as unmapped for legacy rows.
 async function claimUnmappedSkuLinkImpl(id, fields) {
+  validateMongoUpdate(id, fields);
   await ensureReady();
   if (mode === 'mongo') {
     const db = await getDb();
     const result = await db.collection('sku_channel_links').findOneAndUpdate(
       { id, eretail_sku: { $in: [null, ''] }, sku_code: { $in: [null, ''] } },
       { $set: fields },
-      { returnDocument: 'after' },
+      { returnDocument: 'after', includeResultMetadata: false, timeoutMS: 15000, maxTimeMS: 15000 },
     );
-    const doc = result?.value || result;
+    const doc = result;
     return doc?.id == null ? null : stripId(doc);
   }
   const row = mem.sku_channel_links.find((item) => item.id === id
@@ -383,22 +506,20 @@ async function saveTaxGroupImpl(id, fields, components) {
   };
   if (mode === 'mongo') {
     const db = await getDb();
-    const hello = await db.admin().command({ hello: 1 });
+    const hello = await db.admin().command({ hello: 1 }, { timeoutMS: 15000 });
     if (!hello.setName && hello.msg !== 'isdbgrid') throw Object.assign(new Error('Tax Group changes require transactional MongoDB storage.'), { statusCode: 503 });
-    const session = mongoClient.startSession();
-    try {
-      return await session.withTransaction(async () => {
+      return await withMongoSession(mongoClient, async session => {
         // Shared transaction-owned write serializes uniqueness and replacements
         // across processes; driver retries re-read all authoritative state.
         await db.collection('_counters').updateOne({ _id: 'tax_group_save_revision' }, { $inc: { seq: 1 } }, { upsert: true, session });
-        const groups = await db.collection('generic_records').find({ module: 'tax-group' }, { session }).toArray();
+        const groups = await readMongoRows(db.collection('generic_records'), { module: 'tax-group' }, { session });
         const current = groups.find(row => row.id === id);
-        const mappings = id == null ? [] : await db.collection('tax_group_codes').find({ group_id: id }, { session }).toArray();
-        const codes = await db.collection('tax_codes').find({}, { session }).toArray();
+        const mappings = id == null ? [] : await readMongoRows(db.collection('tax_group_codes'), { group_id: id }, { session });
+        const codes = await readMongoRows(db.collection('tax_codes'), {}, { session });
         validate(groups, current, mappings, codes);
         const allocate = async collection => {
-          const result = await db.collection('_counters').findOneAndUpdate({ _id: collection }, { $inc: { seq: 1 } }, { upsert: true, returnDocument: 'after', session });
-          return (result.value || result).seq;
+          const result = await db.collection('_counters').findOneAndUpdate({ _id: collection }, { $inc: { seq: 1 } }, { upsert: true, returnDocument: 'after', includeResultMetadata: false, session });
+          return result.seq;
         };
         const groupId = id ?? await allocate('generic_records');
         if (id == null) await db.collection('generic_records').insertOne({ ...fields, id: groupId }, { session });
@@ -407,7 +528,6 @@ async function saveTaxGroupImpl(id, fields, components) {
         for (const [index, component] of components.entries()) await db.collection('tax_group_codes').insertOne({ ...component, id: await allocate('tax_group_codes'), group_id: groupId, sequence: index + 1 }, { session });
         return groupId;
       }, { readConcern: { level: 'snapshot' }, writeConcern: { w: 'majority' } });
-    } finally { await session.endSession(); }
   }
   const groups = mem.generic_records.filter(row => row.module === 'tax-group');
   const current = groups.find(row => row.id === id);
@@ -425,17 +545,14 @@ async function readTaxGroupSnapshotImpl() {
   await ensureReady();
   if (mode === 'mongo') {
     const db = await getDb();
-    const hello = await db.admin().command({ hello: 1 });
+    const hello = await db.admin().command({ hello: 1 }, { timeoutMS: 15000 });
     if (!hello.setName && hello.msg !== 'isdbgrid') throw Object.assign(new Error('Tax Group reads require snapshot-capable MongoDB storage.'), { statusCode: 503 });
-    const session = mongoClient.startSession();
-    try {
-      return await session.withTransaction(async () => {
-        const groups = await db.collection('generic_records').find({ module: 'tax-group' }, { session }).sort({ id: -1 }).toArray();
-        const mappings = await db.collection('tax_group_codes').find({}, { session }).toArray();
-        const codes = await db.collection('tax_codes').find({}, { session }).toArray();
+      return await withMongoSession(mongoClient, async session => {
+        const groups = await readMongoRows(db.collection('generic_records'), { module: 'tax-group' }, { session, sort: { id: -1 } });
+        const mappings = await readMongoRows(db.collection('tax_group_codes'), {}, { session });
+        const codes = await readMongoRows(db.collection('tax_codes'), {}, { session });
         return [groups.map(stripId), mappings.map(stripId), codes.map(stripId)];
       }, { readConcern: { level: 'snapshot' }, writeConcern: { w: 'majority' } });
-    } finally { await session.endSession(); }
   }
   return structuredClone([mem.generic_records.filter(row => row.module === 'tax-group').sort((a,b) => b.id-a.id), mem.tax_group_codes, mem.tax_codes]);
 }
@@ -456,18 +573,39 @@ export const updateVendorWithAudit = (...args) => connection ? connection.run(()
 
 export const update = (...args) => connection ? connection.run(() => updateImpl(...args)) : updateImpl(...args);
 
+// The owner predicate must be part of the write, not a handler precheck.
+export async function updateOwnedDownload(id, owner, fields) {
+  validateMongoUpdate(id, fields);
+  const operation = async () => {
+    await ensureReady();
+    if (mode === 'mongo') {
+      const doc = await (await getDb()).collection('downloads').findOneAndUpdate(
+        { id, exported_by: owner }, { $set: fields },
+        { returnDocument: 'after', includeResultMetadata: false, timeoutMS: 15000, maxTimeMS: 15000 },
+      );
+      return doc ? stripId(doc) : null;
+    }
+    const row = mem.downloads.find(item => item.id === id && item.exported_by === owner);
+    if (!row) return null;
+    Object.assign(row, fields);
+    return { ...row };
+  };
+  return connection ? connection.run(operation) : operation();
+}
+
 // Compare the observed admin version in the write itself; a separate handler
 // precheck cannot prevent concurrent credential or permission replacements.
 export async function updateAdminIfVersion(id, expectedVersion, fields) {
+  validateMongoUpdate(id, fields);
   const operation = async () => {
     await ensureReady();
     const version = (expectedVersion ?? 0) + 1;
     if (mode === 'mongo') {
       const result = await (await getDb()).collection('admin_records').findOneAndUpdate(
         {id, version:expectedVersion ?? null},
-        {$set:{...fields,version}}, {returnDocument:'after'},
+        {$set:{...fields,version}}, {returnDocument:'after',includeResultMetadata:false,timeoutMS:15000,maxTimeMS:15000},
       );
-      const doc = result?.value || result;
+      const doc = result;
       return doc?.id == null ? null : stripId(doc);
     }
     const row = mem.admin_records.find(row=>row.id===id && (row.version ?? null)===(expectedVersion ?? null));
@@ -511,6 +649,18 @@ export const readTaxGroupSnapshot = (...args) => connection ? connection.run(() 
 
 // All legacy handlers serialize dependency errors through this safe boundary.
 export function sendDatabaseUnavailable(res, error) {
+  if (['DATABASE_MUTATION_LIMIT', 'DATABASE_MUTATION_INVALID'].includes(error?.code)) {
+    res.status(error.code === 'DATABASE_MUTATION_LIMIT' ? 413 : 400).json({ error: error.code, database: 'mongodb', message: error.code === 'DATABASE_MUTATION_LIMIT' ? 'The update exceeds the supported batch size. Reduce the number of records or update fields.' : 'The update requires valid record IDs and immutable record identity.' });
+    return true;
+  }
+  if (error?.code === 'DATABASE_COMMIT_UNCERTAIN') {
+    res.status(503).json({ error: 'DATABASE_COMMIT_UNCERTAIN', database: error.database === 'postgresql' ? 'postgresql' : 'mongodb', message: 'The transaction commit outcome is unknown. Preserve the request identity and reconcile its result before retrying.' });
+    return true;
+  }
+  if (error?.code === 'DATABASE_RESULT_LIMIT') {
+    res.status(413).json({ error: 'DATABASE_RESULT_LIMIT', database: 'mongodb', message: 'The result exceeds the supported read size. Narrow the search or use a paginated workflow.' });
+    return true;
+  }
   if (error?.code === 'DATABASE_TIMEOUT') {
     res.status(504).json({ error: 'DATABASE_TIMEOUT', database: error.database || 'mongodb', message: 'The database operation timed out. Please try again.' });
     return true;
@@ -521,13 +671,56 @@ export function sendDatabaseUnavailable(res, error) {
 }
 
 // Optimistic metadata edits preserve another request's complete update.
+// Serialize validation-master uniqueness and default replacement as one save.
+export async function saveValidationMaster(id, fields) {
+  const definitions = { 'receipt-validation': ['receiving_validation_code', 'isDefault'], 'lottable-validation': ['lot_val_code', 'is_default'] };
+  const definition = definitions[fields?.module];
+  if (!definition) throw Object.assign(new Error('Unsupported validation master.'), { statusCode: 400 });
+  validateMongoUpdate(id == null ? [] : id, fields);
+  const [codeField, defaultField] = definition;
+  const check = rows => {
+    if (id != null && !rows.some(row => row.id === id)) throw Object.assign(new Error('Validation was not found.'), { statusCode: 404 });
+    if (rows.some(row => row.id !== id && String(row[codeField] || row.code || '').trim().toUpperCase() === fields.code)) throw Object.assign(new Error('Validation Code already exists.'), { statusCode: 409 });
+  };
+  const operation = async () => {
+    await ensureReady();
+    if (mode === 'mongo') {
+      const db = await getDb();
+      return withMongoSession(mongoClient, async session => {
+        await db.collection('_counters').updateOne({ _id: `validation_save:${fields.module}` }, { $inc: { seq: 1 } }, { upsert: true, session });
+        const collection = db.collection('generic_records');
+        const rows = await readMongoRows(collection, { module: fields.module }, { session });
+        check(rows);
+        if (fields[defaultField]) await collection.updateMany({ module: fields.module }, { $set: { [defaultField]: false } }, { session });
+        let recordId = id;
+        if (recordId == null) {
+          const top = await collection.findOne({}, { sort: { id: -1 }, projection: { id: 1 }, session });
+          await db.collection('_counters').updateOne({ _id: 'generic_records' }, { $max: { seq: Number(top?.id) || 0 } }, { upsert: true, session });
+          recordId = (await db.collection('_counters').findOneAndUpdate({ _id: 'generic_records' }, { $inc: { seq: 1 } }, { upsert: true, returnDocument: 'after', includeResultMetadata: false, session })).seq;
+          await collection.insertOne({ ...fields, id: recordId }, { session });
+        } else await collection.updateOne({ id, module: fields.module }, { $set: fields }, { session });
+        return stripId(await collection.findOne({ id: recordId }, { session }));
+      });
+    }
+    const rows = mem.generic_records.filter(row => row.module === fields.module);
+    check(rows);
+    const recordId = id ?? ++memSeq.generic_records;
+    if (fields[defaultField]) for (const row of rows) row[defaultField] = false;
+    if (id == null) mem.generic_records.push({ ...fields, id: recordId });
+    else Object.assign(mem.generic_records.find(row => row.id === id), fields);
+    return { ...mem.generic_records.find(row => row.id === recordId) };
+  };
+  return connection ? connection.run(operation) : operation();
+}
+
 export async function updateIfRevision(collection, id, expectedRevision, fields) {
+  validateMongoUpdate(id, fields);
   const operation = async () => {
     await ensureReady();
     if (mode === 'mongo') {
       const query = expectedRevision === 0 ? { id, $or: [{ revision: 0 }, { revision: { $exists: false } }] } : { id, revision: expectedRevision };
-      const result = await (await getDb()).collection(collection).findOneAndUpdate(query, { $set: { ...fields, revision: expectedRevision + 1 } }, { returnDocument: 'after' });
-      const doc = result?.value || result;
+      const result = await (await getDb()).collection(collection).findOneAndUpdate(query, { $set: { ...fields, revision: expectedRevision + 1 } }, { returnDocument: 'after', includeResultMetadata: false, timeoutMS: 15000, maxTimeMS: 15000 });
+      const doc = result;
       return doc?.id == null ? null : stripId(doc);
     }
     const row = mem[collection].find(row => row.id === id && (row.revision || 0) === expectedRevision);

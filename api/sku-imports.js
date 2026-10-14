@@ -1,4 +1,4 @@
-import { sendDatabaseUnavailable, find, insert, cors, actor } from './mongo.js';
+import { sendDatabaseUnavailable, find, cors } from './mongo.js';
 
 const MODULE = 'sku-import';
 const text = value => String(value ?? '').trim();
@@ -35,17 +35,9 @@ export default async function handler(req, res) {
       if (!sets.some(row => row.status === 'Active' && text(row.name || row.description) === text(body.attribute_set)))
         return res.status(400).json({ error: 'Select a configured active Attribute Set.' });
       if (!/\.csv$/i.test(text(body.file_name))) return res.status(400).json({ error: 'A CSV template is required.' });
-      const success = Number(body.success_records);
-      const failed = Number(body.failed_records);
-      if (![success, failed].every(value => Number.isInteger(value) && value >= 0) || success + failed < 1 || success + failed > 500)
-        return res.status(400).json({ error: 'Import result counts must describe 1 to 500 rows.' });
-      const status = failed ? (success ? 'Completed With Errors' : 'Failed') : 'Processed';
-      return res.status(201).json(await insert('generic_records', {
-        module: MODULE, code: `SKU-IMP-${Date.now()}`, name: text(body.file_name), status,
-        attribute_set: text(body.attribute_set), import_type: body.import_type,
-        upload_date: new Date().toISOString().slice(0, 10), upload_by: actor(req),
-        success_records: success, failed_records: failed, created_date: new Date().toISOString().slice(0, 10),
-      }));
+      // No server-side file ingestion/validation/commit pipeline is connected.
+      // A filename and caller-reported counts cannot prove an import occurred.
+      return res.status(501).json({ error: 'SKU_IMPORT_PROCESSOR_UNAVAILABLE', message: 'SKU import processing is not connected. No SKU changes or processed import record were created.' });
     }
     return res.status(405).json({ error: 'Method not allowed' });
   } catch (error) {

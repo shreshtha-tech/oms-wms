@@ -10,7 +10,11 @@ export async function applyInventoryEvent(input){return transaction(db=>applyInv
 export async function applyInventoryEventInTransaction(db,input) {
   const {tenantId,masterSkuId,locationId,eventKey,eventType,source,externalReference=null,occurredAt=null}=input;
   if(![tenantId,masterSkuId,locationId,eventKey,eventType,source].every(x=>typeof x==='string'&&x.length>0))throw new TypeError('Event identity, SKU, location, type and source are required');
-  const deltas=Object.fromEntries(columns.map(c=>[c,Number(input[`delta_${c}`]??0)]));
+  const deltas=Object.fromEntries(columns.map(c=>{
+    const supplied=input[`delta_${c}`];
+    if(supplied!==undefined&&typeof supplied!=='number'&&(typeof supplied!=='string'||!supplied.trim()))throw new TypeError('Quantity deltas must be numeric scalars');
+    return [c,Number(supplied===undefined?0:supplied)];
+  }));
   if(!Object.values(deltas).every(integer))throw new TypeError('All quantity deltas must be safe integers');
   const reservation=input.reservation||null;
   if(reservation){const {action,orderId,lineId,quantity}=reservation;if(!['reserve','release','consume'].includes(action)||![orderId,lineId].every(x=>typeof x==='string'&&x)||!integer(quantity)||quantity<=0)throw new TypeError('Invalid reservation transition');if(deltas.reserved_order!==(action==='reserve'?quantity:-quantity)||deltas.on_hand!==(action==='consume'?-quantity:0))throw new TypeError('Reservation deltas do not match transition');}
@@ -24,7 +28,9 @@ export async function applyInventoryEventInTransaction(db,input) {
     const existing=await db.query('SELECT id,payload_hash FROM ci_inventory_event WHERE tenant_id=$1 AND event_key=$2',[tenantId,eventKey]);
     if(existing.rowCount){if(existing.rows[0].payload_hash!==hash)throw new InventoryConflict('Event key replayed with different content');return {duplicate:true,eventId:existing.rows[0].id};}
     if(reservation){const {action,orderId,lineId,quantity}=reservation;const args=[tenantId,source,orderId,lineId];if(action==='reserve'){const prior=await db.query('SELECT id FROM ci_reservation WHERE tenant_id=$1 AND source=$2 AND external_order_id=$3 AND external_line_id=$4',args);if(prior.rowCount)throw new InventoryConflict('Order line already reserved');}else{const prior=await db.query('SELECT * FROM ci_reservation WHERE tenant_id=$1 AND source=$2 AND external_order_id=$3 AND external_line_id=$4 FOR UPDATE',args);if(prior.rowCount!==1||prior.rows[0].status!=='active'||Number(prior.rows[0].quantity)!==quantity)throw new InventoryConflict('Active reservation does not match');}}
-    const next=Object.fromEntries(columns.map(c=>[c,Number(current.rows[0][c])+deltas[c]]));
+    const stored=Object.fromEntries(columns.map(c=>[c,Number(current.rows[0][c])]));
+    if(Object.values(stored).some(value=>!integer(value)||value<0))throw new InventoryConflict('Stored stock exceeds the supported integer range or is invalid; reconcile before mutation');
+    const next=Object.fromEntries(columns.map(c=>[c,stored[c]+deltas[c]]));
     if(Object.values(next).some(x=>!integer(x)||x<0)||next.reserved_order+next.reserved_cart+next.damaged+next.quarantined+next.safety_stock>next.on_hand)throw new InventoryConflict('Insufficient or invalid stock');
     const event=await db.query('INSERT INTO ci_inventory_event(tenant_id,master_sku_id,location_id,event_key,event_type,source,external_reference,occurred_at,payload_hash,delta_on_hand,delta_reserved_order,delta_reserved_cart,delta_damaged,delta_quarantined,delta_safety_stock) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15) RETURNING id',[tenantId,masterSkuId,locationId,eventKey,eventType,source,externalReference,occurredAt,hash,...columns.map(c=>deltas[c])]);
     if(reservation){const {action,orderId,lineId,quantity}=reservation;if(action==='reserve')await db.query("INSERT INTO ci_reservation(tenant_id,master_sku_id,location_id,source,external_order_id,external_line_id,quantity,status) VALUES($1,$2,$3,$4,$5,$6,$7,'active')",[tenantId,masterSkuId,locationId,source,orderId,lineId,quantity]);else await db.query('UPDATE ci_reservation SET status=$5 WHERE tenant_id=$1 AND source=$2 AND external_order_id=$3 AND external_line_id=$4',[tenantId,source,orderId,lineId,action==='release'?'released':'consumed']);}

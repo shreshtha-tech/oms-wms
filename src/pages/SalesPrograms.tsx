@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { apiGet, apiSend } from '../lib/api';
+import { apiGetLocal, apiSend } from '../lib/api';
 import catalog from '../../inventory/sales-program-catalog.json';
 
 export const programName=(key:string|null|undefined)=>catalog.find(item=>item.key===key)?.name||key||'';
@@ -25,7 +25,7 @@ const accountConnectionLabel=(account:Account|undefined)=>{
 
 export default function SalesPrograms({compact=false,onConnectParent}:{compact?:boolean;onConnectParent?:ConnectParent}){
  const [data,setData]=useState<Data|null>(null),[error,setError]=useState(''),[selected,setSelected]=useState(catalog[0].key);
- const load=useCallback(async()=>{try{setData(await apiGet<Data>(base));setError('');}catch(e){setError(e instanceof Error?e.message:'Programme status unavailable');}},[]);
+ const load=useCallback(async()=>{try{setData(await apiGetLocal<Data>(base));setError('');}catch(e){setData(null);setError(e instanceof Error?e.message:'Programme status unavailable');}},[]);
  useEffect(()=>{void load();const update=()=>void load();const timer=setInterval(update,60000);window.addEventListener('inventory-live-changed',update);return()=>{clearInterval(timer);window.removeEventListener('inventory-live-changed',update);};},[load]);
  const programs=data?.programs||catalog;
  const program=programs.find(item=>item.key===selected)||programs[0];
@@ -75,7 +75,7 @@ function ProgramAccount({program,account,setup,onChange}:{program:Program;accoun
  const [page,setPage]=useState(1),[stocks,setStocks]=useState<StockPage|null>(null);
  const path=`${base}/${program.key}/${account.id}`;
  const resetReport=()=>{setHeaders([]);setEncoded('');setMapping({});setConfirmed(false);};
- const loadStocks=useCallback(async()=>{try{setStocks(await apiGet<StockPage>(`${path}/stock?page=${page}`));}catch(e){setError(e instanceof Error?e.message:'Programme stock unavailable');}},[path,page]);
+ const loadStocks=useCallback(async()=>{try{setStocks(await apiGetLocal<StockPage>(`${path}/stock?page=${page}`));}catch(e){setStocks(null);setError(e instanceof Error?e.message:'Programme stock unavailable');}},[path,page]);
  useEffect(()=>{void loadStocks();const update=()=>void loadStocks();window.addEventListener('inventory-live-changed',update);return()=>window.removeEventListener('inventory-live-changed',update);},[loadStocks]);
  const run=async(action:()=>Promise<void>)=>{setBusy(true);setError('');setNotice('');try{await action();await onChange();await loadStocks();}catch(e){setError(e instanceof Error?e.message:'Programme action failed');}finally{setBusy(false);}};
  const fields=kind==='orders'?[['orderId','Exact parent-platform order ID']]:[['sku','Seller SKU'],['location','Facility / stock context ID'],['quantity','Available units']];

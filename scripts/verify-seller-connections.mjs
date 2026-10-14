@@ -38,11 +38,17 @@ const missing=await verifyAndSave(tenant,'shopify',{}, {id:row.id,fetcher:async(
 let flipkartCalls=0;const flipkart=await probeConnection('flipkart',{clientId:'fixture-client',clientSecret:'fixture-secret',testSku:'SKU-1'},{fetcher:async url=>{flipkartCalls++;return response(url.includes('oauth')?{access_token:'fixture-access',expires_in:3600}:{available:{'SKU-1':{locations:[{id:'LOC-1',inventory:500}]}}});}});assert.equal(flipkartCalls,2);assert.equal(flipkart.locations[0].id,'LOC-1');
 const xml='<ENVELOPE><BODY><DATA><COLLECTION><COMPANY NAME="D-Mills"/><GODOWN NAME="Main"><GUID>g1</GUID></GODOWN><STOCKITEM NAME="SKU-1"><GUID>s1</GUID></STOCKITEM></COLLECTION></DATA></BODY></ENVELOPE>';
 assert.equal(readTallyCatalog(xml).companies[0],'D-Mills');assert.throws(()=>readTallyCatalog('<!DOCTYPE x><ENVELOPE/>'));
-const app=express();app.use('/api/inventory-sync',inventoryPublic);app.use(express.json());app.use('/api/inventory-sync',inventoryPrivate);
+const app=express();app.use('/api/inventory-sync',inventoryPublic);app.use(express.json());app.use((req,_res,next)=>{req.user={username:'seller-test-operator',permissions:req.headers['x-fixture-no-manage']==='true'?[]:['central_inventory.connections.manage']};next();});app.use('/api/inventory-sync',inventoryPrivate);
 const server=app.listen(0,'127.0.0.1');await new Promise(resolve=>server.once('listening',resolve));const base=`http://127.0.0.1:${server.address().port}/api/inventory-sync/connections`;
 const request=async(path,method='GET',body)=>{const r=await fetch(base+path,{method,headers:{'Content-Type':'application/json'},body:body===undefined?undefined:JSON.stringify(body)});return {status:r.status,data:await r.json()};};
 try{
  assert.equal((await request('?tenantId=other')).status,403);
+ const deniedSetup=await fetch(base+'/applications',{method:'POST',headers:{'Content-Type':'application/json','x-fixture-no-manage':'true'},body:JSON.stringify({platform:'myntra',fields:{accountId:'blocked-fixture',applicationReference:'blocked'}})});
+ assert.equal(deniedSetup.status,403,'Signed-in users without connection management cannot create provider accounts');
+ for(const path of ['/agent/pairing','/programs/myntra/00000000-0000-4000-8000-000000000000/import','/00000000-0000-4000-8000-000000000000/activate']){
+  const denied=await fetch(base+path,{method:'POST',headers:{'Content-Type':'application/json','x-fixture-no-manage':'true'},body:'{}'});
+  assert.equal(denied.status,403,`Connection management must guard ${path} before domain work`);
+ }
  const appResult=await request('/applications','POST',{platform:'myntra',fields:{accountId:'seller-fixture',applicationReference:'ticket-1',facilityId:'facility-1'}});assert.equal(appResult.status,200);assert.equal(appResult.data.state,'pending_approval');
  await inventoryPool().query('INSERT INTO ci_master_sku(tenant_id,sku,product_name) VALUES($1,$2,$3)',[tenant,'SKU-1','Fixture product']);
  const csv=Buffer.from('external_sku,external_location_id,available\nSKU-1,facility-1,500\n').toString('base64');

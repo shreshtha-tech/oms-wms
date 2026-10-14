@@ -11,6 +11,7 @@ import { DOWNLOADS_EVENT } from '../context/DownloadContext';
 function StatusTag({ status }: { status: string }) {
   const map: Record<string, string> = {
     Completed: 'bg-emerald-50 text-emerald-700 ring-emerald-200',
+    Stored: 'bg-sky-50 text-sky-700 ring-sky-200',
     Processing: 'bg-amber-50 text-amber-700 ring-amber-200',
     Failed: 'bg-rose-50 text-rose-700 ring-rose-200',
   };
@@ -28,14 +29,14 @@ export default function Downloads() {
   const load = () => {
     setLoading(true);
     apiGet('/api/downloads').then(setRows)
-      .catch(() => setToast({ msg: 'Failed to load downloads', type: 'err' }))
+      .catch(() => { setRows([]); setToast({ msg: 'Download history is unavailable.', type: 'err' }); })
       .finally(() => setLoading(false));
   };
   useEffect(load, []);
 
   // Live-sync: refresh whenever a new export is recorded anywhere in the app.
   useEffect(() => {
-    const handler = () => apiGet('/api/downloads').then(setRows).catch(() => {});
+    const handler = () => apiGet('/api/downloads').then(setRows).catch(() => { setRows([]); setToast({ msg: 'Download history is unavailable.', type: 'err' }); });
     window.addEventListener(DOWNLOADS_EVENT, handler);
     return () => window.removeEventListener(DOWNLOADS_EVENT, handler);
   }, []);
@@ -60,11 +61,6 @@ export default function Downloads() {
   const del = async (id: number) => {
     try { await apiSend('/api/downloads', 'DELETE', { id }); setToast({ msg: 'Removed from history', type: 'ok' }); load(); }
     catch { setToast({ msg: 'Delete failed', type: 'err' }); }
-  };
-
-  const clearAll = async () => {
-    try { const r = await apiSend('/api/downloads', 'DELETE', { all: true }); setToast({ msg: `Cleared ${r.cleared} download(s)`, type: 'ok' }); load(); }
-    catch { setToast({ msg: 'Clear failed', type: 'err' }); }
   };
 
   const cols: GCol[] = [
@@ -99,7 +95,6 @@ export default function Downloads() {
       <Panel title="Download History">
         <ToolBar>
           <Btn variant="ghost" onClick={load}><RefreshCw size={14} /> Refresh</Btn>
-          <Btn variant="danger" onClick={clearAll} disabled={!rows.length}><Trash2 size={14} /> Clear All</Btn>
         </ToolBar>
         <OrderGrid cols={cols} rows={rows} loading={loading} empty="No downloads yet — export from any screen and it will appear here" />
       </Panel>

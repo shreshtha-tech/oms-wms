@@ -525,6 +525,50 @@
           },
           "maxItems": 1200,
           "minItems": 1
+        },
+        "source": {
+          "type": "string",
+          "enum": [
+            "wms_inbound_create_edit",
+            "wms_inbound_realtime"
+          ]
+        },
+        "authorization": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "digest": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "limits": {
+              "type": "object",
+              "patternProperties": {
+                "^[A-Za-z0-9._-]{1,120}$": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 2147483647
+                }
+              },
+              "additionalProperties": false
+            },
+            "legacy_received": {
+              "type": "object",
+              "patternProperties": {
+                "^[A-Za-z0-9._-]{1,120}$": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 2147483647
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "digest",
+            "limits",
+            "legacy_received"
+          ]
         }
       },
       "required": [
@@ -536,7 +580,9 @@
         "location_code",
         "draft_revision",
         "payload_digest",
-        "lines"
+        "lines",
+        "source",
+        "authorization"
       ]
     },
     "receiptResult": {

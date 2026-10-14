@@ -1,2 +1,41 @@
-import assert from'node:assert/strict';import{chromium}from'playwright';const base=process.env.ERETAIL_BASE_URL||'http://127.0.0.1:3011',send=async x=>{const r=await fetch(base+'/api/exports',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(x)});return{r,x:await r.json()}};const meta=await(await fetch(base+'/api/exports?action=meta')).json();assert.deepEqual(meta.columns,['Report ID','Status','Report Request Date','Report Names','Report Complete Date','Download','Error Msg']);assert.equal(meta.rowNum,30);assert.equal(meta.lastDownloadable,20);assert.equal(meta.forcePullSeconds,300);const pending=(await send({action:'seed',reportID:`VERIFY-PENDING-${Date.now()}`,reportName:'Pending Verification',status:'Pending',date:new Date(Date.now()-301000).toISOString(),forceProcess:'Y'})).x,success=(await send({action:'seed',reportID:`VERIFY-SUCCESS-${Date.now()}`,reportName:'Success Verification',status:'SUCCESS',link:true,createDateText:new Date().toISOString()})).x;assert.equal((await send({action:'download',reportID:pending.reportID,uuId:pending.uuId})).x.error,'Report is not available for download');assert.equal((await send({action:'download',reportID:success.reportID,uuId:success.uuId})).x.fileName,success.reportID+'.csv');
-const b=await chromium.launch({headless:true}),p=await b.newPage({viewport:{width:1700,height:1000}}),errors=[];p.on('pageerror',e=>errors.push(e.message));p.on('console',m=>m.type()==='error'&&errors.push(m.text()));try{p.setDefaultTimeout(10000);await p.goto(base);const c=(await p.locator('.font-mono').textContent()).trim();await p.getByPlaceholder('Username').fill('exports');await p.getByPlaceholder('Password').fill('local');await p.getByPlaceholder('Enter captcha').fill(c);await p.getByRole('button',{name:'Login'}).click();await p.waitForURL('**/app/dashboard');await p.goto(base+'/app/admin/exports');for(const h of meta.columns)await p.getByRole('columnheader',{name:h,exact:true}).waitFor();await p.getByText(/Only last 20 reports generated can be downloaded./).waitFor();await p.getByText(/Force Pull option will be enabled after 300 seconds./) .waitFor();await p.getByRole('cell',{name:success.reportID,exact:true}).waitFor();const dl=p.waitForEvent('download');await p.getByRole('button',{name:`Download ${success.reportID}`}).click();assert.equal((await dl).suggestedFilename(),success.reportID+'.csv');await p.getByRole('cell',{name:pending.reportID,exact:true}).waitFor();await p.getByRole('cell',{name:pending.reportID,exact:true}).locator('..').getByRole('button',{name:'Force Pull'}).click();await p.getByRole('cell',{name:pending.reportID,exact:true}).locator('..').getByRole('button',{name:`Download ${pending.reportID}`}).waitFor();await p.reload();await p.getByRole('cell',{name:pending.reportID,exact:true}).locator('..').getByRole('button',{name:`Download ${pending.reportID}`}).waitFor();await p.getByRole('button',{name:'Refresh'}).click();assert.deepEqual(errors.filter(x=>!x.includes('status of 400')),[]);console.log('PASS Exports: exact notices/columns, 30-row contract, refresh, successful download, 300-second Force Pull transition, persistence/reload, and clean browser state.')}finally{await b.close()}
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+
+process.env.MONGODB_URI = '';
+process.env.MONGODB_DB = 'exports_test';
+process.env.DMILLS_REQUIRE_PERSISTENCE = 'false';
+process.env.NODE_ENV = 'test';
+const mongo = await import('../api/mongo.js');
+const { default: handler } = await import('../api/exports.js');
+const legacy = await mongo.insert('generic_records', { module: 'pending-report', code: 'LEGACY', status: 'SUCCESS', content: '=HYPERLINK("fixture")' });
+const before = (await mongo.find('generic_records', { module: 'pending-report' })).length;
+const call = async (method, body, query = {}) => {
+  const res = { statusCode: 200, body: null, setHeader() {}, status(code) { this.statusCode = code; return this; }, json(value) { this.body = value; return this; } };
+  await handler({ method, body, query }, res);
+  return res;
+};
+const meta = await call('GET', null, { action: 'meta' });
+assert.equal(meta.statusCode, 200);
+assert.equal(meta.body.available, false);
+assert.deepEqual(meta.body.columns, ['Report ID','Status','Report Request Date','Report Names','Report Complete Date','Download','Error Msg']);
+const list = await call('GET');
+assert.equal(list.statusCode, 503);
+assert.equal(list.body.error, 'REPORT_SERVICE_UNAVAILABLE');
+const seed = await call('POST', { action: 'seed', reportID: 'FORGED', status: 'SUCCESS', content: 'forged' });
+assert.equal(seed.statusCode, 403);
+assert.equal(seed.body.error, 'REPORT_SEED_DISABLED');
+for (const action of ['download', 'force']) {
+  const response = await call('POST', { action, reportID: legacy.code, uuId: `EXPORT-${legacy.id}` });
+  assert.equal(response.statusCode, 503);
+  assert.equal(response.body.error, 'REPORT_SERVICE_UNAVAILABLE');
+  assert.doesNotMatch(JSON.stringify(response.body), /HYPERLINK|fixture/);
+}
+assert.equal((await call('POST', { action: 'unknown' })).statusCode, 400);
+assert.equal((await call('PUT')).statusCode, 405);
+assert.equal((await mongo.find('generic_records', { module: 'pending-report' })).length, before);
+assert.equal((await mongo.findOne('generic_records', { id: legacy.id })).content, '=HYPERLINK("fixture")');
+const ui = await readFile(new URL('../src/eretail/admin/ExportsReplica.tsx', import.meta.url), 'utf8');
+assert.match(ui, /Report generation and historical downloads are unavailable/);
+assert.match(ui, /catch \(error\) \{ setRows\(\[\]\); setAvailable\(false\)/);
+assert.match(ui, /available && \/success\/i\.test\(report\.status\)/);
+console.log('PASS Exports boundary: no client-declared success, legacy content disclosure or false downloadable report');

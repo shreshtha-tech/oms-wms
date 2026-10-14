@@ -10,13 +10,14 @@ const widths = [62, 133, 124, 178, 133, 115, 391];
 export default function ExportsReplica() {
   const [rows, setRows] = useState<Report[]>([]);
   const [notice, setNotice] = useState('');
+  const [available, setAvailable] = useState(false);
   const [busy, setBusy] = useState(false);
   const [cooldown, setCooldown] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const load = async () => {
     setBusy(true);
-    try { const result = await apiGet<{ rowDTOListFromUpdate: Report[] }>('/api/exports'); setRows(result.rowDTOListFromUpdate || []); }
-    catch (error) { setNotice(error instanceof Error ? error.message : 'Unable to load reports'); }
+    try { const result = await apiGet<{ rowDTOListFromUpdate: Report[]; available?: boolean }>('/api/exports'); setAvailable(result.available === true); setRows(result.available === true ? result.rowDTOListFromUpdate || [] : []); }
+    catch (error) { setRows([]); setAvailable(false); setNotice(error instanceof Error ? error.message : 'Unable to load reports'); }
     finally { setBusy(false); }
   };
   useEffect(() => { void load(); return () => { if (timer.current) clearTimeout(timer.current); }; }, []);
@@ -38,11 +39,11 @@ export default function ExportsReplica() {
     catch (error) { setNotice(error instanceof Error ? error.message : 'Unable to process report'); }
   };
   return <div className="admin-parity admin-exports">
-    <AdminParityHeader home="Home" title="Pending Report"><div className="admin-export-notes"><div>* Only last 20 reports generated can be downloaded.<br />* Force Pull option will be enabled after 300 seconds.</div><button title="Refresh" aria-label="Refresh" className="admin-export-refresh" style={{visibility:cooldown?'hidden':'visible'}} disabled={busy} onClick={refresh}><RefreshCw size={19} /></button></div></AdminParityHeader>
+    <AdminParityHeader home="Home" title="Pending Report"><div className="admin-export-notes"><div>Report generation and historical downloads are unavailable until trusted processing and report ownership are configured.</div><button title="Refresh" aria-label="Refresh" className="admin-export-refresh" style={{visibility:cooldown?'hidden':'visible'}} disabled={busy} onClick={refresh}><RefreshCw size={19} /></button></div></AdminParityHeader>
     <AdminParityNotice message={notice} close={() => setNotice('')} />
     <div className="admin-export-grid" aria-busy={busy}><table><colgroup>{widths.map((width,index)=><col key={index} style={{width:`${width / 1136 * 100}%`}} />)}</colgroup><thead><tr>{columns.map(label=><th key={label}>{label}</th>)}</tr></thead><tbody>{rows.map(report=><tr key={report.id}>
       <td>{report.reportID}</td><td>{report.status}</td><td>{report.date}</td><td>{report.reportName}</td><td>{report.createDateText}</td>
-      <td>{/success/i.test(report.status) && report.link ? <button aria-label={`Download ${report.reportID}`} onClick={()=>void download(report)}><Download size={14} /></button> : report.forceProcess==='Y' ? <button className="text-blue-700 underline" onClick={()=>void force(report)}>Force Pull</button> : null}</td><td>{report.errorMsg}</td>
+      <td>{available && /success/i.test(report.status) && report.link ? <button aria-label={`Download ${report.reportID}`} onClick={()=>void download(report)}><Download size={14} /></button> : available && report.forceProcess==='Y' ? <button className="text-blue-700 underline" onClick={()=>void force(report)}>Force Pull</button> : null}</td><td>{report.errorMsg}</td>
     </tr>)}</tbody></table></div>
   </div>;
 }

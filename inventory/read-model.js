@@ -1,5 +1,30 @@
 import { inventoryPool } from './db.js';
 
+export async function readInventorySummary(tenant, db = inventoryPool()) {
+  const { rows } = await db.query(`SELECT
+    (SELECT COUNT(*) FROM ci_master_sku WHERE tenant_id=$1) AS catalog_skus,
+    (SELECT COUNT(DISTINCT b.master_sku_id) FROM ci_inventory_balance b
+      JOIN ci_master_sku s ON s.tenant_id=b.tenant_id AND s.id=b.master_sku_id
+      JOIN ci_location l ON l.tenant_id=b.tenant_id AND l.id=b.location_id
+      WHERE b.tenant_id=$1 AND l.location_type IN ('warehouse','store')) AS counted_skus,
+    (SELECT COALESCE(SUM(GREATEST(0,b.on_hand-b.reserved_order-b.reserved_cart-b.damaged-b.quarantined-b.safety_stock)),0)
+      FROM ci_inventory_balance b
+      JOIN ci_master_sku s ON s.tenant_id=b.tenant_id AND s.id=b.master_sku_id
+      JOIN ci_location l ON l.tenant_id=b.tenant_id AND l.id=b.location_id
+      WHERE b.tenant_id=$1 AND l.location_type IN ('warehouse','store')) AS sellable,
+    (SELECT COUNT(*) FROM ci_stock_alert a JOIN ci_master_sku s ON s.tenant_id=a.tenant_id AND s.id=a.master_sku_id WHERE a.tenant_id=$1 AND a.status='open') AS low_stock,
+    (SELECT COUNT(*) FROM ci_channel_account a WHERE a.tenant_id=$1 AND a.status='active'
+      AND EXISTS (SELECT 1 FROM ci_channel_mapping m WHERE m.tenant_id=a.tenant_id AND m.account_id=a.id AND m.active)) AS active_accounts`, [tenant]);
+  const row = rows[0];
+  if (!row) throw new Error('Inventory summary unavailable');
+  const number = key => {
+    const value = Number(row[key]);
+    if (!Number.isSafeInteger(value) || value < 0) throw new Error('Inventory summary exceeds the supported numeric range');
+    return value;
+  };
+  return { catalogSkus: number('catalog_skus'), countedSkus: number('counted_skus'), sellable: number('sellable'), lowStock: number('low_stock'), activeAccounts: number('active_accounts'), generatedAt: new Date().toISOString() };
+}
+
 export async function readInventoryOverview(tenant,db=inventoryPool()){
   let pending=Promise.resolve();
   const query=(...args)=>{

@@ -9,7 +9,7 @@ assert.match(blueprint, /key: TRUST_PROXY\s+value: "true"/);
 const live = source.match(/app\.get\(\['\/health\/live'.*$/m)[0];
 const readiness = source.slice(source.indexOf("app.get(['/health/ready'"), source.indexOf("app.use('/api', async"));
 assert.ok(!/mongo|postgres|inventoryPool/i.test(live));
-let registered, shuttingDown = false, mongo, probeSucceeded = true;
+let registered, shuttingDown = false, mongo, probeSucceeded = true, readinessSql = '';
 const app = { get: (_paths, handler) => { registered = handler; } };
 const mount = new Function('app', 'shuttingDown', 'probeDataStore', 'inventoryPool', 'persistenceRequired', 'dataStoreDataset', 'inventoryDatabaseStatus', 'authConfigured', 'publicReadiness', readiness);
 const response = () => ({ code: 200, status(code) { this.code = code; return this; }, json(body) { this.body = body; return this; } });
@@ -19,26 +19,46 @@ for (const state of ['UNREACHABLE', 'EMPTY_UNINITIALISED', 'AUTHENTICATION_FAILE
   new Function('app', 'shuttingDown', live)(app, shuttingDown);
   const livenessResponse = response(); registered({}, livenessResponse);
   assert.equal(livenessResponse.code, 200); assert.equal(livenessResponse.body.status, 'alive');
-  mount(app, shuttingDown, async () => { if (!probeSucceeded) throw new Error('offline'); }, () => ({ query: async () => ({ rows: [{ schema_ready: true }] }) }), () => true, async () => mongo, () => ({ state: 'READY' }), () => true, publicReadiness);
+  mount(app, shuttingDown, async () => { if (!probeSucceeded) throw new Error('offline'); }, () => ({ query: async sql => { readinessSql = sql; return { rows: [{ schema_ready: true }] }; } }), () => true, async () => mongo, () => ({ state: 'READY' }), () => true, publicReadiness);
   const readyResponse = response(); await registered({}, readyResponse);
   assert.equal(readyResponse.code, state === 'POPULATED' ? 200 : 503);
   assert.deepEqual(Object.keys(readyResponse.body).sort(), ['dependencies', 'ready', 'status']);
   assert.equal(readyResponse.body.dependencies.mongodb, ({ UNREACHABLE: 'UNREACHABLE', EMPTY_UNINITIALISED: 'EMPTY', AUTHENTICATION_FAILED: 'AUTH_FAILED', POPULATED: 'READY' })[state]);
   assert.ok(!/private_fixture|Collections|count|host|database/i.test(JSON.stringify(readyResponse.body).replace('mongodb', '').replace('postgres', '')));
 }
+for (const name of ['ci_channel_stock','ci_channel_mapping','ci_channel_account','ci_master_sku',
+  'remote_target_quantity','remote_attempt_started_at','publication_state','provider_platform',
+  'internal_sku_id','internal_location_id','external_sku','provider_listing_id',
+  'provider_location_id','pack_size','source_event_id','remote_request_id',
+  'provider_response_reference','acknowledged_at','readback_quantity','readback_at',
+  'reconciliation_result']) assert.match(readinessSql, new RegExp(name));
 const healthyInputs = { shuttingDown: false, schemaReady: true, postgresState: 'READY', mongoRequired: true, probeSucceeded: true, mongo: { state: 'READY', datasetState: 'POPULATED' }, authenticationRequired: true, authenticationConfigured: true };
 for (const override of [{ shuttingDown: true }, { schemaReady: false }, { authenticationConfigured: false }]) assert.equal(publicReadiness({ ...healthyInputs, ...override }).ready, false);
 new Function('app', 'shuttingDown', live)(app, true);
 const stopping = response(); registered({}, stopping); assert.equal(stopping.body.status, 'stopping'); assert.equal(stopping.code, 200);
 // Exercise the actual issueSession implementation with an injected offline pool.
-const authSource = (await readFile(new URL('../api/auth-session.js', import.meta.url), 'utf8')).replace("import { inventoryPool } from '../inventory/db.js';", 'const inventoryPool = () => ({ query: async () => ({ rows: [] }) });');
+const authSource = (await readFile(new URL('../api/auth-session.js', import.meta.url), 'utf8'))
+  .replace("import { inventoryPool } from '../inventory/db.js';", 'const inventoryPool = () => ({ query: async () => ({ rows: [] }) });')
+  .replace("import { createPgCleanupScheduler } from '../reliability/pg-cleanup-scheduler.js';", 'const createPgCleanupScheduler = () => () => {};');
 const { issueSession } = await import(`data:text/javascript;base64,${Buffer.from(authSource).toString('base64')}`);
+// Session issuance requires an account; isolate it from real operator settings.
+const authKeys = ['DMILLS_ADMIN_USER', 'DMILLS_ADMIN_PASSWORD_HASH', 'DMILLS_ADMIN_PERMISSIONS_JSON', 'DMILLS_OPERATOR_ACCOUNTS_JSON'];
+const previousAuth = Object.fromEntries(authKeys.map(key => [key, process.env[key]]));
+for (const key of authKeys) delete process.env[key];
+process.env.DMILLS_OPERATOR_ACCOUNTS_JSON = JSON.stringify([{ username: 'offline_fixture', passwordHash: `offline-fixture-salt:${'00'.repeat(64)}`, permissions: [] }]);
+try {
 for (const trusted of [false, true]) {
   const proxyApp = express(); proxyApp.set('trust proxy', trusted ? 1 : false);
   const req = Object.create(proxyApp.request); req.app = proxyApp; req.connection = { remoteAddress: '127.0.0.1' }; req.headers = { 'x-forwarded-proto': 'https', 'x-forwarded-for': '203.0.113.7' };
   assert.equal(req.secure, trusted); assert.equal(req.ip, trusted ? '203.0.113.7' : '127.0.0.1');
   let cookie; await issueSession({ setHeader: (_name, value) => { cookie = value; } }, 'offline_fixture', req.secure);
   assert.equal(/; Secure/.test(cookie), trusted);
+}
+} finally {
+  for (const key of authKeys) {
+    if (previousAuth[key] === undefined) delete process.env[key];
+    else process.env[key] = previousAuth[key];
+  }
 }
 assert.match(source, /issueSession\(res, username, req.secure\)/);
 assert.match(await readFile(new URL('../reliability/login-limiter.js', import.meta.url), 'utf8'), /\[req.ip, `\$\{req.ip\}:\$\{username\}`\]/);

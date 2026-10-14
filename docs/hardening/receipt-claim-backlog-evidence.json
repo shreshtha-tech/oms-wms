@@ -1,0 +1,31 @@
+{
+  "status": "PASS",
+  "layer": "OWNED_FRESH_LOOPBACK_MONGO_POSTGRES",
+  "runtime": "v24.21.0",
+  "workload": {
+    "pendingPerStore": 100000,
+    "workersPerStore": 5,
+    "claimsPerWorker": 200
+  },
+  "startedAt": "2026-10-08T12:52:13.860Z",
+  "elapsedMs": 7391.213,
+  "mongo": {
+    "n": 1000,
+    "p50Ms": 4.507,
+    "p95Ms": 44.288,
+    "p99Ms": 107.881,
+    "maxMs": 242.878
+  },
+  "postgres": {
+    "n": 1000,
+    "p50Ms": 29.537,
+    "p95Ms": 79.155,
+    "p99Ms": 95.466,
+    "maxMs": 101.645
+  },
+  "completedAt": "2026-10-08T12:52:22.626Z",
+  "limitations": [
+    "Closed-loop claim-only workload on one disposable host; no business effects, provider calls, hosted deployment, sustained soak or approved launch target.",
+    "Two-minute leases remain processing at test end and the owned database is removed."
+  ]
+}

@@ -1,8 +1,10 @@
+import { isInboundQuantity, isInboundRow, isInboundRecordId, addInboundQuantities } from './inbound-quantity.js';
 import { createHash, randomUUID } from 'node:crypto';
 import { sendDatabaseUnavailable, cors, find, findOne, insert, transitionGrnReceipt } from './mongo.js';
 import { ensureReceiptRequestIndex, transitionGrnDraft } from './inbound-receipt-guard.js';
 import { activeLocations, clientPairs } from './catalogs.js';
-import { receiveCentralInboundStock, verifyCommittedCentralInboundStock } from '../inventory/wms-operations.js';
+import { verifyCommittedCentralInboundStock } from '../inventory/wms-operations.js';
+import { stageReceiptCommand } from '../inventory/receipt-bridge.js';
 
 const text = value => String(value ?? '').trim();
 const now = () => new Date().toISOString();
@@ -36,7 +38,7 @@ const receivedLines = lines => {
   for (const row of lines) {
     const skuCode = text(row.skuCode || row.sku_code);
     const quantity = Number(row.rcvdUOMQty ?? row.rcvdQty ?? 0);
-    if (quantity > 0) quantities.set(skuCode, (quantities.get(skuCode) || 0) + quantity);
+    if (quantity > 0) quantities.set(skuCode, addInboundQuantities(quantities.get(skuCode) || 0, quantity));
   }
   return [...quantities.entries()].map(([skuCode, quantity]) => ({ skuCode, quantity })).sort((a, b) => a.skuCode.localeCompare(b.skuCode));
 };
@@ -115,6 +117,7 @@ export default async function handler(req, res) {
     if (body.action === 'import') {
       if (!Array.isArray(body.rows) || !body.rows.length) return res.status(400).json({ error: 'Nothing To Import.' });
       if (body.rows.length > 200) return res.status(400).json({ error: 'Max 200 lines are allowed at a time.' });
+      if (body.rows.some(item => !isInboundRow(item))) return res.status(400).json({ error: 'Each import row must be an object.' });
       if (!text(body.poNo)) return res.status(400).json({ error: 'PO No is mandatory.' });
       const po = await findOne('purchase_orders', { po_no: text(body.poNo) });
       if (!po) return res.status(404).json({ error: 'PO not found.' });
@@ -125,7 +128,7 @@ export default async function handler(req, res) {
         const quantity = item.rcvdUOMQty ?? item.received_qty ?? item.qty;
         let errorDescription = !skuCode ? 'SKU Code is mandatory.' : !allowed.has(skuCode) ? 'SKU is not on the selected PO.'
           : seen.has(skuCode) ? 'Duplicate SKU in import.'
-            : !Number.isSafeInteger(Number(quantity)) || Number(quantity) <= 0 ? 'Received Qty must be a positive whole number.' : '';
+            : !isInboundQuantity(quantity, 1) ? 'Received Qty must be a positive whole number.' : '';
         seen.add(skuCode);
         return { ...(allowed.get(skuCode) || line(item)), skuCode, rcvdUOMQty: Number(quantity), rcvdQty: Number(quantity), seqNo: index + 1,
           status: errorDescription ? 'Failed' : 'Success', errorDescription };
@@ -135,18 +138,20 @@ export default async function handler(req, res) {
     }
 
     if (!['save', 'confirm'].includes(body.action)) return res.status(400).json({ error: 'Invalid action.' });
+    if (!isInboundRecordId(body.id)) return res.status(400).json({ error: 'Inbound ID must be a positive safe integer, or zero for a new draft.' });
     if (!text(body.poNo)) return res.status(400).json({ error: 'PO No is mandatory.' });
     if (!Array.isArray(body.lines) || !body.lines.length) return res.status(400).json({ error: 'Please add at least one SKU.' });
+    if (body.lines.some(row => !isInboundRow(row))) return res.status(400).json({ error: 'Each inbound line must be an object.' });
     if (body.lines.some(row => !text(row.skuCode))) return res.status(400).json({ error: 'SKU Code is mandatory.' });
     const po = await findOne('purchase_orders', { po_no: text(body.poNo) });
     if (!po) return res.status(404).json({ error: 'PO not found.' });
     const allowed = new Map();
     for (const item of po.line_items || []) {
       const skuCode = text(item.sku_code || item.skuCode), quantity = Number(item.qty ?? item.po_qty ?? item.poQty);
-      if (skuCode) allowed.set(skuCode, (allowed.get(skuCode) || 0) + quantity);
+      if (skuCode) allowed.set(skuCode, addInboundQuantities(allowed.get(skuCode) || 0, quantity));
     }
     if (body.lines.some(row => !allowed.has(text(row.skuCode)))) return res.status(400).json({ error: 'SKU is not on the selected PO.' });
-    if (body.lines.some(row => !Number.isSafeInteger(Number(row.rcvdUOMQty ?? row.rcvdQty ?? 0)) || Number(row.rcvdUOMQty ?? row.rcvdQty ?? 0) < 0)) {
+    if (body.lines.some(row => !isInboundQuantity(row.rcvdUOMQty ?? row.rcvdQty ?? 0))) {
       return res.status(400).json({ error: 'Received quantity must be a whole number of zero or more.' });
     }
     if (text(body.remarks).length > 250) return res.status(400).json({ error: 'Remarks exceed the 250 character limit.' });
@@ -196,7 +201,7 @@ export default async function handler(req, res) {
       for (const record of await find('grn')) {
         if (record.id === existing?.id || text(record.po_no) !== text(body.poNo) || text(record.status) !== 'Confirmed') continue;
         for (const received of receivedLines(record.lines || [])) {
-          previouslyReceived.set(received.skuCode, (previouslyReceived.get(received.skuCode) || 0) + received.quantity);
+          previouslyReceived.set(received.skuCode, addInboundQuantities(previouslyReceived.get(received.skuCode) || 0, received.quantity));
         }
       }
       for (const received of linesToReceive) {
@@ -208,7 +213,7 @@ export default async function handler(req, res) {
 
     const timestamp = now();
     const inboundNo = existing?.inbound_no || existing?.grn_no || `INB${Date.now().toString().slice(-9)}${randomUUID().slice(0, 4).toUpperCase()}`;
-    const receivedQty = body.lines.reduce((sum, row) => sum + Number(row.rcvdUOMQty ?? row.rcvdQty ?? 0), 0);
+    const receivedQty = body.lines.reduce((sum, row) => addInboundQuantities(sum, row.rcvdUOMQty ?? row.rcvdQty ?? 0), 0);
     const fields = {
       po_no: text(body.poNo), vendor: text(body.vendor || po.vendor), warehouse: locationInput,
       invoice_no: text(body.invoiceNo), invoice_date: text(body.invoiceDate), invoice_amount: Number(body.invoiceAmount) || 0,
@@ -234,40 +239,14 @@ export default async function handler(req, res) {
       central_request_id: requestId, central_receipt_fingerprint: fingerprint,
       central_receipt_status: 'pending',
     };
-    let staged;
-    if (existing?.central_receipt_status === 'pending' && existing.central_request_id === requestId) {
-      staged = existing;
-    } else if (existing) {
-      staged = await transitionGrnDraft(existing, stagedFields);
-      if (!staged) return res.status(409).json({ error: 'Inbound changed while receipt was being staged. Reload it before retrying.' });
-    } else {
-      staged = await insert('grn', { ...stagedFields, draft_revision: 1, inbound_no: inboundNo, grn_no: inboundNo, created_date: timestamp, grn_date: timestamp.slice(0, 10) });
-    }
-    pendingReceipt = staged;
-
-    const receipt = await receiveCentralInboundStock({ requestId, inboundNo, poNo: text(body.poNo), locationCode,
-      lines: linesToReceive, allowedQuantities: allowed,
-      validate: validateReceiptRemaining,
-      finalize: async result => {
-        const finalFields = {
-          status: 'Confirmed', status_code: 4, central_receipt_status: 'committed',
-          central_receipt_event_ids: result.eventIds, status_changed_date: now(),
-        };
-        const saved = await transitionGrnReceipt(staged.id,
-          { status: 'Central Receipt Pending', central_request_id: requestId, central_receipt_status: 'pending' }, finalFields);
-        if (!saved) {
-          const current = await findOne('grn', { id: staged.id });
-          if (current?.status === 'Confirmed' && current.central_request_id === requestId
-            && current.central_receipt_status === 'committed' && current.central_receipt_fingerprint === fingerprint) return current;
-          throw new Error('Central receipt committed but the inbound record could not be finalized. Retry with the same request ID.');
-        }
-        return saved;
-      },
+    const staged = await stageReceiptCommand({
+      existing, fields: { ...stagedFields, ...(existing ? {} : { created_date: timestamp, grn_date: timestamp.slice(0, 10) }) },
+      requestId, fingerprint, inboundNo, poNo: text(body.poNo), locationCode, lines: linesToReceive, source: 'wms_inbound_create_edit',
     });
     pendingReceipt = null;
-    return res.status(existing ? 200 : 201).json({
-      jsonMessage: receipt.duplicate ? 'Inbound receipt is already committed to Central Inventory.' : 'Inbound confirmed and received in Central Inventory.',
-      row: normalize(receipt.finalizedRow),
+    return res.status(202).json({
+      jsonMessage: 'Inbound receipt queued for Central Inventory. Check the receipt status before treating stock as received.',
+      row: normalize(staged),
     });
   } catch (error) {
     if (sendDatabaseUnavailable(res, error)) return;

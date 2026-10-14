@@ -1,0 +1,26 @@
+{
+  "inspection_date": "2026-10-09",
+  "checkout": "/Users/shreshthagupta/AI-Workspaces/oms-wms",
+  "branch": "fix/flipkart-order-intake-20261009",
+  "base_head": "332743b0d0bdf21fc46bcda4eb327e8c2dda03fe",
+  "scope": "Current dirty worktree source files inspected for the API/auth/storage boundary audit; no runtime/configured data.",
+  "files": {
+    "server.js": "c56e75ef7a57c2f3ee1d123c3a240a239c983603d44fa6dc90fcd0d4cbb00712",
+    "api/auth-session.js": "3a59b24a4472112e2ce2db4f8e4832b2056d425c1b79a1eef3736e88127ecf59",
+    "api/mongo-collections.js": "30438e0b84d43383b5ecdf69670d39760d77939f3cd9fa7d469358d3a9e5ef1f",
+    "api/seller-panel-dashboard.js": "caf42132225cf4ef1fea59b7a0bd66410156a79c061a90380315939a994e3907",
+    "api/order-import.js": "be7e39e0a9efa5ed44135cddcaf1258727e1d2d75114f2e804632050f4352a34",
+    "api/common-import.js": "ef7431e8b93cd2cb0d999624acea0944ce75665ecb0b09067dbb37c769278064",
+    "api/external-app-connections.js": "f617f4ec038b170e47831fb7ba7533bdfda077ec3d3f1cd39b330cf5549148bc",
+    "api/sku-label-print.js": "082db0723d7aaa9e487113c322f33a09fb86bd54bef695251e59dcdf450af51a",
+    "api/sort-to-box.js": "ee3b418862d97d5797254aee6e0171efdec9707040bc96426cdfd51d4de9f361",
+    "api/bulk-lottables.js": "1c7413014e4080474facec35a5d7c0ebdfa0e5d23893c313153d478b5f3e7a49",
+    "reliability/http.js": "d91b6760ad712329ec294aa14eb0ad1ade0457b98d33e8c1518890e5f1acb4d4",
+    "inventory/http.js": "91456dd56ef5a87aa7179a7402a41b0a81139dacb2dac6eb7b491f6c793c2a3b",
+    "inventory/tenant-boundary.js": "de351e5b1c9a8579bf288a6e4f4cdb78dc69af8df8b16cdf686d820637153e68",
+    "inventory/connections.js": "95724892956dd181fc4fa0182fdd81d081214d2897d7a452406664e36b76c311",
+    "inventory/tally-bridge.js": "7882e1298e6bcb766c818bf1840128e0961ad2e117b949a30a94b978138a6c97",
+    "inventory/whatsapp.js": "5ab92087b03e7ea65843828ebfdc4ff66724b2199999ffa3ffd856118ef291cc",
+    "inventory/central-api.js": "7a21ee3ac1adbb5f5063009e35eed8f22c3debf221c2214a26eef13b4eefa74a"
+  }
+}

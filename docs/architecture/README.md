@@ -1,6 +1,6 @@
 # Phase A: Ownership and event-contract review
 
-Date: 2026-10-05. DESIGN ARTIFACTS COMPLETE; review decisions recorded in [Phase B preparation](PHASE_B_PREPARATION.md). D06 details and D11 remain pending. No Phase B implementation or database execution has begun.
+Original Phase A date: 2026-10-05. DESIGN ARTIFACTS COMPLETE. Later owner decisions are recorded in [Phase B preparation](PHASE_B_PREPARATION.md), and implementation/testing progress is recorded in the [2026-10-07 checkpoint](PHASE_B_EVIDENCE_2026-10-07.md). D11 volumes remain pending.
 
 Assumptions: use the current worktree as source truth, preserve all existing changes, and perform Phase A as a documentation-only static audit. Do not contact Atlas/configured databases, import application modules (which may load `.env` and connect), run migrations/seeds, commit, push or deploy. Existing tests/reports are source pointers, not fresh runtime evidence. Owner-supplied Atlas-tier statements remain unverified until the permitted documentation/sanitized-fact gate in a later phase.
 
@@ -23,4 +23,4 @@ Proposed healthy targets include ≤60s confirmed stock-publish lag, ≤60s Meta
 
 Phase A review gate: approve or amend D01–D12 and the SLO budgets; say `next` only when authorizing Phase B. A bare `next` authorizes the next phase but does not silently resolve unspecified ownership/provider contracts. Reconcile any remaining decisions before dependent implementation; independent permitted stack work can proceed only after that phase is authorized. No source feature is described as production ready, synchronized, populated or latency-verified.
 
-Current scope: [all 58 consumption classifications](event-consumption-matrix.csv) and [minimum Phase B scope, approvals and harness requirements](PHASE_B_PREPARATION.md). Historical pending-review statements below describe the original Phase A stop; the dated preparation records the subsequent owner review.
+Current scope: [all 58 consumption classifications](event-consumption-matrix.csv), [minimum Phase B scope, approvals and harness requirements](PHASE_B_PREPARATION.md), and the [2026-10-07 Phase B implementation/evidence checkpoint](PHASE_B_EVIDENCE_2026-10-07.md). Historical pending-review statements describe the original Phase A stop; the later dated records describe subsequent owner decisions and implementation.

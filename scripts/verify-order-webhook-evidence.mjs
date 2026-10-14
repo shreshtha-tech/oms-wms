@@ -36,7 +36,7 @@ try {
   await send('orders/create', 'order-accepted', body);
   const first = (await settings()).lastOrderWebhookAt;
   assert.ok(Number.isFinite(Date.parse(first)));
-  assert.equal(connectionReadiness(account, { lastWebhookAt: first }).orders.state, 'live');
+  assert.equal(connectionReadiness(account, { lastWebhookAt: first }).orders.state, 'partial');
   assert.equal((await send('orders/create', 'order-accepted', body)).duplicate, true);
   assert.equal((await settings()).lastOrderWebhookAt, first, 'duplicate delivery must not refresh evidence');
   await assert.rejects(send('orders/create', 'order-accepted', { ...body, id: 11 }), error => error.status === 409);

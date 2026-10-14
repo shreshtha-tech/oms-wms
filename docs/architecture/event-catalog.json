@@ -361,7 +361,7 @@
       "schema_version": 1,
       "aggregate": "grn",
       "aggregate_key": "[tenant_id, grn_id]",
-      "idempotency_key": "[tenant_id, request_id, payload_digest]",
+      "idempotency_key": "[tenant_id, grn_id, request_id, aggregate_sequence] plus payload fingerprint conflict check",
       "payload_schema": "event-schemas.json#/$defs/receipt",
       "producers": [
         "api/inbound-create-edit.js",
@@ -385,7 +385,7 @@
       "schema_version": 1,
       "aggregate": "grn",
       "aggregate_key": "[tenant_id, grn_id]",
-      "idempotency_key": "[tenant_id, request_id, payload_digest, result]",
+      "idempotency_key": "[tenant_id, grn_id, request_id, aggregate_sequence] plus PG result receipt and payload digest conflict check",
       "payload_schema": "event-schemas.json#/$defs/receiptResult",
       "producers": [
         "PROPOSED consumer in inventory/workers.js using inventory/wms-operations.js"
@@ -460,7 +460,7 @@
       ],
       "ordering_policy": "O_PROVIDER",
       "retry_policy": "R_EXTERNAL",
-      "current_implementation": "SQS receipt + order + task; delete after accept; no batch poison isolation proven",
+      "current_implementation": "SQS consumer processes sequentially, catches each message failure, leaves rejected entries for redelivery and continues; deletes after acceptance; synthetic fixture proves poison isolation/order only, not persistence; Render Blueprint does not start CLI",
       "existing_native_contract": "amazon_ingress full notification ORDER_CHANGE",
       "decision": "D09,D10",
       "routes": []

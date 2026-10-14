@@ -2,7 +2,6 @@ import { createContext, useContext, useState, ReactNode, useCallback } from 'rea
 import { X, Download, FileText, FileSpreadsheet, FileJson, FileCode, FileType, File } from 'lucide-react';
 import { FORMATS, FormatKey, buildFile, humanSize, ExportData } from '../lib/exporters';
 import { apiSend } from '../lib/api';
-import { useAuth } from './AuthContext';
 import { downloadBlob } from '../lib/downloadBlob';
 
 type ReqOpts = { title: string; module: string; data: ExportData; baseName?: string; formats?: FormatKey[]; exportedBy?: string };
@@ -48,7 +47,6 @@ function triggerBlobDownload(blob: Blob, filename: string) {
 }
 
 export function DownloadProvider({ children }: { children: ReactNode }) {
-  const { user } = useAuth();
   const [pending, setPending] = useState<PendingReq>(null);
   const [busy, setBusy] = useState<FormatKey | null>(null);
   const [error, setError] = useState('');
@@ -77,32 +75,21 @@ export function DownloadProvider({ children }: { children: ReactNode }) {
       return;
     }
     const { content, mime, ext } = buildFile(format, pending.title, pending.data);
-    const filename = `${pending.baseName}-${new Date().toISOString().slice(0, 10)}.${ext}`;
-    const exportedBy = pending.exportedBy || user?.username || 'system';
-
-    // 1) Register as "Processing" so it appears immediately in Downloads
-    let recordId: number | null = null;
+    const safeBaseName = pending.baseName.replace(/[^a-zA-Z0-9_-]/g, '-').slice(0, 100) || 'export';
+    const filename = `${safeBaseName}-${new Date().toISOString().slice(0, 10)}.${ext}`;
+    // Persist the browser-generated file before offering the local download.
     try {
-      const rec = await apiSend('/api/downloads', 'POST', {
+      await apiSend('/api/downloads', 'POST', {
         filename, format: format.toUpperCase(), module: pending.title,
         row_count: pending.data.rows.length, size: new Blob([content]).size,
-        // Keep the generated payload with its history record so every completed
-        // export remains available from the existing Downloads dropdown/page.
         content, mime,
-        exported_by: exportedBy, status: 'Processing',
       });
-      recordId = rec?.id ?? null;
       notifyDownloads();
-    } catch { /* non-blocking */ }
-
-    // 2) Generate + download
-    triggerBrowserDownload(content, mime, filename);
-
-    // 3) Mark "Completed"
-    if (recordId != null) {
-      try { await apiSend('/api/downloads', 'PUT', { id: recordId, status: 'Completed' }); } catch { /* ignore */ }
+    } catch {
+      throw new Error('Export history could not be saved. Check its status before retrying.');
     }
-    notifyDownloads();
+
+    triggerBrowserDownload(content, mime, filename);
 
     setPending(null);
     } catch (cause) {

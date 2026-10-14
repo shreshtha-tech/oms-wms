@@ -1,4 +1,5 @@
 import "./env.js"; // must be first: loads .env before the Supabase client is created
+import { drainHttpServer } from './reliability/http-shutdown.js';
 import { operationsStatus } from './reliability/operations.js';
 import { requestTelemetry, mutationOriginGuard, protectAsyncRoutes, internalMetrics } from './reliability/http.js';
 import { loginLimit } from './reliability/login-limiter.js';
@@ -171,16 +172,35 @@ app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.get('/api/auth/session', async (req, res) => {try{res.json({user:await authenticateSession(req),configured:authConfigured()});}catch{res.status(503).json({error:'Session database unavailable'});}});
 app.use('/api', mutationOriginGuard);
 app.post('/api/auth/login', loginLimit, async (req, res) => {
-  if (!authConfigured()) return res.status(503).json({ error: 'Administrator login is not configured.' });
+  if (!authConfigured()) return res.status(503).json({ error: 'Authentication is not configured.' });
   const username = String(req.body?.username || '');
   const password = String(req.body?.password || '');
   if (!await verifyCredentials(username, password)) return res.status(401).json({ error: 'Invalid login credentials.' });
-  try{await issueSession(res, username, req.secure);}catch{return res.status(503).json({error:'Session database unavailable'});}
-  return res.json({ user: { username } });
+  let user;
+  try{user=await issueSession(res, username, req.secure);}catch{return res.status(503).json({error:'Session database unavailable'});}
+  return res.json({ user });
 });
 app.post('/api/auth/logout', async (req, res) => {try{await revokeSession(req,res);res.json({ok:true});}catch{res.status(503).json({error:'Session database unavailable'});}});
 app.get(['/health/ready', '/api/health/ready'], async (_req, res) => {
-  const checks = await Promise.allSettled([probeDataStore(), Promise.resolve().then(() => inventoryPool().query("SELECT to_regclass('public.ci_auth_session') IS NOT NULL AND to_regclass('public.ci_login_rate_limit') IS NOT NULL AND to_regclass('public.ci_outbox') IS NOT NULL AS schema_ready"))]);
+  const checks = await Promise.allSettled([probeDataStore(), Promise.resolve().then(() => inventoryPool().query(`SELECT
+    to_regclass('public.ci_auth_session') IS NOT NULL
+    AND to_regclass('public.ci_login_rate_limit') IS NOT NULL
+    AND to_regclass('public.ci_outbox') IS NOT NULL
+    AND to_regclass('public.ci_channel_stock') IS NOT NULL
+    AND to_regclass('public.ci_channel_mapping') IS NOT NULL
+    AND to_regclass('public.ci_channel_account') IS NOT NULL
+    AND to_regclass('public.ci_master_sku') IS NOT NULL
+    AND to_regclass('public.ci_event_receipt') IS NOT NULL
+    AND to_regclass('public.ci_domain_outbox') IS NOT NULL
+    AND (SELECT count(*) FROM pg_attribute WHERE attrelid=to_regclass('public.ci_outbox')
+      AND attname IN ('remote_target_quantity','remote_attempt_started_at','publication_state',
+        'provider_platform','internal_sku_id','internal_location_id','external_sku',
+        'provider_listing_id','provider_location_id','pack_size','source_event_id',
+        'remote_request_id','provider_response_reference','acknowledged_at',
+        'readback_quantity','readback_at','reconciliation_result') AND NOT attisdropped)=17
+    AND (SELECT count(*) FROM pg_attribute WHERE attrelid=to_regclass('public.ci_channel_stock')
+      AND attname IN ('readback_quantity','readback_at') AND NOT attisdropped)=2
+    AS schema_ready`))]);
   const mongoRequired = persistenceRequired() || Boolean(process.env.MONGODB_URI);
   const schemaReady = checks[1].status === 'fulfilled' && checks[1].value.rows[0]?.schema_ready === true;
   const mongodb = await dataStoreDataset();
@@ -413,15 +433,11 @@ server.keepAliveTimeout = 5000;
 async function shutdown() {
   if (shuttingDown) return;
   shuttingDown = true;
-  // Stop accepting work and drain requests before closing pools.
-  const deadline = setTimeout(() => { server.closeAllConnections(); process.exitCode = 1; }, 30000);
-  deadline.unref();
-  server.close(async () => {
-    try { await Promise.all([closeDataStore(), process.env.INVENTORY_DATABASE_URL ? inventoryPool().end() : Promise.resolve()]); }
-    catch { process.exitCode = 1; console.error('Database shutdown failed.'); }
-    finally { clearTimeout(deadline); }
+  drainHttpServer({
+    server,
+    closeStores: () => Promise.all([closeDataStore(), process.env.INVENTORY_DATABASE_URL ? inventoryPool().end() : Promise.resolve()]),
+    onError: () => { process.exitCode = 1; console.error('Database shutdown failed.'); },
   });
-  server.closeIdleConnections();
 }
 process.on('SIGTERM', shutdown);
 process.on('SIGINT', shutdown);

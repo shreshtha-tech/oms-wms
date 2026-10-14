@@ -1,0 +1,22 @@
+{
+  "inspection_date": "2026-10-09",
+  "checkout": "/Users/shreshthagupta/AI-Workspaces/oms-wms",
+  "branch": "fix/flipkart-order-intake-20261009",
+  "base_head": "332743b0d0bdf21fc46bcda4eb327e8c2dda03fe",
+  "files": {
+    "inventory/flipkart-orders.js": "100e7f5f655736d4a42de3524240e954487090ee4d97fbe5550d3828ab628eff",
+    "inventory/flipkart-order-observation.js": "ef2c231f7fd59150ae7d00d1a5e39c62482e59b0bfbc9ac7c191b767450a5dfe",
+    "scripts/flipkart-fetch-orders.mjs": "10dd83dd82dfebd6b8fe892571b8b1a37ce67036207c0205aaa78e3a1b7aafb4",
+    "scripts/verify-flipkart-orders.mjs": "f87442470ea2e2a20a7f37a13c0952f3e01887efad608c8c22957fcf2bef42b8",
+    "inventory/connections.js": "cf85bbac379716a3493c0d9e78fefdf1af02cbc0fb6d14f2883faea41d76bc2a",
+    "inventory/connection-readiness.js": "ecea108b9f98fcd2585c0931ed589898dd316390740abdfa56705725941a94b9",
+    "scripts/inventory-worker.mjs": "0f1c67598b299b4de9e9ca49c8d2ab14d1e646938c4b5188f1ab011fb776b61d",
+    "src/pages/SellerConnections.tsx": "f559b8935ce8a2552f28f3c4237dfa1868c2840d3914fe3ce42505fed880f38b",
+    "package.json": "84e0eba5961d91aa7c8425a4ed17730e0c6ce314251d49518fa0af1c19b5a2c0",
+    "reliability/postgres-transaction.js": "89f8769f68ae9b3a9726462ba90d635853ee90a0d0846b96d5256e16ef598886",
+    "inventory/unified-orders.js": "9a91044d9a96b017ad31b1528afa13ca2569af6e4c38c1da2b574cc9bf0649cc",
+    "inventory/ledger.js": "a8080747b83aaaeb1cfceff127ab0bdb77a60d33f22ee514e1482da938242e44",
+    "scripts/verify-connection-readiness.mjs": "fab8c724b128a4b577b73492ab6b45d7d106789655944e44f92c9a664c6a1191",
+    "reliability/provider-call.js": "0645afa243995fce552c903d225aaf8868d198d0dcf531a51d67e14524642f90"
+  }
+}

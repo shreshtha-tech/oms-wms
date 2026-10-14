@@ -73,7 +73,7 @@ try{
   await go('Unified orders');
   const connectionStatus=workspace().getByLabel('Seller platform connections');
   const connectionSummary=await connectionStatus.locator('summary').innerText();
-  assert.match(connectionSummary,/\d+ of 20 order feeds ready · \d+ need setup/);
+  assert.match(connectionSummary,/\d+ of 20 order feeds ready · \d+ not fully verified/);
   await connectionStatus.getByText('20 platforms do not currently have a verified, operational order feed').waitFor();
   const collapsed=await connectionStatus.locator('details').evaluate(element=>!element.open);
   assert.equal(collapsed,true,'platform statuses are collapsed by default');

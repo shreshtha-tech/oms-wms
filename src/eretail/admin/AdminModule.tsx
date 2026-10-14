@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Download, HelpCircle, Pencil, Plus, RefreshCw, Search, Upload, X } from 'lucide-react';
 import Shell from '../Shell';
 import { apiGet, apiSend } from '../../lib/api';
+import { buildBoundedCsv } from '../../lib/exporters';
 import { RecordedAuditLogs, RecordedManageApi, RecordedUserEnquiry } from './RecordedAdminWorkflows';
 import UserEditorReplica from './UserEditorReplica';
 import RoleEditorReplica from './RoleEditorReplica';
@@ -78,8 +79,10 @@ function UserEnquiry({ openEditor }: { openEditor: () => void }) {
   useEffect(() => { void load(); }, []);
   const results = useMemo(() => rows.filter((r) => Object.entries(filter).every(([key, value]) => !value || String(r[key] || '').toLowerCase().includes(value.toLowerCase()))), [rows, filter]);
   const exportRows = () => {
-    const csv = ['User Name,First Name,Last Name,Status,Email,User Type', ...results.map((r) => [r.username, r.firstName, r.lastName, r.status, r.email || '', r.userType || 'Normal'].join(','))].join('\n');
-    const href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' })); const a = document.createElement('a'); a.href = href; a.download = 'user-enquiry.csv'; a.click(); URL.revokeObjectURL(href);
+    try {
+      const csv = buildBoundedCsv('User Enquiry',{columns:['User Name','First Name','Last Name','Status','Email','User Type'],rows:results.map(r=>[r.username,r.firstName,r.lastName,r.status,r.email||'',r.userType||'Normal'].map(value=>String(value??'')))});
+      const href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' })); const a = document.createElement('a'); a.href = href; a.download = 'user-enquiry.csv'; a.click(); URL.revokeObjectURL(href);
+    } catch(error) { setToast({message:error instanceof Error?error.message:'Unable to export users',tone:'error'}); }
   };
   return <><div className="mb-3 flex justify-end gap-2"><button className={primary} onClick={load}><Search size={16} />Search</button><button className={neutral} onClick={() => setFilter({ username: '', firstName: '', lastName: '', status: '', email: '', userType: 'Normal' })}>✖ Reset</button><button className={neutral}>✥ Advance Search</button><button className={neutral}><Upload size={15} /> Import</button><button className={neutral} onClick={exportRows}><Download size={15} /> Export</button><button className={neutral} onClick={openEditor}><Plus size={15} /> Add New</button><HelpCircle className="mt-2 text-[#287cc0]" size={24} /></div>
     <Grid columns={[

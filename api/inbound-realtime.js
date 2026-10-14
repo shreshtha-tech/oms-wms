@@ -1,8 +1,10 @@
+import { isInboundQuantity, isInboundRow, isInboundRecordId, addInboundQuantities } from './inbound-quantity.js';
 import { randomUUID, createHash } from 'node:crypto';
 import { sendDatabaseUnavailable, cors, find, findOne, insert, transitionGrnReceipt } from './mongo.js';
 import { ensureReceiptRequestIndex, transitionGrnDraft } from './inbound-receipt-guard.js';
 import { activeLocations, clientPairs, locations } from './catalogs.js';
-import { receiveCentralInboundStock, verifyCommittedCentralInboundStock } from '../inventory/wms-operations.js';
+import { verifyCommittedCentralInboundStock } from '../inventory/wms-operations.js';
+import { stageReceiptCommand } from '../inventory/receipt-bridge.js';
 
 const text = value => String(value ?? '').trim();
 const now = () => new Date().toISOString();
@@ -47,7 +49,7 @@ function receivedLines(lines) {
   for (const row of lines) {
     const skuCode = text(row.skuCode || row.sku_code);
     const quantity = Number(row.rcvdQty ?? row.received_qty ?? 0);
-    if (quantity > 0) totals.set(skuCode, (totals.get(skuCode) || 0) + quantity);
+    if (quantity > 0) totals.set(skuCode, addInboundQuantities(totals.get(skuCode) || 0, quantity));
   }
   return [...totals.entries()].map(([skuCode, quantity]) => ({ skuCode, quantity }))
     .sort((a, b) => a.skuCode.localeCompare(b.skuCode));
@@ -87,14 +89,14 @@ export default async function handler(req, res) {
     if (body.action === 'scan') {
       if (!text(body.skuCode)) return res.status(400).json({ error: 'Please enter Sku Code.' });
       if (!text(body.binLoc)) return res.status(400).json({ error: 'Bin Location is mandatory' });
-      if (!Number.isSafeInteger(Number(body.qty)) || Number(body.qty) <= 0) return res.status(400).json({ error: 'Qty must be a positive whole number.' });
+      if (!isInboundQuantity(body.qty, 1)) return res.status(400).json({ error: 'Qty must be a positive whole number.' });
       const product = (await find('products')).find(row => [row.sku_code, row.barcode]
         .some(value => text(value).toLowerCase() === text(body.skuCode).toLowerCase()));
       if (!product) return res.status(404).json({ error: 'Invalid SKU Code' });
       return res.json({ jsonMessage: null, row: line({
-        ...product, skuCode: product.sku_code, skuDesc: product.product_name,
+        ...body, ...product, skuCode: product.sku_code, skuDesc: product.product_name,
         rcvdQty: Number(body.qty), invoiceQty: Number(body.invoiceQty) || 0,
-        binLoc: text(body.binLoc), lpn: text(body.lpn), lotCode: text(body.lotCode), ...body,
+        binLoc: text(body.binLoc), lpn: text(body.lpn), lotCode: text(body.lotCode),
       }) });
     }
 
@@ -122,6 +124,8 @@ export default async function handler(req, res) {
       return res.status(501).json({ error: 'Inbound RealTime import is unavailable until a verified file parser, PO validation, persistence, and Central Inventory receipt flow are connected. No import batch was created.' });
     }
 
+    if (['save', 'confirm', 'save-invoice', 'cancel'].includes(body.action) && !isInboundRecordId(body.id)) return res.status(400).json({ error: 'Inbound ID must be a positive safe integer, or zero for a new draft.' });
+
     if (body.action === 'confirm') {
       const inboundType = text(body.inboundType);
       if (inboundType !== 'With PO') {
@@ -129,8 +133,9 @@ export default async function handler(req, res) {
       }
       if (!text(body.poNo)) return res.status(400).json({ error: 'PO No is mandatory' });
       if (!Array.isArray(body.lines) || !body.lines.length) return res.status(400).json({ error: 'Please Add Atleast One SKU' });
+      if (body.lines.some(row => !isInboundRow(row))) return res.status(400).json({ error: 'Each inbound line must be an object.' });
       if (body.lines.some(row => !text(row.skuCode || row.sku_code))) return res.status(400).json({ error: 'SKU Code is mandatory.' });
-      if (body.lines.some(row => !Number.isSafeInteger(Number(row.rcvdQty ?? row.received_qty ?? 0)) || Number(row.rcvdQty ?? row.received_qty ?? 0) < 0)) {
+      if (body.lines.some(row => !isInboundQuantity(row.rcvdQty ?? row.received_qty ?? 0))) {
         return res.status(400).json({ error: 'Received quantity must be a whole number of zero or more.' });
       }
       const linesToReceive = receivedLines(body.lines);
@@ -141,7 +146,7 @@ export default async function handler(req, res) {
       for (const item of po.line_items || []) {
         const skuCode = text(item.sku_code || item.skuCode);
         const quantity = Number(item.qty ?? item.po_qty ?? item.poQty);
-        if (skuCode && Number.isSafeInteger(quantity) && quantity >= 0) allowed.set(skuCode, (allowed.get(skuCode) || 0) + quantity);
+        if (skuCode && Number.isSafeInteger(quantity) && quantity >= 0) allowed.set(skuCode, addInboundQuantities(allowed.get(skuCode) || 0, quantity));
       }
       if (linesToReceive.some(row => !allowed.has(row.skuCode))) return res.status(400).json({ error: 'SKU is not on the selected PO.' });
 
@@ -191,7 +196,7 @@ export default async function handler(req, res) {
         for (const record of await find('grn')) {
           if (record.id === existing?.id || text(record.po_no) !== text(body.poNo) || text(record.status) !== 'Confirmed') continue;
           for (const received of receivedLines(record.lines || [])) {
-            previouslyReceived.set(received.skuCode, (previouslyReceived.get(received.skuCode) || 0) + received.quantity);
+            previouslyReceived.set(received.skuCode, addInboundQuantities(previouslyReceived.get(received.skuCode) || 0, received.quantity));
           }
         }
         for (const received of linesToReceive) {
@@ -211,7 +216,7 @@ export default async function handler(req, res) {
         vendor: text(body.vendor || po.vendor), warehouse: locationInput,
         invoice_no: text(body.invoiceNo), invoice_date: text(body.invoiceDate), invoice_amount: Number(body.invoiceAmount) || 0,
         challan_no: text(body.challanNo), remarks: text(body.remarks), documents: body.documents || [],
-        lines: body.lines, received_qty: body.lines.reduce((sum, row) => sum + Number(row.rcvdQty ?? row.received_qty ?? 0), 0),
+        lines: body.lines, received_qty: body.lines.reduce((sum, row) => addInboundQuantities(sum, row.rcvdQty ?? row.received_qty ?? 0), 0),
         modified_date: timestamp,
       };
       const stagedFields = {
@@ -219,41 +224,14 @@ export default async function handler(req, res) {
         central_request_id: requestId, central_receipt_fingerprint: fingerprint,
         central_receipt_status: 'pending',
       };
-      let staged;
-      if (existing?.central_receipt_status === 'pending' && existing.central_request_id === requestId) staged = existing;
-      else if (existing) {
-        staged = await transitionGrnDraft(existing, stagedFields);
-        if (!staged) return res.status(409).json({ error: 'Inbound changed while receipt was being staged. Reload it before retrying.' });
-      }
-      else staged = await insert('grn', {
-        ...stagedFields, draft_revision: 1, inbound_no: inboundNo, grn_no: inboundNo,
-        created_date: timestamp, grn_date: timestamp.slice(0, 10),
-      });
-      pendingReceipt = staged;
-
-      const receipt = await receiveCentralInboundStock({
-        requestId, inboundNo, poNo: text(body.poNo), locationCode, lines: linesToReceive, allowedQuantities: allowed,
-        source: 'wms_inbound_realtime', validate: validateRemaining,
-        finalize: async result => {
-          const saved = await transitionGrnReceipt(staged.id,
-            { status: 'Central Receipt Pending', central_request_id: requestId, central_receipt_status: 'pending' }, {
-            status: 'Confirmed', status_code: 4,
-            central_receipt_status: 'committed', central_receipt_event_ids: result.eventIds,
-            status_changed_date: now(),
-          });
-          if (!saved) {
-            const current = await findOne('grn', { id: staged.id });
-            if (current?.status === 'Confirmed' && current.central_request_id === requestId
-              && current.central_receipt_status === 'committed' && current.central_receipt_fingerprint === fingerprint) return current;
-            throw new Error('Central receipt committed but the inbound record could not be finalized. Retry with the same request ID.');
-          }
-          return saved;
-        },
+      const staged = await stageReceiptCommand({
+        existing, fields: { ...stagedFields, ...(existing ? {} : { created_date: timestamp, grn_date: timestamp.slice(0, 10) }) },
+        requestId, fingerprint, inboundNo, poNo: text(body.poNo), locationCode, lines: linesToReceive, source: 'wms_inbound_realtime',
       });
       pendingReceipt = null;
-      return res.status(existing ? 200 : 201).json({
-        jsonMessage: receipt.duplicate ? 'Inbound receipt is already committed to Central Inventory.' : 'Inbound confirmed and received in Central Inventory.',
-        row: normalize(receipt.finalizedRow),
+      return res.status(202).json({
+        jsonMessage: 'Inbound receipt queued for Central Inventory. Check the receipt status before treating stock as received.',
+        row: normalize(staged),
       });
     }
 
@@ -268,6 +246,7 @@ export default async function handler(req, res) {
       if (!Array.isArray(body.lines) || (!body.lines.length && body.action !== 'save-invoice')) {
         return res.status(400).json({ error: 'Please Add Atleast One SKU' });
       }
+      if (body.lines.some(row => !isInboundRow(row) || !isInboundQuantity(row.rcvdQty ?? row.received_qty ?? 0))) return res.status(400).json({ error: 'Inbound lines require whole quantities of zero or more.' });
       if (body.action === 'save-invoice' && !text(body.invoiceNo)) return res.status(400).json({ error: 'Invoice No is mandatory.' });
       const existing = body.id ? await findOne('grn', { id: Number(body.id) }) : null;
       if (body.id && !existing) return res.status(404).json({ error: 'Inbound record not found.' });
@@ -300,7 +279,7 @@ export default async function handler(req, res) {
         vendor: text(body.vendor), warehouse: text(body.warehouse), invoice_no: text(body.invoiceNo),
         invoice_date: text(body.invoiceDate), invoice_amount: Number(body.invoiceAmount) || 0,
         challan_no: text(body.challanNo), remarks: text(body.remarks), documents: body.documents || [],
-        lines: body.lines || [], received_qty: (body.lines || []).reduce((sum, row) => sum + Number(row.rcvdQty || 0), 0),
+        lines: body.lines || [], received_qty: (body.lines || []).reduce((sum, row) => addInboundQuantities(sum, row.rcvdQty ?? row.received_qty ?? 0), 0),
         status: state, status_code: state === 'Cancelled' ? 7 : 1, modified_date: now(),
       };
       if (existing) {

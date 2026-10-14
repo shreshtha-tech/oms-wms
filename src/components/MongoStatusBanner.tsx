@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-type MongoStatus = { selectedDatabase?: string; datasetState: string; presentCollections?: number; populatedCollections?: number };
+type MongoStatus = { selectedDatabase?: string; datasetState: string; reason?: string | null; presentCollections?: number; populatedCollections?: number };
 
 export default function MongoStatusBanner() {
   const [status, setStatus] = useState<MongoStatus | null>(null);
@@ -26,6 +26,7 @@ export default function MongoStatusBanner() {
   const message = status.datasetState === 'EMPTY_UNINITIALISED' ? 'No data in this database'
     : status.datasetState === 'POPULATED' ? `Database reachable · ${status.populatedCollections} collections contain data`
     : status.datasetState === 'AUTHENTICATION_FAILED' ? 'Database authentication failed'
+    : status.datasetState === 'UNREACHABLE' && status.reason === 'TLS_HANDSHAKE_FAILED' ? 'MongoDB TLS handshake failed; check Atlas Network Access, cluster status, and TLS configuration'
     : status.datasetState === 'UNREACHABLE' ? 'Database temporarily unavailable'
     : status.datasetState === 'ACCESS_DENIED' ? 'Database inspection permission denied'
     : status.datasetState === 'UNCONFIGURED' ? 'Persistent database is not configured'

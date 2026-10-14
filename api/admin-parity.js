@@ -2,18 +2,19 @@ import { randomBytes } from 'node:crypto';
 import { sendDatabaseUnavailable, cors, find, findOne, insert, update, updateAdminIfVersion, remove } from './mongo.js';
 import { currentUser } from './auth-session.js';
 import { locations } from './catalogs.js';
+import { safeCsv, csvExportLimit } from './csv-safe.js';
+import { adminApiKeyView } from './admin-api-key-view.js';
 
 const logTypes = new Set(['accounting-log','tax-integration-log','device-tracking-log','external-apps-logs','pos-integration-log','repush-log']);
 const text = value => String(value ?? '');
-const apiKeyView = row => ({...row, version:row.version??0, apiKey:row.apiKey?'[stored]':''});
-const csv = (rows, keys) => [keys, ...rows.map(row => keys.map(key => row[key]))].map(row => row.map(value => `"${text(value).replaceAll('"','""')}"`).join(',')).join('\r\n');
+const apiKeyView = adminApiKeyView;
 const parseDate = value => { const m=text(value).match(/^(\d{2})\/(\d{2})\/(\d{4})$/); return m ? new Date(`${m[3]}-${m[2]}-${m[1]}T00:00:00`) : new Date(value); };
 const filterRows = (rows,filters={}) => rows.filter(row => Object.entries(filters).every(([key,value]) => {
   if(!value || value==='-1')return true;
   if(/Date|date/.test(key) && text(value).includes(' - ')) { const [start,end]=text(value).split(' - ').map(parseDate);const date=parseDate(row[key]);end.setHours(23,59,59,999);return date>=start&&date<=end; }
   return text(row[key]).toLowerCase().includes(text(value).toLowerCase());
 }));
-const report = async (name, rows, keys) => insert('generic_records',{module:'pending-report',code:`EXP-${randomBytes(6).toString('hex')}`,name,status:'SUCCESS',created_date:new Date().toISOString(),completed_date:new Date().toISOString(),link:true,forceProcess:'N',content:csv(rows,keys)});
+const report = async (name, rows, keys) => insert('generic_records',{module:'pending-report',code:`EXP-${randomBytes(6).toString('hex')}`,name,status:'SUCCESS',created_date:new Date().toISOString(),completed_date:new Date().toISOString(),link:true,forceProcess:'N',content:safeCsv(rows,keys)});
 const searchLogs = async body => {
   if(!logTypes.has(body.screen))throw new Error('Unknown log screen');
   const rows=await find('admin_records',{type:body.screen},{sort:{id:-1}});
@@ -67,7 +68,12 @@ export default async function handler(req,res) {
     }
     if(req.method==='POST') {
       if(b.action==='search-logs') {const rows=await searchLogs(b),size=Math.min(200,Math.max(1,Number(b.size)||20)),page=Math.max(1,Number(b.page)||1);return res.json({rows:rows.slice((page-1)*size,page*size),total:rows.length,page});}
-      if(b.action==='export-logs') {const rows=await searchLogs(b),keys=[...new Set(rows.flatMap(row=>Object.keys(row)))].filter(key=>!['id','type'].includes(key));const saved=await report(b.screen,rows,keys.length?keys:['Document Number','Status']);return res.json({reportId:saved.id});}
+      if(b.action==='export-logs') {
+        const rows=await searchLogs(b),keySet=new Set();
+        if(rows.length>1000)throw csvExportLimit();
+        for(const row of rows)for(const key of Object.keys(row))if(!['id','type'].includes(key)){keySet.add(key);if(keySet.size>64)throw csvExportLimit();}
+        const keys=[...keySet];const saved=await report(b.screen,rows,keys.length?keys:['Document Number','Status']);return res.json({reportId:saved.id});
+      }
       if(b.action==='audit-export') {
         if(!b.fromDate||!b.toDate||!b.logType||b.logType==='-1')return res.status(422).json({error:'Please fill all mandatory fields'});
         const from=parseDate(b.fromDate),to=parseDate(b.toDate),today=new Date();today.setHours(0,0,0,0);
@@ -102,6 +108,7 @@ export default async function handler(req,res) {
     }
     return res.status(405).json({error:'Method not allowed'});
   }catch(error){
+    if(error?.code==='CSV_EXPORT_LIMIT')return res.status(413).json({error:'CSV_EXPORT_LIMIT',message:'Export exceeds the supported CSV size. Narrow the date range or filters.'});
     if (sendDatabaseUnavailable(res, error)) return;
     console.error('Admin parity API unexpected failure');
     return res.status(500).json({error:'Unexpected Admin API error'});}

@@ -1,0 +1,60 @@
+# Security evidence and gaps
+
+Inspection date: 2026-10-09 (Asia/Kolkata). Status: **IN PROGRESS**. Security analysis is documentation only; the separate Flipkart retrieval implementation was explicitly authorized and is described in its own report.
+
+Use [existing API security matrix](../API_SECURITY_MATRIX.md) and [hardening report](../PRODUCTION_SECURITY_HARDENING_REPORT.md) as dated supporting reports. They are not a fresh authenticated attack campaign.
+
+Fresh source: server.js authenticates /api before private inventory routes; auth-session.js defines explicit Central Inventory permissions/configured accounts; connection-security.js requires HTTPS origins, rejects private DNS answers, pins the checked address, avoids following redirects, sets deadlines and bounds provider response bytes. These are implemented mechanisms, not a complete SSRF/authentication security proof.
+
+Source review does not establish role/object authorization on all legacy routes, cross-tenant warehouse access, CSRF posture, deployed cookie/TLS behavior, secret rotation or retention. Session lifecycle source gaps are mapped below: login does not revoke an existing account session, inactivity is not enforced in the traced session helper, and logout only clears the cookie after its database deletion succeeds. Runtime behavior and impact still require authenticated tests. Role/read-operation policy needs a business decision rather than inventing unrestricted or overly restrictive rights.
+
+[ASVS stable v5.0.0](https://github.com/OWASP/ASVS/tree/v5.0.0) is the selected standards baseline for mapping, not a claim of conformance. Requirement-ID mapping is still INCOMPLETE. For each applicable requirement record endpoint, source, positive/negative test, result/environment, exception owner and expiry. Do not assign compliance from a scanner result.
+
+Highest-value security investigation: authenticated operation/object/tenant negative tests in an owned isolated stack. Scope server.js, auth-session.js, tenant middleware and one bounded route family; effort medium; compatibility existing Node verifiers; risk medium due to unclear role policies; acceptance unauthenticated/unauthorized/foreign-object requests produce no read disclosure or mutation and authorized controls work; validation HTTP tests plus store snapshots. Implementation remains gated pending policy and explicit authorization.
+
+## Reference security regression pattern — file/template handling
+
+OpenBoxes' reviewed SSTI advisory and its v0.9.8 fix show why arbitrary documents must not flow into a general-purpose template engine; its merged change validates Zebra document type and replaces executable Groovy evaluation with a constrained property resolver, with controller and resolver specs. Its upload/SSRF patch removes an unused endpoint that fetched caller-supplied URLs and adds file allowlist/content validation. These are upstream examples only, not findings against this app.
+
+Local [inventory file routes](../../inventory/files-api.js) validate an `.xlsx` name, base64 syntax and a 7 MiB limit before workbook parsing; [workbook inspector](../../inventory/workbook-inspector.js) reports sanitized structure and the existing fixture checks invalid extension and row bounds. An adversarial ZIP-content, decompression and resource-exhaustion corpus was not found in the inspected verifier. Recommendation: add a disposable-process hostile workbook test corpus before claiming parser resource safety. Effort small/medium; risk medium because legitimate workbook acceptance may change; acceptance malformed/renamed archives fail within bounded time/memory with no database effect while representative supported workbooks still pass; validation measured child-process limits plus isolated HTTP checks. See [comparison row](architecture-comparison.md) for scope and test cases.
+
+## Additional quality findings
+
+src/components/Modal.tsx has dialog semantics/name/close control but no internal focus trap, restoration or Escape handling. This is a confirmed missing implementation mechanism in that component; application-wide keyboard impact remains unverified. Radix source/tests demonstrate relevant mechanisms without establishing local accessibility.
+
+Official CodeQL documentation is applicable to JS/TS analysis but requires repository-policy/availability investigation. No scanner can prove warehouse ownership, stock concurrency, correct cancellation or recovery; keep business HTTP/integration checks separate.
+
+
+## ASVS v5.0.0 initial requirement mapping
+
+Exact source: [V8 Authorization](https://raw.githubusercontent.com/OWASP/ASVS/v5.0.0/5.0/en/0x17-V8-Authorization.md) and [V7 Session Management](https://raw.githubusercontent.com/OWASP/ASVS/v5.0.0/5.0/en/0x16-V7-Session-Management.md). IDs below were verified from the stable release. This is a scoped assessment, not ASVS conformance.
+
+| Requirement IDs | Local evidence | Assessment / required validation |
+|---|---|---|
+| 8.1.1, 8.1.2 | Permission registry; existing API security report | Function/data/field policy incomplete; owner-approved operation/object/field matrix needed |
+| 8.2.1, 8.3.1 | requirePermission and server authentication | Named trusted-server controls exist; preview/export lack operation-specific checks; policy gap, not automatically proven unauthorized disclosure |
+| 8.2.2, 8.2.3 | Tenant predicates; bounded response projections in selected paths | Per-object/field entitlements unverified; HTTP foreign-object and prohibited-field cases |
+| 8.4.1 | inventoryTenantBoundary rejects differing supplied tenant and assigns configured tenant | Single configured tenant boundary exists; user-to-tenant entitlements and every route remain unverified |
+| 7.2.1, 7.2.2, 7.2.3 | PG backend lookup; randomBytes(32) generated reference token; hashed storage | Source mechanism present; mounted session behavior and token tests required |
+| 7.1.1 | `api/auth-session.js` sets an eight-hour absolute expiry; no inactivity timeout or documented risk rationale was found | Absolute timeout mechanism exists; inactivity timeout and justified lifetime are not established. Document risk decisions and implement/test required inactivity behavior |
+| 7.1.2 | No concurrent-session limit or behavior when a limit is reached found | Document permitted parallel sessions and intended limit behavior; source permits multiple sessions, runtime behavior not exercised |
+| 7.1.3 | No federated identity/SSO session integration found in the inspected login routes | Likely not applicable to the inspected local-password flow; confirm no upstream SSO integration exists before closing |
+| 7.2.1, 7.2.2, 7.2.3 | Backend PG lookup; `randomBytes(32)` reference token; SHA-256 hash storage | Source and isolated verifier confirm hashed persistence, module-reload lookup and no raw token persistence; hosted behavior NOT RUN |
+| 7.2.4 | `/api/auth/login` calls `issueSession`, creating a new random token without terminating any current token for that account | Source gap confirmed; verifier does not test reauthentication rotation. Add two-login assertion that old token is rejected if one-session rotation is the selected policy |
+| 7.3.1 | `authenticateSession` checks `expires_at`; `issueSession` inserts an eight-hour absolute expiry | No inactivity timestamp/update/check observed; inactivity behavior NOT RUN in source or verifier |
+| 7.3.2 | Eight-hour database expiry and cookie Max-Age | Isolated verifier sets DB expiry to the past and confirms HTTP-protected access is rejected; appropriateness and risk rationale remain undocumented |
+| 7.4.1 | `/api/auth/logout` calls `revokeSession`; backend deletes current token hash and then clears cookie | Isolated HTTP verifier confirms logout succeeds and replay receives 401. If PG deletion throws, cookie clearing is not reached and route returns 503; outage path NOT RUN |
+| 7.4.2 | `authenticateSession` rejects sessions when configured account is absent or its password-hash fingerprint changed | Isolated verifier confirms password-hash rotation and username rename invalidate use; explicit disabled-account behavior and row cleanup after config change remain unverified |
+| 7.4.3, 7.5.2, 7.5.3 | No password-change/session-management UI or step-up authentication found in traced routes | Confirm sensitive operations and account/session-management scope with owner before deciding applicability or implementing controls |
+| 7.4.4 | Logout API exists; visible and easy logout access on every authenticated page not inspected | UI coverage remains unverified; inspect representative authenticated layouts |
+| 7.4.5 | No administrator endpoint to terminate sessions by user or globally found in traced auth routes | No admin session-revocation control observed; confirm operator need and recovery process |
+| 8.1.3, 8.1.4 | No documented contextual-attribute policy or risk thresholds/actions found in the scoped authorization material | Mapping incomplete: inspect all authentication/authorization entry points and document any IP, device, location or time-based decisions; if none, record that explicitly and determine applicability/level with the security owner |
+| 8.2.4 | No adaptive environment/context-based authorization mechanism found in the scoped login and permission helpers | Level 3 applicability is not decided; do not claim conformance or add device/risk controls without a defined threat model |
+| 8.3.2 | `authenticateSession` rebuilds the account from current process configuration on each request, and checks the credential fingerprint; permissions are returned from that current account configuration | Source suggests permission changes apply on subsequent authentication middleware passes when process configuration changes, but runtime reload/deployment behavior and in-flight requests are not verified. Define immediate revocation expectations and test role-removal behavior |
+| 8.3.3 | No complete user-to-downstream-service authorization trace in the current audit | Inspect delegated/provider calls to determine where user entitlements must be forwarded or enforced; machine credentials must not silently broaden user-authorized object access |
+| 8.4.2 | No continuous identity, device-posture or contextual-risk controls observed in the traced admin authentication path | Level 3 applicability and compensating controls require owner risk review; network location alone must not be represented as admin authorization |
+| 7.6.1, 7.6.2 | No federated identity provider/session integration was found in the inspected login and session paths | Likely not applicable to current local-password flow; confirm full repository/deployment scope before closing these conditional federation requirements |
+
+Fresh source inspection: `api/auth-session.js` sets HttpOnly/SameSite=Strict and conditionally Secure. `server.js` passes `req.secure`; Express trusts one proxy only when `TRUST_PROXY=true`, so deployed proxy/TLS settings and resulting cookie flags are unverified. The session token is 32 CSPRNG bytes (256 bits) and only its SHA-256 hash is stored; permissions load from current server-side configuration at authentication. Central inventory is explicitly configured as one tenant, so do not describe this as a completed per-user multitenant entitlement system.
+
+Bounded next security task: document session lifetime, inactivity and concurrent-session decisions, then add isolated HTTP tests for login rotation, logout database failure, removed-account behavior and configured proxy cookie flags. Separately finalize preview/export role policy and test allowed/denied operators, foreign object IDs and prohibited fields. Effort medium; security impact high; policy risk medium. Acceptance old session is rejected after the documented reauthentication behavior, expired/removed-account sessions cannot be used, session cookie flags match deployment, and denied requests disclose/mutate nothing while positive controls work. Validate with a fresh owned PG stack and store-effect snapshots. Do not silently change session or permission policy without owner decision.

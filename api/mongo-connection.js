@@ -8,7 +8,7 @@ export const databaseUnavailable = () => Object.assign(new Error('The requested 
 export const databaseTimeout = () => Object.assign(new Error('The database operation timed out. Please try again.'), {
   status: 504, statusCode: 504, code: 'DATABASE_TIMEOUT', database: 'mongodb',
 });
-export const isConnectionError = error => error instanceof MongoNetworkError || error?.name === 'PoolClearedOnNetworkError' || error?.code === 'DATABASE_UNAVAILABLE' || error?.code === 18 || error?.name === 'MongoAuthenticationError'
+export const isConnectionError = error => error instanceof MongoNetworkError || ['EPIPE', 'ECONNRESET', 'ECONNREFUSED', 'ETIMEDOUT', 'ENETUNREACH', 'EHOSTUNREACH', 'EAI_AGAIN', 'ENOTFOUND'].includes(error?.code) || error?.name === 'PoolClearedOnNetworkError' || error?.code === 'DATABASE_UNAVAILABLE' || error?.code === 18 || error?.name === 'MongoAuthenticationError'
   || /Mongo(Network|ServerSelection|TopologyClosed|NotConnected|PoolCleared|PoolClosed|WaitQueueTimeout|OperationTimeout|ClientClosed)/.test(error?.name || '');
 
 // One driver pool; a rejected attempt is never retained. The driver monitors
@@ -25,11 +25,12 @@ export function createMongoConnection({ uri, database, Client = MongoClient, ret
     increment('database_errors_total', { database: 'mongodb' });
     dataset = null; datasetAt = 0;
     const errors = [error, error?.cause, ...Array.from(error?.reason?.servers?.values?.() || []).flatMap(server => [server.error, server.error?.cause])].filter(Boolean);
-    reason = errors.some(item => item.code === 18 || item.codeName === 'AuthenticationFailed' || item.name === 'MongoAuthenticationError') ? 'AUTHENTICATION_FAILED' : 'UNREACHABLE';
+    const tlsHandshakeFailed = errors.some(item => item.code === 'ERR_SSL_TLSV1_ALERT_INTERNAL_ERROR' || /alert (?:number )?80|TLSV1_ALERT_INTERNAL_ERROR/i.test(item.message || ''));
+    reason = errors.some(item => item.code === 18 || item.codeName === 'AuthenticationFailed' || item.name === 'MongoAuthenticationError') ? 'AUTHENTICATION_FAILED' : tlsHandshakeFailed ? 'TLS_HANDSHAKE_FAILED' : 'UNREACHABLE';
     retryAt = Date.now() + Math.min(30000, retryMs * 2 ** Math.min(failures - 1, 5)) * (0.75 + Math.random() * 0.5);
     // Error messages can contain credentials/URIs. Log only classifications.
     log('[data] MongoDB dependency failure', { reason });
-    if (errors.some(item => /alert (?:number )?80|TLSV1_ALERT_INTERNAL_ERROR/i.test(item.message || ''))) {
+    if (tlsHandshakeFailed) {
       log('[data] connection refused before certificate exchange: check Atlas Network Access allowlist and cluster state');
     }
   }

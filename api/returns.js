@@ -1,4 +1,4 @@
-import { sendDatabaseUnavailable, find, findOne, insert, update, remove, cors } from './mongo.js';
+import { sendDatabaseUnavailable, find, findOne, insert, update, cors } from './mongo.js';
 import { locationPairs } from './catalogs.js';
 import { currentUser } from './auth-session.js';
 import { listCentralWmsStock } from '../inventory/wms-operations.js';
@@ -103,11 +103,10 @@ export default async function handler(req, res) {
     }
 
     if (req.method === 'POST') {
-      const { rma_no, order_no, customer, sku_code, qty, reason, return_date, status } = req.body;
-      return res.status(201).json(await insert('returns', { rma_no, order_no, customer, sku_code, qty, reason, return_date, status: status || 'Requested' }));
+      return res.status(501).json({ error: 'Legacy untyped return creation is unavailable. Use a validated customer or vendor return workflow; no record was created.' });
     }
-    if (req.method === 'PUT') { const { id, ...fields } = req.body; const rows = await update('returns', id, fields); return res.status(200).json(rows[0]); }
-    if (req.method === 'DELETE') { const { id } = req.body; return res.status(200).json(await remove('returns', id)); }
+    if (req.method === 'PUT') return res.status(501).json({ error: 'Legacy untyped return updates are unavailable. Use a validated return workflow; no record was changed.' });
+    if (req.method === 'DELETE') return res.status(501).json({ error: 'Legacy untyped return deletion is unavailable. Use a validated return workflow; no record was deleted.' });
     res.status(405).json({ error: 'Method not allowed' });
   } catch (err) {
     if (sendDatabaseUnavailable(res, err)) return; console.error('returns error:', { name: err?.name, code: err?.code }); res.status(err.statusCode || err.status || 500).json({ error: err.message }); }

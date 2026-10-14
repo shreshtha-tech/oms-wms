@@ -13,10 +13,12 @@ import { parse as parseCsv } from 'csv-parse/sync';
 import { tallyPrivate, tallyPublic } from './tally-bridge.js';
 import { currentCredentials } from './connection-setup.js';
 import { pollShopifyOrderObservations } from './shopify-orders.js';
+import { flipkartHistoryStart } from './flipkart-order-observation.js';
 import { parseMeeshoOrderReport, importMeeshoOrders } from './meesho-orders.js';
 import { salesProgramsApi } from './sales-programs.js';
 import { connectionReadiness } from './connection-readiness.js';
 import { connectionRequestOriginAllowed } from './connection-origin.js';
+import { currentUser, requirePermission } from '../api/auth-session.js';
 
 export const sellerConnectionsApi=express.Router(),sellerOAuthApi=express.Router();
 sellerOAuthApi.use('/agent',tallyPublic);
@@ -94,7 +96,13 @@ export async function verifyAndSave(tenant,platform,input,{id,fetcher=providerFe
  await tryLogSyncAttempt({tenantId:tenant,accountId:row.id,direction:'read',operation:'connect_test',skuCount:result.skuCount,diagnostic:{locations:result.locations.length}});
  return {ok:true,connection:connectionView(row),raw};
 }
-sellerConnectionsApi.use((req,res,next)=>{res.set('Cache-Control','no-store');if(req.method!=='GET'&&!connectionRequestOriginAllowed(req))return res.status(403).json({error:'Connection request origin denied'});next();});
+const requireConnectionManagement=requirePermission('central_inventory.connections.manage');
+sellerConnectionsApi.use((req,res,next)=>{
+ res.set('Cache-Control','no-store');
+ if(req.method!=='GET'&&!connectionRequestOriginAllowed(req))return res.status(403).json({error:'Connection request origin denied'});
+ if(['POST','PUT','PATCH','DELETE'].includes(req.method))return requireConnectionManagement(req,res,next);
+ next();
+});
 sellerConnectionsApi.use('/agent',tallyPrivate);
 sellerConnectionsApi.use('/programs',salesProgramsApi);
 const wrap=fn=>async(req,res)=>{
@@ -190,8 +198,43 @@ sellerConnectionsApi.post('/:id/locations',wrap(async(req,res)=>{
  });res.json({ok:true});
 }));
 sellerConnectionsApi.post('/:id/pause',wrap(async(req,res)=>{await connectionAccount(req.inventoryTenantId,req.params.id);await inventoryPool().query("UPDATE ci_channel_account SET status='inactive',settings=settings||jsonb_build_object('observationEnabled',false),updated_at=now() WHERE tenant_id=$1 AND id=$2",[req.inventoryTenantId,req.params.id]);res.json({ok:true});}));
+sellerConnectionsApi.post('/:id/provider-authority',requirePermission('central_inventory.provider_authority.manage'),wrap(async(req,res)=>{
+ const enabled=req.body?.enabled,revision=req.body?.expectedRevision,reason=String(req.body?.reason||'').trim();
+ if(typeof enabled!=='boolean'||!Number.isSafeInteger(revision)||revision<0||!reason||reason.length>250)throw Object.assign(new Error('Enabled, expected revision and audit reason are required'),{status:400});
+ const actor=currentUser(req)?.username;
+ if(!actor)throw Object.assign(new Error('Authenticated operator required'),{status:401});
+ const result=await transaction(async db=>{
+  const account=(await db.query('SELECT platform,settings,provider_authority_revision FROM ci_channel_account WHERE tenant_id=$1 AND id=$2 FOR UPDATE',[req.inventoryTenantId,req.params.id])).rows[0];
+  if(!account)throw Object.assign(new Error('Connection not found'),{status:404});
+  if(enabled&&!['woocommerce','amazon'].includes(account.platform))throw Object.assign(new Error('Provider dispatch authority is unavailable for this platform'),{status:400});
+  if(Number(account.provider_authority_revision)!==revision)throw Object.assign(new Error('Provider authority changed; reload before saving'),{status:409});
+  const previous=account.settings?.providerAuthoritative===true;
+  if(previous===enabled)return {enabled,revision};
+  await db.query("UPDATE ci_channel_account SET settings=settings||jsonb_build_object('providerAuthoritative',$3::boolean),provider_authority_revision=provider_authority_revision+1,updated_at=now() WHERE tenant_id=$1 AND id=$2",[req.inventoryTenantId,req.params.id,enabled]);
+  await db.query('INSERT INTO ci_provider_authority_audit(tenant_id,account_id,previous_value,new_value,revision,actor,reason) VALUES($1,$2,$3,$4,$5,$6,$7)',[req.inventoryTenantId,req.params.id,previous,enabled,revision+1,actor,reason]);
+  return {enabled,revision:revision+1};
+ });
+ res.json(result);
+}));
+sellerConnectionsApi.get('/:id/dispatch-reviews',wrap(async(req,res)=>{
+ await connectionAccount(req.inventoryTenantId,req.params.id);
+ const rows=await inventoryPool().query(`SELECT external_order_id,reason,status,first_observed_at,last_observed_at,
+  extract(epoch FROM (now()-first_observed_at))::bigint AS age_seconds
+  FROM ci_dispatch_review WHERE tenant_id=$1 AND account_id=$2 AND status='open'
+  ORDER BY first_observed_at LIMIT 100`,[req.inventoryTenantId,req.params.id]);
+ res.json({reviews:rows.rows});
+}));
 sellerConnectionsApi.post('/:id/observe',wrap(async(req,res)=>{const account=await connectionAccount(req.inventoryTenantId,req.params.id);if(!account.verified_at||!['amazon','amazon_fba','flipkart','snapdeal','zoho_pos'].includes(account.platform))throw new Error('A verified read-only API connection is required');await inventoryPool().query("UPDATE ci_channel_account SET settings=settings||jsonb_build_object('observationEnabled',true),updated_at=now() WHERE tenant_id=$1 AND id=$2",[req.inventoryTenantId,account.id]);res.json({scheduled:true,note:'The worker refreshes the verified sample/custody response every 15 minutes. This does not publish inventory.'});}));
-sellerConnectionsApi.post('/:id/orders/observe',wrap(async(req,res)=>{
+sellerConnectionsApi.post('/:id/orders/observe',requirePermission('central_inventory.connections.manage'),wrap(async(req,res)=>{
+ const selected=await connectionAccount(req.inventoryTenantId,req.params.id);
+ if(selected.platform==='flipkart'){
+  const requested=req.body?.from || flipkartHistoryStart;
+  if(typeof requested!=='string'||!Number.isFinite(Date.parse(requested))||Date.parse(requested)<0||Date.parse(requested)>Date.now())throw Object.assign(new Error('Use a valid history start date between 1970 and today'),{status:400});
+  const from=new Date(requested).toISOString();
+  await inventoryPool().query("UPDATE ci_channel_account SET settings=settings||$3::jsonb,updated_at=now() WHERE tenant_id=$1 AND id=$2",[req.inventoryTenantId,selected.id,JSON.stringify({orderObservationEnabled:true,flipkartHistoryFrom:from,flipkartBackfillBefore:new Date().toISOString(),flipkartHistoryCompletedAt:null,flipkartCancellationBackfillBefore:new Date().toISOString(),flipkartCancellationHistoryCompletedAt:null,flipkartOrderError:null,flipkartOrderRetryAt:null})]);
+  return res.status(202).json({scheduled:true,readOnly:true,from,detail:'Flipkart historical retrieval queued. The inventory worker imports seller-fulfilled observations and reports progress; this response does not prove completion.'});
+ }
+
  const account=await connectionAccount(req.inventoryTenantId,req.params.id);
  if(account.platform!=='shopify')throw new Error('Read-only order monitoring is currently available for Shopify');
  const fields=await currentCredentials(account),probe=await shopifyClient(fields).graphql('query{shop{myshopifyDomain}currentAppInstallation{accessScopes{handle}}orders(first:1){nodes{id}}}');

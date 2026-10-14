@@ -1,0 +1,19 @@
+{
+  "inspection_date": "2026-10-09",
+  "checkout": "/Users/shreshthagupta/AI-Workspaces/oms-wms",
+  "branch": "fix/flipkart-order-intake-20261009",
+  "head": "332743b0d0bdf21fc46bcda4eb327e8c2dda03fe",
+  "scope": "Inventory worker, scheduler, Amazon SQS consumer and its deploy configuration",
+  "files": {
+    "inventory/sqs-worker.js": "9a4feb4b58917250ea25d097299fc80f91e6e4dcde20a51a66951cefcec21ad3",
+    "inventory/ingress.js": "e370aa6f004f6160740848b443d2492e523b69e12a153aa80ec11b8190d4a61e",
+    "inventory/workers.js": "46d28599f2ec6d0c60e3e9970e2fe533b740b69de02f95433b83bb99a79ba3d9",
+    "inventory/connection-readiness.js": "f4502ba95de5961360b78e28f449110b568de0ac22da1725208898ce3a998206",
+    "scripts/inventory-worker.mjs": "0f1c67598b299b4de9e9ca49c8d2ab14d1e646938c4b5188f1ab011fb776b61d",
+    "scripts/inventory-worker-supervisor.mjs": "0cb79aa434ce6137df0f3857e20d959049108e2f037d5f11d943405da3807ece",
+    "scripts/inventory-amazon-sqs.mjs": "0d20e0e232f58083f41545e786e832b8266de16efcce6fc2f307450025f73fc1",
+    "scripts/verify-phase-b-sqs.mjs": "45939aa8a51127b397fb8c2375244bd6554c60028b67a6758a55282024eefe59",
+    "render.yaml": "b7e09e73df916918d9a0753fcb82b853defcd3d66eca5575929b3d4299776767",
+    "package.json": "84e0eba5961d91aa7c8425a4ed17730e0c6ce314251d49518fa0af1c19b5a2c0"
+  }
+}

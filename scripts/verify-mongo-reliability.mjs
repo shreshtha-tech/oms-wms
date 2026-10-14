@@ -27,6 +27,24 @@ for (const timeout of [{ code: 50 }, { code: 262 }, { name: 'MongoOperationTimeo
 await assert.rejects(connection.run(() => { throw outage(); }), error => error.status === 503);
 await assert.rejects(connection.run(() => { throw Object.assign(new Error('private topology'), { name: 'PoolClearedOnNetworkError' }); }), error => error.status === 503);
 assert.ok(!JSON.stringify(logs).includes('credentials'));
+for (const code of ['EPIPE', 'ECONNRESET', 'ECONNREFUSED', 'ETIMEDOUT', 'ENETUNREACH', 'EHOSTUNREACH', 'EAI_AGAIN', 'ENOTFOUND']) {
+  await assert.rejects(connection.run(() => { throw Object.assign(new Error('private socket detail'), { code }); }), error => error.code === 'DATABASE_UNAVAILABLE' && error.status === 503 && !error.message.includes('private'));
+  assert.equal(connection.status().state, 'DEGRADED');
+  await connection.connect();
+}
+class TlsClient {
+  async connect() {
+    const cause = Object.assign(new Error('private certificate and server detail'), { code: 'ERR_SSL_TLSV1_ALERT_INTERNAL_ERROR' });
+    throw Object.assign(new Error('private MongoDB server selection detail'), { name: 'MongoServerSelectionError', reason: { servers: new Map([['private', { error: { cause } }]]) } });
+  }
+  async close() {}
+}
+const tlsLogs = [];
+const tls = createMongoConnection({ uri: 'test', database: 'test', Client: TlsClient, retryMs: 0, log: (...args) => tlsLogs.push(args) });
+await assert.rejects(tls.connect(), error => error.code === 'DATABASE_UNAVAILABLE' && error.status === 503);
+assert.equal(tls.status().reason, 'TLS_HANDSHAKE_FAILED');
+assert.ok(!JSON.stringify(tlsLogs).includes('private'));
+await tls.close();
 await connection.close(); assert.equal(closes, 1); assert.equal(connection.status().state, 'STOPPED');
 await assert.rejects(connection.connect(), error => error.status === 503);
 console.log('PASS: shared pool, single-flight outage, retry, loss after startup, redaction, business errors and shutdown');

@@ -20,7 +20,7 @@ export function whatsappSetup(){
 export function whatsappReady(){return configured()&&Boolean(process.env.WHATSAPP_ORDER_TEMPLATE||process.env.WHATSAPP_OBSERVED_ORDER_TEMPLATE||process.env.WHATSAPP_PACKING_TEMPLATE);}
 
 export function whatsappTemplatePayload(row,items,settings=process.env){
- const fourth=row.team_kind==='informational'?(row.team_instruction||'Review observed order'):row.event_type==='packing_ready'||row.team_kind==='packing'?(row.dispatch_by?new Date(row.dispatch_by).toLocaleString('en-IN',{timeZone:'Asia/Kolkata'}):'See order panel'):'Check stock in D-Mills';
+ const fourth=row.team_kind==='informational'?(row.team_instruction||'Review observed order'):row.event_type==='new_order'?'Review order; wait for stock reservation':row.event_type==='packing_ready'||row.team_kind==='packing'?(row.dispatch_by?new Date(row.dispatch_by).toLocaleString('en-IN',{timeZone:'Asia/Kolkata'}):'See order panel'):'Check stock in D-Mills';
  const programmeName=salesPrograms.find(p=>p.key===row.sales_program)?.name;
  const platformName=row.sales_program?`${connectionCatalog.find(c=>c.key===row.platform)?.name||row.platform} · ${programmeName||row.sales_program}`:row.platform;
  const params=[platformName,row.external_order_id,items.map(i=>`${i.seller_sku} × ${i.quantity}`).join(', ')||'See order panel',fourth].map(value=>String(value??'See order panel').replace(/[\r\n\t]/g,' ').replace(/ {4,}/g,' ').slice(0,500));
@@ -33,22 +33,28 @@ export function whatsappTemplatePayload(row,items,settings=process.env){
 
 // Fixed Meta origin only; signal dispatch when Node finishes writing the request.
 // Injected transports use the same onDispatch callback before simulating a sent request.
-export async function whatsappFetch(input,{onDispatch=()=>{},...options}={}){
+export async function whatsappFetch(input,{onDispatch=()=>{},...options}={},transport={}){
+ const resolveHost=transport.lookup||lookup,send=transport.request||https.request,totalTimeoutMs=transport.totalTimeoutMs||20000;
+ const deadline=performance.now()+totalTimeoutMs;
  const url=new URL(input);
  if(url.origin!=='https://graph.facebook.com'||url.username||url.password)throw new Error('Invalid Meta origin');
- let timer;const answers=await Promise.race([lookup(url.hostname,{all:true}),new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error('Meta DNS lookup timed out')),20000);})]).finally(()=>clearTimeout(timer));
+ let timer;const answers=await Promise.race([resolveHost(url.hostname,{all:true}),new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error('Meta DNS lookup timed out')),totalTimeoutMs);})]).finally(()=>clearTimeout(timer));
  if(!answers.length||answers.some(answer=>!publicAddress(answer.address)))throw new Error('Meta hostname did not resolve to a public address');
  const chosen=answers[0];
  return new Promise((resolve,reject)=>{
-  const request=https.request(url,{...options,lookup:(_host,opts,cb)=>opts.all?cb(null,[chosen]):cb(null,chosen.address,chosen.family)},response=>{
+  let settled=false,totalTimer;
+  const finish=(error,value)=>{if(settled)return;settled=true;clearTimeout(totalTimer);error?reject(error):resolve(value);};
+  const request=send(url,{...options,lookup:(_host,opts,cb)=>opts.all?cb(null,[chosen]):cb(null,chosen.address,chosen.family)},response=>{
    const chunks=[];let size=0;
    response.on('data',chunk=>{size+=chunk.length;if(size>4_000_000){request.destroy(new Error('Meta response exceeds 4 MB'));return;}chunks.push(chunk);});
-   response.on('end',()=>resolve({ok:response.statusCode>=200&&response.statusCode<300,status:response.statusCode,json:async()=>JSON.parse(Buffer.concat(chunks).toString())}));
-   response.on('error',reject);
+   response.on('end',()=>finish(null,{ok:response.statusCode>=200&&response.statusCode<300,status:response.statusCode,json:async()=>JSON.parse(Buffer.concat(chunks).toString())}));
+   response.on('error',error=>finish(error));
+   response.on('aborted',()=>finish(new Error('Meta response interrupted')));
   });
   request.once('finish',onDispatch);
   request.setTimeout(20000,()=>request.destroy(new Error('Meta request timed out')));
-  request.on('error',reject);
+  request.on('error',error=>finish(error));
+  totalTimer=setTimeout(()=>{const error=new Error('Meta total request deadline exceeded');finish(error);request.destroy(error);},Math.max(1,deadline-performance.now()));
   request.end(options.body);
  });
 }

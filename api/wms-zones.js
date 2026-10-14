@@ -1,4 +1,4 @@
-import { sendDatabaseUnavailable, cors, find, findOne, insert, update } from './mongo.js';
+import { actor, bulkLinkWmsZonePickers, findWmsPickerCandidates, sendDatabaseUnavailable, cors, find, findOne, insert, update, updateWmsZonePickers } from './mongo.js';
 
 const text = (value) => String(value ?? '').trim();
 const has = (value, query) => !text(query) || text(query) === '-1' || text(value).toLowerCase().includes(text(query).toLowerCase());
@@ -65,20 +65,46 @@ export default async function handler(req, res) {
       const changed = await update('generic_records', current.id, { name: text(body.descr), description: text(body.descr), status: body.status === false ? 'Inactive' : 'Active', pick_to_bin: text(body.picktoLoc), kit_to_bin: text(body.kittoLoc), qc_bin: text(body.qcBin), let_down_bin: text(body.letDownBin), order_types: Array.isArray(body.orderTypes) ? body.orderTypes : [], drop_zone: text(body.dropZone), default_bin: text(body.defaultBin), modified_by: 'super admin', modified_date: now });
       return res.status(200).json({ row: normalize(changed[0]), message: 'Data saved successfully.' });
     }
+    if (req.method === 'PUT' && body.action === 'link-pickers-bulk') {
+      const links = body.links;
+      if (!Array.isArray(links) || links.length < 1 || links.length > 200 || links.some(link => !link || !Number.isSafeInteger(link.id) || link.id <= 0 ||
+          typeof link.zone !== 'string' || !link.zone.trim() || link.zone.length > 100 || typeof link.picker !== 'string' || !link.picker.trim() || link.picker.length > 100)) return res.status(400).json({ error: 'Invalid zone-picker batch.' });
+      const pickerRows = await findWmsPickerCandidates(links.map(link => link.picker));
+      const known = new Set(pickerRows.filter(row => /picker/i.test(`${row.name} ${row.description}`)).map(row => text(row.code)));
+      if (links.some(link => !known.has(link.picker.trim()))) return res.status(400).json({ error: 'Picker was not found.' });
+      const result = await bulkLinkWmsZonePickers(links, actor(req));
+      return res.status(200).json({ ...result, message: `${result.links} picker link(s) confirmed.` });
+    }
     if (req.method === 'PUT' && ['link-pickers', 'unlink-pickers'].includes(body.action)) {
-      const current = await findOne('generic_records', { id: Number(body.id) });
-      if (!current || current.module !== 'wms-zone') return res.status(404).json({ error: 'Zone was not found.' });
-      const requested = Array.isArray(body.pickers) ? body.pickers.map(text).filter(Boolean) : [];
-      if (!requested.length) return res.status(400).json({ error: body.action === 'link-pickers' ? 'Please Select Picker' : 'Please Select a Row For UnLink' });
-      const existing = normalize(current).linked_pickers;
-      const linked = body.action === 'link-pickers' ? [...new Set([...existing, ...requested])] : existing.filter((picker) => !requested.includes(picker));
-      const changed = await update('generic_records', current.id, { linked_pickers: linked, modified_by: 'super admin', modified_date: new Date().toISOString() });
-      return res.status(200).json({ row: normalize(changed[0]), message: body.action === 'link-pickers' ? 'Picker Linked with Zone Successfully.' : 'Picker Unlinked Successfully' });
+      const id = typeof body.id === 'number' || (typeof body.id === 'string' && /^[1-9]\d*$/.test(body.id)) ? Number(body.id) : NaN;
+      if (!Number.isSafeInteger(id) || id <= 0 || !Array.isArray(body.pickers) || body.pickers.length < 1 || body.pickers.length > 200 ||
+          body.pickers.some(picker => typeof picker !== 'string' || !picker.trim() || picker.length > 100)) return res.status(400).json({ error: 'Invalid zone-picker request.' });
+      const requested = [...new Set(body.pickers.map(text))];
+      if (body.action === 'link-pickers') {
+        const pickerRows = await findWmsPickerCandidates(requested);
+        const known = new Set(pickerRows.filter(row => /picker/i.test(`${row.name} ${row.description}`)).map(row => text(row.code)));
+        if (requested.some(picker => !known.has(picker))) return res.status(400).json({ error: 'Picker was not found.' });
+      }
+      const changed = await updateWmsZonePickers(id, requested, body.action, actor(req));
+      if (!changed) {
+        const current = await findOne('generic_records', { id });
+        if (current?.module === 'wms-zone') {
+          if (current.linked_pickers != null && !Array.isArray(current.linked_pickers)) return res.status(409).json({ error: 'Legacy zone picker data requires migration.' });
+          if (body.action === 'link-pickers' && (current.linked_pickers || []).length + requested.filter(picker => !(current.linked_pickers || []).includes(picker)).length > 1000) return res.status(413).json({ error: 'Zone picker link limit exceeded.' });
+          return res.status(409).json({ error: 'Zone picker state changed. Refresh and retry.' });
+        }
+        return res.status(404).json({ error: 'Zone was not found.' });
+      }
+      return res.status(200).json({ row: normalize(changed), message: body.action === 'link-pickers' ? 'Picker Linked with Zone Successfully.' : 'Picker Unlinked Successfully' });
     }
     return res.status(405).json({ error: 'Method not allowed' });
   } catch (error) {
     if (sendDatabaseUnavailable(res, error)) return;
+    if (error?.code === 'WMS_ZONE_PICKERS_LEGACY') return res.status(409).json({ error: 'Legacy zone picker data requires migration.' });
+    if (error?.code === 'WMS_ZONE_PICKERS_LIMIT') return res.status(413).json({ error: 'Zone picker link limit exceeded.' });
+    if (error?.code === 'WMS_ZONE_BULK_INVALID') return res.status(400).json({ error: 'Invalid zone-picker batch.' });
+    if (error?.code === 'WMS_ZONE_BULK_CONFLICT') return res.status(409).json({ error: 'Zone identity changed. Refresh and retry.' });
     console.error('WMS Zone error:', { name: error?.name, code: error?.code });
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: 'WMS Zone request failed.' });
   }
 }

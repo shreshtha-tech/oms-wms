@@ -21,15 +21,19 @@ function sheet(workbook,name,headers,rows){
 }
 export async function inventoryTemplate(){
   const wb=new ExcelJS.Workbook();
-  sheet(wb,'Catalog',['SKU','Product Name','Pack of'],[]);
   sheet(wb,'Physical counts',['SKU','Product Name','Location','On hand'],[]);
+  sheet(wb,'Catalog',['SKU','Product Name','Pack of'],[]);
   sheet(wb,'Instructions',['Field','Meaning'],[
-    ['Catalog','Use catalog mode to create SKU identities without changing stock.'],
-    ['Physical counts','Use counts mode only for verified on-hand quantities. Each SKU/location pair must be unique.'],
+    ['Upload limit','Up to 50,000 data rows per import; the .xlsx file must be 7 MB or smaller.'],
+    ['Import purpose','For stock updates, choose Verified physical counts and fill the Physical counts worksheet. The Catalog worksheet is ignored in this mode.'],
+    ['SKU','Keep the SKU as text and match an existing Central Inventory SKU exactly. No case, prefix, or pack conversion is applied. Add new SKUs using Catalog mode first.'],
+    ['Catalog','Use catalog mode to add SKU identities; catalog imports never change physical stock.'],
+    ['Physical counts','Each SKU/location pair must be unique. Whole-unit counts replace on-hand quantities for an existing SKU/location balance. Initial opening stock requires separate approval.'],
     ['Location','Exact existing warehouse/store code; or leave empty and choose one location on upload.'],
-    ['On hand','Nonnegative whole units of this exact SKU. A pack SKU is counted in packs, not loose pieces.'],
+    ['On hand','Nonnegative whole units for this exact SKU. A pack SKU is counted in packs, not loose pieces.'],
     ['Pack of','Informational pack size. No component conversion or channel mapping is activated.'],
-    ['Preview','Review errors and proposed changes; only Commit import writes stock.'],
+    ['Source workbook','If its sheet or headers differ from this template, inspect it and enter the exact sheet, header row and SKU/quantity columns in the mapped count workflow.'],
+    ['Preview','Review exact SKU/location matches and proposed changes. A count commit requires the stock-count permission and writes only to the Central Inventory ledger.'],
   ]);
   return wb.xlsx.writeBuffer();
 }

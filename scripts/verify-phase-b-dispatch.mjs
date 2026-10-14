@@ -1,0 +1,105 @@
+import assert from 'node:assert/strict';
+import { randomUUID } from 'node:crypto';
+import express from 'express';
+import { inventoryPool, migrateInventory, transaction } from '../inventory/db.js';
+import { applyInventoryEvent } from '../inventory/ledger.js';
+import { processInventoryTask } from '../inventory/workers.js';
+import { sellerConnectionsApi } from '../inventory/connections.js';
+import { routeIncomingOrderAlerts } from '../inventory/order-alert-routing.js';
+import { validateTestStores } from './lib/isolated-stack-guard.mjs';
+validateTestStores(process.env);
+process.env.INVENTORY_ALLOWED_TENANT_ID='phase-b-dispatch-synthetic';
+const tenant=process.env.INVENTORY_ALLOWED_TENANT_ID,pg=inventoryPool();
+const skuId=randomUUID(),locationId=randomUUID(),oldAccount=randomUUID(),newAccount=randomUUID(),unrelatedAccount=randomUUID();
+let server;
+async function account(id,name){await pg.query("INSERT INTO ci_channel_account(id,tenant_id,platform,external_account_id,status) VALUES($1,$2,'woocommerce',$3,'active')",[id,tenant,name]);}
+async function order(accountId,externalOrderId){
+ const id=randomUUID();
+ await pg.query("INSERT INTO ci_channel_mapping(tenant_id,account_id,master_sku_id,external_sku,internal_location_id,external_location_id,active) VALUES($1,$2,$3,'PB-SKU',$4,'',true)",[tenant,accountId,skuId,locationId]);
+ await pg.query("INSERT INTO ci_unified_order(id,tenant_id,account_id,platform,external_order_id,provider_status) VALUES($1,$2,$3,'woocommerce',$4,'processing')",[id,tenant,accountId,externalOrderId]);
+ await pg.query("INSERT INTO ci_unified_order_line(tenant_id,order_id,external_line_id,seller_sku,master_sku_id,quantity) VALUES($1,$2,'line-1','PB-SKU',$3,2)",[tenant,id,skuId]);
+ return id;
+}
+async function send(accountId,orderId,status){return processInventoryTask({tenant_id:tenant,account_id:accountId,task_type:'woocommerce_ingress',payload:{topic:'order.updated',event:{id:orderId,status,providerUpdatedAt:'2026-10-07T00:00:00Z',line_items:[{id:'line-1',sku:'PB-SKU',quantity:2}]}}});}
+async function count(type){return Number((await pg.query('SELECT count(*)::int n FROM ci_inventory_event WHERE tenant_id=$1 AND event_type=$2',[tenant,type])).rows[0].n);}
+try{
+ await migrateInventory();
+ await pg.query('INSERT INTO ci_master_sku(id,tenant_id,sku,product_name) VALUES($1,$2,$3,$4)',[skuId,tenant,'PB-SKU','Synthetic item']);
+ await pg.query("INSERT INTO ci_location(id,tenant_id,code,location_type) VALUES($1,$2,'PB-WH','warehouse')",[locationId,tenant]);
+ await applyInventoryEvent({tenantId:tenant,masterSkuId:skuId,locationId,eventKey:'synthetic-opening-count',eventType:'physical_count',source:'test',delta_on_hand:10});
+ await account(oldAccount,'old-account');
+ await pg.query("INSERT INTO ci_channel_account(id,tenant_id,platform,external_account_id,status) VALUES($1,$2,'shopify','unrelated-existing-account','active')",[unrelatedAccount,tenant]);
+ await pg.query("DELETE FROM ci_provider_authority_cutover WHERE id='stage_1_all_existing'"); // fixture simulates a pre-cutover account on this owned _test store
+ await migrateInventory(); // one-time Stage 1 cutover applies to this existing account
+ assert.equal((await pg.query('SELECT settings->>\'providerAuthoritative\' AS enabled FROM ci_channel_account WHERE id=$1',[oldAccount])).rows[0].enabled,'true');
+ assert.equal((await pg.query('SELECT count(*)::int n FROM ci_provider_authority_audit WHERE account_id=$1',[oldAccount])).rows[0].n,1);
+ assert.equal((await pg.query("SELECT settings->>'providerAuthoritative' AS enabled FROM ci_channel_account WHERE id=$1",[unrelatedAccount])).rows[0].enabled,null,'Unrelated existing channels must not receive provider-dispatch authority');
+ assert.equal((await pg.query('SELECT count(*)::int n FROM ci_provider_authority_audit WHERE account_id=$1',[unrelatedAccount])).rows[0].n,0);
+ await account(newAccount,'new-account');
+ assert.equal((await pg.query('SELECT settings->>\'providerAuthoritative\' AS enabled FROM ci_channel_account WHERE id=$1',[newAccount])).rows[0].enabled,null);
+ const oldOrder=await order(oldAccount,'old-order');await order(newAccount,'new-order');
+ await pg.query("INSERT INTO ci_alert_recipient(tenant_id,name,role,mobile_e164,event_types,consented_at,verified_at) VALUES($1,'Synthetic receipt','manager','+911234500001','{new_order}',now(),now()),($1,'Synthetic packer','packer','+911234500002','{packing_ready}',now(),now())",[tenant]);
+ await pg.query("INSERT INTO ci_order_timeline(tenant_id,order_id,event_key,event_type) VALUES($1,$2,'synthetic-order-received','received')",[tenant,oldOrder]);
+ await transaction(db=>routeIncomingOrderAlerts(db,{tenantId:tenant,orderId:oldOrder}));
+ let alerts=(await pg.query('SELECT event_type FROM ci_order_alert WHERE tenant_id=$1 AND order_id=$2 ORDER BY event_type',[tenant,oldOrder])).rows.map(row=>row.event_type);
+ assert.deepEqual(alerts,['new_order'],'Packing must wait for all reservations');
+ await send(oldAccount,'old-order','processing');await send(newAccount,'new-order','processing');
+ alerts=(await pg.query('SELECT event_type FROM ci_order_alert WHERE tenant_id=$1 AND order_id=$2 ORDER BY event_type',[tenant,oldOrder])).rows.map(row=>row.event_type);
+ assert.deepEqual(alerts,['new_order','packing_ready']);
+ await transaction(db=>routeIncomingOrderAlerts(db,{tenantId:tenant,orderId:oldOrder,phase:'packing'}));
+ assert.equal((await pg.query('SELECT count(*)::int n FROM ci_order_alert WHERE tenant_id=$1 AND order_id=$2',[tenant,oldOrder])).rows[0].n,2);
+ assert.equal(await count('reserve'),2);
+ await send(newAccount,'new-order','completed');
+ assert.equal(await count('dispatch'),0);
+ assert.equal((await pg.query('SELECT count(*)::int n FROM ci_dispatch_review WHERE account_id=$1',[newAccount])).rows[0].n,1);
+ await send(oldAccount,'old-order','completed');
+ assert.equal(await count('dispatch'),1);
+ assert.equal((await pg.query("SELECT count(*)::int n FROM ci_dispatch_evidence WHERE account_id=$1 AND evidence_type='provider-evidence'",[oldAccount])).rows[0].n,1);
+ const app=express();app.use(express.json());app.use((req,_res,next)=>{req.inventoryTenantId=tenant;req.user={username:'synthetic-operator',permissions:req.headers['x-fixture-authority']==='true'?['central_inventory.connections.manage','central_inventory.provider_authority.manage']:[]};next();});app.use('/connections',sellerConnectionsApi);
+ server=app.listen(0,'127.0.0.1');await new Promise(resolve=>server.once('listening',resolve));
+ const authorityUrl=id=>`http://127.0.0.1:${server.address().port}/connections/${id}/provider-authority`;
+ const denied=await fetch(authorityUrl(newAccount),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({enabled:true,expectedRevision:0,reason:'Synthetic unauthorized request'})});
+ assert.equal(denied.status,403);
+ assert.equal((await pg.query('SELECT provider_authority_revision FROM ci_channel_account WHERE id=$1',[newAccount])).rows[0].provider_authority_revision,'0');
+ const unrelatedEnable=await fetch(authorityUrl(unrelatedAccount),{method:'POST',headers:{'Content-Type':'application/json','x-fixture-authority':'true'},body:JSON.stringify({enabled:true,expectedRevision:0,reason:'Synthetic unrelated platform'})});
+ assert.equal(unrelatedEnable.status,400);
+ assert.equal((await pg.query('SELECT provider_authority_revision FROM ci_channel_account WHERE id=$1',[unrelatedAccount])).rows[0].provider_authority_revision,'0');
+ const foreignAccount=randomUUID();
+ await pg.query("INSERT INTO ci_channel_account(id,tenant_id,platform,external_account_id,status) VALUES($1,'foreign-tenant','woocommerce','foreign-authority-fixture','active')",[foreignAccount]);
+ const foreignEnable=await fetch(authorityUrl(foreignAccount),{method:'POST',headers:{'Content-Type':'application/json','x-fixture-authority':'true'},body:JSON.stringify({enabled:true,expectedRevision:0,reason:'Synthetic foreign tenant'})});
+ assert.equal(foreignEnable.status,404);
+ assert.equal((await pg.query('SELECT provider_authority_revision FROM ci_channel_account WHERE id=$1',[foreignAccount])).rows[0].provider_authority_revision,'0');
+ const response=await fetch(authorityUrl(newAccount),{method:'POST',headers:{'Content-Type':'application/json','x-fixture-authority':'true'},body:JSON.stringify({enabled:true,expectedRevision:0,reason:'Synthetic reviewed channel policy'})});
+ assert.equal(response.status,200);
+ assert.deepEqual(await response.json(),{enabled:true,revision:1});
+ const stale=await fetch(authorityUrl(newAccount),{method:'POST',headers:{'Content-Type':'application/json','x-fixture-authority':'true'},body:JSON.stringify({enabled:false,expectedRevision:0,reason:'Synthetic stale request'})});
+ assert.equal(stale.status,409);
+ assert.equal((await pg.query('SELECT provider_authority_revision FROM ci_channel_account WHERE id=$1',[newAccount])).rows[0].provider_authority_revision,'1');
+ assert.equal((await pg.query('SELECT actor FROM ci_provider_authority_audit WHERE account_id=$1',[newAccount])).rows[0].actor,'synthetic-operator');
+ await send(newAccount,'new-order','completed');
+ assert.equal(await count('dispatch'),2);
+ assert.equal((await pg.query("SELECT count(*)::int n FROM ci_dispatch_evidence WHERE tenant_id=$1 AND evidence_type='provider-evidence'",[tenant])).rows[0].n,2);
+ const amazonAccount=randomUUID(),amazonOrder=randomUUID();
+ await pg.query("INSERT INTO ci_channel_account(id,tenant_id,platform,external_account_id,status) VALUES($1,$2,'amazon','partial-fixture','active')",[amazonAccount,tenant]);
+ await pg.query("INSERT INTO ci_channel_mapping(tenant_id,account_id,master_sku_id,external_sku,internal_location_id,external_location_id,active) VALUES($1,$2,$3,'PB-SKU',$4,'',true)",[tenant,amazonAccount,skuId,locationId]);
+ await pg.query("INSERT INTO ci_unified_order(id,tenant_id,account_id,platform,external_order_id,provider_status) VALUES($1,$2,$3,'amazon','amazon-partial','Unshipped')",[amazonOrder,tenant,amazonAccount]);
+ await pg.query("INSERT INTO ci_unified_order_line(tenant_id,order_id,external_line_id,seller_sku,master_sku_id,quantity) VALUES($1,$2,'amazon-line','PB-SKU',$3,2)",[tenant,amazonOrder,skuId]);
+ const amazonEnable=await fetch(authorityUrl(amazonAccount),{method:'POST',headers:{'Content-Type':'application/json','x-fixture-authority':'true'},body:JSON.stringify({enabled:true,expectedRevision:0,reason:'Synthetic partial-shipment review test'})});
+ assert.equal(amazonEnable.status,200);
+ const amazonTask=(status,revision)=>({tenant_id:tenant,account_id:amazonAccount,task_type:'amazon_ingress',payload:{NotificationType:'ORDER_CHANGE',Payload:{OrderChangeNotification:{NotificationLevel:'OrderLevel',AmazonOrderId:'amazon-partial',OrderChangeTrigger:{TimeOfOrderChange:revision},Summary:{FulfillmentType:'MFN',OrderStatus:status,OrderItems:[{OrderItemId:'amazon-line',SellerSKU:'PB-SKU',Quantity:2,QuantityShipped:status==='PartiallyShipped'?1:undefined}]}}}}});
+ await processInventoryTask(amazonTask('Unshipped','2026-10-07T00:00:00Z'));
+ const reservedBeforePartial=await count('reserve'),dispatchedBeforePartial=await count('dispatch');
+ await processInventoryTask(amazonTask('PartiallyShipped','2026-10-07T00:01:00Z'));
+ assert.equal(await count('reserve'),reservedBeforePartial);
+ assert.equal(await count('dispatch'),dispatchedBeforePartial);
+ assert.equal((await pg.query('SELECT work_status FROM ci_unified_order WHERE id=$1',[amazonOrder])).rows[0].work_status,'partially_shipped');
+ assert.equal((await pg.query("SELECT status FROM ci_reservation WHERE tenant_id=$1 AND source=$2 AND external_order_id='amazon-partial'",[tenant,`amazon:${amazonAccount}`])).rows[0].status,'active');
+ await assert.rejects(processInventoryTask(amazonTask('Shipped','2026-10-07T00:02:00Z')),/partial shipment requires quantity and package reconciliation/);
+ assert.equal(await count('dispatch'),dispatchedBeforePartial);
+ await migrateInventory();
+ const disabled=await fetch(authorityUrl(newAccount),{method:'POST',headers:{'Content-Type':'application/json','x-fixture-authority':'true'},body:JSON.stringify({enabled:false,expectedRevision:1,reason:'Synthetic disable'})});
+ assert.equal(disabled.status,200);
+ await migrateInventory();
+ assert.equal((await pg.query("SELECT settings->>'providerAuthoritative' AS enabled FROM ci_channel_account WHERE id=$1",[newAccount])).rows[0].enabled,'false','Rerunning migrations must not re-enable an audited disable');
+ console.log('PASS: provider-authority cutover, review/evidence, alert timing, and Amazon partial-shipment reservation hold.');
+}finally{if(server)await new Promise(resolve=>server.close(resolve));await pg.end();}

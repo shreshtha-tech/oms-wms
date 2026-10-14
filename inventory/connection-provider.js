@@ -44,7 +44,10 @@ export async function probeConnection(platform,input,{fetcher=providerFetch}={})
   const raw=platform==='amazon_fba'?await connector.getFbaInventory():await connector.request(`/listings/2021-08-01/items/${encodeURIComponent(fields.sellerId)}/${encodeURIComponent(fields.testSku)}?marketplaceIds=${encodeURIComponent(fields.marketplaceId)}&includedData=fulfillmentAvailability,summaries`);
   if(platform==='amazon'&&raw.sku!==fields.testSku)throw new Error('Amazon did not return the requested seller SKU');
   if(platform==='amazon_fba'&&!Array.isArray(raw.payload?.inventorySummaries))throw new Error('Amazon FBA response did not contain inventory summaries');
-  return {fields,raw,locations:[{id:platform==='amazon_fba'?fields.marketplaceId:'DEFAULT',name:platform==='amazon_fba'?'Amazon custody':'Merchant fulfillment'}],scopes:[],skuCount:platform==='amazon_fba'?raw.payload.inventorySummaries.length:1};
+  const locations=platform==='amazon_fba'?[{id:fields.marketplaceId,name:'Amazon custody'}]:[...new Set((Array.isArray(raw.fulfillmentAvailability)?raw.fulfillmentAvailability:[])
+    .map(item=>typeof item.fulfillmentChannelCode==='string'?item.fulfillmentChannelCode.trim():'').filter(Boolean))]
+    .map(code=>({id:code,name:code}));
+  return {fields,raw,locations,scopes:[],skuCount:platform==='amazon_fba'?raw.payload.inventorySummaries.length:1};
  }
  if(platform==='woocommerce'){
   const raw=await wooRequest(fields,'/products?per_page=1',{fetcher});

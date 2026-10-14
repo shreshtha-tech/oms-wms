@@ -1,0 +1,35 @@
+{
+  "status": "PASS",
+  "layer": "OWNED_FRESH_LOOPBACK_MONGO",
+  "runtime": "v24.21.0",
+  "rows": 21001,
+  "beforeReady": {
+    "documentsExamined": 21001,
+    "keysExamined": 0,
+    "executionMs": 10,
+    "indexes": []
+  },
+  "beforeExpired": {
+    "documentsExamined": 21001,
+    "keysExamined": 0,
+    "executionMs": 4,
+    "indexes": []
+  },
+  "afterReady": {
+    "documentsExamined": 1,
+    "keysExamined": 1,
+    "executionMs": 4,
+    "indexes": [
+      "receipt_ready_active_idx"
+    ]
+  },
+  "afterExpired": {
+    "documentsExamined": 1,
+    "keysExamined": 1,
+    "executionMs": 2,
+    "indexes": [
+      "receipt_expired_active_idx"
+    ]
+  },
+  "limitation": "Find cursor plan uses exact predicate/sort but is not the findOneAndUpdate execution plan or hosted capacity."
+}

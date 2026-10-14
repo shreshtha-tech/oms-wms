@@ -20,7 +20,8 @@ const pollAccount = { platform: 'shopify', status: 'inactive', connection_state:
 for (const orderCursorAt of [stale, future, 'invalid']) {
   assert.notEqual(connectionReadiness(pollAccount, { workerHealthy: true, orderCursorAt }).orders.state, 'live');
 }
-assert.equal(connectionReadiness(pollAccount, { workerHealthy: true, orderCursorAt: now }).orders.state, 'live');
+assert.equal(connectionReadiness(pollAccount, { workerHealthy: true, orderCursorAt: now }).orders.state, 'partial');
+assert.match(connectionReadiness(pollAccount, { workerHealthy: true, orderCursorAt: now }).orders.detail, /does not enqueue reservation work/);
 for (const verified_at of ['invalid', future]) {
   const result = connectionReadiness({ platform: 'woocommerce', verified_at });
   assert.equal(result.credentials.state, 'not_verified');
@@ -32,6 +33,6 @@ for (const platform of ['shopify', 'woocommerce']) {
   const account = { platform, status: 'inactive', connection_state: 'verified', verified_at: now, settings: { orderObservationEnabled: true, webhooksReady: true } };
   for (const lastWebhookAt of [undefined, 'invalid', future]) assert.equal(connectionReadiness(account, { lastWebhookAt }).orders.state, 'starting');
   const confirmed = connectionReadiness(account, { lastWebhookAt: now });
-  assert.equal(confirmed.orders.state, 'live');
+  assert.equal(confirmed.orders.state, 'partial');
   assert.equal(confirmed.returns.lastConfirmedAt, null, 'order delivery does not prove a refund callback');
 }

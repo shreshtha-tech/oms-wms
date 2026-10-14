@@ -1,0 +1,21 @@
+import assert from 'node:assert/strict';
+import { BSON } from 'mongodb';
+import { insertRestoreBatches, restoreDocumentBytes, restoreBudget } from './mongo-restore-batches.mjs';
+const batches = [];
+const collection = { insertMany: async (rows, options) => { assert.deepEqual(options, { ordered: true }); batches.push(rows); } };
+await insertRestoreBatches(collection, Array.from({ length: 501 }, (_, id) => ({ id })));
+assert.deepEqual(batches.map(rows => rows.length), [500, 1]);
+batches.length = 0;
+await insertRestoreBatches(collection, [{ id: 1, payload: 'a'.repeat(5 * 1024 * 1024) }, { id: 2, payload: 'b'.repeat(5 * 1024 * 1024) }]);
+assert.deepEqual(batches.map(rows => rows.length), [1, 1]);
+assert.ok(batches.every(rows => rows.reduce((sum, row) => sum + BSON.calculateObjectSize(row), 0) <= restoreBudget.batchBytes));
+batches.length = 0;
+await insertRestoreBatches(collection, [{ payload: 'a'.repeat(9 * 1024 * 1024) }, { id: 3 }]);
+assert.deepEqual(batches.map(rows => rows.length), [1, 1]);
+assert.throws(() => restoreDocumentBytes({ payload: 'x'.repeat(16 * 1024 * 1024) }), /16 MiB/);
+let requested = 0;
+async function* rows() { for (let id = 0; id < 2000; id++) { requested++; yield { id }; } }
+const primary = Error('injected insert failure');
+await assert.rejects(insertRestoreBatches({ insertMany: async () => { throw primary; } }, rows()), error => error === primary);
+assert.equal(requested, 501, 'A failed batch must stop consuming the backup stream');
+console.log('PASS: restore row and BSON-byte bounds, valid large singleton, oversized document refusal and primary failure stops stream');
