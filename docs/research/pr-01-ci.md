@@ -22,6 +22,8 @@ The three newly registered checks cover the CI runner, the `.env` switch, and pr
 
 The completed local after-run is `artifacts/pr-01/after-final.txt` and `after-final.json`: 109 PASS, 105 FAIL across all 214 registered tests. All 109 required tests passed; all 105 quarantined tests ran and failed. There were 38 prior FAIL-to-PASS transitions, no prior PASS-to-FAIL transitions, and three new passing tests. `artifacts/pr-01/diff.md` and `diff.json` compare every command. The local runner used Node 26.5.0, PostgreSQL 18.3, and MongoDB 8.0.8; these results do not substitute for the hosted Node 24 / PostgreSQL 16 / MongoDB 7 gate.
 
+A second local gate used Node 24.21.0 with the same owned PostgreSQL 18.3 and MongoDB 8.0.8: all 109 required tests PASS (`artifacts/pr-01/after-node24-required.json` and `.txt`), and `npm run typecheck` plus `npm run build` PASS on Node 24. This remains local evidence; hosted PostgreSQL 16 and MongoDB 7 are NOT RUN.
+
 The 105 quarantine entries state the observed failure and required fixture work. Most older browser tests assume a pre-running server at a fixed port or an administrator session they never create; the CI isolation prevents them from reaching a configured local app. They remain in the registry, execute in CI, and retain their exact output. Required hosted CI, staging, and real-provider checks remain **NOT RUN** until evidence exists. PR 2 stays gated.
 
 No schema migration is added. Rollback: revert this PR's CI and fixture commits. The disposable service databases are removed by the runner. `render.yaml` continues to use `npm ci && npm run build`; `package-lock.json` stays authoritative and `pnpm-lock.yaml` is removed.

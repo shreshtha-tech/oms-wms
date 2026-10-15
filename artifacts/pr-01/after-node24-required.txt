@@ -1,0 +1,1623 @@
+
+$ npm run inventory:migrate
+
+> d-mills-global-console@1.0.0 inventory:migrate
+> node scripts/inventory-migrate.mjs
+
+{"timestamp":"2026-10-15T02:29:25.342Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-15T02:29:25.455Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:29:25.455Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Central inventory migration applied
+
+PASS (exit 0, 718ms)
+
+$ npm run test:admin-api-key-projection
+
+> d-mills-global-console@1.0.0 test:admin-api-key-projection
+> node scripts/verify-admin-api-key-projection.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Admin API-key projection: both list/catalog expose only UI fields and redact top-level/nested unknown secrets without rewriting storage.
+
+PASS (exit 0, 487ms)
+
+$ npm run test:admin-create-identity
+
+> d-mills-global-console@1.0.0 test:admin-create-identity
+> node scripts/verify-admin-create-identity.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Admin create identity: id-zero form obtains a server ID, API key stays masked, caller-chosen identities and malformed bodies create no record.
+
+PASS (exit 0, 477ms)
+
+$ npm run test:admin-csv-boundary
+
+> d-mills-global-console@1.0.0 test:admin-csv-boundary
+> node scripts/verify-admin-csv-boundary.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Admin CSV boundary: formula-leading values and headers are inert after CSV parsing; quotes/newlines round-trip through the report handler.
+
+PASS (exit 0, 475ms)
+
+$ npm run test:ajio-integrity
+
+> d-mills-global-console@1.0.0 test:ajio-integrity
+> node scripts/verify-ajio-api.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS AJIO: blank config reads are side-effect free, credentials are not stored, local SKU mappings show no feed success, and every provider-dependent action returns 503 without creating fulfillment artifacts.
+
+PASS (exit 0, 485ms)
+
+$ npm run test:amazon-location-discovery
+
+> d-mills-global-console@1.0.0 test:amazon-location-discovery
+> node scripts/verify-amazon-location-discovery.mjs
+
+PASS Amazon MFN location discovery uses only unique fulfillment-channel codes returned for the verified seller SKU.
+
+PASS (exit 0, 416ms)
+
+$ npm run test:amazon-mfn-integrity
+
+> d-mills-global-console@1.0.0 test:amazon-mfn-integrity
+> node scripts/verify-amazon-mfn-api.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Amazon MFN: new secrets are not stored, legacy secrets are redacted and flagged, config saves as connector-not-configured, and provider operations return 503 without simulated artifacts.
+
+PASS (exit 0, 477ms)
+
+$ npm run test:api-outcome-boundary
+
+> d-mills-global-console@1.0.0 test:api-outcome-boundary
+> node scripts/verify-api-outcome-boundary.mjs
+
+PASS: mutation response loss, timeout, malformed success, explicit conflict, read retry and in-flight deduplication
+
+PASS (exit 0, 619ms)
+
+$ npm run test:ars-integrity
+
+> d-mills-global-console@1.0.0 test:ars-integrity
+> node scripts/verify-ars-integrity.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS ARS: run cannot create duplicate or sales-history-derived POs; fake export and log processing create no records or status changes.
+
+PASS (exit 0, 466ms)
+
+$ npm run test:auth-refresh-race
+
+> d-mills-global-console@1.0.0 test:auth-refresh-race
+> node scripts/verify-auth-refresh-race.mjs
+
+PASS: actual AuthProvider fences stale refresh/login and keeps failed or uncertain sign-out visible until server acknowledgement
+
+PASS (exit 0, 583ms)
+
+$ npm run test:back-order-integrity
+
+> d-mills-global-console@1.0.0 test:back-order-integrity
+> node scripts/verify-back-order-integrity.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Back Orders: planning edits are constrained, old stock is hidden, filters work, and duplicate/phantom PO paths create no records.
+
+PASS (exit 0, 468ms)
+
+$ npm run test:backup-line-boundary
+
+> d-mills-global-console@1.0.0 test:backup-line-boundary
+> node scripts/verify-backup-line-boundary.mjs
+
+PASS: backup line byte cap before decode, chunked UTF-8, CRLF/empty/final lines, exact boundary, invalid encoding and upstream cleanup
+
+PASS (exit 0, 413ms)
+
+$ npm run test:balance-read-boundary
+
+> d-mills-global-console@1.0.0 test:balance-read-boundary
+> node scripts/verify-balance-read-boundary.mjs
+
+PASS: tenant-scoped SQL limit, complete 10,000-row response, excess/UTF-8 byte rejection, original query failure preserved.
+
+PASS (exit 0, 421ms)
+
+$ npm run test:browser-csv-boundary
+
+> d-mills-global-console@1.0.0 test:browser-csv-boundary
+> node scripts/verify-browser-csv-boundary.mjs
+
+PASS browser CSV boundary: actual TypeScript serializer guards formulas, quotes/newlines and UTF-8/row/column size; seven inspected exports integrate it.
+
+PASS (exit 0, 483ms)
+
+$ npm run test:bulk-order-update
+
+> d-mills-global-console@1.0.0 test:bulk-order-update
+> node scripts/verify-bulk-order-update.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS legacy fulfillment safety: allocation/unallocation/cancellation, labels, provider acknowledgement, CEWB, dispatch checkpoint, shipment lifecycle, manifest dispatch transitions, pick, pack, sort, delivery split, and bulk status updates fail closed; local draft metadata stays labeled; priority-only metadata remains editable; screens disclose unavailable actions.
+
+PASS (exit 0, 488ms)
+
+$ npm run test:category-buyers
+
+> d-mills-global-console@1.0.0 test:category-buyers
+> node scripts/verify-category-buyers.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+
+  D-Mills Global server running on http://localhost:3024 / http://<your-ip>:3024
+
+{"timestamp":"2026-10-15T02:29:33.104Z","event":"http_request","request_id":"72e4eaea-4165-474e-b8a4-c791f998852e","method":"GET","route":"/api/auth/session","status":200,"duration_ms":2}
+{"timestamp":"2026-10-15T02:29:33.834Z","event":"http_request","request_id":"35218f6f-b238-4de6-8029-d0a456fe81bb","method":"GET","route":"/^(?!\\/api).*/","status":200,"duration_ms":4}
+{"timestamp":"2026-10-15T02:29:33.858Z","event":"http_request","request_id":"763ae703-ec2a-4a88-9ebc-bdbb38dca8f5","method":"GET","route":"/static","status":200,"duration_ms":1}
+{"timestamp":"2026-10-15T02:29:33.859Z","event":"http_request","request_id":"229c9f16-c8fc-40b8-8aea-c78999127c42","method":"GET","route":"/static","status":200,"duration_ms":5}
+{"timestamp":"2026-10-15T02:29:33.919Z","event":"http_request","request_id":"822c3846-09de-45b9-8bb2-5c0e9e585454","method":"GET","route":"/api/auth/session","status":200,"duration_ms":0}
+{"timestamp":"2026-10-15T02:29:34.459Z","event":"database_state","request_id":"ad18e0e7-d235-458a-bc28-fd3363a621d7","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-15T02:29:34.499Z","event":"http_request","request_id":"ad18e0e7-d235-458a-bc28-fd3363a621d7","method":"POST","route":"/api/auth/login","status":200,"duration_ms":56}
+{"timestamp":"2026-10-15T02:29:34.506Z","event":"http_request","request_id":"b10f5008-8664-4a88-9921-4d3aa4c5e5d8","method":"GET","route":"/static","status":503,"duration_ms":1,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:29:34.507Z","event":"http_request","request_id":"6eb68d00-a069-40a9-8e73-b196ac372b65","method":"GET","route":"/^(?!\\/api).*/","status":200,"duration_ms":3}
+{"timestamp":"2026-10-15T02:29:34.514Z","event":"http_request","request_id":"735c897c-8ce2-4c80-92e4-435de9b58f5d","method":"GET","route":"/static","status":200,"duration_ms":1}
+{"timestamp":"2026-10-15T02:29:34.516Z","event":"http_request","request_id":"c9e5a89a-1646-43dc-bb0a-e12173b18050","method":"GET","route":"/static","status":200,"duration_ms":2}
+{"timestamp":"2026-10-15T02:29:34.526Z","event":"http_request","request_id":"5ba7bbe1-890d-4151-bf36-d36479b1e53b","method":"GET","route":"/api/auth/session","status":200,"duration_ms":1}
+{"timestamp":"2026-10-15T02:29:34.535Z","event":"http_request","request_id":"c1d58cfe-d4b6-4824-bf28-0e9176a49a8a","method":"GET","route":"/static","status":200,"duration_ms":2}
+{"timestamp":"2026-10-15T02:29:34.536Z","event":"http_request","request_id":"0077749d-4fdd-4956-a596-3050d1b023b5","method":"GET","route":"/static","status":200,"duration_ms":2}
+{"timestamp":"2026-10-15T02:29:34.537Z","event":"http_request","request_id":"9b3512d8-021a-4938-b1f4-eaf898d6cccc","method":"GET","route":"/static","status":503,"duration_ms":1,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:29:34.538Z","event":"http_request","request_id":"7d7d4fbd-f850-4870-bcbc-570045eea047","method":"GET","route":"/static","status":200,"duration_ms":2}
+{"timestamp":"2026-10-15T02:29:34.539Z","event":"http_request","request_id":"28280930-72cd-45f2-9e3a-89a0456275d5","method":"GET","route":"/static","status":200,"duration_ms":2}
+{"timestamp":"2026-10-15T02:29:34.539Z","event":"http_request","request_id":"b692bb9f-e28a-44cc-a1ad-2921b0e703b0","method":"GET","route":"/static","status":200,"duration_ms":2}
+{"timestamp":"2026-10-15T02:29:34.540Z","event":"http_request","request_id":"e9148657-6991-4873-9ae8-4df4ee289e3e","method":"GET","route":"/static","status":200,"duration_ms":1}
+{"timestamp":"2026-10-15T02:29:34.870Z","event":"http_request","request_id":"bd5d9356-cf65-4b02-98f9-947a54a715a9","method":"GET","route":"/static","status":503,"duration_ms":2,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:29:34.874Z","event":"http_request","request_id":"93c247ff-b749-491a-b60d-0b70189a8e4d","method":"GET","route":"/api/merch-hierarchy","status":200,"duration_ms":3,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:29:34.879Z","event":"http_request","request_id":"f13d4b02-5c95-4d36-8f0e-94b8a672d2cf","method":"GET","route":"/api/merch-hierarchy","status":200,"duration_ms":2,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:29:34.881Z","event":"http_request","request_id":"6637f9bd-94e2-4b98-a14b-97e0a09693e8","method":"POST","route":"/api/categoryBuyerSearch","status":200,"duration_ms":9,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:29:34.881Z","event":"http_request","request_id":"a5052d44-99d7-4133-a165-87e3cadb5829","method":"GET","route":"/api/locations","status":200,"duration_ms":10,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:29:34.883Z","event":"http_request","request_id":"cb5e6852-8548-412c-95f2-4a0ff7e19cf4","method":"GET","route":"/api/locations","status":200,"duration_ms":5,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:29:34.883Z","event":"http_request","request_id":"47ddd7c5-501f-4d24-9ed8-a9c717ab513d","method":"POST","route":"/api/categoryBuyerSearch","status":200,"duration_ms":5,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:29:35.403Z","event":"http_request","request_id":"230f0070-992d-4445-8d0f-560517d71ba1","method":"POST","route":"/api/catBuyerSaveBS","status":201,"duration_ms":1,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:29:35.427Z","event":"http_request","request_id":"95132355-63cb-4f3a-936a-6de76ec5bbd7","method":"POST","route":"/api/categoryBuyerSearch","status":200,"duration_ms":1,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:29:35.431Z","event":"http_request","request_id":"cfc75ffc-f658-48dc-9be5-f260867d3397","method":"POST","route":"/api/categoryBuyerSearch","status":200,"duration_ms":1,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:29:35.433Z","event":"http_request","request_id":"bb14ff5e-1f76-49f8-bac9-3c3724987ec6","method":"POST","route":"/api/catBuyerSaveBS","status":400,"duration_ms":1,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:29:35.437Z","event":"http_request","request_id":"f489749f-7f20-4de0-ad5c-39c98a2ee8a7","method":"GET","route":"/^(?!\\/api).*/","status":200,"duration_ms":0}
+{"timestamp":"2026-10-15T02:29:35.443Z","event":"http_request","request_id":"07f8e48a-a297-4001-a254-1a781bdc2cef","method":"GET","route":"/static","status":200,"duration_ms":1}
+{"timestamp":"2026-10-15T02:29:35.444Z","event":"http_request","request_id":"d5421733-d8cf-4792-8ad3-cf1c4392990c","method":"GET","route":"/static","status":200,"duration_ms":2}
+{"timestamp":"2026-10-15T02:29:35.456Z","event":"http_request","request_id":"35f0eed1-42a1-496c-95df-56eb0c952824","method":"GET","route":"/api/auth/session","status":200,"duration_ms":1}
+{"timestamp":"2026-10-15T02:29:35.463Z","event":"http_request","request_id":"d8739877-091a-4054-8587-8782cb4325f5","method":"GET","route":"/static","status":200,"duration_ms":2}
+{"timestamp":"2026-10-15T02:29:35.463Z","event":"http_request","request_id":"5b9dcf20-6e1e-4475-83b9-db5c84d533cb","method":"GET","route":"/static","status":200,"duration_ms":2}
+{"timestamp":"2026-10-15T02:29:35.463Z","event":"http_request","request_id":"f60c0899-7547-4580-938c-b8024650e87e","method":"GET","route":"/static","status":200,"duration_ms":1}
+{"timestamp":"2026-10-15T02:29:35.464Z","event":"http_request","request_id":"59cf3fcc-ef4a-4f1d-bc63-a7986318de84","method":"GET","route":"/static","status":200,"duration_ms":2}
+{"timestamp":"2026-10-15T02:29:35.464Z","event":"http_request","request_id":"e32f167f-0dca-4b94-aa32-c44e01b61e54","method":"GET","route":"/static","status":200,"duration_ms":2}
+{"timestamp":"2026-10-15T02:29:35.465Z","event":"http_request","request_id":"cc30815a-e3e3-4c5c-8215-d472337c4b6d","method":"GET","route":"/static","status":200,"duration_ms":3}
+{"timestamp":"2026-10-15T02:29:35.465Z","event":"http_request","request_id":"30b9038c-fdf5-4210-b5e1-6a827257a421","method":"GET","route":"/static","status":503,"duration_ms":1,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:29:35.778Z","event":"http_request","request_id":"1ced2a96-5b44-4814-9773-5dbfeee035c3","method":"GET","route":"/static","status":503,"duration_ms":1,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:29:35.779Z","event":"http_request","request_id":"d8c87ee6-17f2-41a4-87e8-41c44242812f","method":"GET","route":"/api/merch-hierarchy","status":200,"duration_ms":1,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:29:35.779Z","event":"http_request","request_id":"eefd26b4-f4dd-46c8-8671-dbbe36dfc820","method":"GET","route":"/api/locations","status":200,"duration_ms":2,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:29:35.781Z","event":"http_request","request_id":"527ff2d3-8cc6-4257-993f-71bceb232205","method":"POST","route":"/api/categoryBuyerSearch","status":200,"duration_ms":3,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:29:35.785Z","event":"http_request","request_id":"0cef9539-c800-402e-b97a-f1c96b7929ad","method":"GET","route":"/api/merch-hierarchy","status":200,"duration_ms":1,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:29:35.786Z","event":"http_request","request_id":"addd89a1-e013-468d-807d-1fd6a9cd23bf","method":"POST","route":"/api/categoryBuyerSearch","status":200,"duration_ms":1,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:29:35.786Z","event":"http_request","request_id":"92f66ed5-f70a-4902-94af-0a8bb61804aa","method":"GET","route":"/api/locations","status":200,"duration_ms":1,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:29:36.329Z","event":"http_request","request_id":"beb1db90-1d15-4630-84d0-10e890a47cff","method":"POST","route":"/api/catBuyerSaveBS","status":200,"duration_ms":1,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:29:36.330Z","event":"http_request","request_id":"ba23ca80-b78e-476a-a068-093184468b00","method":"GET","route":"/api/category-buyers","status":200,"duration_ms":0,"operator_id":"buyercheck"}
+PASS Category Buyers: empty configured locations, create without copied warehouse, configured location validation and edit persistence
+
+PASS (exit 0, 4122ms)
+
+$ npm run test:central-inventory
+
+> d-mills-global-console@1.0.0 test:central-inventory
+> node scripts/verify-central-inventory.mjs
+
+{"timestamp":"2026-10-15T02:29:36.898Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS central inventory: ledger concurrency, reservations, immutable event, HMAC, Shopify mutation, encryption, Shopify/Amazon order lifecycle and replay
+{"timestamp":"2026-10-15T02:29:37.545Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:29:37.546Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+
+PASS (exit 0, 1187ms)
+
+$ npm run test:central-inventory-api
+
+> d-mills-global-console@1.0.0 test:central-inventory-api
+> node scripts/verify-central-inventory-api.mjs
+
+{"timestamp":"2026-10-15T02:29:38.128Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS central inventory API: SKU/location, unverified count rejection, existing-basis count, idempotency, adjustment, threshold alert and recovery
+{"timestamp":"2026-10-15T02:29:38.202Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:29:38.202Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+
+PASS (exit 0, 662ms)
+
+$ npm run test:central-inventory-files
+
+> d-mills-global-console@1.0.0 test:central-inventory-files
+> node scripts/run-owned-inventory-files.mjs
+
+{"timestamp":"2026-10-15T02:29:39.559Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS template and mapped-workbook SKU counts, exact SKU update, mapping digest, permission enforcement, idempotency, stale preview rejection, duplicate/negative/formula rejection, tenant isolation, alert lifecycle, Excel roundtrip, PDF and dashboard totals
+{"timestamp":"2026-10-15T02:29:39.924Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:29:39.924Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Owned disposable PostgreSQL removed.
+
+PASS (exit 0, 1912ms)
+
+$ npm run test:central-inventory-ui
+
+> d-mills-global-console@1.0.0 test:central-inventory-ui
+> node scripts/run-owned-central-inventory-ui.mjs
+
+{"timestamp":"2026-10-15T02:29:41.643Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS authenticated UI: exact mapped SKU count preview/commit, stock adjustment and threshold, real downloads, reload persistence, dashboard totals, 6 sections at 4 viewport sizes and preferences dialog
+{"timestamp":"2026-10-15T02:29:49.200Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:29:49.200Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Owned disposable Central Inventory UI PostgreSQL and artifacts removed.
+
+PASS (exit 0, 9281ms)
+
+$ npm run test:central-inventory-ui-isolated
+
+> d-mills-global-console@1.0.0 test:central-inventory-ui-isolated
+> node scripts/run-owned-central-inventory-ui.mjs
+
+{"timestamp":"2026-10-15T02:29:51.023Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS authenticated UI: exact mapped SKU count preview/commit, stock adjustment and threshold, real downloads, reload persistence, dashboard totals, 6 sections at 4 viewport sizes and preferences dialog
+{"timestamp":"2026-10-15T02:29:57.329Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:29:57.329Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Owned disposable Central Inventory UI PostgreSQL and artifacts removed.
+
+PASS (exit 0, 8138ms)
+
+$ npm run test:ci-env
+
+> d-mills-global-console@1.0.0 test:ci-env
+> node scripts/verify-ci-env.mjs
+
+PASS CI dotenv: explicit skip ignores synthetic .env; default loading preserved
+
+PASS (exit 0, 550ms)
+
+$ npm run test:ci-runner
+
+> d-mills-global-console@1.0.0 test:ci-runner
+> node scripts/verify-ci-test-runner.mjs
+
+
+$ npm run test:failure [quarantined]
+
+> test:failure
+> node -e "process.exit(7)"
+
+test:failure: FAIL (quarantined)
+
+$ npm run test:pass [required]
+
+> test:pass
+> node pass.mjs
+
+test:pass: PASS (required)
+
+$ npm run test:timeout [quarantined]
+
+> test:timeout
+> node -e "setTimeout(()=>{},30000)"
+
+test:timeout: FAIL (quarantined)
+
+$ npm run test:failure [required]
+
+> test:failure
+> node -e "process.exit(7)"
+
+test:failure: FAIL (required)
+PASS CI runner: exhaustive manifest, required failure gate, quarantine execution, continuation, timeout, job routing, environment isolation and binary overrides
+
+PASS (exit 0, 2747ms)
+
+$ npm run test:common-import
+
+> d-mills-global-console@1.0.0 test:common-import
+> node scripts/verify-common-import.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Common Import: metadata and validation remain available; template/import report unavailable service and create no false file or processed batch.
+
+PASS (exit 0, 515ms)
+
+$ npm run test:connection-authorization
+
+> d-mills-global-console@1.0.0 test:connection-authorization
+> node scripts/verify-connection-authorization.mjs
+
+PASS authorization setup: exact HTTPS callbacks and provider-specific deployment prerequisites
+
+PASS (exit 0, 669ms)
+
+$ npm run test:connection-readiness
+
+> d-mills-global-console@1.0.0 test:connection-readiness
+> node scripts/verify-connection-readiness.mjs
+
+PASS connection readiness: credentials, feed setup, worker evidence, partial returns, Amazon queue/activation limits, and Meesho report-only intake are distinguished.
+
+PASS (exit 0, 425ms)
+
+$ npm run test:consolidate-ewb
+
+> d-mills-global-console@1.0.0 test:consolidate-ewb
+> node scripts/verify-consolidate-ewb.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Consolidate EWB: enquiry and legacy links are read-only, generation fails closed, and no CEWB number or history row is fabricated.
+
+PASS (exit 0, 470ms)
+
+$ npm run test:customer-integrity
+
+> d-mills-global-console@1.0.0 test:customer-integrity
+> node scripts/verify-customer-integrity.mjs
+
+[data] MongoDB selection {
+  selectedDatabase: 'codexqa_mv8x88dr_f9eba1',
+  maskedHost: '[masked-host]'
+}
+[data] MongoDB configuration warning {
+  code: 'MONGODB_URI_DATABASE_OVERRIDDEN',
+  message: 'MONGODB_DB overrides a different database path in MONGODB_URI; confirm the selected database deliberately.',
+  selectedDatabase: 'codexqa_mv8x88dr_f9eba1'
+}
+{"timestamp":"2026-10-15T02:30:03.409Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"READY"}
+PASS isolated MongoDB customer create, search, rename, immutable code, protected order/return history, and delete guard.
+Isolated MongoDB test database removed.
+
+PASS (exit 0, 814ms)
+
+$ npm run test:delivery-shipping
+
+> d-mills-global-console@1.0.0 test:delivery-shipping
+> node scripts/verify-delivery-shipping.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS legacy fulfillment safety: allocation/unallocation/cancellation, labels, provider acknowledgement, CEWB, dispatch checkpoint, shipment lifecycle, manifest dispatch transitions, pick, pack, sort, delivery split, and bulk status updates fail closed; local draft metadata stays labeled; priority-only metadata remains editable; screens disclose unavailable actions.
+
+PASS (exit 0, 514ms)
+
+$ npm run test:delivery-split
+
+> d-mills-global-console@1.0.0 test:delivery-split
+> node scripts/verify-delivery-split.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Delivery Split: isolated in-memory search is read-only, SKU and split writes fail closed, quantities and audit rows stay unchanged, and the UI explains the boundary.
+
+PASS (exit 0, 470ms)
+
+$ npm run test:dispatch-checkpoint
+
+> d-mills-global-console@1.0.0 test:dispatch-checkpoint
+> node scripts/verify-dispatch-checkpoint.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Dispatch Checkpoint: legacy enquiry/detail remain read-only, all physical or provider actions fail closed, and CSV export creates no server-side job.
+
+PASS (exit 0, 471ms)
+
+$ npm run test:download-pdf
+
+> d-mills-global-console@1.0.0 test:download-pdf
+> node scripts/verify-download-pdf.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS PDF: real PDF bytes, matching size/MIME, authenticated actor, metadata-only list and exact detail re-download. Layout fixture saved.
+
+PASS (exit 0, 605ms)
+
+$ npm run test:download-update-boundary
+
+> d-mills-global-console@1.0.0 test:download-update-boundary
+> node scripts/verify-download-update-boundary.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS: download updates reject malformed, excessive and protected fields; missing IDs return 404; valid metadata preserves provenance.
+
+PASS (exit 0, 477ms)
+
+$ npm run test:download-workbook
+
+> d-mills-global-console@1.0.0 test:download-workbook
+> node scripts/verify-download-workbook.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS XLSX: real workbook bytes, typed cells, literal formula text, authenticated actor, metadata-only history, exact detail re-download and HTML escaping.
+
+PASS (exit 0, 767ms)
+
+$ npm run test:drift-count-boundary
+
+> d-mills-global-console@1.0.0 test:drift-count-boundary
+> node scripts/verify-drift-count-boundary.mjs
+
+PASS: aggregate drift count, tenant join, safe-integer conversion and invalid/overflow rejection
+
+PASS (exit 0, 429ms)
+
+$ npm run test:exceljs-uuid-override
+
+> d-mills-global-console@1.0.0 test:exceljs-uuid-override
+> node scripts/verify-exceljs-uuid-override.mjs
+
+PASS: ExcelJS resolves patched UUID v4; data-bar extension IDs, values, formula and formatting survive XLSX round trip.
+
+PASS (exit 0, 512ms)
+
+$ npm run test:exports-boundary
+
+> d-mills-global-console@1.0.0 test:exports-boundary
+> node scripts/verify-exports.mjs
+
+[data] MongoDB selection { selectedDatabase: 'exports_test', maskedHost: null }
+PASS Exports boundary: no client-declared success, legacy content disclosure or false downloadable report
+
+PASS (exit 0, 470ms)
+
+$ npm run test:http-latency-integration
+
+> d-mills-global-console@1.0.0 test:http-latency-integration
+> node scripts/verify-http-latency-integration.mjs
+
+{"timestamp":"2026-10-15T02:30:08.937Z","event":"http_request","request_id":"fixture-request-0","method":"GET","route":"/instrumentation/:id","status":204,"duration_ms":1}
+{"timestamp":"2026-10-15T02:30:08.941Z","event":"http_request","request_id":"fixture-request-1","method":"GET","route":"/instrumentation/:id","status":204,"duration_ms":0}
+{"timestamp":"2026-10-15T02:30:08.944Z","event":"http_request","request_id":"fixture-request-2","method":"GET","route":"/instrumentation/:id","status":204,"duration_ms":0}
+{"timestamp":"2026-10-15T02:30:08.945Z","event":"http_request","request_id":"fixture-request-4","method":"GET","route":"/instrumentation/:id","status":204,"duration_ms":0}
+{"timestamp":"2026-10-15T02:30:08.945Z","event":"http_request","request_id":"fixture-request-3","method":"GET","route":"/instrumentation/:id","status":204,"duration_ms":0}
+{"timestamp":"2026-10-15T02:30:08.946Z","event":"http_request","request_id":"fixture-request-5","method":"GET","route":"/instrumentation/:id","status":204,"duration_ms":0}
+{"timestamp":"2026-10-15T02:30:08.947Z","event":"http_request","request_id":"fixture-request-6","method":"GET","route":"/instrumentation/:id","status":204,"duration_ms":0}
+{"timestamp":"2026-10-15T02:30:08.948Z","event":"http_request","request_id":"fixture-request-7","method":"GET","route":"/instrumentation/:id","status":204,"duration_ms":0}
+{"timestamp":"2026-10-15T02:30:08.948Z","event":"http_request","request_id":"fixture-request-8","method":"GET","route":"/instrumentation/:id","status":204,"duration_ms":0}
+{"timestamp":"2026-10-15T02:30:08.948Z","event":"http_request","request_id":"fixture-request-9","method":"GET","route":"/instrumentation/:id","status":204,"duration_ms":0}
+{"timestamp":"2026-10-15T02:30:08.949Z","event":"http_request","request_id":"fixture-request-10","method":"GET","route":"/instrumentation/:id","status":204,"duration_ms":0}
+{"timestamp":"2026-10-15T02:30:08.949Z","event":"http_request","request_id":"fixture-request-11","method":"GET","route":"/instrumentation/:id","status":204,"duration_ms":0}
+PASS: 12 completed HTTP requests produce 12 histogram samples; three-worker traffic retains matched route labels without object/query values.
+
+PASS (exit 0, 514ms)
+
+$ npm run test:http-shutdown
+
+> d-mills-global-console@1.0.0 test:http-shutdown
+> node scripts/verify-http-shutdown.mjs
+
+PASS: completed drain clears deadline; hung requests, hung pools and failed cleanup reach one bounded termination.
+
+PASS (exit 0, 733ms)
+
+$ npm run test:inbound-csv-boundary
+
+> d-mills-global-console@1.0.0 test:inbound-csv-boundary
+> node scripts/verify-inbound-csv-boundary.mjs
+
+PASS: pre-read byte cap, actual UTF-8 cap, 200-row boundary, oversized record, duplicate-header and ambiguous integer-notation rejection, malformed/header/empty rejection and quoted BOM CSV
+
+PASS (exit 0, 595ms)
+
+$ npm run test:inbound-import-inputs
+
+> d-mills-global-console@1.0.0 test:inbound-import-inputs
+> node scripts/verify-inbound-import-inputs.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+Inbound Create/Edit error: { name: 'Error', code: undefined }
+Inbound RealTime error: { name: 'Error', code: undefined }
+Inbound Create/Edit error: { name: 'Error', code: undefined }
+Inbound RealTime error: { name: 'Error', code: undefined }
+PASS: malformed row rejection, nonnumeric quantity rejection, numeric compatibility and no receipt/PO mutation
+
+PASS (exit 0, 489ms)
+
+$ npm run test:inbound-realtime-integrity
+
+> d-mills-global-console@1.0.0 test:inbound-realtime-integrity
+> node scripts/verify-inbound-realtime-integrity.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+Inbound RealTime: PO receipts stage an idempotent Central Inventory request; unsupported types, imports and reversals fail closed; fake UI successes are removed.
+
+PASS (exit 0, 472ms)
+
+$ npm run test:inventory-move
+
+> d-mills-global-console@1.0.0 test:inventory-move
+> node scripts/verify-inventory-move.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS bin/LPN move endpoints return 501, UI identifies the missing mapping, and isolated Mongo stock remains unchanged
+
+PASS (exit 0, 466ms)
+
+$ npm run test:inventory-publish-order
+
+> d-mills-global-console@1.0.0 test:inventory-publish-order
+> node scripts/verify-inventory-publish-order.mjs
+
+{"timestamp":"2026-10-15T02:30:12.269Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS inventory publication order and Shopify readback: overlapping sale ends at 495 and drift is corrected
+{"timestamp":"2026-10-15T02:30:13.684Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:30:13.684Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+
+PASS (exit 0, 1968ms)
+
+$ npm run test:inventory-summary-boundary
+
+> d-mills-global-console@1.0.0 test:inventory-summary-boundary
+> node scripts/verify-inventory-summary-boundary.mjs
+
+PASS: summary uses one aggregate query and preserves payload shape; unsafe totals or missing rows reject. SQL semantics need owned DB parity evidence.
+
+PASS (exit 0, 435ms)
+
+$ npm run test:inventory-tenant-middleware
+
+> d-mills-global-console@1.0.0 test:inventory-tenant-middleware
+> node scripts/verify-inventory-tenant-middleware.mjs
+
+PASS: foreign/malformed tenant inputs reject; configured tenant overrides request state; missing configuration fails closed.
+
+PASS (exit 0, 415ms)
+
+$ npm run test:latency-histograms
+
+> d-mills-global-console@1.0.0 test:latency-histograms
+> node scripts/verify-latency-histograms.mjs
+
+PASS: cumulative latency buckets, totals/max/overflow, invalid sample rejection, snapshot isolation and bounded cardinality with visible drops.
+
+PASS (exit 0, 425ms)
+
+$ npm run test:ledger-contention-owned
+
+> d-mills-global-console@1.0.0 test:ledger-contention-owned
+> node scripts/run-phase-b-isolated.mjs scripts/measure-owned-ledger-contention.mjs
+
+{"timestamp":"2026-10-15T02:30:17.229Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"status":"PASS","durationMs":258.543458,"summary":{"reserve":{"count":100,"p50Ms":4.341916000000026,"p95Ms":9.664500000000004,"p99Ms":16.077957999999995,"maxMs":20.33741599999999},"release":{"count":100,"p50Ms":3.740333000000021,"p95Ms":4.310790999999995,"p99Ms":6.048041000000012,"maxMs":6.2358749999999645},"duplicate-replay":{"count":100,"p50Ms":1.2132919999999672,"p95Ms":1.433208000000036,"p99Ms":1.5555420000000026,"maxMs":1.55762500000003}},"correctness":{"events":201,"releasedReservations":100,"onHand":100,"reservedOrder":0}}
+{"timestamp":"2026-10-15T02:30:17.606Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:30:17.607Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Owned disposable stack removed.
+
+PASS (exit 0, 2889ms)
+
+$ npm run test:ledger-input-boundary
+
+> d-mills-global-console@1.0.0 test:ledger-input-boundary
+> node scripts/verify-ledger-input-boundary.mjs
+
+PASS: six ledger delta fields reject coercible/noninteger values before DB access; numeric scalar compatibility retained
+
+PASS (exit 0, 486ms)
+
+$ npm run test:legacy-fulfillment-write-blocks
+
+> d-mills-global-console@1.0.0 test:legacy-fulfillment-write-blocks
+> node scripts/verify-legacy-fulfillment-write-blocks.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS legacy fulfillment safety: allocation/unallocation/cancellation, labels, provider acknowledgement, CEWB, dispatch checkpoint, shipment lifecycle, manifest dispatch transitions, pick, pack, sort, delivery split, and bulk status updates fail closed; local draft metadata stays labeled; priority-only metadata remains editable; screens disclose unavailable actions.
+
+PASS (exit 0, 500ms)
+
+$ npm run test:legacy-stock-write-blocks
+
+> d-mills-global-console@1.0.0 test:legacy-stock-write-blocks
+> node scripts/verify-legacy-stock-write-blocks.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+Amazon MFN API error: { name: 'Error', code: undefined }
+Amazon MFN API error: { name: 'Error', code: undefined }
+returns error: { name: 'Error', code: undefined }
+vendor return editor error: { name: 'Error', code: undefined }
+sto editor error: { name: 'Error', code: undefined }
+PASS legacy order allocation, STO confirmation/allocation/shipping/closure/import, generic transfer writes, cycle-count and SKU-grading actions, lottable imports, and marketplace reservations fail closed against Mongo-only stock
+
+PASS (exit 0, 511ms)
+
+$ npm run test:login-input-boundary
+
+> d-mills-global-console@1.0.0 test:login-input-boundary
+> node scripts/verify-login-input-boundary.mjs
+
+PASS: malformed login fields rejected before rate-limit database or credential verification
+
+PASS (exit 0, 426ms)
+
+$ npm run test:manage-manifests
+
+> d-mills-global-console@1.0.0 test:manage-manifests
+> node scripts/verify-manage-manifests.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS legacy fulfillment safety: allocation/unallocation/cancellation, labels, provider acknowledgement, CEWB, dispatch checkpoint, shipment lifecycle, manifest dispatch transitions, pick, pack, sort, delivery split, and bulk status updates fail closed; local draft metadata stays labeled; priority-only metadata remains editable; screens disclose unavailable actions.
+
+PASS (exit 0, 514ms)
+
+$ npm run test:manage-picking
+
+> d-mills-global-console@1.0.0 test:manage-picking
+> node scripts/verify-manage-picking.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS legacy fulfillment safety: allocation/unallocation/cancellation, labels, provider acknowledgement, CEWB, dispatch checkpoint, shipment lifecycle, manifest dispatch transitions, pick, pack, sort, delivery split, and bulk status updates fail closed; local draft metadata stays labeled; priority-only metadata remains editable; screens disclose unavailable actions.
+
+PASS (exit 0, 484ms)
+
+$ npm run test:manage-picklists
+
+> d-mills-global-console@1.0.0 test:manage-picklists
+> node scripts/verify-manage-picklists.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS legacy fulfillment safety: allocation/unallocation/cancellation, labels, provider acknowledgement, CEWB, dispatch checkpoint, shipment lifecycle, manifest dispatch transitions, pick, pack, sort, delivery split, and bulk status updates fail closed; local draft metadata stays labeled; priority-only metadata remains editable; screens disclose unavailable actions.
+
+PASS (exit 0, 518ms)
+
+$ npm run test:mongo-isolated-workflows
+
+> d-mills-global-console@1.0.0 test:mongo-isolated-workflows
+> node scripts/verify-mongo-isolated-workflows.mjs
+
+[data] MongoDB selection {
+  selectedDatabase: 'codexqa_mv8x8mlf_505236',
+  maskedHost: '[masked-host]'
+}
+[data] MongoDB configuration warning {
+  code: 'MONGODB_URI_DATABASE_OVERRIDDEN',
+  message: 'MONGODB_DB overrides a different database path in MONGODB_URI; confirm the selected database deliberately.',
+  selectedDatabase: 'codexqa_mv8x8mlf_505236'
+}
+{"timestamp":"2026-10-15T02:30:21.830Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"READY"}
+PASS isolated MongoDB persistence: saved planning edit is visible through a second client; back-order PO, refund, and ARS guarded actions leave no PO, payment status, job, or execution mutation.
+Isolated MongoDB test database removed.
+
+PASS (exit 0, 857ms)
+
+$ npm run test:mongo-mutation-boundary
+
+> d-mills-global-console@1.0.0 test:mongo-mutation-boundary
+> node scripts/verify-mongo-mutation-boundary.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Mongo mutations: pre-write ID/field limits, immutable identity, atomic single-document result, transactional batch readback faults and explicit-memory integration. Real DB rollback remains separate.
+
+PASS (exit 0, 522ms)
+
+$ npm run test:mongo-read-boundary
+
+> d-mills-global-console@1.0.0 test:mongo-read-boundary
+> node scripts/verify-mongo-read-boundary.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Mongo reads: complete-or-error row/byte bounds, deadline, bounded cursor, cleanup, original error, genuine findOne, memory alias and safe HTTP 413.
+
+PASS (exit 0, 543ms)
+
+$ npm run test:mongo-safety
+
+> d-mills-global-console@1.0.0 test:mongo-safety
+> node scripts/verify-mongo-safety.mjs
+
+{"timestamp":"2026-10-15T02:30:23.734Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:30:23.735Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+{"timestamp":"2026-10-15T02:30:23.735Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:30:23.735Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:30:23.735Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+{"timestamp":"2026-10-15T02:30:23.735Z","event":"database_state","database":"mongodb","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:30:23.735Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:30:23.735Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+PASS offline Mongo safety: configuration, auth/outage/recovery, empty/populated, readiness/header, redaction, restricted inventory and tool guards; zero database writes or live connections
+PASS offline export/restore integration: canonical BSON types, outside-repo files, integrity manifest, dry-run zero connections, non-test/nonempty target refusal
+PASS offline Render health: actual live/ready/mapped handlers, minimal payload, proxy cookie/IP, hung inspection, empty header and route ordering; no database connections
+
+PASS (exit 0, 1359ms)
+
+$ npm run test:mongo-session-boundary
+
+> d-mills-global-console@1.0.0 test:mongo-session-boundary
+> node scripts/verify-mongo-session-boundary.mjs
+
+{"timestamp":"2026-10-15T02:30:25.151Z","event":"mongodb_session_cleanup_failed","database":"mongodb","code":"SESSION_CLEANUP_FAILED"}
+{"timestamp":"2026-10-15T02:30:25.152Z","event":"mongodb_session_cleanup_failed","database":"mongodb","code":"SESSION_CLEANUP_FAILED"}
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Mongo sessions: cleanup preserves committed result/primary error, bounded transaction options, unknown commit classification, session-owned read deadline and truthful HTTP response.
+
+PASS (exit 0, 600ms)
+
+$ npm run test:mp-inventory-log
+
+> d-mills-global-console@1.0.0 test:mp-inventory-log
+> node scripts/verify-mp-inventory-log.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS MP Inventory Log: empty configured source stays empty; ingest, push, retransmit and export fail closed without fabricated logs or report jobs.
+
+PASS (exit 0, 721ms)
+
+$ npm run test:opening-stock-isolated
+
+> d-mills-global-console@1.0.0 test:opening-stock-isolated
+> node scripts/run-isolated-opening-stock.mjs
+
+{"timestamp":"2026-10-15T02:30:27.579Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS isolated opening-stock migration, multi-SKU source order, exact replay/conflict, dual control, ledger posting and readback
+{"timestamp":"2026-10-15T02:30:27.811Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:30:27.811Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Owned disposable PostgreSQL removed.
+
+PASS (exit 0, 2047ms)
+
+$ npm run test:opening-stock-validation
+
+> d-mills-global-console@1.0.0 test:opening-stock-validation
+> node scripts/verify-opening-stock-validation.mjs
+
+PASS read-only opening-stock row classification, tenant scope, exact mapping and duplicate conflicts
+
+PASS (exit 0, 669ms)
+
+$ npm run test:order-acknowledgement
+
+> d-mills-global-console@1.0.0 test:order-acknowledgement
+> node scripts/verify-order-acknowledgement.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Order Acknowledgement: search is read-only, provider actions fail closed, and neither order status nor audit history changes.
+
+PASS (exit 0, 553ms)
+
+$ npm run test:order-allocation
+
+> d-mills-global-console@1.0.0 test:order-allocation
+> node scripts/verify-order-allocation.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Order Allocation: enquiry/import are read-only, allocation/unallocation/cancellation fail closed, and order/audit state remains unchanged.
+
+PASS (exit 0, 540ms)
+
+$ npm run test:order-enquiry-integrity
+
+> d-mills-global-console@1.0.0 test:order-enquiry-integrity
+> node scripts/verify-order-enquiry-integrity.mjs
+
+[data] MongoDB selection {
+  selectedDatabase: 'codexqa_mv8x8t57_636f37',
+  maskedHost: '[masked-host]'
+}
+[data] MongoDB configuration warning {
+  code: 'MONGODB_URI_DATABASE_OVERRIDDEN',
+  message: 'MONGODB_DB overrides a different database path in MONGODB_URI; confirm the selected database deliberately.',
+  selectedDatabase: 'codexqa_mv8x8t57_636f37'
+}
+{"timestamp":"2026-10-15T02:30:30.333Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"READY"}
+PASS isolated MongoDB order enquiry: search works; import, force pull, putaway, retry, and unsupported sale-order mutations leave order state unchanged.
+Isolated MongoDB test database removed.
+
+PASS (exit 0, 789ms)
+
+$ npm run test:order-maintenance
+
+> d-mills-global-console@1.0.0 test:order-maintenance
+> node scripts/verify-order-maintenance.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Order Maintenance and Market Order View: status/quantity edits, close/cancel, quick ship, return creation and simulated E-way Bill actions fail closed; controls are gated and no synthetic PDF or order mutation is produced.
+
+PASS (exit 0, 629ms)
+
+$ npm run test:order-refund
+
+> d-mills-global-console@1.0.0 test:order-refund
+> node scripts/verify-order-refund.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Order Refund: enquiry retains stored records and labels trust; approval/reapproval cannot invent payment processing or change statuses.
+
+PASS (exit 0, 549ms)
+
+$ npm run test:pg-cleanup-scheduler
+
+> d-mills-global-console@1.0.0 test:pg-cleanup-scheduler
+> node scripts/verify-pg-cleanup-scheduler.mjs
+
+{"timestamp":"2026-10-15T02:30:33.236Z","event":"fixture_cleanup_failed","code":"MAINTENANCE_FAILED"}
+PASS PostgreSQL cleanup scheduler: 1,000 requests coalesce into one rerun, query concurrency stays one and failure is counted
+
+PASS (exit 0, 1606ms)
+
+$ npm run test:po-otb-integrity
+
+> d-mills-global-console@1.0.0 test:po-otb-integrity
+> node scripts/verify-po-otb-integrity.mjs
+
+[data] MongoDB selection {
+  selectedDatabase: 'codexqa_mv8x8vuy_fd0147',
+  maskedHost: '[masked-host]'
+}
+[data] MongoDB configuration warning {
+  code: 'MONGODB_URI_DATABASE_OVERRIDDEN',
+  message: 'MONGODB_DB overrides a different database path in MONGODB_URI; confirm the selected database deliberately.',
+  selectedDatabase: 'codexqa_mv8x8vuy_fd0147'
+}
+{"timestamp":"2026-10-15T02:30:33.835Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"READY"}
+PASS isolated MongoDB PO/ASN/GRN: OTB and legacy receipt paths fail closed without budget, PO, or GRN drift; client ASN quantities cannot invent receipts.
+Isolated MongoDB test database removed.
+
+PASS (exit 0, 886ms)
+
+$ npm run test:postgres-transaction-cleanup
+
+> d-mills-global-console@1.0.0 test:postgres-transaction-cleanup
+> node scripts/verify-postgres-transaction-cleanup.mjs
+
+{"timestamp":"2026-10-15T02:30:34.671Z","event":"postgres_cleanup_failed","database":"postgresql","operation":"release","code":"CLEANUP_FAILED"}
+{"timestamp":"2026-10-15T02:30:34.672Z","event":"postgres_cleanup_failed","database":"postgresql","operation":"rollback","code":"CLEANUP_FAILED"}
+{"timestamp":"2026-10-15T02:30:34.672Z","event":"postgres_cleanup_failed","database":"postgresql","operation":"release","code":"CLEANUP_FAILED"}
+{"timestamp":"2026-10-15T02:30:34.672Z","event":"postgres_cleanup_failed","database":"postgresql","operation":"release","code":"CLEANUP_FAILED"}
+PASS: PostgreSQL cleanup preserves outcomes, lost commit requires reconciliation, definitive constraints retain primary error and HTTP response is sanitized
+
+PASS (exit 0, 483ms)
+
+$ npm run test:provider-dispatch-authority
+
+> d-mills-global-console@1.0.0 test:provider-dispatch-authority
+> node scripts/run-phase-b-isolated.mjs scripts/verify-phase-b-dispatch.mjs
+
+{"timestamp":"2026-10-15T02:30:37.246Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS: provider-authority cutover, review/evidence, alert timing, and Amazon partial-shipment reservation hold.
+{"timestamp":"2026-10-15T02:30:37.470Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:30:37.470Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Owned disposable stack removed.
+
+PASS (exit 0, 3083ms)
+
+$ npm run test:publication-recovery-boundary
+
+> d-mills-global-console@1.0.0 test:publication-recovery-boundary
+> node scripts/verify-publication-recovery-boundary.mjs
+
+PASS: invalid batch rejection before DB access, bounded tenant-scoped recovery query, zero target and both uncertainty projections
+
+PASS (exit 0, 629ms)
+
+$ npm run test:receipt-envelope-boundary
+
+> d-mills-global-console@1.0.0 test:receipt-envelope-boundary
+> node scripts/verify-receipt-envelope-boundary.mjs
+
+PASS receipt envelopes: 30 malformed authorization cases reject before database/effects; valid empty and special-name quantity maps accepted.
+
+PASS (exit 0, 495ms)
+
+$ npm run test:receipt-index-tool
+
+> d-mills-global-console@1.0.0 test:receipt-index-tool
+> node scripts/verify-receipt-index-tool.mjs
+
+PASS Mongo index tool: exact selected DB and yes/scope guards; only measured claim or zone-picker indexes created on injected client.
+
+PASS (exit 0, 526ms)
+
+$ npm run test:receipt-poll-boundary
+
+> d-mills-global-console@1.0.0 test:receipt-poll-boundary
+> node scripts/verify-receipt-poll-boundary.mjs
+
+PASS: slow receipt reads cannot overlap, cleanup stops rescheduling, outages remain pollable, both screens use serial polling
+
+PASS (exit 0, 707ms)
+
+$ npm run test:reliability
+
+> d-mills-global-console@1.0.0 test:reliability
+> node scripts/verify-mongo-reliability.mjs && node scripts/verify-postgres-reliability.mjs && node scripts/verify-provider-reliability.mjs
+
+{"timestamp":"2026-10-15T02:30:40.635Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:30:40.641Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+{"timestamp":"2026-10-15T02:30:40.641Z","event":"database_state","database":"mongodb","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:30:40.646Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+{"timestamp":"2026-10-15T02:30:40.646Z","event":"database_state","database":"mongodb","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:30:40.646Z","event":"database_state","database":"mongodb","previous":"DEGRADED","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:30:40.646Z","event":"database_state","database":"mongodb","previous":"DEGRADED","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:30:40.653Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+{"timestamp":"2026-10-15T02:30:40.653Z","event":"database_state","database":"mongodb","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:30:40.659Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+{"timestamp":"2026-10-15T02:30:40.659Z","event":"database_state","database":"mongodb","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:30:40.665Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+{"timestamp":"2026-10-15T02:30:40.665Z","event":"database_state","database":"mongodb","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:30:40.671Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+{"timestamp":"2026-10-15T02:30:40.671Z","event":"database_state","database":"mongodb","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:30:40.676Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+{"timestamp":"2026-10-15T02:30:40.676Z","event":"database_state","database":"mongodb","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:30:40.682Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+{"timestamp":"2026-10-15T02:30:40.682Z","event":"database_state","database":"mongodb","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:30:40.689Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+{"timestamp":"2026-10-15T02:30:40.689Z","event":"database_state","database":"mongodb","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:30:40.695Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+{"timestamp":"2026-10-15T02:30:40.695Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"DEGRADED"}
+PASS: shared pool, single-flight outage, retry, loss after startup, redaction, business errors and shutdown
+{"timestamp":"2026-10-15T02:30:40.891Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-15T02:30:40.892Z","event":"database_state","database":"postgresql","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:30:40.892Z","event":"database_state","database":"postgresql","previous":"DEGRADED","state":"READY"}
+{"timestamp":"2026-10-15T02:30:40.892Z","event":"database_state","database":"postgresql","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:30:40.892Z","event":"database_state","database":"postgresql","previous":"DEGRADED","state":"READY"}
+{"timestamp":"2026-10-15T02:30:40.892Z","event":"database_state","database":"postgresql","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:30:40.892Z","event":"database_state","database":"postgresql","previous":"DEGRADED","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:30:40.892Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+PASS PostgreSQL: bounded pool, idle failure, safe 503, recovery, constraint preservation, query timeout, shutdown
+{"timestamp":"2026-10-15T02:30:41.103Z","event":"provider_call","provider":"fixture","operation":"request","attempt":1,"duration_ms":0,"result":"503"}
+{"timestamp":"2026-10-15T02:30:41.103Z","event":"provider_call","provider":"fixture","operation":"request","attempt":2,"duration_ms":0,"result":"503"}
+{"timestamp":"2026-10-15T02:30:41.103Z","event":"provider_call","provider":"fixture","operation":"request","attempt":3,"duration_ms":0,"result":"200"}
+{"timestamp":"2026-10-15T02:30:41.104Z","event":"provider_call","provider":"status-429","operation":"request","attempt":1,"duration_ms":0,"result":"429"}
+{"timestamp":"2026-10-15T02:30:41.104Z","event":"provider_call","provider":"status-429","operation":"request","attempt":2,"duration_ms":0,"result":"429"}
+{"timestamp":"2026-10-15T02:30:41.104Z","event":"provider_call","provider":"status-429","operation":"request","attempt":3,"duration_ms":0,"result":"200"}
+{"timestamp":"2026-10-15T02:30:41.104Z","event":"provider_call","provider":"status-500","operation":"request","attempt":1,"duration_ms":0,"result":"500"}
+{"timestamp":"2026-10-15T02:30:41.104Z","event":"provider_call","provider":"status-500","operation":"request","attempt":2,"duration_ms":0,"result":"500"}
+{"timestamp":"2026-10-15T02:30:41.104Z","event":"provider_call","provider":"status-500","operation":"request","attempt":3,"duration_ms":0,"result":"200"}
+{"timestamp":"2026-10-15T02:30:41.104Z","event":"provider_call","provider":"status-502","operation":"request","attempt":1,"duration_ms":0,"result":"502"}
+{"timestamp":"2026-10-15T02:30:41.104Z","event":"provider_call","provider":"status-502","operation":"request","attempt":2,"duration_ms":0,"result":"502"}
+{"timestamp":"2026-10-15T02:30:41.104Z","event":"provider_call","provider":"status-502","operation":"request","attempt":3,"duration_ms":0,"result":"200"}
+{"timestamp":"2026-10-15T02:30:41.104Z","event":"provider_call","provider":"status-504","operation":"request","attempt":1,"duration_ms":0,"result":"504"}
+{"timestamp":"2026-10-15T02:30:41.104Z","event":"provider_call","provider":"status-504","operation":"request","attempt":2,"duration_ms":0,"result":"504"}
+{"timestamp":"2026-10-15T02:30:41.104Z","event":"provider_call","provider":"status-504","operation":"request","attempt":3,"duration_ms":0,"result":"200"}
+{"timestamp":"2026-10-15T02:30:41.104Z","event":"provider_call","provider":"invalid-fixture","operation":"request","attempt":1,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-15T02:30:41.104Z","event":"provider_call","provider":"invalid-fixture","operation":"request","attempt":1,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-15T02:30:41.104Z","event":"provider_call","provider":"invalid-fixture","operation":"request","attempt":1,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-15T02:30:41.104Z","event":"provider_call","provider":"invalid-fixture","operation":"request","attempt":1,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-15T02:30:41.104Z","event":"provider_call","provider":"failure-EAI_AGAIN","operation":"request","attempt":1,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-15T02:30:41.104Z","event":"provider_call","provider":"failure-EAI_AGAIN","operation":"request","attempt":2,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-15T02:30:41.105Z","event":"provider_call","provider":"failure-EAI_AGAIN","operation":"request","attempt":3,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-15T02:30:41.105Z","event":"provider_call","provider":"failure-ETIMEDOUT","operation":"request","attempt":1,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-15T02:30:41.105Z","event":"provider_call","provider":"failure-ETIMEDOUT","operation":"request","attempt":2,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-15T02:30:41.105Z","event":"provider_call","provider":"failure-ETIMEDOUT","operation":"request","attempt":3,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-15T02:30:41.105Z","event":"provider_call","provider":"failure-TimeoutError","operation":"request","attempt":1,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-15T02:30:41.105Z","event":"provider_call","provider":"failure-TimeoutError","operation":"request","attempt":2,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-15T02:30:41.105Z","event":"provider_call","provider":"failure-TimeoutError","operation":"request","attempt":3,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-15T02:30:41.105Z","event":"provider_call","provider":"cancelled-fixture","operation":"request","attempt":1,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-15T02:30:41.105Z","event":"provider_call","provider":"fixture","operation":"request","attempt":1,"duration_ms":0,"result":"400"}
+{"timestamp":"2026-10-15T02:30:41.105Z","event":"provider_call","provider":"fixture","operation":"request","attempt":1,"duration_ms":0,"result":"401"}
+{"timestamp":"2026-10-15T02:30:41.105Z","event":"provider_call","provider":"fixture","operation":"request","attempt":1,"duration_ms":0,"result":"403"}
+{"timestamp":"2026-10-15T02:30:41.105Z","event":"provider_call","provider":"fixture","operation":"request","attempt":1,"duration_ms":0,"result":"422"}
+{"timestamp":"2026-10-15T02:30:41.105Z","event":"provider_call","provider":"mutation-fixture","operation":"request","attempt":1,"duration_ms":0,"result":"503"}
+{"timestamp":"2026-10-15T02:30:41.105Z","event":"provider_call","provider":"network-fixture","operation":"request","attempt":1,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-15T02:30:41.105Z","event":"provider_call","provider":"network-fixture","operation":"request","attempt":2,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-15T02:30:41.105Z","event":"provider_call","provider":"network-fixture","operation":"request","attempt":3,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-15T02:30:41.105Z","event":"provider_call","provider":"circuit-fixture","operation":"request","attempt":1,"duration_ms":0,"result":"503"}
+{"timestamp":"2026-10-15T02:30:41.105Z","event":"provider_call","provider":"circuit-fixture","operation":"request","attempt":1,"duration_ms":0,"result":"503"}
+{"timestamp":"2026-10-15T02:30:41.105Z","event":"provider_call","provider":"circuit-fixture","operation":"request","attempt":1,"duration_ms":0,"result":"503"}
+{"timestamp":"2026-10-15T02:30:41.105Z","event":"provider_call","provider":"circuit-fixture","operation":"request","attempt":1,"duration_ms":0,"result":"503"}
+{"timestamp":"2026-10-15T02:30:41.105Z","event":"provider_call","provider":"circuit-fixture","operation":"request","attempt":1,"duration_ms":0,"result":"503"}
+PASS provider reliability: bounded read retry, backoff, no auth/validation retry, no blind mutation retry, connection-reset exhaustion, open circuit
+
+PASS (exit 0, 990ms)
+
+$ npm run test:reliability-extended
+
+> d-mills-global-console@1.0.0 test:reliability-extended
+> node scripts/run-reliability-extended-gates.mjs
+
+PASS verify-amazon-mfn-api
+PASS verify-ajio-api
+PASS verify-mp-inventory-log
+PASS verify-transhipment
+PASS verify-transhipment-old
+PASS verify-returns-integrity
+PASS verify-dispatch-checkpoint
+PASS verify-ars-integrity
+PASS verify-back-order-integrity
+PASS verify-manage-manifests
+PASS verify-sort-to-box
+PASS verify-download-pdf
+PASS verify-download-workbook
+PASS verify-common-import
+PASS verify-order-refund
+PASS verify-order-allocation
+PASS verify-delivery-shipping
+PASS verify-bulk-order-update
+PASS verify-manage-picklists
+PASS verify-manage-picking
+PASS verify-delivery-split
+PASS verify-shipment-handover
+PASS verify-order-acknowledgement
+PASS verify-consolidate-ewb
+PASS verify-inventory-move
+PASS verify-order-maintenance
+PASS verify-inbound-realtime-integrity
+
+PASS (exit 0, 7445ms)
+
+$ npm run test:reliability-mongo-isolated
+
+> d-mills-global-console@1.0.0 test:reliability-mongo-isolated
+> node scripts/run-isolated-mongo-reliability.mjs
+
+[data] MongoDB selection {
+  selectedDatabase: 'codexqa_reliability',
+  maskedHost: '[masked-host]'
+}
+{"timestamp":"2026-10-15T02:30:50.287Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"READY"}
+PASS isolated real Mongo: empty result, SKU Group list, code/name/client filtering, pagination, structured 503
+Disposable Mongo process and database files removed.
+
+PASS (exit 0, 2106ms)
+
+$ npm run test:reliability-mongo-startup
+
+> d-mills-global-console@1.0.0 test:reliability-mongo-startup
+> node scripts/run-isolated-mongo-reliability.mjs scripts/verify-mongo-startup-recovery.mjs
+
+{"timestamp":"2026-10-15T02:30:52.476Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-15T02:30:52.567Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:30:52.567Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+PASS real Mongo startup/restart outage: liveness, safe 503 without fake rows, PG independence, durable auth across server restart, recovery without restart, concurrent reads and graceful shutdown
+Disposable startup PostgreSQL fixture removed.
+Disposable Mongo process and database files removed.
+
+PASS (exit 0, 36161ms)
+
+$ npm run test:reliability-mongo-timeout
+
+> d-mills-global-console@1.0.0 test:reliability-mongo-timeout
+> node scripts/run-isolated-mongo-reliability.mjs scripts/verify-mongo-timeout-fixture.mjs
+
+[data] MongoDB selection {
+  selectedDatabase: 'codexqa_reliability',
+  maskedHost: '[masked-host]'
+}
+{"timestamp":"2026-10-15T02:31:28.630Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"READY"}
+{"timestamp":"2026-10-15T02:31:28.630Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"READY"}
+PASS real Mongo maxTimeMS: deadline classified 504 at shared API boundary, no false rows, healthy pool retained, durable value unchanged, subsequent reads recovered
+Disposable Mongo process and database files removed.
+
+PASS (exit 0, 1940ms)
+
+$ npm run test:reliability-postgres-failures
+
+> d-mills-global-console@1.0.0 test:reliability-postgres-failures
+> node scripts/verify-postgres-failure-injection.mjs
+
+{"timestamp":"2026-10-15T02:31:29.276Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-15T02:31:29.429Z","event":"database_state","database":"postgresql","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:31:29.430Z","event":"database_state","database":"postgresql","previous":"DEGRADED","state":"READY"}
+{"timestamp":"2026-10-15T02:31:29.745Z","event":"database_state","database":"postgresql","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:31:29.751Z","event":"database_state","database":"postgresql","previous":"DEGRADED","state":"READY"}
+PASS real PostgreSQL failures: bounded pool exhaustion, recovery, slow query/transaction deadlines, terminated fixture backend, reconnect, durable row preserved, business conflict preserved
+{"timestamp":"2026-10-15T02:31:29.754Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:31:29.754Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Disposable PostgreSQL failure fixture removed.
+
+PASS (exit 0, 1006ms)
+
+$ npm run test:reliability-purchase-orders
+
+> d-mills-global-console@1.0.0 test:reliability-purchase-orders
+> node scripts/run-isolated-mongo-reliability.mjs scripts/verify-purchase-order-reliability.mjs
+
+[data] MongoDB selection {
+  selectedDatabase: 'codexqa_reliability',
+  maskedHost: '[masked-host]'
+}
+{"timestamp":"2026-10-15T02:31:31.470Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"READY"}
+PASS real Mongo purchase-order reliability: 20 concurrent duplicate creates produce one durable draft, remaining requests conflict, identity cannot change, unique index verified, no stock mutation
+Disposable Mongo process and database files removed.
+
+PASS (exit 0, 2149ms)
+
+$ npm run test:restore-batch-boundary
+
+> d-mills-global-console@1.0.0 test:restore-batch-boundary
+> node scripts/verify-restore-batch-boundary.mjs
+
+PASS: restore row and BSON-byte bounds, valid large singleton, oversized document refusal and primary failure stops stream
+
+PASS (exit 0, 474ms)
+
+$ npm run test:restore-manifest-boundary
+
+> d-mills-global-console@1.0.0 test:restore-manifest-boundary
+> node scripts/verify-restore-manifest-boundary.mjs
+
+PASS: bounded manifest read, metadata validation, duplicate files, total-count overflow and upstream cleanup
+
+PASS (exit 0, 417ms)
+
+$ npm run test:returns-integrity
+
+> d-mills-global-console@1.0.0 test:returns-integrity
+> node scripts/verify-returns-integrity.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Returns: typed customer/vendor/no-order flows retain their current behavior, untyped legacy create/update/delete reject without mutation, unsupported physical actions fail closed, and no stock rows or transactions change.
+
+PASS (exit 0, 496ms)
+
+$ npm run test:sales-programs
+
+> d-mills-global-console@1.0.0 test:sales-programs
+> node scripts/verify-sales-programs.mjs
+
+{"timestamp":"2026-10-15T02:31:34.084Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS: programme parent/tenant isolation, report replay/concurrency, stale/conflicting stock rejection, ownership protection, shared order/return/activity filtering, no duplicate orders or stock writes, CSV/XLSX validation
+{"timestamp":"2026-10-15T02:31:34.213Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:31:34.214Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+
+PASS (exit 0, 906ms)
+
+$ npm run test:seller-connections
+
+> d-mills-global-console@1.0.0 test:seller-connections
+> node scripts/verify-seller-connections.mjs
+
+{"timestamp":"2026-10-15T02:31:34.807Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS seller connections: 20 configs, validation, SSRF rejection, encryption/masking, live-call fixtures, failed rotation, scopes, HMAC, tenant isolation, partner snapshot idempotency, agent pairing replay, sync history
+{"timestamp":"2026-10-15T02:31:35.525Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:31:35.525Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+
+PASS (exit 0, 1312ms)
+
+$ npm run test:seller-connections-ui
+
+> d-mills-global-console@1.0.0 test:seller-connections-ui
+> node scripts/verify-seller-connections-ui.mjs
+
+{"timestamp":"2026-10-15T02:31:36.157Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS seller connection UI: 20 platform dialogs, in-place Myntra M-Now and Amazon Now parent-account setup, unified-order status count/dropdown, Tata CLiQ setup, and cross-screen Order Enquiry → Nykaa setup navigation; validation, history and responsive layouts
+{"timestamp":"2026-10-15T02:31:46.574Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:31:46.574Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+
+PASS (exit 0, 11059ms)
+
+$ npm run test:shell-quote-boundary
+
+> d-mills-global-console@1.0.0 test:shell-quote-boundary
+> node scripts/verify-shell-quote-boundary.mjs
+
+PASS: patched quote rejects comment/newline injection; concurrently placeholders preserve adversarial arguments through a real shell.
+
+PASS (exit 0, 547ms)
+
+$ npm run test:shipment-handover
+
+> d-mills-global-console@1.0.0 test:shipment-handover
+> node scripts/verify-shipment-handover.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS legacy fulfillment safety: allocation/unallocation/cancellation, labels, provider acknowledgement, CEWB, dispatch checkpoint, shipment lifecycle, manifest dispatch transitions, pick, pack, sort, delivery split, and bulk status updates fail closed; local draft metadata stays labeled; priority-only metadata remains editable; screens disclose unavailable actions.
+
+PASS (exit 0, 559ms)
+
+$ npm run test:shopify-order-observation
+
+> d-mills-global-console@1.0.0 test:shopify-order-observation
+> node scripts/verify-shopify-order-observation.mjs
+
+PASS Shopify observation requires stable order/revision and complete physical line snapshots before cursor progress
+
+PASS (exit 0, 674ms)
+
+$ npm run test:shopify-order-observation-isolated
+
+> d-mills-global-console@1.0.0 test:shopify-order-observation-isolated
+> node scripts/run-isolated-shopify-observation.mjs
+
+{"timestamp":"2026-10-15T02:31:49.826Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS isolated Shopify poll receipt replay, changed revision conflict, malformed-order checkpoint guard and observation-only work
+{"timestamp":"2026-10-15T02:31:49.936Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:31:49.936Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Owned disposable PostgreSQL removed.
+
+PASS (exit 0, 1682ms)
+
+$ npm run test:sku-import
+
+> d-mills-global-console@1.0.0 test:sku-import
+> node scripts/verify-sku-import.mjs
+
+PASS SKU import browser boundary: actual component sends only an import request, shows unavailable outcome, and never accesses individual SKUs. Layout and HTTP client are fixture adapters; no configured store was used.
+
+PASS (exit 0, 993ms)
+
+$ npm run test:sort-to-box
+
+> d-mills-global-console@1.0.0 test:sort-to-box
+> node scripts/verify-sort-to-box.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS legacy fulfillment safety: allocation/unallocation/cancellation, labels, provider acknowledgement, CEWB, dispatch checkpoint, shipment lifecycle, manifest dispatch transitions, pick, pack, sort, delivery split, and bulk status updates fail closed; local draft metadata stays labeled; priority-only metadata remains editable; screens disclose unavailable actions.
+
+PASS (exit 0, 490ms)
+
+$ npm run test:stock-lock-cleanup
+
+> d-mills-global-console@1.0.0 test:stock-lock-cleanup
+> node scripts/verify-stock-lock-cleanup.mjs
+
+{"timestamp":"2026-10-15T02:31:51.972Z","event":"stock_lock_release_failed","code":"LOCK_CLEANUP_FAILED"}
+{"timestamp":"2026-10-15T02:31:51.973Z","event":"stock_lock_release_failed","code":"LOCK_CLEANUP_FAILED"}
+{"timestamp":"2026-10-15T02:31:51.973Z","event":"stock_lock_release_failed","code":"LOCK_CLEANUP_FAILED"}
+{"timestamp":"2026-10-15T02:31:51.973Z","event":"stock_lock_release_failed","code":"LOCK_CLEANUP_FAILED"}
+{"timestamp":"2026-10-15T02:31:51.973Z","event":"stock_lock_release_failed","code":"LOCK_CLEANUP_FAILED"}
+PASS: confirmed unlock reuses client, failed/unconfirmed unlock discards client, cleanup preserves success and exact primary failure
+
+PASS (exit 0, 428ms)
+
+$ npm run test:stock-publication-isolated
+
+> d-mills-global-console@1.0.0 test:stock-publication-isolated
+> node scripts/run-isolated-stock-publication.mjs
+
+{"timestamp":"2026-10-15T02:31:53.301Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS isolated Shopify/WooCommerce/Amazon timeout, readback resolution, crash lease hold, mismatch quarantine, mapping lock and no blind resend
+{"timestamp":"2026-10-15T02:31:55.346Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:31:55.347Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+{"timestamp":"2026-10-15T02:31:55.513Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS inventory publication order and Shopify readback: overlapping sale ends at 495 and drift is corrected
+{"timestamp":"2026-10-15T02:31:56.928Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:31:56.928Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Owned disposable PostgreSQL removed.
+
+PASS (exit 0, 5132ms)
+
+$ npm run test:terms-html-sanitizer
+
+> d-mills-global-console@1.0.0 test:terms-html-sanitizer
+> node scripts/verify-terms-html-sanitizer.mjs
+
+PASS: real browser sanitizer rejects execution payloads while preserving formatting; editor/preview/paste use sanitized HTML.
+
+PASS (exit 0, 2430ms)
+
+$ npm run test:transhipment-integrity
+
+> d-mills-global-console@1.0.0 test:transhipment-integrity
+> node scripts/verify-transhipment.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Transhipment: enquiry and metadata-only UDF edits work in isolated memory; stock, manifest, print, export, and ingest actions return 501 without fake state changes.
+
+PASS (exit 0, 505ms)
+
+$ npm run test:transhipment-old-integrity
+
+> d-mills-global-console@1.0.0 test:transhipment-old-integrity
+> node scripts/verify-transhipment-old.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Transhipment Old: explicit CSV import/search/export work in isolated memory; direct fake ingest and stock lifecycle transitions fail closed without changing status.
+
+PASS (exit 0, 501ms)
+
+$ npm run test:transporter-integrity
+
+> d-mills-global-console@1.0.0 test:transporter-integrity
+> node scripts/verify-transporter-integrity.mjs
+
+[data] MongoDB selection {
+  selectedDatabase: 'codexqa_mv8xar55_af8909',
+  maskedHost: '[masked-host]'
+}
+[data] MongoDB configuration warning {
+  code: 'MONGODB_URI_DATABASE_OVERRIDDEN',
+  message: 'MONGODB_DB overrides a different database path in MONGODB_URI; confirm the selected database deliberately.',
+  selectedDatabase: 'codexqa_mv8xar55_af8909'
+}
+{"timestamp":"2026-10-15T02:32:01.037Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"READY"}
+PASS isolated MongoDB transporter create, search, rename, immutable code/audit, historical courier names, and delete guard.
+Isolated MongoDB test database removed.
+
+PASS (exit 0, 736ms)
+
+$ npm run test:unified-orders
+
+> d-mills-global-console@1.0.0 test:unified-orders
+> node scripts/run-isolated-unified-orders.mjs
+
+{"timestamp":"2026-10-15T02:32:02.209Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-15T02:32:32.941Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS GENERATED_LOCAL provider double: diagnostic outage preserves success state and subsequent account processing; no REAL_PROVIDER evidence.
+{"timestamp":"2026-10-15T02:32:33.006Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:32:33.006Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+PASS unified orders: signed/replayed ingress, tenant queue/sender isolation, lease redelivery, revision rejection, cancel/dispatch races, provider-state separation, credential-failure retry/dead-letter, pack-unit conversion/replay/conflict/overflow, reservation SKU/location identity, return replay, staff guards, and oversell rejection
+{"timestamp":"2026-10-15T02:32:34.173Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:32:34.173Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Isolated unified-orders PostgreSQL database removed.
+
+PASS (exit 0, 32953ms)
+
+$ npm run test:unified-orders-isolated
+
+> d-mills-global-console@1.0.0 test:unified-orders-isolated
+> node scripts/run-isolated-unified-orders.mjs
+
+{"timestamp":"2026-10-15T02:32:35.218Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-15T02:33:05.890Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS GENERATED_LOCAL provider double: diagnostic outage preserves success state and subsequent account processing; no REAL_PROVIDER evidence.
+{"timestamp":"2026-10-15T02:33:05.951Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:33:05.951Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+PASS unified orders: signed/replayed ingress, tenant queue/sender isolation, lease redelivery, revision rejection, cancel/dispatch races, provider-state separation, credential-failure retry/dead-letter, pack-unit conversion/replay/conflict/overflow, reservation SKU/location identity, return replay, staff guards, and oversell rejection
+{"timestamp":"2026-10-15T02:33:07.115Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:33:07.115Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Isolated unified-orders PostgreSQL database removed.
+
+PASS (exit 0, 32933ms)
+
+$ npm run test:validation-master-inputs
+
+> d-mills-global-console@1.0.0 test:validation-master-inputs
+> node scripts/verify-validation-master-inputs.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS: malformed default flags and PUT identities reject without changes; valid explicit update persists.
+
+PASS (exit 0, 569ms)
+
+$ npm run test:vendor-integrity
+
+> d-mills-global-console@1.0.0 test:vendor-integrity
+> node scripts/verify-vendor-integrity.mjs
+
+[data] MongoDB selection {
+  selectedDatabase: 'codexqa_mv8xc71p_dd0811',
+  maskedHost: '[masked-host]'
+}
+[data] MongoDB configuration warning {
+  code: 'MONGODB_URI_DATABASE_OVERRIDDEN',
+  message: 'MONGODB_DB overrides a different database path in MONGODB_URI; confirm the selected database deliberately.',
+  selectedDatabase: 'codexqa_mv8xc71p_dd0811'
+}
+{"timestamp":"2026-10-15T02:33:08.303Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"READY"}
+PASS isolated MongoDB vendor create, rename, audit actor, immutable code, duplicate guard, and PO/GRN historical names.
+Isolated MongoDB test database removed.
+
+PASS (exit 0, 818ms)
+
+$ npm run test:vendor-master
+
+> d-mills-global-console@1.0.0 test:vendor-master
+> node scripts/verify-vendor-master.mjs
+
+Starting Vendor Master browser workflow at http://127.0.0.1:64178
+Vendor Master browser workflow passed: VM-E2E-1792031590178
+
+PASS (exit 0, 4306ms)
+
+$ npm run test:whatsapp-total-deadline
+
+> d-mills-global-console@1.0.0 test:whatsapp-total-deadline
+> node scripts/verify-whatsapp-total-deadline.mjs
+
+PASS: slow-drip response hits total deadline and destroys request; stalled DNS rejects before dispatch.
+
+PASS (exit 0, 670ms)
+
+$ npm run test:workbook-inspector
+
+> d-mills-global-console@1.0.0 test:workbook-inspector
+> node scripts/verify-workbook-inspector.mjs
+
+PASS structural workbook inspection, data-row redaction and 50,000-row limit
+
+PASS (exit 0, 2459ms)
+
+$ npm run test:zone-picker-csv
+
+> d-mills-global-console@1.0.0 test:zone-picker-csv
+> node scripts/verify-zone-picker-csv.mjs
+
+PASS zone-picker CSV parser: quoted fields, malformed/duplicate/oversized files and one-request batch outcome messaging
+
+PASS (exit 0, 511ms)
+
+$ npm run test:zone-picker-mutation
+
+> d-mills-global-console@1.0.0 test:zone-picker-mutation
+> node scripts/verify-zone-picker-mutation.mjs
+
+[data] MongoDB selection { selectedDatabase: 'zone_picker_test', maskedHost: null }
+PASS zone-picker mutation: server validation, single-zone atomic guards and all-or-error memory batch
+
+PASS (exit 0, 477ms)
