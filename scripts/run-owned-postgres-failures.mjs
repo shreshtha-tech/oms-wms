@@ -1,3 +1,4 @@
+import { resolveTestBinary, testBinaryPath } from './lib/test-binaries.mjs';
 // Owns an entirely fresh loopback PostgreSQL process. No dotenv/configured DB use.
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
@@ -22,7 +23,7 @@ await writeFile(evidenceFile, `${JSON.stringify({ generatedAt: new Date().toISOS
 const root = await mkdtemp(join(tmpdir(), 'agon-pg-failures-'));
 const port = randomInt(35001, 50000);
 const database = `hardening_${Date.now().toString(36)}_test`;
-const env = { PATH: '/opt/homebrew/bin:/usr/bin:/bin', LANG: 'C', TMPDIR: root };
+const env = { PATH: testBinaryPath(), DMILLS_SKIP_DOTENV: 'true', LANG: 'C', TMPDIR: root };
 const children = [], results = [];
 const pause = ms => new Promise(resolve => setTimeout(resolve, ms));
 function launch(binary, args) {
@@ -43,9 +44,9 @@ async function check(name, operation) {
   catch (error) { results.push({ name, result: 'FAIL', errorCategory: error.code || error.name }); throw error; }
 }
 try {
-  const init = launch('/opt/homebrew/bin/initdb', ['-D', join(root, 'pg'), '-U', 'postgres', '--auth=trust', '--no-locale']);
+  const init = launch(resolveTestBinary('initdb'), ['-D', join(root, 'pg'), '-U', 'postgres', '--auth=trust', '--no-locale']);
   if (await exited(init) !== 0) throw Object.assign(new Error('Owned PostgreSQL initialization failed'), { code: init.failureCategory || 'FIXTURE_INIT_FAILED' });
-  const server = launch('/opt/homebrew/bin/postgres', ['-D', join(root, 'pg'), '-h', '127.0.0.1', '-p', String(port), '-k', root]);
+  const server = launch(resolveTestBinary('postgres'), ['-D', join(root, 'pg'), '-h', '127.0.0.1', '-p', String(port), '-k', root]);
   for (let attempt = 0; attempt < 100; attempt++) {
     if (server.launchError || server.exitCode !== null) throw new Error('Owned PostgreSQL process failed');
     admin = new pg.Client({ host: '127.0.0.1', port, user: 'postgres', database: 'postgres', connectionTimeoutMillis: 300 });

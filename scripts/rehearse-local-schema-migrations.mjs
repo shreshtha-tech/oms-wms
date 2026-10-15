@@ -1,3 +1,4 @@
+import { resolveTestBinary, testBinaryPath } from './lib/test-binaries.mjs';
 // Rehearse the configured loopback inventory schema on an owned PostgreSQL
 // process. --with-data copies rows only into the private disposable fixture.
 import '../env.js';
@@ -23,7 +24,7 @@ if (!database || !/^[A-Za-z0-9_-]+$/.test(database)) throw new Error('Invalid so
 
 const root = await mkdtemp(join(tmpdir(), 'agon-schema-rehearsal-'));
 const port = randomInt(35001, 50000);
-const baseEnv = { PATH: '/opt/homebrew/bin:/usr/bin:/bin', LANG: 'C', TMPDIR: root };
+const baseEnv = { PATH: testBinaryPath(), DMILLS_SKIP_DOTENV: 'true', LANG: 'C', TMPDIR: root };
 const sourceEnv = { ...baseEnv, PGHOST: source.hostname, PGPORT: source.port || '5432',
   PGUSER: decodeURIComponent(source.username), PGPASSWORD: decodeURIComponent(source.password),
   PGDATABASE: database, PGSSLMODE: process.env.INVENTORY_DB_SSL === 'true' ? 'verify-full' : 'prefer' };
@@ -57,9 +58,9 @@ async function ledgerFingerprints(db) {
 }
 let admin, client, sourceClient, fixturePool;
 try {
-  const init = launch('/opt/homebrew/bin/initdb', ['-D', join(root, 'pg'), '-U', 'postgres', '--auth=trust', '--no-locale'], baseEnv);
+  const init = launch(resolveTestBinary('initdb'), ['-D', join(root, 'pg'), '-U', 'postgres', '--auth=trust', '--no-locale'], baseEnv);
   assert.equal(await exited(init), 0, 'Owned PostgreSQL initialization failed');
-  const server = launch('/opt/homebrew/bin/postgres', ['-D', join(root, 'pg'), '-h', '127.0.0.1', '-p', String(port), '-k', root], baseEnv);
+  const server = launch(resolveTestBinary('postgres'), ['-D', join(root, 'pg'), '-h', '127.0.0.1', '-p', String(port), '-k', root], baseEnv);
   for (let attempt = 0; attempt < 100; attempt++) {
     if (server.exitCode !== null || server.signalCode !== null) throw new Error('Owned PostgreSQL process exited');
     admin = new pg.Client({ host: '127.0.0.1', port, user: 'postgres', database: 'postgres', connectionTimeoutMillis: 300 });
@@ -74,14 +75,14 @@ try {
     // mkdtemp creates a private directory; the child also creates its file
     // with a restrictive umask, and the archive is removed in finally.
     process.umask(0o077);
-    const dump = launch('/opt/homebrew/bin/pg_dump', ['--format=custom', '--no-owner', '--no-privileges', '--file', archive], sourceEnv);
+    const dump = launch(resolveTestBinary('pg_dump'), ['--format=custom', '--no-owner', '--no-privileges', '--file', archive], sourceEnv);
     assert.equal(await exited(dump), 0, 'Data-bearing dump of configured source failed');
     assert.equal((await stat(archive)).mode & 0o077, 0, 'Temporary archive permissions must exclude other users');
-    const restore = launch('/opt/homebrew/bin/pg_restore', ['--no-owner', '--no-privileges', '--exit-on-error', '--dbname', 'rehearsal_test', archive], targetEnv);
+    const restore = launch(resolveTestBinary('pg_restore'), ['--no-owner', '--no-privileges', '--exit-on-error', '--dbname', 'rehearsal_test', archive], targetEnv);
     assert.equal(await exited(restore), 0, 'Data-bearing restore into owned fixture failed');
   } else {
-    const dump = launch('/opt/homebrew/bin/pg_dump', ['--schema-only', '--no-owner', '--no-privileges'], sourceEnv, ['ignore', 'pipe', 'ignore']);
-    const restore = launch('/opt/homebrew/bin/psql', ['-X', '--set', 'ON_ERROR_STOP=1', '--quiet'], targetEnv, ['pipe', 'ignore', 'ignore']);
+    const dump = launch(resolveTestBinary('pg_dump'), ['--schema-only', '--no-owner', '--no-privileges'], sourceEnv, ['ignore', 'pipe', 'ignore']);
+    const restore = launch(resolveTestBinary('psql'), ['-X', '--set', 'ON_ERROR_STOP=1', '--quiet'], targetEnv, ['pipe', 'ignore', 'ignore']);
     dump.stdout.pipe(restore.stdin);
     const [dumpCode, restoreCode] = await Promise.all([exited(dump), exited(restore)]);
     assert.equal(dumpCode, 0, 'Schema-only dump of configured source failed');

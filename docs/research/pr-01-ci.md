@@ -1,24 +1,27 @@
 # PR 1: service-backed CI
 
-Branch: `pr/01-ci`, based on preservation commit `4472ea4`.
+Branch: `pr/01-ci`, based on preservation commit `4472ea4`. The baseline commit is `2f3f54c`.
 
-`.github/workflows/ci.yml` runs `npm ci`, `npm run typecheck`, `npm run build`, and `npm run inventory:migrate` against a disposable PostgreSQL 16 service. MongoDB 7 and Chromium support the existing verification scripts. `scripts/run-ci-tests.mjs` discovers every `test:*` entry from `package.json`, runs sequentially, records each outcome, and exits nonzero on any failure. It does not skip incompatible tests or reinterpret failure as success.
+The previous workflow used one job to run all 211 tests against a standalone Mongo service. It failed the Amazon lifecycle fixture because a new account had no provider-dispatch authority. Most browser tests also depend on an existing authenticated server. This PR makes those contracts explicit and retains every test in the registry.
 
-Schema: no new migration. The existing migration CLI is executed only against `oms_ci_test`; no configured database credentials enter CI.
+## Plan
 
-Rollback: revert the PR 1 commit to restore the preserved workflow. There are no runtime stock or schema changes to reverse. The service database is destroyed with the runner.
+1. Keep the preserved workflow checks and split execution into PostgreSQL, Mongo replica-set, and Chromium jobs.
+2. Require a manifest entry for every `test:*` script, with tier, dependencies, owner, and a concrete quarantine reason.
+3. Run tests sequentially; record every result, including quarantined failures, in uploaded JSON artifacts. Fail a job on any required failure.
+4. Disable `.env` loading explicitly in CI. Supply disposable service URLs and make owned database binaries portable through `PG_BIN`, `MONGOD_BIN`, or `PATH`.
+5. Verify an unauthorized Amazon shipment creates one review and leaves stock unchanged, then grant only the synthetic fixture account with a revision and audit row.
+6. Replace one legacy browser test's localStorage identity and fixed port with an authenticated server on an OS-assigned port.
+7. Compare all local baseline and after outcomes, then require hosted Actions evidence before starting PR 2.
 
-Known blockers: several isolated runners require `/opt/homebrew/bin` binaries; legacy browser tests require their own authenticated API fixture (for example `scripts/verify-vendor-master.mjs` defaults to port 3003 and localStorage identity). A Mongo standalone service does not satisfy replica-set tests. These contracts need portability/fixture work before full CI can be green. Do not start PR 2 or merge while these gates fail. Hosted CI and staging/provider tests remain NOT RUN.
+## Evidence and constraints
 
-## Local validation
+`artifacts/pr-01/baseline.txt` and `baseline.json` record the complete baseline: 68 PASS, 143 FAIL across 211 `test:*` scripts. The initial 211 tests ran against owned local PostgreSQL 18.3 and MongoDB 8.0.8; PostgreSQL 16 and MongoDB 7 are reserved for hosted Actions verification. The baseline includes the original unmodified fixtures and is not proof of configured-provider behavior.
 
-- PASS: `npm ci`, `npm run typecheck`, `npm run build` on Node 26.5.0. CI specifies Node 24; that environment remains unverified.
-- PASS: workflow YAML parsing, runner syntax, and `git diff --check`.
-- PASS: runner isolation check discovers both test entries, excludes non-test entries, continues after an injected failure, records both outcomes, and exits nonzero.
-- PASS: `scripts/verify-migration-history.mjs` on its owned PostgreSQL cluster.
-- PASS: `npm run inventory:migrate` on a fresh owned PostgreSQL 18.3 cluster with `.env` loading disabled. PostgreSQL 16 service execution remains NOT RUN locally (Docker unavailable).
-- PASS: `scripts/verify-sku-import-provenance.mjs` and `scripts/verify-sku-import-integrity.mjs`.
-- FAIL: `npm run test:central-inventory`, `scripts/verify-central-inventory.mjs:43`, expected on-hand 1, actual 3. The Amazon account is created after migration without provider authority. Existing `scripts/verify-phase-b-dispatch.mjs` explicitly exercises permission/revision-controlled authority. Resolve the fixture contract without broadening runtime dispatch authority.
-- NOT RUN: `test:central-inventory-api` (the owned-stack check stopped at the preceding failure); full 211 registered `test:*` entries; GitHub Actions; staging/provider verification.
+The three newly registered checks cover the CI runner, the `.env` switch, and provider-dispatch authority. `test:central-inventory-api` also proves that an unverified opening count is rejected before its synthetic ledger receipt establishes a stock basis. Runtime dispatch and stock guards were not changed.
 
-This is a draft local change, not a green or merge-ready PR. PRs 2–7 remain gated on PR 1. `render.yaml` already uses `npm ci && npm run build`. The preservation commit excludes untracked contents within the `ponytail` submodule; those remain on disk.
+The completed local after-run is `artifacts/pr-01/after-final.txt` and `after-final.json`: 109 PASS, 105 FAIL across all 214 registered tests. All 109 required tests passed; all 105 quarantined tests ran and failed. There were 38 prior FAIL-to-PASS transitions, no prior PASS-to-FAIL transitions, and three new passing tests. `artifacts/pr-01/diff.md` and `diff.json` compare every command. The local runner used Node 26.5.0, PostgreSQL 18.3, and MongoDB 8.0.8; these results do not substitute for the hosted Node 24 / PostgreSQL 16 / MongoDB 7 gate.
+
+The 105 quarantine entries state the observed failure and required fixture work. Most older browser tests assume a pre-running server at a fixed port or an administrator session they never create; the CI isolation prevents them from reaching a configured local app. They remain in the registry, execute in CI, and retain their exact output. Required hosted CI, staging, and real-provider checks remain **NOT RUN** until evidence exists. PR 2 stays gated.
+
+No schema migration is added. Rollback: revert this PR's CI and fixture commits. The disposable service databases are removed by the runner. `render.yaml` continues to use `npm ci && npm run build`; `package-lock.json` stays authoritative and `pnpm-lock.yaml` is removed.

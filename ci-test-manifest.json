@@ -1,0 +1,1911 @@
+{
+  "version": 1,
+  "generatedFrom": "artifacts/pr-01/baseline.json",
+  "owner": "oms-wms-maintainers",
+  "tests": {
+    "test:admin-api-key-projection": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "mongo-rs"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:admin-create-identity": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "mongo-rs"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:admin-csv-boundary": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "mongo-rs"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:ajio-integrity": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in complete owned after-run; promoted to required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:allocation-strategies": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:amazon-location-discovery": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:amazon-mfn-integrity": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in complete owned after-run; promoted to required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:api-outcome-boundary": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:ars-execution-log": {
+      "tier": "quarantined",
+      "needs": [
+        "mongo-rs",
+        "browser"
+      ],
+      "reason": "ARS Execution Log verification requires a signed-in isolated administrator. Add an owned authenticated test-server fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:ars-integrity": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in complete owned after-run; promoted to required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:ars-rules": {
+      "tier": "quarantined",
+      "needs": [
+        "mongo-rs",
+        "browser"
+      ],
+      "reason": "ARS Rules verification requires a signed-in isolated administrator. Add an owned authenticated test-server fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:ars-settings": {
+      "tier": "quarantined",
+      "needs": [
+        "mongo-rs",
+        "browser"
+      ],
+      "reason": "ARS Settings verification requires a signed-in isolated administrator. Add an owned authenticated test-server fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:ars-sku-location": {
+      "tier": "quarantined",
+      "needs": [
+        "mongo-rs",
+        "browser"
+      ],
+      "reason": "ARS SKU-Location verification requires a signed-in isolated administrator. Add an owned authenticated test-server fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:attribute-set": {
+      "tier": "quarantined",
+      "needs": [
+        "mongo-rs",
+        "browser"
+      ],
+      "reason": "Attribute Set verification requires an isolated signed-in administrator. Add an owned authenticated test-server fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:auth-refresh-browser": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier loads fixed Vite port 5173; start an owned browser server on an assigned port and use its URL.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:auth-refresh-race": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:back-order-integrity": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in complete owned after-run; promoted to required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:backup-line-boundary": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:balance-read-boundary": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:bin-audit": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier fetches a configured app or disallowed port; CI isolation blocks it. Start an owned loopback server and authenticate.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:bin-editor": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:bin-enquiry": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:browser-csv-boundary": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:bulk-lottables": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier fetches a configured app or disallowed port; CI isolation blocks it. Start an owned loopback server and authenticate.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:bulk-order-update": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in complete owned after-run; promoted to required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:category-buyers": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "browser"
+      ],
+      "reason": "PASS in owned disposable targeted run after fixture correction; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:central-inventory": {
+      "tier": "required",
+      "needs": [
+        "postgres"
+      ],
+      "reason": "PASS after PR 1 fixture and authenticated-server corrections; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:central-inventory-api": {
+      "tier": "required",
+      "needs": [
+        "postgres"
+      ],
+      "reason": "PASS after PR 1 fixture and authenticated-server corrections; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:central-inventory-files": {
+      "tier": "required",
+      "needs": [
+        "postgres"
+      ],
+      "reason": "PASS in complete owned after-run; promoted to required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:central-inventory-ui": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "browser"
+      ],
+      "reason": "PASS in owned disposable targeted run after fixture correction; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:central-inventory-ui-isolated": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "mongo-rs",
+        "browser"
+      ],
+      "reason": "PASS in complete owned after-run; promoted to required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:ci-env": {
+      "tier": "required",
+      "needs": [],
+      "reason": "New required CI isolation/authority contract; validate before publishing.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:ci-runner": {
+      "tier": "required",
+      "needs": [],
+      "reason": "New required CI isolation/authority contract; validate before publishing.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:client-master": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:client-master-workflow": {
+      "tier": "quarantined",
+      "needs": [
+        "mongo-rs",
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:cod-reconciliation": {
+      "tier": "quarantined",
+      "needs": [
+        "postgres",
+        "mongo-rs",
+        "browser"
+      ],
+      "reason": "Owned browser app did not become ready within its startup gate. Diagnose server startup in the isolated wrapper before promotion.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:common-import": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in complete owned after-run; promoted to required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:connection-authorization": {
+      "tier": "required",
+      "needs": [
+        "postgres"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:connection-readiness": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:consolidate-ewb": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:coupon-guard": {
+      "tier": "quarantined",
+      "needs": [
+        "postgres",
+        "mongo-rs",
+        "browser"
+      ],
+      "reason": "Owned browser app did not become ready within its startup gate. Diagnose server startup in the isolated wrapper before promotion.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:customer-enquiry-parity": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:customer-group": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:customer-group-workflow": {
+      "tier": "quarantined",
+      "needs": [
+        "mongo-rs",
+        "browser"
+      ],
+      "reason": "Customer Group verification requires an isolated administrator. Add an owned authenticated test-server fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:customer-integrity": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "mongo-rs"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:customer-master": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3005 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:cycle-count": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier fetches a configured app or disallowed port; CI isolation blocks it. Start an owned loopback server and authenticate.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:cycle-count-waves": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier fetches a configured app or disallowed port; CI isolation blocks it. Start an owned loopback server and authenticate.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:delivery-shipping": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in complete owned after-run; promoted to required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:delivery-split": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:dispatch-checkpoint": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:download-pdf": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in complete owned after-run; promoted to required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:download-update-boundary": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "mongo-rs"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:download-workbook": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in owned disposable targeted run after fixture correction; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:drift-count-boundary": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:eretail-dashboard": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:exceljs-uuid-override": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:exports-boundary": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "mongo-rs"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:external-apps": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:external-apps-more-configuration": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:generate-vouchers": {
+      "tier": "quarantined",
+      "needs": [],
+      "reason": "Nested browser verifier requires both disposable PostgreSQL and MongoDB URLs; declare both CI dependencies.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:global-controls-keyboard": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:global-dialog-navigation": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:global-feedback-shell": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:global-grid-loading": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:global-header-dialogs": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:global-header-search": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:global-login": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3002 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:global-menu": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:global-order-search": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:global-responsive-shell": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:global-screen-shell": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:http-latency-integration": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:http-shutdown": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:inbound-create-edit": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier fetches a configured app or disallowed port; CI isolation blocks it. Start an owned loopback server and authenticate.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:inbound-csv-boundary": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:inbound-enquiry": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier fetches a configured app or disallowed port; CI isolation blocks it. Start an owned loopback server and authenticate.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:inbound-gate-pass": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier fetches a configured app or disallowed port; CI isolation blocks it. Start an owned loopback server and authenticate.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:inbound-import-inputs": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "mongo-rs"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:inbound-qc": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier fetches a configured app or disallowed port; CI isolation blocks it. Start an owned loopback server and authenticate.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:inbound-realtime": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier fetches a configured app or disallowed port; CI isolation blocks it. Start an owned loopback server and authenticate.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:inbound-realtime-integrity": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in owned disposable targeted run after fixture correction; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:inventory-move": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in complete owned after-run; promoted to required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:inventory-move-history": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier fetches a configured app or disallowed port; CI isolation blocks it. Start an owned loopback server and authenticate.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:inventory-move-scan": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier fetches a configured app or disallowed port; CI isolation blocks it. Start an owned loopback server and authenticate.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:inventory-publish-order": {
+      "tier": "required",
+      "needs": [
+        "postgres"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:inventory-summary-boundary": {
+      "tier": "required",
+      "needs": [
+        "postgres"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:inventory-tenant-middleware": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:inventory-view": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier fetches a configured app or disallowed port; CI isolation blocks it. Start an owned loopback server and authenticate.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:isolated-browser-workflow": {
+      "tier": "quarantined",
+      "needs": [
+        "postgres",
+        "mongo-rs",
+        "browser"
+      ],
+      "reason": "Owned browser app did not become ready within its startup gate. Diagnose server startup in the isolated wrapper before promotion.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:kitting-order": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:latency-histograms": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:ledger-contention-owned": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "mongo-rs"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:ledger-input-boundary": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:legacy-fulfillment-write-blocks": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in complete owned after-run; promoted to required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:legacy-stock-write-blocks": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in complete owned after-run; promoted to required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:location": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:login-input-boundary": {
+      "tier": "required",
+      "needs": [
+        "postgres"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:lottable-validation": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:manage-asn": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:manage-attribute": {
+      "tier": "quarantined",
+      "needs": [
+        "mongo-rs",
+        "browser"
+      ],
+      "reason": "Manage Attribute verification requires an isolated signed-in administrator. Add an owned authenticated test-server fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:manage-awb": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier fetches a configured app or disallowed port; CI isolation blocks it. Start an owned loopback server and authenticate.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:manage-channels": {
+      "tier": "quarantined",
+      "needs": [
+        "mongo-rs",
+        "browser"
+      ],
+      "reason": "Manage Channels verification requires the isolated administrator login. Add an owned authenticated test-server fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:manage-coupons": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:manage-manifests": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in complete owned after-run; promoted to required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:manage-picking": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in complete owned after-run; promoted to required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:manage-picklists": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in complete owned after-run; promoted to required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:market-order-view": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:master-order-enquiry": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:merchandising-hierarchy": {
+      "tier": "quarantined",
+      "needs": [
+        "mongo-rs",
+        "browser"
+      ],
+      "reason": "Merchandising Hierarchy verification requires an isolated signed-in administrator. Add an owned authenticated test-server fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:mongo-isolated-workflows": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "mongo-rs"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:mongo-mutation-boundary": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "mongo-rs"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:mongo-read-boundary": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "mongo-rs"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:mongo-safety": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "mongo-rs"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:mongo-session-boundary": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "mongo-rs"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:mp-inventory-log": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in complete owned after-run; promoted to required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:oms-rules": {
+      "tier": "quarantined",
+      "needs": [
+        "postgres",
+        "mongo-rs",
+        "browser"
+      ],
+      "reason": "Owned browser app did not become ready within its startup gate. Diagnose server startup in the isolated wrapper before promotion.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:opening-stock-isolated": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "mongo-rs"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:opening-stock-validation": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:order-acknowledgement": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:order-allocation": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:order-enquiry": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:order-enquiry-integrity": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "mongo-rs"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:order-maintenance": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in complete owned after-run; promoted to required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:order-refund": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in complete owned after-run; promoted to required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:organization-hierarchy": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:other-masters": {
+      "tier": "quarantined",
+      "needs": [
+        "postgres",
+        "mongo-rs",
+        "browser"
+      ],
+      "reason": "Owned browser app did not become ready within its startup gate. Diagnose server startup in the isolated wrapper before promotion.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:pg-cleanup-scheduler": {
+      "tier": "required",
+      "needs": [
+        "postgres"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:picker-zone-preference": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:po-enquiry": {
+      "tier": "quarantined",
+      "needs": [
+        "postgres",
+        "mongo-rs",
+        "browser"
+      ],
+      "reason": "Owned browser app did not become ready within its startup gate. Diagnose server startup in the isolated wrapper before promotion.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:po-otb-integrity": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "mongo-rs"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:po-revision": {
+      "tier": "quarantined",
+      "needs": [
+        "postgres",
+        "mongo-rs",
+        "browser"
+      ],
+      "reason": "Owned browser app did not become ready within its startup gate. Diagnose server startup in the isolated wrapper before promotion.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:postgres-transaction-cleanup": {
+      "tier": "required",
+      "needs": [
+        "postgres"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:price-zone": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:pricing-event": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:provider-dispatch-authority": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "mongo-rs"
+      ],
+      "reason": "New required CI isolation/authority contract; validate before publishing.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:publication-recovery-boundary": {
+      "tier": "required",
+      "needs": [
+        "postgres"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:purchase-charge-masters": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:putaway-enquiry": {
+      "tier": "quarantined",
+      "needs": [
+        "mongo-rs",
+        "browser"
+      ],
+      "reason": "Observed failure: The isolated browser workflow must pass a committed inbound number.. Repair this fixture and rerun before promotion.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:putaway-rules": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:receipt-envelope-boundary": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "mongo-rs"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:receipt-index-tool": {
+      "tier": "required",
+      "needs": [
+        "mongo-rs"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:receipt-poll-boundary": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:receipt-validation": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:reliability": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "mongo-rs"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:reliability-extended": {
+      "tier": "required",
+      "needs": [
+        "mongo-rs"
+      ],
+      "reason": "PASS in owned disposable targeted run after fixture correction; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:reliability-mongo-isolated": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "mongo-rs"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:reliability-mongo-startup": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "mongo-rs"
+      ],
+      "reason": "PASS in owned disposable targeted run after fixture correction; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:reliability-mongo-timeout": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "mongo-rs"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:reliability-postgres-failures": {
+      "tier": "required",
+      "needs": [
+        "postgres"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:reliability-purchase-orders": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "mongo-rs"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:restore-batch-boundary": {
+      "tier": "required",
+      "needs": [
+        "mongo-rs"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:restore-manifest-boundary": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:return-without-order": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier constructs a database URL from an absent env value; provide an owned PostgreSQL fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:returns-integrity": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in complete owned after-run; promoted to required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:sales-programs": {
+      "tier": "required",
+      "needs": [
+        "postgres"
+      ],
+      "reason": "PASS in owned disposable targeted run after fixture correction; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:sales-promotion-guard": {
+      "tier": "quarantined",
+      "needs": [
+        "postgres",
+        "mongo-rs",
+        "browser"
+      ],
+      "reason": "Owned browser app did not become ready within its startup gate. Diagnose server startup in the isolated wrapper before promotion.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:seller-connections": {
+      "tier": "required",
+      "needs": [
+        "postgres"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:seller-connections-ui": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "browser"
+      ],
+      "reason": "PASS in owned disposable targeted run after fixture correction; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:seller-panel-dashboard": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:service-pin-codes": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier fetches a configured app or disallowed port; CI isolation blocks it. Start an owned loopback server and authenticate.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:shell-quote-boundary": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:shipment-handover": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in complete owned after-run; promoted to required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:shopify-order-observation": {
+      "tier": "required",
+      "needs": [
+        "postgres"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:shopify-order-observation-isolated": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "mongo-rs"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:single-location": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier loads fixed Vite port 5173; start an owned browser server on an assigned port and use its URL.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:sku-barcode": {
+      "tier": "quarantined",
+      "needs": [
+        "mongo-rs",
+        "browser"
+      ],
+      "reason": "SKU Barcode verification requires an isolated administrator. Add an owned authenticated test-server fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:sku-channel-listing": {
+      "tier": "quarantined",
+      "needs": [
+        "postgres",
+        "mongo-rs",
+        "browser"
+      ],
+      "reason": "Owned browser app did not become ready within its startup gate. Diagnose server startup in the isolated wrapper before promotion.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:sku-company-link": {
+      "tier": "quarantined",
+      "needs": [
+        "postgres",
+        "mongo-rs",
+        "browser"
+      ],
+      "reason": "Owned browser app did not become ready within its startup gate. Diagnose server startup in the isolated wrapper before promotion.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:sku-grading": {
+      "tier": "quarantined",
+      "needs": [
+        "postgres",
+        "mongo-rs",
+        "browser"
+      ],
+      "reason": "Verifier starts persistence-required server after clearing MongoDB URI; pass an owned Mongo fixture to the child.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:sku-group": {
+      "tier": "quarantined",
+      "needs": [
+        "postgres",
+        "mongo-rs",
+        "browser"
+      ],
+      "reason": "Owned browser app did not become ready within its startup gate. Diagnose server startup in the isolated wrapper before promotion.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:sku-import": {
+      "tier": "required",
+      "needs": [
+        "browser"
+      ],
+      "reason": "PASS in complete owned after-run; promoted to required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:sku-label-print": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:sku-master": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:sku-master-workflow": {
+      "tier": "quarantined",
+      "needs": [
+        "mongo-rs",
+        "browser"
+      ],
+      "reason": "SKU Master verification requires an isolated administrator. Add an owned authenticated test-server fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:sku-moderation": {
+      "tier": "quarantined",
+      "needs": [
+        "postgres",
+        "mongo-rs",
+        "browser"
+      ],
+      "reason": "Owned browser app did not become ready within its startup gate. Diagnose server startup in the isolated wrapper before promotion.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:sort-to-box": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in complete owned after-run; promoted to required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:stock-lock-cleanup": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:stock-publication-isolated": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "mongo-rs"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:store-group": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:tally-configuration": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:tax-application": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:tax-application-workflow": {
+      "tier": "quarantined",
+      "needs": [
+        "mongo-rs",
+        "browser"
+      ],
+      "reason": "Tax Application verification requires an isolated administrator. Add an owned authenticated test-server fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:tax-category": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:tax-category-workflow": {
+      "tier": "quarantined",
+      "needs": [
+        "mongo-rs",
+        "browser"
+      ],
+      "reason": "Tax Category verification requires an isolated administrator. Add an owned authenticated test-server fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:tax-code": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:tax-code-workflow": {
+      "tier": "quarantined",
+      "needs": [
+        "mongo-rs",
+        "browser"
+      ],
+      "reason": "Tax Code verification requires an isolated administrator. Add an owned authenticated test-server fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:tax-group": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:tax-group-workflow": {
+      "tier": "quarantined",
+      "needs": [
+        "mongo-rs",
+        "browser"
+      ],
+      "reason": "Tax Group verification requires an isolated administrator. Add an owned authenticated test-server fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:tax-zone": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:tax-zone-workflow": {
+      "tier": "quarantined",
+      "needs": [
+        "mongo-rs",
+        "browser"
+      ],
+      "reason": "Tax Zone verification requires an isolated administrator. Add an owned authenticated test-server fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:terms-html-sanitizer": {
+      "tier": "required",
+      "needs": [
+        "browser"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:transhipment-integrity": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in complete owned after-run; promoted to required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:transhipment-old-integrity": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in complete owned after-run; promoted to required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:transporter-enquiry-parity": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:transporter-integrity": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "mongo-rs"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:transporter-master": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3005 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:transporter-preferences": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier fetches a configured app or disallowed port; CI isolation blocks it. Start an owned loopback server and authenticate.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:unified-orders": {
+      "tier": "required",
+      "needs": [
+        "postgres"
+      ],
+      "reason": "PASS in owned disposable targeted run after fixture correction; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:unified-orders-isolated": {
+      "tier": "required",
+      "needs": [
+        "postgres"
+      ],
+      "reason": "PASS in owned disposable targeted run after fixture correction; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:validation-master-inputs": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "mongo-rs"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:vendor-enquiry-parity": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:vendor-integrity": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "mongo-rs"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:vendor-master": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "mongo-rs",
+        "browser"
+      ],
+      "reason": "PASS after PR 1 fixture and authenticated-server corrections; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:vendor-promotions": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:vendor-sku-catalog": {
+      "tier": "quarantined",
+      "needs": [
+        "mongo-rs",
+        "browser"
+      ],
+      "reason": "Vendor SKU Catalog verification requires a signed-in isolated administrator. Add an owned authenticated test-server fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:vendor-sku-loc-catalog": {
+      "tier": "quarantined",
+      "needs": [
+        "mongo-rs",
+        "browser"
+      ],
+      "reason": "Vendor SKU Location Catalog verification requires a signed-in isolated administrator. Add an owned authenticated test-server fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:voucher-guard": {
+      "tier": "quarantined",
+      "needs": [
+        "postgres",
+        "mongo-rs",
+        "browser"
+      ],
+      "reason": "Owned browser app did not become ready within its startup gate. Diagnose server startup in the isolated wrapper before promotion.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:whatsapp-total-deadline": {
+      "tier": "required",
+      "needs": [
+        "postgres"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:wms-dedicated-menu-routing": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:wms-zone": {
+      "tier": "quarantined",
+      "needs": [
+        "browser"
+      ],
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 300
+    },
+    "test:workbook-inspector": {
+      "tier": "required",
+      "needs": [
+        "postgres"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:zone-picker-csv": {
+      "tier": "required",
+      "needs": [],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:zone-picker-mutation": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "mongo-rs"
+      ],
+      "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    }
+  }
+}

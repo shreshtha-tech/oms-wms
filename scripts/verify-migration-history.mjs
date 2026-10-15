@@ -1,18 +1,19 @@
+import { resolveTestBinary } from './lib/test-binaries.mjs';
 // Starts a disposable PostgreSQL cluster. Never imports env.js or reads a
 // configured database URL, and never connects to an existing database server.
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
 import { mkdtemp, rm, access } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 import { createServer } from 'node:net';
 import pg from 'pg';
 import { prepareMigrationHistory } from '../inventory/migration-history.js';
 
-const binaries = process.env.PG_BIN_DIR || '/opt/homebrew/bin';
+const binaries = dirname(resolveTestBinary('initdb'));
 const node = process.execPath;
 const root = await mkdtemp(join(tmpdir(), 'oms-migration-history-'));
-const cleanEnv = { PATH: process.env.PATH || '/usr/bin:/bin', LANG: 'C', TMPDIR: root, NODE_ENV: 'test' };
+const cleanEnv = { PATH: process.env.PATH || '/usr/bin:/bin', LANG: 'C', TMPDIR: root, NODE_ENV: 'test', DMILLS_SKIP_DOTENV: 'true' };
 const pause = ms => new Promise(resolve => setTimeout(resolve, ms));
 const exit = child => child.exitCode !== null ? Promise.resolve(child.exitCode) : new Promise((resolve, reject) => { child.once('exit', resolve); child.once('error', reject); });
 let server, admin, pool;

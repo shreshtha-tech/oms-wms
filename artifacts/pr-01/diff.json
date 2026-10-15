@@ -1,0 +1,1512 @@
+{
+  "baseline": {
+    "PASS": 68,
+    "FAIL": 143
+  },
+  "after": {
+    "PASS": 109,
+    "FAIL": 105
+  },
+  "required": 109,
+  "quarantined": 105,
+  "results": [
+    {
+      "name": "test:admin-api-key-projection",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:admin-create-identity",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:admin-csv-boundary",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:ajio-integrity",
+      "baseline": "FAIL",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:allocation-strategies",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:amazon-location-discovery",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:amazon-mfn-integrity",
+      "baseline": "FAIL",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:api-outcome-boundary",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:ars-execution-log",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "ARS Execution Log verification requires a signed-in isolated administrator. Add an owned authenticated test-server fixture."
+    },
+    {
+      "name": "test:ars-integrity",
+      "baseline": "FAIL",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:ars-rules",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "ARS Rules verification requires a signed-in isolated administrator. Add an owned authenticated test-server fixture."
+    },
+    {
+      "name": "test:ars-settings",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "ARS Settings verification requires a signed-in isolated administrator. Add an owned authenticated test-server fixture."
+    },
+    {
+      "name": "test:ars-sku-location",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "ARS SKU-Location verification requires a signed-in isolated administrator. Add an owned authenticated test-server fixture."
+    },
+    {
+      "name": "test:attribute-set",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Attribute Set verification requires an isolated signed-in administrator. Add an owned authenticated test-server fixture."
+    },
+    {
+      "name": "test:auth-refresh-browser",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier loads fixed Vite port 5173; start an owned browser server on an assigned port and use its URL."
+    },
+    {
+      "name": "test:auth-refresh-race",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:back-order-integrity",
+      "baseline": "FAIL",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:backup-line-boundary",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:balance-read-boundary",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:bin-audit",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier fetches a configured app or disallowed port; CI isolation blocks it. Start an owned loopback server and authenticate."
+    },
+    {
+      "name": "test:bin-editor",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:bin-enquiry",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:browser-csv-boundary",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:bulk-lottables",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier fetches a configured app or disallowed port; CI isolation blocks it. Start an owned loopback server and authenticate."
+    },
+    {
+      "name": "test:bulk-order-update",
+      "baseline": "FAIL",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:category-buyers",
+      "baseline": "FAIL",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:central-inventory",
+      "baseline": "FAIL",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:central-inventory-api",
+      "baseline": "FAIL",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:central-inventory-files",
+      "baseline": "FAIL",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:central-inventory-ui",
+      "baseline": "FAIL",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:central-inventory-ui-isolated",
+      "baseline": "FAIL",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:ci-env",
+      "baseline": "NOT RUN (new test)",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:ci-runner",
+      "baseline": "NOT RUN (new test)",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:client-master",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:client-master-workflow",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:cod-reconciliation",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Owned browser app did not become ready within its startup gate. Diagnose server startup in the isolated wrapper before promotion."
+    },
+    {
+      "name": "test:common-import",
+      "baseline": "FAIL",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:connection-authorization",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:connection-readiness",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:consolidate-ewb",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:coupon-guard",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Owned browser app did not become ready within its startup gate. Diagnose server startup in the isolated wrapper before promotion."
+    },
+    {
+      "name": "test:customer-enquiry-parity",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:customer-group",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:customer-group-workflow",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Customer Group verification requires an isolated administrator. Add an owned authenticated test-server fixture."
+    },
+    {
+      "name": "test:customer-integrity",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:customer-master",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3005 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:cycle-count",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier fetches a configured app or disallowed port; CI isolation blocks it. Start an owned loopback server and authenticate."
+    },
+    {
+      "name": "test:cycle-count-waves",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier fetches a configured app or disallowed port; CI isolation blocks it. Start an owned loopback server and authenticate."
+    },
+    {
+      "name": "test:delivery-shipping",
+      "baseline": "FAIL",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:delivery-split",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:dispatch-checkpoint",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:download-pdf",
+      "baseline": "FAIL",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:download-update-boundary",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:download-workbook",
+      "baseline": "FAIL",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:drift-count-boundary",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:eretail-dashboard",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:exceljs-uuid-override",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:exports-boundary",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:external-apps",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:external-apps-more-configuration",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:generate-vouchers",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Nested browser verifier requires both disposable PostgreSQL and MongoDB URLs; declare both CI dependencies."
+    },
+    {
+      "name": "test:global-controls-keyboard",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:global-dialog-navigation",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:global-feedback-shell",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:global-grid-loading",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:global-header-dialogs",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:global-header-search",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:global-login",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3002 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:global-menu",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:global-order-search",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:global-responsive-shell",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:global-screen-shell",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:http-latency-integration",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:http-shutdown",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:inbound-create-edit",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier fetches a configured app or disallowed port; CI isolation blocks it. Start an owned loopback server and authenticate."
+    },
+    {
+      "name": "test:inbound-csv-boundary",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:inbound-enquiry",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier fetches a configured app or disallowed port; CI isolation blocks it. Start an owned loopback server and authenticate."
+    },
+    {
+      "name": "test:inbound-gate-pass",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier fetches a configured app or disallowed port; CI isolation blocks it. Start an owned loopback server and authenticate."
+    },
+    {
+      "name": "test:inbound-import-inputs",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:inbound-qc",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier fetches a configured app or disallowed port; CI isolation blocks it. Start an owned loopback server and authenticate."
+    },
+    {
+      "name": "test:inbound-realtime",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier fetches a configured app or disallowed port; CI isolation blocks it. Start an owned loopback server and authenticate."
+    },
+    {
+      "name": "test:inbound-realtime-integrity",
+      "baseline": "FAIL",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:inventory-move",
+      "baseline": "FAIL",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:inventory-move-history",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier fetches a configured app or disallowed port; CI isolation blocks it. Start an owned loopback server and authenticate."
+    },
+    {
+      "name": "test:inventory-move-scan",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier fetches a configured app or disallowed port; CI isolation blocks it. Start an owned loopback server and authenticate."
+    },
+    {
+      "name": "test:inventory-publish-order",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:inventory-summary-boundary",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:inventory-tenant-middleware",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:inventory-view",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier fetches a configured app or disallowed port; CI isolation blocks it. Start an owned loopback server and authenticate."
+    },
+    {
+      "name": "test:isolated-browser-workflow",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Owned browser app did not become ready within its startup gate. Diagnose server startup in the isolated wrapper before promotion."
+    },
+    {
+      "name": "test:kitting-order",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:latency-histograms",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:ledger-contention-owned",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:ledger-input-boundary",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:legacy-fulfillment-write-blocks",
+      "baseline": "FAIL",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:legacy-stock-write-blocks",
+      "baseline": "FAIL",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:location",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:login-input-boundary",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:lottable-validation",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:manage-asn",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:manage-attribute",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Manage Attribute verification requires an isolated signed-in administrator. Add an owned authenticated test-server fixture."
+    },
+    {
+      "name": "test:manage-awb",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier fetches a configured app or disallowed port; CI isolation blocks it. Start an owned loopback server and authenticate."
+    },
+    {
+      "name": "test:manage-channels",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Manage Channels verification requires the isolated administrator login. Add an owned authenticated test-server fixture."
+    },
+    {
+      "name": "test:manage-coupons",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:manage-manifests",
+      "baseline": "FAIL",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:manage-picking",
+      "baseline": "FAIL",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:manage-picklists",
+      "baseline": "FAIL",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:market-order-view",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:master-order-enquiry",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:merchandising-hierarchy",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Merchandising Hierarchy verification requires an isolated signed-in administrator. Add an owned authenticated test-server fixture."
+    },
+    {
+      "name": "test:mongo-isolated-workflows",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:mongo-mutation-boundary",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:mongo-read-boundary",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:mongo-safety",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:mongo-session-boundary",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:mp-inventory-log",
+      "baseline": "FAIL",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:oms-rules",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Owned browser app did not become ready within its startup gate. Diagnose server startup in the isolated wrapper before promotion."
+    },
+    {
+      "name": "test:opening-stock-isolated",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:opening-stock-validation",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:order-acknowledgement",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:order-allocation",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:order-enquiry",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:order-enquiry-integrity",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:order-maintenance",
+      "baseline": "FAIL",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:order-refund",
+      "baseline": "FAIL",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:organization-hierarchy",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:other-masters",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Owned browser app did not become ready within its startup gate. Diagnose server startup in the isolated wrapper before promotion."
+    },
+    {
+      "name": "test:pg-cleanup-scheduler",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:picker-zone-preference",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:po-enquiry",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Owned browser app did not become ready within its startup gate. Diagnose server startup in the isolated wrapper before promotion."
+    },
+    {
+      "name": "test:po-otb-integrity",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:po-revision",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Owned browser app did not become ready within its startup gate. Diagnose server startup in the isolated wrapper before promotion."
+    },
+    {
+      "name": "test:postgres-transaction-cleanup",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:price-zone",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:pricing-event",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:provider-dispatch-authority",
+      "baseline": "NOT RUN (new test)",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:publication-recovery-boundary",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:purchase-charge-masters",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:putaway-enquiry",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Observed failure: The isolated browser workflow must pass a committed inbound number.. Repair this fixture and rerun before promotion."
+    },
+    {
+      "name": "test:putaway-rules",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:receipt-envelope-boundary",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:receipt-index-tool",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:receipt-poll-boundary",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:receipt-validation",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:reliability",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:reliability-extended",
+      "baseline": "FAIL",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:reliability-mongo-isolated",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:reliability-mongo-startup",
+      "baseline": "FAIL",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:reliability-mongo-timeout",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:reliability-postgres-failures",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:reliability-purchase-orders",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:restore-batch-boundary",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:restore-manifest-boundary",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:return-without-order",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier constructs a database URL from an absent env value; provide an owned PostgreSQL fixture."
+    },
+    {
+      "name": "test:returns-integrity",
+      "baseline": "FAIL",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:sales-programs",
+      "baseline": "FAIL",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:sales-promotion-guard",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Owned browser app did not become ready within its startup gate. Diagnose server startup in the isolated wrapper before promotion."
+    },
+    {
+      "name": "test:seller-connections",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:seller-connections-ui",
+      "baseline": "FAIL",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:seller-panel-dashboard",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:service-pin-codes",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier fetches a configured app or disallowed port; CI isolation blocks it. Start an owned loopback server and authenticate."
+    },
+    {
+      "name": "test:shell-quote-boundary",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:shipment-handover",
+      "baseline": "FAIL",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:shopify-order-observation",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:shopify-order-observation-isolated",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:single-location",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier loads fixed Vite port 5173; start an owned browser server on an assigned port and use its URL."
+    },
+    {
+      "name": "test:sku-barcode",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "SKU Barcode verification requires an isolated administrator. Add an owned authenticated test-server fixture."
+    },
+    {
+      "name": "test:sku-channel-listing",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Owned browser app did not become ready within its startup gate. Diagnose server startup in the isolated wrapper before promotion."
+    },
+    {
+      "name": "test:sku-company-link",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Owned browser app did not become ready within its startup gate. Diagnose server startup in the isolated wrapper before promotion."
+    },
+    {
+      "name": "test:sku-grading",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier starts persistence-required server after clearing MongoDB URI; pass an owned Mongo fixture to the child."
+    },
+    {
+      "name": "test:sku-group",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Owned browser app did not become ready within its startup gate. Diagnose server startup in the isolated wrapper before promotion."
+    },
+    {
+      "name": "test:sku-import",
+      "baseline": "FAIL",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:sku-label-print",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:sku-master",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:sku-master-workflow",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "SKU Master verification requires an isolated administrator. Add an owned authenticated test-server fixture."
+    },
+    {
+      "name": "test:sku-moderation",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Owned browser app did not become ready within its startup gate. Diagnose server startup in the isolated wrapper before promotion."
+    },
+    {
+      "name": "test:sort-to-box",
+      "baseline": "FAIL",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:stock-lock-cleanup",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:stock-publication-isolated",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:store-group",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:tally-configuration",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:tax-application",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:tax-application-workflow",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Tax Application verification requires an isolated administrator. Add an owned authenticated test-server fixture."
+    },
+    {
+      "name": "test:tax-category",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:tax-category-workflow",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Tax Category verification requires an isolated administrator. Add an owned authenticated test-server fixture."
+    },
+    {
+      "name": "test:tax-code",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:tax-code-workflow",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Tax Code verification requires an isolated administrator. Add an owned authenticated test-server fixture."
+    },
+    {
+      "name": "test:tax-group",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:tax-group-workflow",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Tax Group verification requires an isolated administrator. Add an owned authenticated test-server fixture."
+    },
+    {
+      "name": "test:tax-zone",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:tax-zone-workflow",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Tax Zone verification requires an isolated administrator. Add an owned authenticated test-server fixture."
+    },
+    {
+      "name": "test:terms-html-sanitizer",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:transhipment-integrity",
+      "baseline": "FAIL",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:transhipment-old-integrity",
+      "baseline": "FAIL",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:transporter-enquiry-parity",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:transporter-integrity",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:transporter-master",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3005 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:transporter-preferences",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier fetches a configured app or disallowed port; CI isolation blocks it. Start an owned loopback server and authenticate."
+    },
+    {
+      "name": "test:unified-orders",
+      "baseline": "FAIL",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:unified-orders-isolated",
+      "baseline": "FAIL",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:validation-master-inputs",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:vendor-enquiry-parity",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:vendor-integrity",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:vendor-master",
+      "baseline": "FAIL",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:vendor-promotions",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:vendor-sku-catalog",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Vendor SKU Catalog verification requires a signed-in isolated administrator. Add an owned authenticated test-server fixture."
+    },
+    {
+      "name": "test:vendor-sku-loc-catalog",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Vendor SKU Location Catalog verification requires a signed-in isolated administrator. Add an owned authenticated test-server fixture."
+    },
+    {
+      "name": "test:voucher-guard",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Owned browser app did not become ready within its startup gate. Diagnose server startup in the isolated wrapper before promotion."
+    },
+    {
+      "name": "test:whatsapp-total-deadline",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:wms-dedicated-menu-routing",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:wms-zone",
+      "baseline": "FAIL",
+      "after": "FAIL",
+      "tier": "quarantined",
+      "reason": "Verifier connects to fixed app port 3011 without an owned server; create an authenticated assigned-port fixture."
+    },
+    {
+      "name": "test:workbook-inspector",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:zone-picker-csv",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    },
+    {
+      "name": "test:zone-picker-mutation",
+      "baseline": "PASS",
+      "after": "PASS",
+      "tier": "required",
+      "reason": null
+    }
+  ]
+}

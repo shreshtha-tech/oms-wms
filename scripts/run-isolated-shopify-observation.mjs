@@ -1,3 +1,4 @@
+import { resolveTestBinary, testBinaryPath } from './lib/test-binaries.mjs';
 import { spawn } from 'node:child_process';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -8,7 +9,7 @@ import pg from 'pg';
 const root=await mkdtemp(join(tmpdir(),'agon-shopify-poll-'));
 const port=randomInt(35001,50000);
 const database=`shopify_poll_${Date.now().toString(36)}_test`;
-const nativeEnv={PATH:'/opt/homebrew/bin:/usr/bin:/bin',LANG:'C',TMPDIR:root};
+const nativeEnv={PATH: testBinaryPath(), DMILLS_SKIP_DOTENV: 'true',LANG:'C',TMPDIR:root};
 const children=[];
 function launch(binary,args,env=nativeEnv,stdio='ignore') {
  const child=spawn(binary,args,{env,stdio});child.on('error',error=>{child.launchError=error;});children.push(child);return child;
@@ -17,9 +18,9 @@ const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 const exited=child=>child.exitCode!==null?Promise.resolve(child.exitCode):new Promise((resolve,reject)=>{child.once('exit',resolve);child.once('error',reject);});
 let admin;
 try {
- const init=launch('/opt/homebrew/bin/initdb',['-D',join(root,'pg'),'-U','postgres','--auth=trust','--no-locale']);
+ const init=launch(resolveTestBinary('initdb'),['-D',join(root,'pg'),'-U','postgres','--auth=trust','--no-locale']);
  if(await exited(init)!==0)throw new Error('Disposable PostgreSQL initialization failed');
- const postgres=launch('/opt/homebrew/bin/postgres',['-D',join(root,'pg'),'-h','127.0.0.1','-p',String(port),'-k',root]);
+ const postgres=launch(resolveTestBinary('postgres'),['-D',join(root,'pg'),'-h','127.0.0.1','-p',String(port),'-k',root]);
  for(let attempt=0;attempt<100;attempt++){
   if(postgres.launchError||postgres.exitCode!==null)throw new Error('Disposable PostgreSQL process failed');
   admin=new pg.Client({host:'127.0.0.1',port,user:'postgres',database:'postgres',connectionTimeoutMillis:300});

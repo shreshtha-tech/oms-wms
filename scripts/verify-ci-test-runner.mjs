@@ -1,0 +1,34 @@
+import assert from 'node:assert/strict';
+import { mkdtemp, writeFile, rm, chmod } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { loadManifest,runTests,testEnvironment,jobFor } from './run-ci-tests.mjs';
+import { resolveTestBinary } from './lib/test-binaries.mjs';
+const root=await mkdtemp(join(tmpdir(),'oms-ci-runner-'));
+try {
+  const scripts={'test:pass':'node pass.mjs','test:failure':'node -e "process.exit(7)"','test:timeout':'node -e "setTimeout(()=>{},30000)"','not-a-test':'exit 99'};
+  const entry=(tier,needs=[])=>({tier,needs,reason:'Synthetic runner contract',owner:'ci-fixture',timeoutSeconds:1});
+  const manifest={version:1,tests:{'test:pass':entry('required'),'test:failure':entry('quarantined'),'test:timeout':entry('quarantined')}};
+  await writeFile(join(root,'package.json'),JSON.stringify({private:true,type:'module',scripts}));
+  await writeFile(join(root,'pass.mjs'),"if(process.env.MONGODB_URI||process.env.INVENTORY_DATABASE_URL||process.env.PROVIDER_SECRET||process.env.DMILLS_SKIP_DOTENV!=='true')process.exit(2);");
+  const save=()=>writeFile(join(root,'ci-test-manifest.json'),JSON.stringify(manifest));await save();
+  const env={...process.env,PROVIDER_SECRET:'synthetic-secret',MONGODB_URI:'mongodb://configured',INVENTORY_DATABASE_URL:'postgresql://configured'};
+  assert.equal(testEnvironment(env,[]).PROVIDER_SECRET,undefined);
+  assert.equal(testEnvironment(env,['postgres']).INVENTORY_DATABASE_URL,'postgresql://configured');
+  assert.equal(jobFor([]),'hermetic');assert.equal(jobFor(['postgres','mongo-rs']),'mongo');assert.equal(jobFor(['postgres','browser']),'browser');
+  const report=await runTests({root,env});
+  assert.equal(report.completed,3);assert.equal(report.requiredFailures,0);assert.equal(report.quarantinedFailures,2);
+  assert.equal(report.results.find(r=>r.name==='test:pass').status,'PASS');
+  assert.equal(report.results.find(r=>r.name==='test:timeout').timedOut,true);
+  assert.equal(report.results.find(r=>r.name==='test:failure').code,7);
+  manifest.tests['test:failure'].tier='required';await save();
+  assert.equal((await runTests({root,env,names:['test:failure']})).requiredFailures,1);
+  delete manifest.tests['test:timeout'];await save();await assert.rejects(()=>loadManifest(root),/missing.*test:timeout/);
+  manifest.tests['test:timeout']=entry('quarantined');manifest.tests['test:stale']=entry('required');await save();await assert.rejects(()=>loadManifest(root),/stale.*test:stale/);
+  delete manifest.tests['test:stale'];manifest.tests['test:pass'].owner='';await save();await assert.rejects(()=>loadManifest(root),/Invalid CI manifest entry/);
+  const binary=join(root,'mongod');await writeFile(binary,'#!/bin/sh\nexit 0\n');await chmod(binary,0o755);
+  assert.equal(resolveTestBinary('mongod',{MONGOD_BIN:binary}),binary);
+  assert.equal(resolveTestBinary('mongod',{PATH:root}),binary);
+  assert.throws(()=>resolveTestBinary('mongod',{MONGOD_BIN:join(root,'missing'),PATH:root}),/unavailable/);
+  console.log('PASS CI runner: exhaustive manifest, required failure gate, quarantine execution, continuation, timeout, job routing, environment isolation and binary overrides');
+} finally {await rm(root,{recursive:true,force:true});}

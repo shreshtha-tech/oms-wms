@@ -1,3 +1,4 @@
+import { resolveTestBinary, testBinaryPath } from './lib/test-binaries.mjs';
 import { spawn } from 'node:child_process';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -12,7 +13,7 @@ const suite = process.argv[2] || 'scripts/verify-phase-b-stack.mjs';
 const allowed = new Set(['scripts/verify-phase-b-stack.mjs', 'scripts/verify-phase-b-propagation.mjs', 'scripts/verify-phase-b-dispatch.mjs', 'scripts/verify-seller-connections.mjs', 'scripts/verify-session-recovery.mjs', 'scripts/measure-owned-ledger-contention.mjs', 'scripts/verify-receipt-claim-mongo-plan.mjs', 'scripts/measure-receipt-claim-backlog.mjs']);
 if (!allowed.has(suite)) throw new Error('Unapproved isolated suite');
 const directory = await mkdtemp(join(tmpdir(), 'dmills-phase-b-'));
-const nativeEnv = { PATH: '/opt/homebrew/bin:/usr/bin:/bin', LANG: 'C', TMPDIR: directory };
+const nativeEnv = { PATH: testBinaryPath(), DMILLS_SKIP_DOTENV: 'true', LANG: 'C', TMPDIR: directory };
 const mongoPort = randomInt(20000, 35000), pgPort = randomInt(35001, 50000);
 const name = `${suite === 'scripts/verify-session-recovery.mjs' ? 'codexqa_test_sessions' : 'phase_b'}_${Date.now().toString(36)}_test`;
 const env = { ...nativeEnv, NODE_ENV: 'test', MONGODB_DB: name,
@@ -23,7 +24,8 @@ validateTestStores(env);
 const processes = [];
 const pause = ms => new Promise(resolve => setTimeout(resolve, ms));
 function launch(binary, args) {
-  const child = spawn(binary, args, { env: nativeEnv, stdio: 'ignore' });
+  const child = spawn(binary, args, { env: nativeEnv, stdio: ['ignore','ignore','pipe'] });
+  child.startupStderr = ''; child.stderr.on('data', chunk => { child.startupStderr = (child.startupStderr + String(chunk)).slice(-2000); });
   child.startError = null; child.on('error', () => { child.startError = true; });
   processes.push(child); return child;
 }
@@ -33,14 +35,14 @@ async function exited(child) {
 }
 let mongo, admin;
 try {
-  const init = launch('/opt/homebrew/bin/initdb', ['-D', join(directory, 'pg'), '-U', 'postgres', '--auth=trust', '--no-locale']);
+  const init = launch(resolveTestBinary('initdb'), ['-D', join(directory, 'pg'), '-U', 'postgres', '--auth=trust', '--no-locale']);
   if (await exited(init) !== 0) throw new Error('Disposable PostgreSQL initialization failed');
-  const postgres = launch('/opt/homebrew/bin/postgres', ['-D', join(directory, 'pg'), '-h', '127.0.0.1', '-p', String(pgPort), '-k', directory]);
-  const mongod = launch('/opt/homebrew/bin/mongod', ['--replSet', 'phase_b', '--dbpath', directory, '--port', String(mongoPort), '--bind_ip', '127.0.0.1', '--nounixsocket', '--logpath', join(directory, 'mongo.log')]);
+  const postgres = launch(resolveTestBinary('postgres'), ['-D', join(directory, 'pg'), '-h', '127.0.0.1', '-p', String(pgPort), '-k', directory]);
+  const mongod = launch(resolveTestBinary('mongod'), ['--replSet', 'phase_b', '--dbpath', directory, '--port', String(mongoPort), '--bind_ip', '127.0.0.1', '--nounixsocket', '--logpath', join(directory, 'mongo.log')]);
   mongo = new MongoClient(`mongodb://127.0.0.1:${mongoPort}/?directConnection=true`, { serverSelectionTimeoutMS: 300 });
   let ready = false;
   for (let i = 0; i < 100; i++) {
-    if (mongod.startError || postgres.startError || mongod.exitCode !== null || postgres.exitCode !== null) throw new Error('Disposable database process failed');
+    if (mongod.startError || postgres.startError || mongod.exitCode !== null || postgres.exitCode !== null) throw new Error(`Disposable database process failed: postgres=${postgres.exitCode}, mongod=${mongod.exitCode}; postgres stderr=${postgres.startupStderr || '(empty)'}, mongod stderr=${mongod.startupStderr || '(empty)'}`);
     try { await mongo.connect(); await mongo.db('admin').command({ ping: 1 }); ready = true; break; } catch { await pause(100); }
   }
   if (!ready) throw new Error('Disposable Mongo startup timeout');

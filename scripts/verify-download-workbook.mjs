@@ -47,7 +47,8 @@ assert.ok(buildFile('csv', 'Fixture', { columns: ['Value'], rows: [['line\rbreak
 assert.equal(buildFile('csv', 'Fixture', { columns: ['Value'], rows: [['=2+2'], [' +cmd'], ['-HYPERLINK()'], ['@cmd'], [-5]] }).content, "Value\n'=2+2\n' +cmd\n'-HYPERLINK()\n'@cmd\n-5");
 assert.throws(() => buildFile('excel', 'Fixture', data), /download service/);
 assert.equal((await call('POST', { action: 'generate-xlsx', title: 'Bad fixture', data: { columns: ['A'], rows: [[{ formula: '1+1' }]] } })).code, 400);
-const tooLarge = await call('POST', { filename: 'too-large.txt', content: 'x'.repeat(10 * 1024 * 1024 + 1) });
+const oversizedContent = 'x'.repeat(10 * 1024 * 1024 + 1);
+const tooLarge = await call('POST', { filename: 'too-large.txt', format: 'TXT', module: 'fixture', row_count: 1, size: Buffer.byteLength(oversizedContent), content: oversizedContent, mime: 'text/plain' });
 assert.equal(tooLarge.code, 413, 'Oversized content must not be inserted into download history.');
 assert.equal((await call('GET')).body.length, 1);
 console.log('PASS XLSX: real workbook bytes, typed cells, literal formula text, authenticated actor, metadata-only history, exact detail re-download and HTML escaping.');

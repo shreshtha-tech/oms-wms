@@ -19,7 +19,9 @@ const other=(await db.query("INSERT INTO ci_channel_account(tenant_id,platform,e
 await db.query("INSERT INTO ci_master_sku(tenant_id,sku,product_name) VALUES($1,'SKU-A','Programme test')",[tenant]);
 const order=await recordIncomingOrder(db,{tenantId:tenant,accountId:account.id,platform:'flipkart',event:{id:'FK-100',status:'Pending',updated_at:'2026-09-01T00:00:00Z',line_items:[{id:'LINE-1',sku:'SKU-A',quantity:2}]},topic:'orders/create',notify:false});
 await recordReturn(db,{tenantId:tenant,accountId:account.id,platform:'flipkart',event:{id:'RETURN-1',order_id:'FK-100',status:'reported'}});
-const app=express();app.use(express.json({limit:'10mb'}));app.use('/api/inventory-sync',inventoryPrivate);
+const app=express();app.use(express.json({limit:'10mb'}));
+app.use((req,_res,next)=>{req.user={username:'fixture-operator',permissions:['central_inventory.connections.manage']};next();});
+app.use('/api/inventory-sync',inventoryPrivate);
 const server=app.listen(0,'127.0.0.1');await new Promise(resolve=>server.once('listening',resolve));
 const base=`http://127.0.0.1:${server.address().port}/api/inventory-sync`;
 const request=async(path,body)=>{const response=await fetch(base+path,{method:body?'POST':'GET',headers:{'Content-Type':'application/json'},body:body?JSON.stringify(body):undefined});return {status:response.status,data:await response.json()};};

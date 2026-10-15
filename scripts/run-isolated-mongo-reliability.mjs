@@ -1,3 +1,4 @@
+import { resolveTestBinary } from './lib/test-binaries.mjs';
 import { randomInt } from 'node:crypto';
 import { spawn } from 'node:child_process';
 import { mkdtemp, rm } from 'node:fs/promises';
@@ -8,7 +9,7 @@ const directory = await mkdtemp(join(tmpdir(), 'codexqa-mongo-reliability-'));
 const port = randomInt(20000, 50000);
 const uri = `mongodb://127.0.0.1:${port}/?replicaSet=codexqa`;
 const directUri = `mongodb://127.0.0.1:${port}/?directConnection=true`;
-const daemon = spawn('/opt/homebrew/bin/mongod', ['--replSet', 'codexqa', '--setParameter', 'enableTestCommands=1', '--dbpath', directory, '--port', String(port), '--bind_ip', '127.0.0.1', '--nounixsocket', '--logpath', join(directory, 'mongod.log')], { stdio: 'ignore' });
+const daemon = spawn(resolveTestBinary('mongod'), ['--replSet', 'codexqa', '--setParameter', 'enableTestCommands=1', '--dbpath', directory, '--port', String(port), '--bind_ip', '127.0.0.1', '--nounixsocket', '--logpath', join(directory, 'mongod.log')], { stdio: 'ignore' });
 let startError; daemon.on('error', error => { startError = error; });
 const client = new MongoClient(directUri, { serverSelectionTimeoutMS: 500 });
 try {

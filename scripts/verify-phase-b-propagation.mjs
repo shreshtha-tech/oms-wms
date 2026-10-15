@@ -1,3 +1,4 @@
+import { testBinaryPath } from './lib/test-binaries.mjs';
 import assert from 'node:assert/strict';
 import { randomUUID } from 'node:crypto';
 import { spawn } from 'node:child_process';
@@ -169,7 +170,7 @@ try{
  const crashRequestId='phase-b-crash-receipt';
  const crashQueued=await call(inbound,{...body,poNo:'PO-PB-CRASH',requestId:crashRequestId,lines:[{skuCode:sku,rcvdUOMQty:2}]});
  assert.equal(crashQueued.code,202,JSON.stringify(crashQueued.body));
- const childEnv={PATH:'/opt/homebrew/bin:/usr/bin:/bin',LANG:'C',TMPDIR:process.env.TMPDIR,NODE_ENV:'test',
+ const childEnv={PATH: testBinaryPath(), DMILLS_SKIP_DOTENV: 'true',LANG:'C',TMPDIR:process.env.TMPDIR,NODE_ENV:'test',
   MONGODB_DB:process.env.MONGODB_DB,MONGODB_URI:process.env.MONGODB_URI,
   INVENTORY_DATABASE_URL:process.env.INVENTORY_DATABASE_URL,PGUSER:'postgres',DMILLS_REQUIRE_PERSISTENCE:'true',
   NODE_OPTIONS:process.env.NODE_OPTIONS,INVENTORY_ALLOWED_TENANT_ID:tenant};

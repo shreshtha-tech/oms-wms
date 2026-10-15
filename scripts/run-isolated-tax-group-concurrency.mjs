@@ -1,3 +1,4 @@
+import { resolveTestBinary } from './lib/test-binaries.mjs';
 import {randomInt,randomUUID} from 'node:crypto';
 import {spawn} from 'node:child_process';
 import {mkdtemp,rm} from 'node:fs/promises';
@@ -8,7 +9,7 @@ const directory=await mkdtemp(join(tmpdir(),'codexqa-tax-mongo-'));
 const uri=`mongodb://127.0.0.1:${randomInt(20000,50000)}`;
 const port=new URL(uri).port;
 const name=`codexqa_tax_${randomUUID().slice(0,8)}`;
-const daemon=spawn('/opt/homebrew/bin/mongod',['--replSet','codexqa','--dbpath',directory,'--port',port,'--bind_ip','127.0.0.1','--nounixsocket','--logpath',join(directory,'mongod.log')],{stdio:'ignore'});
+const daemon=spawn(resolveTestBinary('mongod'),['--replSet','codexqa','--dbpath',directory,'--port',port,'--bind_ip','127.0.0.1','--nounixsocket','--logpath',join(directory,'mongod.log')],{stdio:'ignore'});
 let startError;daemon.on('error',error=>{startError=error;});
 const client=new MongoClient(uri,{serverSelectionTimeoutMS:500,directConnection:true});
 try{

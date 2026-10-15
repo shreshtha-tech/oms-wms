@@ -1,0 +1,4619 @@
+
+$ npm run inventory:migrate
+
+> d-mills-global-console@1.0.0 inventory:migrate
+> node scripts/inventory-migrate.mjs
+
+{"timestamp":"2026-10-14T21:52:52.328Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-14T21:52:52.436Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-14T21:52:52.436Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Central inventory migration applied
+
+PASS (exit 0, 790ms)
+
+$ npm run test:admin-api-key-projection
+
+> d-mills-global-console@1.0.0 test:admin-api-key-projection
+> node scripts/verify-admin-api-key-projection.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Admin API-key projection: both list/catalog expose only UI fields and redact top-level/nested unknown secrets without rewriting storage.
+
+PASS (exit 0, 595ms)
+
+$ npm run test:admin-create-identity
+
+> d-mills-global-console@1.0.0 test:admin-create-identity
+> node scripts/verify-admin-create-identity.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Admin create identity: id-zero form obtains a server ID, API key stays masked, caller-chosen identities and malformed bodies create no record.
+
+PASS (exit 0, 534ms)
+
+$ npm run test:admin-csv-boundary
+
+> d-mills-global-console@1.0.0 test:admin-csv-boundary
+> node scripts/verify-admin-csv-boundary.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Admin CSV boundary: formula-leading values and headers are inert after CSV parsing; quotes/newlines round-trip through the report handler.
+
+PASS (exit 0, 571ms)
+
+$ npm run test:ajio-integrity
+
+> d-mills-global-console@1.0.0 test:ajio-integrity
+> node scripts/verify-ajio-api.mjs
+
+[data] MongoDB selection { selectedDatabase: 'oms_ci_test', maskedHost: '[masked-host]' }
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-ajio-api.mjs:6
+if (process.env.MONGODB_URI) throw new Error('Run this verifier without a configured MongoDB database.');
+                                   ^
+
+Error: Run this verifier without a configured MongoDB database.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-ajio-api.mjs:6:36
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 635ms)
+
+$ npm run test:allocation-strategies
+
+> d-mills-global-console@1.0.0 test:allocation-strategies
+> node scripts/verify-allocation-strategies.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 477ms)
+
+$ npm run test:amazon-location-discovery
+
+> d-mills-global-console@1.0.0 test:amazon-location-discovery
+> node scripts/verify-amazon-location-discovery.mjs
+
+PASS Amazon MFN location discovery uses only unique fulfillment-channel codes returned for the verified seller SKU.
+
+PASS (exit 0, 591ms)
+
+$ npm run test:amazon-mfn-integrity
+
+> d-mills-global-console@1.0.0 test:amazon-mfn-integrity
+> node scripts/verify-amazon-mfn-api.mjs
+
+[data] MongoDB selection { selectedDatabase: 'oms_ci_test', maskedHost: '[masked-host]' }
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-amazon-mfn-api.mjs:6
+if (process.env.MONGODB_URI) throw new Error('Run this verifier without a configured MongoDB database.');
+                                   ^
+
+Error: Run this verifier without a configured MongoDB database.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-amazon-mfn-api.mjs:6:36
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 537ms)
+
+$ npm run test:api-outcome-boundary
+
+> d-mills-global-console@1.0.0 test:api-outcome-boundary
+> node scripts/verify-api-outcome-boundary.mjs
+
+PASS: mutation response loss, timeout, malformed success, explicit conflict, read retry and in-flight deduplication
+
+PASS (exit 0, 699ms)
+
+$ npm run test:ars-execution-log
+
+> d-mills-global-console@1.0.0 test:ars-execution-log
+> node scripts/verify-ars-execution-log.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: ARS Execution Log verification requires a signed-in isolated administrator.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-ars-execution-log.mjs:13:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 497ms)
+
+$ npm run test:ars-integrity
+
+> d-mills-global-console@1.0.0 test:ars-integrity
+> node scripts/verify-ars-integrity.mjs
+
+[data] MongoDB selection { selectedDatabase: 'oms_ci_test', maskedHost: null }
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo-connection.js:5
+export const databaseUnavailable = () => Object.assign(new Error('The requested module is temporarily unavailable because its database dependency is unavailable.'), {
+                                                       ^
+
+Error: MONGODB_URI is required when persistent storage is enforced.
+    at databaseUnavailable (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo-connection.js:5:56)
+    at ensureReady (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:178:50)
+    at insertImpl (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:268:9)
+    at insert (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:566:93)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-ars-integrity.mjs:20:7 {
+  status: 503,
+  statusCode: 503,
+  code: 'DATABASE_UNAVAILABLE',
+  database: 'mongodb'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 519ms)
+
+$ npm run test:ars-rules
+
+> d-mills-global-console@1.0.0 test:ars-rules
+> node scripts/verify-ars-rules.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: ARS Rules verification requires a signed-in isolated administrator.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-ars-rules.mjs:10:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 527ms)
+
+$ npm run test:ars-settings
+
+> d-mills-global-console@1.0.0 test:ars-settings
+> node scripts/verify-ars-settings.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: ARS Settings verification requires a signed-in isolated administrator.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-ars-settings.mjs:10:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 525ms)
+
+$ npm run test:ars-sku-location
+
+> d-mills-global-console@1.0.0 test:ars-sku-location
+> node scripts/verify-ars-sku-location.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: ARS SKU-Location verification requires a signed-in isolated administrator.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-ars-sku-location.mjs:13:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 577ms)
+
+$ npm run test:attribute-set
+
+> d-mills-global-console@1.0.0 test:attribute-set
+> node scripts/verify-attribute-set.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Attribute Set verification requires an isolated signed-in administrator.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-attribute-set.mjs:14:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 535ms)
+
+$ npm run test:auth-refresh-browser
+
+> d-mills-global-console@1.0.0 test:auth-refresh-browser
+> node scripts/verify-auth-refresh-browser.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.evaluate: TypeError: Failed to fetch dynamically imported module: http://127.0.0.1:5173/@react-refresh
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-auth-refresh-browser.mjs:17:14 {
+  log: []
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 4356ms)
+
+$ npm run test:auth-refresh-race
+
+> d-mills-global-console@1.0.0 test:auth-refresh-race
+> node scripts/verify-auth-refresh-race.mjs
+
+PASS: actual AuthProvider fences stale refresh/login and keeps failed or uncertain sign-out visible until server acknowledgement
+
+PASS (exit 0, 901ms)
+
+$ npm run test:back-order-integrity
+
+> d-mills-global-console@1.0.0 test:back-order-integrity
+> node scripts/verify-back-order-integrity.mjs
+
+[data] MongoDB selection { selectedDatabase: 'oms_ci_test', maskedHost: null }
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo-connection.js:5
+export const databaseUnavailable = () => Object.assign(new Error('The requested module is temporarily unavailable because its database dependency is unavailable.'), {
+                                                       ^
+
+Error: MONGODB_URI is required when persistent storage is enforced.
+    at databaseUnavailable (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo-connection.js:5:56)
+    at ensureReady (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:178:50)
+    at insertImpl (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:268:9)
+    at insert (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:566:93)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-back-order-integrity.mjs:18:25 {
+  status: 503,
+  statusCode: 503,
+  code: 'DATABASE_UNAVAILABLE',
+  database: 'mongodb'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 685ms)
+
+$ npm run test:backup-line-boundary
+
+> d-mills-global-console@1.0.0 test:backup-line-boundary
+> node scripts/verify-backup-line-boundary.mjs
+
+PASS: backup line byte cap before decode, chunked UTF-8, CRLF/empty/final lines, exact boundary, invalid encoding and upstream cleanup
+
+PASS (exit 0, 524ms)
+
+$ npm run test:balance-read-boundary
+
+> d-mills-global-console@1.0.0 test:balance-read-boundary
+> node scripts/verify-balance-read-boundary.mjs
+
+PASS: tenant-scoped SQL limit, complete 10,000-row response, excess/UTF-8 byte rejection, original query failure preserved.
+
+PASS (exit 0, 499ms)
+
+$ npm run test:bin-audit
+
+> d-mills-global-console@1.0.0 test:bin-audit
+> node scripts/verify-bin-audit.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: The isolated administrator must authenticate before calling WMS APIs.
+
+401 !== 200
+
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-bin-audit.mjs:12:8
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 401,
+  expected: 200,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 535ms)
+
+$ npm run test:bin-editor
+
+> d-mills-global-console@1.0.0 test:bin-editor
+> node scripts/verify-bin-editor.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 468ms)
+
+$ npm run test:bin-enquiry
+
+> d-mills-global-console@1.0.0 test:bin-enquiry
+> node scripts/verify-bin-enquiry.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 484ms)
+
+$ npm run test:browser-csv-boundary
+
+> d-mills-global-console@1.0.0 test:browser-csv-boundary
+> node scripts/verify-browser-csv-boundary.mjs
+
+PASS browser CSV boundary: actual TypeScript serializer guards formulas, quotes/newlines and UTF-8/row/column size; seven inspected exports integrate it.
+
+PASS (exit 0, 529ms)
+
+$ npm run test:bulk-lottables
+
+> d-mills-global-console@1.0.0 test:bulk-lottables
+> node scripts/verify-bulk-lottables.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
++ actual - expected
+
++ undefined
+- 1000
+
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-bulk-lottables.mjs:1:394
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: undefined,
+  expected: 1000,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 829ms)
+
+$ npm run test:bulk-order-update
+
+> d-mills-global-console@1.0.0 test:bulk-order-update
+> node scripts/verify-bulk-order-update.mjs
+
+[data] MongoDB selection { selectedDatabase: 'oms_ci_test', maskedHost: null }
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo-connection.js:5
+export const databaseUnavailable = () => Object.assign(new Error('The requested module is temporarily unavailable because its database dependency is unavailable.'), {
+                                                       ^
+
+Error: MONGODB_URI is required when persistent storage is enforced.
+    at databaseUnavailable (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo-connection.js:5:56)
+    at ensureReady (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:178:50)
+    at insertImpl (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:268:9)
+    at insert (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:566:93)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-legacy-fulfillment-write-blocks.mjs:36:7 {
+  status: 503,
+  statusCode: 503,
+  code: 'DATABASE_UNAVAILABLE',
+  database: 'mongodb'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 1090ms)
+
+$ npm run test:category-buyers
+
+> d-mills-global-console@1.0.0 test:category-buyers
+> node scripts/verify-category-buyers.mjs
+
+[data] MongoDB selection { selectedDatabase: 'oms_ci_test', maskedHost: null }
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo-connection.js:5
+export const databaseUnavailable = () => Object.assign(new Error('The requested module is temporarily unavailable because its database dependency is unavailable.'), {
+                                                       ^
+
+Error: MONGODB_URI is required when persistent storage is enforced.
+    at databaseUnavailable (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo-connection.js:5:56)
+    at ensureReady (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:178:50)
+    at waitForDataReady (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:215:50)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/server.js:422:62
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-category-buyers.mjs:12:1 {
+  status: 503,
+  statusCode: 503,
+  code: 'DATABASE_UNAVAILABLE',
+  database: 'mongodb'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 1335ms)
+
+$ npm run test:central-inventory
+
+> d-mills-global-console@1.0.0 test:central-inventory
+> node scripts/verify-central-inventory.mjs
+
+{"timestamp":"2026-10-14T21:53:13.220Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-14T21:53:13.863Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-14T21:53:13.863Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+3 !== 1
+
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-central-inventory.mjs:43:424
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 3,
+  expected: 1,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 1302ms)
+
+$ npm run test:central-inventory-api
+
+> d-mills-global-console@1.0.0 test:central-inventory-api
+> node scripts/verify-central-inventory-api.mjs
+
+{"timestamp":"2026-10-14T21:53:14.597Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-14T21:53:14.652Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-14T21:53:14.652Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+401 !== 201
+
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-central-inventory-api.mjs:17:98
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 401,
+  expected: 201,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 789ms)
+
+$ npm run test:central-inventory-files
+
+> d-mills-global-console@1.0.0 test:central-inventory-files
+> node scripts/verify-central-inventory-files.mjs
+
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-central-inventory-files.mjs:13
+if(!['localhost','127.0.0.1','::1'].includes(testDatabase.hostname)||!/^\/codexqa_test_files_/.test(testDatabase.pathname))throw new Error('Use scripts/run-isolated-inventory-files.mjs');
+                                                                                                                                 ^
+
+Error: Use scripts/run-isolated-inventory-files.mjs
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-central-inventory-files.mjs:13:130
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 669ms)
+
+$ npm run test:central-inventory-ui
+
+> d-mills-global-console@1.0.0 test:central-inventory-ui
+> node scripts/verify-central-inventory-ui.mjs
+
+{"timestamp":"2026-10-14T21:53:15.991Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+d
+Web Order No
+AWB No
+Sub Order No
+PO No
+LPN No
+Reverse AWB No
+Invoice No
+2
+
+D-MILLS · INVENTORY WORKSPACE
+
+Central Inventory
+
+One catalog, location counts, sales changes and stock alerts.
+
+Live updates connected
+Refresh
+Download Excel
+Download PDF
+
+Downloads include 1 matching SKUs. Last loaded: 15/10/2026, 03:23:20.
+
+Inventory management
+Stock overview
+Record physical stock
+Excel upload
+Low-stock alerts
+Unified orders
+Returns
+Mobile team
+Connection health
+Channel connections
+Ledger activity
+Upload Excel
+
+Upload an .xlsx workbook up to 7 MB. Use the provided template, or inspect and map the exact source columns for a physical count.
+
+Download upload template
+Excel file
+Import purpose
+Catalog only — leave stock unchanged
+Verified physical counts — update ledger
+Preview import
+Inspect workbook structure
+Map a source workbook to exact SKU counts
+
+Use this when the source sheet is not named “Physical counts”. Inspection is read-only. Select and verify the exact sheet, header row and columns; the preview resolves each SKU exactly and updates only an existing SKU/location balance. No pack conversion is applied. Up to 50,000 rows and 7 MB are supported.
+
+Choose the source workbook in the Upload Excel panel above.
+
+Opening-stock validation and approval
+
+Enter the evidenced workbook mapping exactly. Up to 50,000 data rows (7 MB) are accepted. Dry-run validates tenant SKU and location eligibility without writing stock. Initial quantities post only through the audited, separate-actor approval workflow.
+
+Mapping version
+Worksheet name
+Header row
+SKU column number
+SKU header
+Quantity column number
+Quantity header
+Quantity format
+Choose format
+Whole number, no separators
+Whole number, comma grouping
+Physical UOM
+Location source
+Choose source
+Workbook column
+One evidenced location
+
+SKU and location text are trimmed only. Counts must be physically verified, in exact SKU units. The mapping and source date must be approved evidence, not guessed from the filename.
+
+Run read-only validation
+
+This account has no opening-stock staging permission. A dry run never changes inventory.
+
+Opening-stock batch
+Batch ID
+Load batch
+© 2026 D-Mills Global Private Limited
+Made by Shreshtha Gupta.
+{"timestamp":"2026-10-14T21:53:51.079Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-14T21:53:51.079Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator('[data-screen-frame][aria-hidden="false"]').locator('[data-central-inventory]').locator('[data-mapped-count-import]').getByRole('button', { name: 'Inspect workbook structure', exact: true })
+
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-central-inventory-ui.mjs:48:83 {
+  log: [
+    `  - waiting for locator('[data-screen-frame][aria-hidden="false"]').locator('[data-central-inventory]').locator('[data-mapped-count-import]').getByRole('button', { name: 'Inspect workbook structure', exact: true })`
+  ],
+  name: 'TimeoutError'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 35770ms)
+
+$ npm run test:central-inventory-ui-isolated
+
+> d-mills-global-console@1.0.0 test:central-inventory-ui-isolated
+> node scripts/run-owned-central-inventory-ui.mjs
+
+{"timestamp":"2026-10-14T21:53:53.105Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+d
+Web Order No
+AWB No
+Sub Order No
+PO No
+LPN No
+Reverse AWB No
+Invoice No
+2
+
+D-MILLS · INVENTORY WORKSPACE
+
+Central Inventory
+
+One catalog, location counts, sales changes and stock alerts.
+
+Live updates connected
+Refresh
+Download Excel
+Download PDF
+
+Downloads include 1 matching SKUs. Last loaded: 15/10/2026, 03:23:56.
+
+Inventory management
+Stock overview
+Record physical stock
+Excel upload
+Low-stock alerts
+Unified orders
+Returns
+Mobile team
+Connection health
+Channel connections
+Ledger activity
+Upload Excel
+
+Upload an .xlsx workbook up to 7 MB. Use the provided template, or inspect and map the exact source columns for a physical count.
+
+Download upload template
+Excel file
+Import purpose
+Catalog only — leave stock unchanged
+Verified physical counts — update ledger
+Preview import
+Inspect workbook structure
+Map a source workbook to exact SKU counts
+
+Use this when the source sheet is not named “Physical counts”. Inspection is read-only. Select and verify the exact sheet, header row and columns; the preview resolves each SKU exactly and updates only an existing SKU/location balance. No pack conversion is applied. Up to 50,000 rows and 7 MB are supported.
+
+Choose the source workbook in the Upload Excel panel above.
+
+Opening-stock validation and approval
+
+Enter the evidenced workbook mapping exactly. Up to 50,000 data rows (7 MB) are accepted. Dry-run validates tenant SKU and location eligibility without writing stock. Initial quantities post only through the audited, separate-actor approval workflow.
+
+Mapping version
+Worksheet name
+Header row
+SKU column number
+SKU header
+Quantity column number
+Quantity header
+Quantity format
+Choose format
+Whole number, no separators
+Whole number, comma grouping
+Physical UOM
+Location source
+Choose source
+Workbook column
+One evidenced location
+
+SKU and location text are trimmed only. Counts must be physically verified, in exact SKU units. The mapping and source date must be approved evidence, not guessed from the filename.
+
+Run read-only validation
+
+This account has no opening-stock staging permission. A dry run never changes inventory.
+
+Opening-stock batch
+Batch ID
+Load batch
+© 2026 D-Mills Global Private Limited
+Made by Shreshtha Gupta.
+{"timestamp":"2026-10-14T21:54:27.239Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-14T21:54:27.240Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator('[data-screen-frame][aria-hidden="false"]').locator('[data-central-inventory]').locator('[data-mapped-count-import]').getByRole('button', { name: 'Inspect workbook structure', exact: true })
+
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-central-inventory-ui.mjs:48:83 {
+  log: [
+    `  - waiting for locator('[data-screen-frame][aria-hidden="false"]').locator('[data-central-inventory]').locator('[data-mapped-count-import]').getByRole('button', { name: 'Inspect workbook structure', exact: true })`
+  ],
+  name: 'TimeoutError'
+}
+
+Node.js v26.5.0
+Central Inventory UI fixture failed
+Owned disposable Central Inventory UI PostgreSQL and artifacts removed.
+
+FAIL (exit 1, 36379ms)
+
+$ npm run test:client-master
+
+> d-mills-global-console@1.0.0 test:client-master
+> node scripts/verify-client-master.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+browserType.launch: Executable doesn't exist at /Users/shreshthagupta/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+    at chromium.launch (/private/tmp/oms-ci-safe-preload.mjs:18:24)
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-client-master.mjs:4:32
+    at async node:internal/modules/esm/loader:650:26 {
+  log: [],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 692ms)
+
+$ npm run test:client-master-workflow
+
+> d-mills-global-console@1.0.0 test:client-master-workflow
+> node scripts/verify-client-master-workflow.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 543ms)
+
+$ npm run test:cod-reconciliation
+
+> d-mills-global-console@1.0.0 test:cod-reconciliation
+> ISOLATED_BROWSER_FOCUS=cod-reconciliation node scripts/verify-isolated-browser-workflow.mjs
+
+Generated isolated database names: PostgreSQL=codexqa_mv8ndujs_95fd2a, MongoDB=codexqa_mv8ndujs_95fd2a
+{"timestamp":"2026-10-14T21:54:29.363Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-14T21:54:29.494Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-14T21:54:29.494Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Isolated browser workflow failed: Error Error: Isolated app did not become ready.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-isolated-browser-workflow.mjs:98:21
+Isolated MongoDB browser database removed.
+Isolated PostgreSQL browser database removed.
+
+FAIL (exit 1, 21608ms)
+
+$ npm run test:common-import
+
+> d-mills-global-console@1.0.0 test:common-import
+> node scripts/verify-common-import.mjs
+
+[data] MongoDB selection { selectedDatabase: 'oms_ci_test', maskedHost: '[masked-host]' }
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-common-import.mjs:5
+if (process.env.MONGODB_URI) throw new Error('Run this verifier with an isolated, unconfigured memory store.');
+                                   ^
+
+Error: Run this verifier with an isolated, unconfigured memory store.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-common-import.mjs:5:36
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 641ms)
+
+$ npm run test:connection-authorization
+
+> d-mills-global-console@1.0.0 test:connection-authorization
+> node scripts/verify-connection-authorization.mjs
+
+PASS authorization setup: exact HTTPS callbacks and provider-specific deployment prerequisites
+
+PASS (exit 0, 772ms)
+
+$ npm run test:connection-readiness
+
+> d-mills-global-console@1.0.0 test:connection-readiness
+> node scripts/verify-connection-readiness.mjs
+
+PASS connection readiness: credentials, feed setup, worker evidence, partial returns, Amazon queue/activation limits, and Meesho report-only intake are distinguished.
+
+PASS (exit 0, 485ms)
+
+$ npm run test:consolidate-ewb
+
+> d-mills-global-console@1.0.0 test:consolidate-ewb
+> node scripts/verify-consolidate-ewb.mjs
+
+[data] MongoDB selection { selectedDatabase: 'oms_ci_test', maskedHost: null }
+PASS Consolidate EWB: enquiry and legacy links are read-only, generation fails closed, and no CEWB number or history row is fabricated.
+
+PASS (exit 0, 585ms)
+
+$ npm run test:coupon-guard
+
+> d-mills-global-console@1.0.0 test:coupon-guard
+> ISOLATED_BROWSER_FOCUS=coupons node scripts/verify-isolated-browser-workflow.mjs
+
+Generated isolated database names: PostgreSQL=codexqa_mv8ned5a_dec90f, MongoDB=codexqa_mv8ned5a_dec90f
+{"timestamp":"2026-10-14T21:54:53.439Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-14T21:54:53.551Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-14T21:54:53.551Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Isolated browser workflow failed: Error Error: Isolated app did not become ready.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-isolated-browser-workflow.mjs:98:21
+Isolated MongoDB browser database removed.
+Isolated PostgreSQL browser database removed.
+
+FAIL (exit 1, 21450ms)
+
+$ npm run test:customer-enquiry-parity
+
+> d-mills-global-console@1.0.0 test:customer-enquiry-parity
+> node scripts/verify-customer-enquiry-parity.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+browserType.launch: Executable doesn't exist at /Users/shreshthagupta/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+    at chromium.launch (/private/tmp/oms-ci-safe-preload.mjs:18:24)
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-customer-enquiry-parity.mjs:5:32
+    at async node:internal/modules/esm/loader:650:26 {
+  log: [],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 622ms)
+
+$ npm run test:customer-group
+
+> d-mills-global-console@1.0.0 test:customer-group
+> node scripts/verify-customer-group.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+browserType.launch: Executable doesn't exist at /Users/shreshthagupta/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+    at chromium.launch (/private/tmp/oms-ci-safe-preload.mjs:18:24)
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-customer-group.mjs:3:89
+    at async node:internal/modules/esm/loader:650:26 {
+  log: [],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 563ms)
+
+$ npm run test:customer-group-workflow
+
+> d-mills-global-console@1.0.0 test:customer-group-workflow
+> node scripts/verify-customer-group-workflow.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Customer Group verification requires an isolated administrator.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-customer-group-workflow.mjs:12:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 619ms)
+
+$ npm run test:customer-integrity
+
+> d-mills-global-console@1.0.0 test:customer-integrity
+> node scripts/verify-customer-integrity.mjs
+
+[data] MongoDB selection {
+  selectedDatabase: 'codexqa_mv8nev4w_11aee0',
+  maskedHost: '[masked-host]'
+}
+[data] MongoDB configuration warning {
+  code: 'MONGODB_URI_DATABASE_OVERRIDDEN',
+  message: 'MONGODB_DB overrides a different database path in MONGODB_URI; confirm the selected database deliberately.',
+  selectedDatabase: 'codexqa_mv8nev4w_11aee0'
+}
+{"timestamp":"2026-10-14T21:55:16.674Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"READY"}
+PASS isolated MongoDB customer create, search, rename, immutable code, protected order/return history, and delete guard.
+Isolated MongoDB test database removed.
+
+PASS (exit 0, 912ms)
+
+$ npm run test:customer-master
+
+> d-mills-global-console@1.0.0 test:customer-master
+> node scripts/verify-customer-master.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+browserType.launch: Executable doesn't exist at /Users/shreshthagupta/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+    at chromium.launch (/private/tmp/oms-ci-safe-preload.mjs:18:24)
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-customer-master.mjs:12:32
+    at async node:internal/modules/esm/loader:650:26 {
+  log: [],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 526ms)
+
+$ npm run test:cycle-count
+
+> d-mills-global-console@1.0.0 test:cycle-count
+> node scripts/verify-cycle-count.mjs
+
+file:///private/tmp/oms-ci-safe-preload.mjs:12
+ if (!['127.0.0.1','localhost','[::1]'].includes(url.hostname) || [3002,5173,5432,27017].includes(Number(url.port))) throw new Error('Baseline refuses configured service or non-loopback fetch');
+                                                                                                                           ^
+
+Error: Baseline refuses configured service or non-loopback fetch
+    at globalThis.fetch (file:///private/tmp/oms-ci-safe-preload.mjs:12:124)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-cycle-count.mjs:1:340
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 494ms)
+
+$ npm run test:cycle-count-waves
+
+> d-mills-global-console@1.0.0 test:cycle-count-waves
+> node scripts/verify-cycle-count-waves.mjs
+
+file:///private/tmp/oms-ci-safe-preload.mjs:12
+ if (!['127.0.0.1','localhost','[::1]'].includes(url.hostname) || [3002,5173,5432,27017].includes(Number(url.port))) throw new Error('Baseline refuses configured service or non-loopback fetch');
+                                                                                                                           ^
+
+Error: Baseline refuses configured service or non-loopback fetch
+    at globalThis.fetch (file:///private/tmp/oms-ci-safe-preload.mjs:12:124)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-cycle-count-waves.mjs:10:21
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 500ms)
+
+$ npm run test:delivery-shipping
+
+> d-mills-global-console@1.0.0 test:delivery-shipping
+> node scripts/verify-delivery-shipping.mjs
+
+[data] MongoDB selection { selectedDatabase: 'oms_ci_test', maskedHost: null }
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo-connection.js:5
+export const databaseUnavailable = () => Object.assign(new Error('The requested module is temporarily unavailable because its database dependency is unavailable.'), {
+                                                       ^
+
+Error: MONGODB_URI is required when persistent storage is enforced.
+    at databaseUnavailable (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo-connection.js:5:56)
+    at ensureReady (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:178:50)
+    at insertImpl (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:268:9)
+    at insert (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:566:93)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-legacy-fulfillment-write-blocks.mjs:36:7 {
+  status: 503,
+  statusCode: 503,
+  code: 'DATABASE_UNAVAILABLE',
+  database: 'mongodb'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 569ms)
+
+$ npm run test:delivery-split
+
+> d-mills-global-console@1.0.0 test:delivery-split
+> node scripts/verify-delivery-split.mjs
+
+[data] MongoDB selection { selectedDatabase: 'oms_ci_test', maskedHost: null }
+PASS Delivery Split: isolated in-memory search is read-only, SKU and split writes fail closed, quantities and audit rows stay unchanged, and the UI explains the boundary.
+
+PASS (exit 0, 574ms)
+
+$ npm run test:dispatch-checkpoint
+
+> d-mills-global-console@1.0.0 test:dispatch-checkpoint
+> node scripts/verify-dispatch-checkpoint.mjs
+
+[data] MongoDB selection { selectedDatabase: 'oms_ci_test', maskedHost: null }
+PASS Dispatch Checkpoint: legacy enquiry/detail remain read-only, all physical or provider actions fail closed, and CSV export creates no server-side job.
+
+PASS (exit 0, 652ms)
+
+$ npm run test:download-pdf
+
+> d-mills-global-console@1.0.0 test:download-pdf
+> node scripts/verify-download-pdf.mjs
+
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-download-pdf.mjs:3
+if (process.env.MONGODB_URI) throw new Error('Run this fixture without a configured MongoDB.');
+                                   ^
+
+Error: Run this fixture without a configured MongoDB.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-download-pdf.mjs:3:36
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 495ms)
+
+$ npm run test:download-update-boundary
+
+> d-mills-global-console@1.0.0 test:download-update-boundary
+> node scripts/verify-download-update-boundary.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS: download updates reject malformed, excessive and protected fields; missing IDs return 404; valid metadata preserves provenance.
+
+PASS (exit 0, 507ms)
+
+$ npm run test:download-workbook
+
+> d-mills-global-console@1.0.0 test:download-workbook
+> node scripts/verify-download-workbook.mjs
+
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-download-workbook.mjs:5
+if (process.env.MONGODB_URI) throw new Error('Run this fixture without a configured MongoDB.');
+                                   ^
+
+Error: Run this fixture without a configured MongoDB.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-download-workbook.mjs:5:36
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 806ms)
+
+$ npm run test:drift-count-boundary
+
+> d-mills-global-console@1.0.0 test:drift-count-boundary
+> node scripts/verify-drift-count-boundary.mjs
+
+PASS: aggregate drift count, tenant join, safe-integer conversion and invalid/overflow rejection
+
+PASS (exit 0, 589ms)
+
+$ npm run test:eretail-dashboard
+
+> d-mills-global-console@1.0.0 test:eretail-dashboard
+> node scripts/verify-eretail-dashboard.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+browserType.launch: Executable doesn't exist at /Users/shreshthagupta/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+    at chromium.launch (/private/tmp/oms-ci-safe-preload.mjs:18:24)
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-eretail-dashboard.mjs:5:32
+    at async node:internal/modules/esm/loader:650:26 {
+  log: [],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 534ms)
+
+$ npm run test:exceljs-uuid-override
+
+> d-mills-global-console@1.0.0 test:exceljs-uuid-override
+> node scripts/verify-exceljs-uuid-override.mjs
+
+PASS: ExcelJS resolves patched UUID v4; data-bar extension IDs, values, formula and formatting survive XLSX round trip.
+
+PASS (exit 0, 594ms)
+
+$ npm run test:exports-boundary
+
+> d-mills-global-console@1.0.0 test:exports-boundary
+> node scripts/verify-exports.mjs
+
+[data] MongoDB selection { selectedDatabase: 'exports_test', maskedHost: null }
+PASS Exports boundary: no client-declared success, legacy content disclosure or false downloadable report
+
+PASS (exit 0, 568ms)
+
+$ npm run test:external-apps
+
+> d-mills-global-console@1.0.0 test:external-apps
+> node scripts/verify-external-apps.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 528ms)
+
+$ npm run test:external-apps-more-configuration
+
+> d-mills-global-console@1.0.0 test:external-apps-more-configuration
+> node scripts/verify-external-apps-more-configuration.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 539ms)
+
+$ npm run test:generate-vouchers
+
+> d-mills-global-console@1.0.0 test:generate-vouchers
+> npm run test:voucher-guard
+
+
+> d-mills-global-console@1.0.0 test:voucher-guard
+> ISOLATED_BROWSER_FOCUS=vouchers node scripts/verify-isolated-browser-workflow.mjs
+
+Generated isolated database names: PostgreSQL=codexqa_mv8nf2m6_1f18d1, MongoDB=codexqa_mv8nf2m6_1f18d1
+{"timestamp":"2026-10-14T21:55:26.569Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-14T21:55:26.695Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-14T21:55:26.695Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Isolated browser workflow failed: Error Error: Isolated app did not become ready.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-isolated-browser-workflow.mjs:98:21
+Isolated MongoDB browser database removed.
+Isolated PostgreSQL browser database removed.
+
+FAIL (exit 1, 22161ms)
+
+$ npm run test:global-controls-keyboard
+
+> d-mills-global-console@1.0.0 test:global-controls-keyboard
+> node scripts/verify-global-controls-keyboard.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+browserType.launch: Executable doesn't exist at /Users/shreshthagupta/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+    at chromium.launch (/private/tmp/oms-ci-safe-preload.mjs:18:24)
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-global-controls-keyboard.mjs:5:32
+    at async node:internal/modules/esm/loader:650:26 {
+  log: [],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 863ms)
+
+$ npm run test:global-dialog-navigation
+
+> d-mills-global-console@1.0.0 test:global-dialog-navigation
+> node scripts/verify-global-dialog-navigation.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+browserType.launch: Executable doesn't exist at /Users/shreshthagupta/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+    at chromium.launch (/private/tmp/oms-ci-safe-preload.mjs:18:24)
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-global-dialog-navigation.mjs:5:32
+    at async node:internal/modules/esm/loader:650:26 {
+  log: [],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 476ms)
+
+$ npm run test:global-feedback-shell
+
+> d-mills-global-console@1.0.0 test:global-feedback-shell
+> node scripts/verify-global-feedback-shell.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+browserType.launch: Executable doesn't exist at /Users/shreshthagupta/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+    at chromium.launch (/private/tmp/oms-ci-safe-preload.mjs:18:24)
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-global-feedback-shell.mjs:5:32
+    at async node:internal/modules/esm/loader:650:26 {
+  log: [],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 463ms)
+
+$ npm run test:global-grid-loading
+
+> d-mills-global-console@1.0.0 test:global-grid-loading
+> node scripts/verify-global-grid-loading.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+browserType.launch: Executable doesn't exist at /Users/shreshthagupta/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+    at chromium.launch (/private/tmp/oms-ci-safe-preload.mjs:18:24)
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-global-grid-loading.mjs:4:32
+    at async node:internal/modules/esm/loader:650:26 {
+  log: [],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 457ms)
+
+$ npm run test:global-header-dialogs
+
+> d-mills-global-console@1.0.0 test:global-header-dialogs
+> node scripts/verify-global-header-dialogs.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+browserType.launch: Executable doesn't exist at /Users/shreshthagupta/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+    at chromium.launch (/private/tmp/oms-ci-safe-preload.mjs:18:24)
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-global-header-dialogs.mjs:5:32
+    at async node:internal/modules/esm/loader:650:26 {
+  log: [],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 484ms)
+
+$ npm run test:global-header-search
+
+> d-mills-global-console@1.0.0 test:global-header-search
+> node scripts/verify-global-header-search.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+browserType.launch: Executable doesn't exist at /Users/shreshthagupta/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+    at chromium.launch (/private/tmp/oms-ci-safe-preload.mjs:18:24)
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-global-header-search.mjs:5:32
+    at async node:internal/modules/esm/loader:650:26 {
+  log: [],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 577ms)
+
+$ npm run test:global-login
+
+> d-mills-global-console@1.0.0 test:global-login
+> node scripts/verify-global-login-contract.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+browserType.launch: Executable doesn't exist at /Users/shreshthagupta/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+    at chromium.launch (/private/tmp/oms-ci-safe-preload.mjs:18:24)
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-global-login-contract.mjs:5:32
+    at async node:internal/modules/esm/loader:650:26 {
+  log: [],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 555ms)
+
+$ npm run test:global-menu
+
+> d-mills-global-console@1.0.0 test:global-menu
+> node scripts/verify-global-menu.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+browserType.launch: Executable doesn't exist at /Users/shreshthagupta/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+    at chromium.launch (/private/tmp/oms-ci-safe-preload.mjs:18:24)
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-global-menu.mjs:5:32
+    at async node:internal/modules/esm/loader:650:26 {
+  log: [],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 525ms)
+
+$ npm run test:global-order-search
+
+> d-mills-global-console@1.0.0 test:global-order-search
+> node scripts/verify-global-order-search.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 462ms)
+
+$ npm run test:global-responsive-shell
+
+> d-mills-global-console@1.0.0 test:global-responsive-shell
+> node scripts/verify-global-responsive-shell.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+browserType.launch: Executable doesn't exist at /Users/shreshthagupta/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+    at chromium.launch (/private/tmp/oms-ci-safe-preload.mjs:18:24)
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-global-responsive-shell.mjs:1:161
+    at async node:internal/modules/esm/loader:650:26 {
+  log: [],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 471ms)
+
+$ npm run test:global-screen-shell
+
+> d-mills-global-console@1.0.0 test:global-screen-shell
+> node scripts/verify-global-screen-shell.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+browserType.launch: Executable doesn't exist at /Users/shreshthagupta/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+    at chromium.launch (/private/tmp/oms-ci-safe-preload.mjs:18:24)
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-global-screen-shell.mjs:5:32
+    at async node:internal/modules/esm/loader:650:26 {
+  log: [],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 526ms)
+
+$ npm run test:http-latency-integration
+
+> d-mills-global-console@1.0.0 test:http-latency-integration
+> node scripts/verify-http-latency-integration.mjs
+
+{"timestamp":"2026-10-14T21:55:54.107Z","event":"http_request","request_id":"fixture-request-0","method":"GET","route":"/instrumentation/:id","status":204,"duration_ms":2}
+{"timestamp":"2026-10-14T21:55:54.114Z","event":"http_request","request_id":"fixture-request-1","method":"GET","route":"/instrumentation/:id","status":204,"duration_ms":0}
+{"timestamp":"2026-10-14T21:55:54.115Z","event":"http_request","request_id":"fixture-request-2","method":"GET","route":"/instrumentation/:id","status":204,"duration_ms":0}
+{"timestamp":"2026-10-14T21:55:54.116Z","event":"http_request","request_id":"fixture-request-3","method":"GET","route":"/instrumentation/:id","status":204,"duration_ms":0}
+{"timestamp":"2026-10-14T21:55:54.117Z","event":"http_request","request_id":"fixture-request-4","method":"GET","route":"/instrumentation/:id","status":204,"duration_ms":0}
+{"timestamp":"2026-10-14T21:55:54.118Z","event":"http_request","request_id":"fixture-request-5","method":"GET","route":"/instrumentation/:id","status":204,"duration_ms":0}
+{"timestamp":"2026-10-14T21:55:54.118Z","event":"http_request","request_id":"fixture-request-6","method":"GET","route":"/instrumentation/:id","status":204,"duration_ms":0}
+{"timestamp":"2026-10-14T21:55:54.120Z","event":"http_request","request_id":"fixture-request-7","method":"GET","route":"/instrumentation/:id","status":204,"duration_ms":0}
+{"timestamp":"2026-10-14T21:55:54.120Z","event":"http_request","request_id":"fixture-request-8","method":"GET","route":"/instrumentation/:id","status":204,"duration_ms":0}
+{"timestamp":"2026-10-14T21:55:54.121Z","event":"http_request","request_id":"fixture-request-9","method":"GET","route":"/instrumentation/:id","status":204,"duration_ms":0}
+{"timestamp":"2026-10-14T21:55:54.122Z","event":"http_request","request_id":"fixture-request-10","method":"GET","route":"/instrumentation/:id","status":204,"duration_ms":0}
+{"timestamp":"2026-10-14T21:55:54.122Z","event":"http_request","request_id":"fixture-request-11","method":"GET","route":"/instrumentation/:id","status":204,"duration_ms":0}
+PASS: 12 completed HTTP requests produce 12 histogram samples; three-worker traffic retains matched route labels without object/query values.
+
+PASS (exit 0, 647ms)
+
+$ npm run test:http-shutdown
+
+> d-mills-global-console@1.0.0 test:http-shutdown
+> node scripts/verify-http-shutdown.mjs
+
+PASS: completed drain clears deadline; hung requests, hung pools and failed cleanup reach one bounded termination.
+
+PASS (exit 0, 829ms)
+
+$ npm run test:inbound-create-edit
+
+> d-mills-global-console@1.0.0 test:inbound-create-edit
+> node scripts/verify-inbound-create-edit.mjs
+
+file:///private/tmp/oms-ci-safe-preload.mjs:12
+ if (!['127.0.0.1','localhost','[::1]'].includes(url.hostname) || [3002,5173,5432,27017].includes(Number(url.port))) throw new Error('Baseline refuses configured service or non-loopback fetch');
+                                                                                                                           ^
+
+Error: Baseline refuses configured service or non-loopback fetch
+    at globalThis.fetch (file:///private/tmp/oms-ci-safe-preload.mjs:12:124)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-inbound-create-edit.mjs:6:27
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 588ms)
+
+$ npm run test:inbound-csv-boundary
+
+> d-mills-global-console@1.0.0 test:inbound-csv-boundary
+> node scripts/verify-inbound-csv-boundary.mjs
+
+PASS: pre-read byte cap, actual UTF-8 cap, 200-row boundary, oversized record, duplicate-header and ambiguous integer-notation rejection, malformed/header/empty rejection and quoted BOM CSV
+
+PASS (exit 0, 880ms)
+
+$ npm run test:inbound-enquiry
+
+> d-mills-global-console@1.0.0 test:inbound-enquiry
+> node scripts/verify-inbound-enquiry.mjs
+
+file:///private/tmp/oms-ci-safe-preload.mjs:12
+ if (!['127.0.0.1','localhost','[::1]'].includes(url.hostname) || [3002,5173,5432,27017].includes(Number(url.port))) throw new Error('Baseline refuses configured service or non-loopback fetch');
+                                                                                                                           ^
+
+Error: Baseline refuses configured service or non-loopback fetch
+    at globalThis.fetch (file:///private/tmp/oms-ci-safe-preload.mjs:12:124)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-inbound-enquiry.mjs:6:27
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 467ms)
+
+$ npm run test:inbound-gate-pass
+
+> d-mills-global-console@1.0.0 test:inbound-gate-pass
+> node scripts/verify-inbound-gate-pass.mjs
+
+file:///private/tmp/oms-ci-safe-preload.mjs:12
+ if (!['127.0.0.1','localhost','[::1]'].includes(url.hostname) || [3002,5173,5432,27017].includes(Number(url.port))) throw new Error('Baseline refuses configured service or non-loopback fetch');
+                                                                                                                           ^
+
+Error: Baseline refuses configured service or non-loopback fetch
+    at globalThis.fetch (file:///private/tmp/oms-ci-safe-preload.mjs:12:124)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-inbound-gate-pass.mjs:1:346
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 472ms)
+
+$ npm run test:inbound-import-inputs
+
+> d-mills-global-console@1.0.0 test:inbound-import-inputs
+> node scripts/verify-inbound-import-inputs.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+Inbound Create/Edit error: { name: 'Error', code: undefined }
+Inbound RealTime error: { name: 'Error', code: undefined }
+Inbound Create/Edit error: { name: 'Error', code: undefined }
+Inbound RealTime error: { name: 'Error', code: undefined }
+PASS: malformed row rejection, nonnumeric quantity rejection, numeric compatibility and no receipt/PO mutation
+
+PASS (exit 0, 613ms)
+
+$ npm run test:inbound-qc
+
+> d-mills-global-console@1.0.0 test:inbound-qc
+> node scripts/verify-inbound-qc.mjs
+
+file:///private/tmp/oms-ci-safe-preload.mjs:12
+ if (!['127.0.0.1','localhost','[::1]'].includes(url.hostname) || [3002,5173,5432,27017].includes(Number(url.port))) throw new Error('Baseline refuses configured service or non-loopback fetch');
+                                                                                                                           ^
+
+Error: Baseline refuses configured service or non-loopback fetch
+    at globalThis.fetch (file:///private/tmp/oms-ci-safe-preload.mjs:12:124)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-inbound-qc.mjs:1:339
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 471ms)
+
+$ npm run test:inbound-realtime
+
+> d-mills-global-console@1.0.0 test:inbound-realtime
+> node scripts/verify-inbound-realtime.mjs
+
+file:///private/tmp/oms-ci-safe-preload.mjs:12
+ if (!['127.0.0.1','localhost','[::1]'].includes(url.hostname) || [3002,5173,5432,27017].includes(Number(url.port))) throw new Error('Baseline refuses configured service or non-loopback fetch');
+                                                                                                                           ^
+
+Error: Baseline refuses configured service or non-loopback fetch
+    at globalThis.fetch (file:///private/tmp/oms-ci-safe-preload.mjs:12:124)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-inbound-realtime.mjs:2:83
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 446ms)
+
+$ npm run test:inbound-realtime-integrity
+
+> d-mills-global-console@1.0.0 test:inbound-realtime-integrity
+> node scripts/verify-inbound-realtime-integrity.mjs
+
+[data] MongoDB selection { selectedDatabase: 'oms_ci_test', maskedHost: null }
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo-connection.js:5
+export const databaseUnavailable = () => Object.assign(new Error('The requested module is temporarily unavailable because its database dependency is unavailable.'), {
+                                                       ^
+
+Error: MONGODB_URI is required when persistent storage is enforced.
+    at databaseUnavailable (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo-connection.js:5:56)
+    at ensureReady (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:178:50)
+    at insertImpl (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:268:9)
+    at insert (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:566:93)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-inbound-realtime-integrity.mjs:16:7 {
+  status: 503,
+  statusCode: 503,
+  code: 'DATABASE_UNAVAILABLE',
+  database: 'mongodb'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 513ms)
+
+$ npm run test:inventory-move
+
+> d-mills-global-console@1.0.0 test:inventory-move
+> node scripts/verify-inventory-move.mjs
+
+[data] MongoDB selection { selectedDatabase: 'oms_ci_test', maskedHost: null }
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo-connection.js:5
+export const databaseUnavailable = () => Object.assign(new Error('The requested module is temporarily unavailable because its database dependency is unavailable.'), {
+                                                       ^
+
+Error: MONGODB_URI is required when persistent storage is enforced.
+    at databaseUnavailable (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo-connection.js:5:56)
+    at ensureReady (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:178:50)
+    at insertImpl (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:268:9)
+    at insert (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:566:93)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-inventory-move.mjs:21:22 {
+  status: 503,
+  statusCode: 503,
+  code: 'DATABASE_UNAVAILABLE',
+  database: 'mongodb'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 493ms)
+
+$ npm run test:inventory-move-history
+
+> d-mills-global-console@1.0.0 test:inventory-move-history
+> node scripts/verify-inventory-move-history.mjs
+
+file:///private/tmp/oms-ci-safe-preload.mjs:12
+ if (!['127.0.0.1','localhost','[::1]'].includes(url.hostname) || [3002,5173,5432,27017].includes(Number(url.port))) throw new Error('Baseline refuses configured service or non-loopback fetch');
+                                                                                                                           ^
+
+Error: Baseline refuses configured service or non-loopback fetch
+    at globalThis.fetch (file:///private/tmp/oms-ci-safe-preload.mjs:12:124)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-inventory-move-history.mjs:5:24
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 558ms)
+
+$ npm run test:inventory-move-scan
+
+> d-mills-global-console@1.0.0 test:inventory-move-scan
+> node scripts/verify-inventory-move-scan.mjs
+
+file:///private/tmp/oms-ci-safe-preload.mjs:12
+ if (!['127.0.0.1','localhost','[::1]'].includes(url.hostname) || [3002,5173,5432,27017].includes(Number(url.port))) throw new Error('Baseline refuses configured service or non-loopback fetch');
+                                                                                                                           ^
+
+Error: Baseline refuses configured service or non-loopback fetch
+    at globalThis.fetch (file:///private/tmp/oms-ci-safe-preload.mjs:12:124)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-inventory-move-scan.mjs:4:24
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 1258ms)
+
+$ npm run test:inventory-publish-order
+
+> d-mills-global-console@1.0.0 test:inventory-publish-order
+> node scripts/verify-inventory-publish-order.mjs
+
+{"timestamp":"2026-10-14T21:56:02.738Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS inventory publication order and Shopify readback: overlapping sale ends at 495 and drift is corrected
+{"timestamp":"2026-10-14T21:56:04.238Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-14T21:56:04.239Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+
+PASS (exit 0, 2500ms)
+
+$ npm run test:inventory-summary-boundary
+
+> d-mills-global-console@1.0.0 test:inventory-summary-boundary
+> node scripts/verify-inventory-summary-boundary.mjs
+
+PASS: summary uses one aggregate query and preserves payload shape; unsafe totals or missing rows reject. SQL semantics need owned DB parity evidence.
+
+PASS (exit 0, 532ms)
+
+$ npm run test:inventory-tenant-middleware
+
+> d-mills-global-console@1.0.0 test:inventory-tenant-middleware
+> node scripts/verify-inventory-tenant-middleware.mjs
+
+PASS: foreign/malformed tenant inputs reject; configured tenant overrides request state; missing configuration fails closed.
+
+PASS (exit 0, 531ms)
+
+$ npm run test:inventory-view
+
+> d-mills-global-console@1.0.0 test:inventory-view
+> node scripts/verify-inventory-view.mjs
+
+file:///private/tmp/oms-ci-safe-preload.mjs:12
+ if (!['127.0.0.1','localhost','[::1]'].includes(url.hostname) || [3002,5173,5432,27017].includes(Number(url.port))) throw new Error('Baseline refuses configured service or non-loopback fetch');
+                                                                                                                           ^
+
+Error: Baseline refuses configured service or non-loopback fetch
+    at globalThis.fetch (file:///private/tmp/oms-ci-safe-preload.mjs:12:124)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-inventory-view.mjs:5:24
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 500ms)
+
+$ npm run test:isolated-browser-workflow
+
+> d-mills-global-console@1.0.0 test:isolated-browser-workflow
+> node scripts/verify-isolated-browser-workflow.mjs
+
+Generated isolated database names: PostgreSQL=codexqa_mv8nfxhl_e4c817, MongoDB=codexqa_mv8nfxhl_e4c817
+{"timestamp":"2026-10-14T21:56:06.452Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-14T21:56:06.557Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-14T21:56:06.557Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Isolated browser workflow failed: Error Error: Isolated app did not become ready.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-isolated-browser-workflow.mjs:98:21
+Isolated MongoDB browser database removed.
+Isolated PostgreSQL browser database removed.
+
+FAIL (exit 1, 21603ms)
+
+$ npm run test:kitting-order
+
+> d-mills-global-console@1.0.0 test:kitting-order
+> node scripts/verify-kitting-order.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 757ms)
+
+$ npm run test:latency-histograms
+
+> d-mills-global-console@1.0.0 test:latency-histograms
+> node scripts/verify-latency-histograms.mjs
+
+PASS: cumulative latency buckets, totals/max/overflow, invalid sample rejection, snapshot isolation and bounded cardinality with visible drops.
+
+PASS (exit 0, 468ms)
+
+$ npm run test:ledger-contention-owned
+
+> d-mills-global-console@1.0.0 test:ledger-contention-owned
+> node scripts/run-phase-b-isolated.mjs scripts/measure-owned-ledger-contention.mjs
+
+{"timestamp":"2026-10-14T21:56:31.014Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"status":"PASS","durationMs":252.096375,"summary":{"reserve":{"count":100,"p50Ms":4.0800000000000125,"p95Ms":9.827583000000004,"p99Ms":14.274957999999998,"maxMs":17.8955},"release":{"count":100,"p50Ms":3.7477499999999964,"p95Ms":4.425707999999986,"p99Ms":5.610666999999978,"maxMs":5.728000000000009},"duplicate-replay":{"count":100,"p50Ms":1.1880829999999492,"p95Ms":1.4741669999999658,"p99Ms":1.619874999999979,"maxMs":1.6429170000000113}},"correctness":{"events":201,"releasedReservations":100,"onHand":100,"reservedOrder":0}}
+{"timestamp":"2026-10-14T21:56:31.371Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-14T21:56:31.371Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Owned disposable stack removed.
+
+PASS (exit 0, 2945ms)
+
+$ npm run test:ledger-input-boundary
+
+> d-mills-global-console@1.0.0 test:ledger-input-boundary
+> node scripts/verify-ledger-input-boundary.mjs
+
+PASS: six ledger delta fields reject coercible/noninteger values before DB access; numeric scalar compatibility retained
+
+PASS (exit 0, 539ms)
+
+$ npm run test:legacy-fulfillment-write-blocks
+
+> d-mills-global-console@1.0.0 test:legacy-fulfillment-write-blocks
+> node scripts/verify-legacy-fulfillment-write-blocks.mjs
+
+[data] MongoDB selection { selectedDatabase: 'oms_ci_test', maskedHost: null }
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo-connection.js:5
+export const databaseUnavailable = () => Object.assign(new Error('The requested module is temporarily unavailable because its database dependency is unavailable.'), {
+                                                       ^
+
+Error: MONGODB_URI is required when persistent storage is enforced.
+    at databaseUnavailable (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo-connection.js:5:56)
+    at ensureReady (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:178:50)
+    at insertImpl (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:268:9)
+    at insert (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:566:93)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-legacy-fulfillment-write-blocks.mjs:36:7 {
+  status: 503,
+  statusCode: 503,
+  code: 'DATABASE_UNAVAILABLE',
+  database: 'mongodb'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 535ms)
+
+$ npm run test:legacy-stock-write-blocks
+
+> d-mills-global-console@1.0.0 test:legacy-stock-write-blocks
+> node scripts/verify-legacy-stock-write-blocks.mjs
+
+[data] MongoDB selection { selectedDatabase: 'oms_ci_test', maskedHost: null }
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo-connection.js:5
+export const databaseUnavailable = () => Object.assign(new Error('The requested module is temporarily unavailable because its database dependency is unavailable.'), {
+                                                       ^
+
+Error: MONGODB_URI is required when persistent storage is enforced.
+    at databaseUnavailable (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo-connection.js:5:56)
+    at ensureReady (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:178:50)
+    at insertImpl (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:268:9)
+    at insert (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:566:93)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-legacy-stock-write-blocks.mjs:31:21 {
+  status: 503,
+  statusCode: 503,
+  code: 'DATABASE_UNAVAILABLE',
+  database: 'mongodb'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 604ms)
+
+$ npm run test:location
+
+> d-mills-global-console@1.0.0 test:location
+> node scripts/verify-location.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 464ms)
+
+$ npm run test:login-input-boundary
+
+> d-mills-global-console@1.0.0 test:login-input-boundary
+> node scripts/verify-login-input-boundary.mjs
+
+PASS: malformed login fields rejected before rate-limit database or credential verification
+
+PASS (exit 0, 484ms)
+
+$ npm run test:lottable-validation
+
+> d-mills-global-console@1.0.0 test:lottable-validation
+> node scripts/verify-lottable-validation.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 459ms)
+
+$ npm run test:manage-asn
+
+> d-mills-global-console@1.0.0 test:manage-asn
+> node scripts/verify-manage-asn.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+browserType.launch: Executable doesn't exist at /Users/shreshthagupta/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+    at chromium.launch (/private/tmp/oms-ci-safe-preload.mjs:18:24)
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-manage-asn.mjs:5:32
+    at async node:internal/modules/esm/loader:650:26 {
+  log: [],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 658ms)
+
+$ npm run test:manage-attribute
+
+> d-mills-global-console@1.0.0 test:manage-attribute
+> node scripts/verify-manage-attribute.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Manage Attribute verification requires an isolated signed-in administrator.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-manage-attribute.mjs:13:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 637ms)
+
+$ npm run test:manage-awb
+
+> d-mills-global-console@1.0.0 test:manage-awb
+> node scripts/verify-manage-awb.mjs
+
+file:///private/tmp/oms-ci-safe-preload.mjs:12
+ if (!['127.0.0.1','localhost','[::1]'].includes(url.hostname) || [3002,5173,5432,27017].includes(Number(url.port))) throw new Error('Baseline refuses configured service or non-loopback fetch');
+                                                                                                                           ^
+
+Error: Baseline refuses configured service or non-loopback fetch
+    at globalThis.fetch (file:///private/tmp/oms-ci-safe-preload.mjs:12:124)
+    at send (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-manage-awb.mjs:1:187)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-manage-awb.mjs:1:571
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 488ms)
+
+$ npm run test:manage-channels
+
+> d-mills-global-console@1.0.0 test:manage-channels
+> node scripts/verify-manage-channels.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Manage Channels verification requires the isolated administrator login.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-manage-channels.mjs:10:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 528ms)
+
+$ npm run test:manage-coupons
+
+> d-mills-global-console@1.0.0 test:manage-coupons
+> node scripts/verify-manage-coupons.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+browserType.launch: Executable doesn't exist at /Users/shreshthagupta/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+    at chromium.launch (/private/tmp/oms-ci-safe-preload.mjs:18:24)
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-manage-coupons.mjs:1:161
+    at async node:internal/modules/esm/loader:650:26 {
+  log: [],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 474ms)
+
+$ npm run test:manage-manifests
+
+> d-mills-global-console@1.0.0 test:manage-manifests
+> node scripts/verify-manage-manifests.mjs
+
+[data] MongoDB selection { selectedDatabase: 'oms_ci_test', maskedHost: null }
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo-connection.js:5
+export const databaseUnavailable = () => Object.assign(new Error('The requested module is temporarily unavailable because its database dependency is unavailable.'), {
+                                                       ^
+
+Error: MONGODB_URI is required when persistent storage is enforced.
+    at databaseUnavailable (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo-connection.js:5:56)
+    at ensureReady (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:178:50)
+    at insertImpl (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:268:9)
+    at insert (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:566:93)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-legacy-fulfillment-write-blocks.mjs:36:7 {
+  status: 503,
+  statusCode: 503,
+  code: 'DATABASE_UNAVAILABLE',
+  database: 'mongodb'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 550ms)
+
+$ npm run test:manage-picking
+
+> d-mills-global-console@1.0.0 test:manage-picking
+> node scripts/verify-manage-picking.mjs
+
+[data] MongoDB selection { selectedDatabase: 'oms_ci_test', maskedHost: null }
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo-connection.js:5
+export const databaseUnavailable = () => Object.assign(new Error('The requested module is temporarily unavailable because its database dependency is unavailable.'), {
+                                                       ^
+
+Error: MONGODB_URI is required when persistent storage is enforced.
+    at databaseUnavailable (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo-connection.js:5:56)
+    at ensureReady (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:178:50)
+    at insertImpl (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:268:9)
+    at insert (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:566:93)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-legacy-fulfillment-write-blocks.mjs:36:7 {
+  status: 503,
+  statusCode: 503,
+  code: 'DATABASE_UNAVAILABLE',
+  database: 'mongodb'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 531ms)
+
+$ npm run test:manage-picklists
+
+> d-mills-global-console@1.0.0 test:manage-picklists
+> node scripts/verify-manage-picklists.mjs
+
+[data] MongoDB selection { selectedDatabase: 'oms_ci_test', maskedHost: null }
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo-connection.js:5
+export const databaseUnavailable = () => Object.assign(new Error('The requested module is temporarily unavailable because its database dependency is unavailable.'), {
+                                                       ^
+
+Error: MONGODB_URI is required when persistent storage is enforced.
+    at databaseUnavailable (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo-connection.js:5:56)
+    at ensureReady (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:178:50)
+    at insertImpl (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:268:9)
+    at insert (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:566:93)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-legacy-fulfillment-write-blocks.mjs:36:7 {
+  status: 503,
+  statusCode: 503,
+  code: 'DATABASE_UNAVAILABLE',
+  database: 'mongodb'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 531ms)
+
+$ npm run test:market-order-view
+
+> d-mills-global-console@1.0.0 test:market-order-view
+> node scripts/verify-market-order-view.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 466ms)
+
+$ npm run test:master-order-enquiry
+
+> d-mills-global-console@1.0.0 test:master-order-enquiry
+> node scripts/verify-master-order-enquiry.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 489ms)
+
+$ npm run test:merchandising-hierarchy
+
+> d-mills-global-console@1.0.0 test:merchandising-hierarchy
+> node scripts/verify-merchandising-hierarchy.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Merchandising Hierarchy verification requires an isolated signed-in administrator.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-merchandising-hierarchy.mjs:15:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 491ms)
+
+$ npm run test:mongo-isolated-workflows
+
+> d-mills-global-console@1.0.0 test:mongo-isolated-workflows
+> node scripts/verify-mongo-isolated-workflows.mjs
+
+[data] MongoDB selection {
+  selectedDatabase: 'codexqa_mv8ngoa3_49f172',
+  maskedHost: '[masked-host]'
+}
+[data] MongoDB configuration warning {
+  code: 'MONGODB_URI_DATABASE_OVERRIDDEN',
+  message: 'MONGODB_DB overrides a different database path in MONGODB_URI; confirm the selected database deliberately.',
+  selectedDatabase: 'codexqa_mv8ngoa3_49f172'
+}
+{"timestamp":"2026-10-14T21:56:41.096Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"READY"}
+PASS isolated MongoDB persistence: saved planning edit is visible through a second client; back-order PO, refund, and ARS guarded actions leave no PO, payment status, job, or execution mutation.
+Isolated MongoDB test database removed.
+
+PASS (exit 0, 800ms)
+
+$ npm run test:mongo-mutation-boundary
+
+> d-mills-global-console@1.0.0 test:mongo-mutation-boundary
+> node scripts/verify-mongo-mutation-boundary.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Mongo mutations: pre-write ID/field limits, immutable identity, atomic single-document result, transactional batch readback faults and explicit-memory integration. Real DB rollback remains separate.
+
+PASS (exit 0, 576ms)
+
+$ npm run test:mongo-read-boundary
+
+> d-mills-global-console@1.0.0 test:mongo-read-boundary
+> node scripts/verify-mongo-read-boundary.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Mongo reads: complete-or-error row/byte bounds, deadline, bounded cursor, cleanup, original error, genuine findOne, memory alias and safe HTTP 413.
+
+PASS (exit 0, 606ms)
+
+$ npm run test:mongo-safety
+
+> d-mills-global-console@1.0.0 test:mongo-safety
+> node scripts/verify-mongo-safety.mjs
+
+{"timestamp":"2026-10-14T21:56:43.061Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"DEGRADED"}
+{"timestamp":"2026-10-14T21:56:43.062Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+{"timestamp":"2026-10-14T21:56:43.062Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"DEGRADED"}
+{"timestamp":"2026-10-14T21:56:43.062Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"DEGRADED"}
+{"timestamp":"2026-10-14T21:56:43.062Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+{"timestamp":"2026-10-14T21:56:43.062Z","event":"database_state","database":"mongodb","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-14T21:56:43.062Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"DEGRADED"}
+{"timestamp":"2026-10-14T21:56:43.062Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+PASS offline Mongo safety: configuration, auth/outage/recovery, empty/populated, readiness/header, redaction, restricted inventory and tool guards; zero database writes or live connections
+PASS offline export/restore integration: canonical BSON types, outside-repo files, integrity manifest, dry-run zero connections, non-test/nonempty target refusal
+PASS offline Render health: actual live/ready/mapped handlers, minimal payload, proxy cookie/IP, hung inspection, empty header and route ordering; no database connections
+
+PASS (exit 0, 1393ms)
+
+$ npm run test:mongo-session-boundary
+
+> d-mills-global-console@1.0.0 test:mongo-session-boundary
+> node scripts/verify-mongo-session-boundary.mjs
+
+{"timestamp":"2026-10-14T21:56:44.428Z","event":"mongodb_session_cleanup_failed","database":"mongodb","code":"SESSION_CLEANUP_FAILED"}
+{"timestamp":"2026-10-14T21:56:44.429Z","event":"mongodb_session_cleanup_failed","database":"mongodb","code":"SESSION_CLEANUP_FAILED"}
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Mongo sessions: cleanup preserves committed result/primary error, bounded transaction options, unknown commit classification, session-owned read deadline and truthful HTTP response.
+
+PASS (exit 0, 508ms)
+
+$ npm run test:mp-inventory-log
+
+> d-mills-global-console@1.0.0 test:mp-inventory-log
+> node scripts/verify-mp-inventory-log.mjs
+
+[data] MongoDB selection { selectedDatabase: 'oms_ci_test', maskedHost: '[masked-host]' }
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-mp-inventory-log.mjs:6
+if (process.env.MONGODB_URI) throw new Error('Run this verifier without a configured MongoDB database.');
+                                   ^
+
+Error: Run this verifier without a configured MongoDB database.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-mp-inventory-log.mjs:6:36
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 519ms)
+
+$ npm run test:oms-rules
+
+> d-mills-global-console@1.0.0 test:oms-rules
+> ISOLATED_BROWSER_FOCUS=oms-rules node scripts/verify-isolated-browser-workflow.mjs
+
+Generated isolated database names: PostgreSQL=codexqa_mv8ngro0_9820cb, MongoDB=codexqa_mv8ngro0_9820cb
+{"timestamp":"2026-10-14T21:56:45.573Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-14T21:56:45.677Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-14T21:56:45.678Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Isolated browser workflow failed: Error Error: Isolated app did not become ready.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-isolated-browser-workflow.mjs:98:21
+Isolated MongoDB browser database removed.
+Isolated PostgreSQL browser database removed.
+
+FAIL (exit 1, 21449ms)
+
+$ npm run test:opening-stock-isolated
+
+> d-mills-global-console@1.0.0 test:opening-stock-isolated
+> node scripts/run-isolated-opening-stock.mjs
+
+{"timestamp":"2026-10-14T21:57:08.073Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS isolated opening-stock migration, multi-SKU source order, exact replay/conflict, dual control, ledger posting and readback
+{"timestamp":"2026-10-14T21:57:08.303Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-14T21:57:08.304Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Owned disposable PostgreSQL removed.
+
+PASS (exit 0, 2063ms)
+
+$ npm run test:opening-stock-validation
+
+> d-mills-global-console@1.0.0 test:opening-stock-validation
+> node scripts/verify-opening-stock-validation.mjs
+
+PASS read-only opening-stock row classification, tenant scope, exact mapping and duplicate conflicts
+
+PASS (exit 0, 667ms)
+
+$ npm run test:order-acknowledgement
+
+> d-mills-global-console@1.0.0 test:order-acknowledgement
+> node scripts/verify-order-acknowledgement.mjs
+
+[data] MongoDB selection { selectedDatabase: 'oms_ci_test', maskedHost: null }
+PASS Order Acknowledgement: search is read-only, provider actions fail closed, and neither order status nor audit history changes.
+
+PASS (exit 0, 544ms)
+
+$ npm run test:order-allocation
+
+> d-mills-global-console@1.0.0 test:order-allocation
+> node scripts/verify-order-allocation.mjs
+
+[data] MongoDB selection { selectedDatabase: 'oms_ci_test', maskedHost: null }
+PASS Order Allocation: enquiry/import are read-only, allocation/unallocation/cancellation fail closed, and order/audit state remains unchanged.
+
+PASS (exit 0, 521ms)
+
+$ npm run test:order-enquiry
+
+> d-mills-global-console@1.0.0 test:order-enquiry
+> node scripts/verify-order-enquiry.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 525ms)
+
+$ npm run test:order-enquiry-integrity
+
+> d-mills-global-console@1.0.0 test:order-enquiry-integrity
+> node scripts/verify-order-enquiry-integrity.mjs
+
+[data] MongoDB selection {
+  selectedDatabase: 'codexqa_mv8nhbm6_d15aad',
+  maskedHost: '[masked-host]'
+}
+[data] MongoDB configuration warning {
+  code: 'MONGODB_URI_DATABASE_OVERRIDDEN',
+  message: 'MONGODB_DB overrides a different database path in MONGODB_URI; confirm the selected database deliberately.',
+  selectedDatabase: 'codexqa_mv8nhbm6_d15aad'
+}
+{"timestamp":"2026-10-14T21:57:11.333Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"READY"}
+PASS isolated MongoDB order enquiry: search works; import, force pull, putaway, retry, and unsupported sale-order mutations leave order state unchanged.
+Isolated MongoDB test database removed.
+
+PASS (exit 0, 810ms)
+
+$ npm run test:order-maintenance
+
+> d-mills-global-console@1.0.0 test:order-maintenance
+> node scripts/verify-order-maintenance.mjs
+
+[data] MongoDB selection { selectedDatabase: 'oms_ci_test', maskedHost: null }
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo-connection.js:5
+export const databaseUnavailable = () => Object.assign(new Error('The requested module is temporarily unavailable because its database dependency is unavailable.'), {
+                                                       ^
+
+Error: MONGODB_URI is required when persistent storage is enforced.
+    at databaseUnavailable (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo-connection.js:5:56)
+    at ensureReady (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:178:50)
+    at insertImpl (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:268:9)
+    at insert (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:566:93)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-order-maintenance.mjs:22:21 {
+  status: 503,
+  statusCode: 503,
+  code: 'DATABASE_UNAVAILABLE',
+  database: 'mongodb'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 550ms)
+
+$ npm run test:order-refund
+
+> d-mills-global-console@1.0.0 test:order-refund
+> node scripts/verify-order-refund.mjs
+
+[data] MongoDB selection { selectedDatabase: 'oms_ci_test', maskedHost: null }
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo-connection.js:5
+export const databaseUnavailable = () => Object.assign(new Error('The requested module is temporarily unavailable because its database dependency is unavailable.'), {
+                                                       ^
+
+Error: MONGODB_URI is required when persistent storage is enforced.
+    at databaseUnavailable (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo-connection.js:5:56)
+    at ensureReady (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:178:50)
+    at insertImpl (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:268:9)
+    at insert (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:566:93)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-order-refund.mjs:18:22 {
+  status: 503,
+  statusCode: 503,
+  code: 'DATABASE_UNAVAILABLE',
+  database: 'mongodb'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 534ms)
+
+$ npm run test:organization-hierarchy
+
+> d-mills-global-console@1.0.0 test:organization-hierarchy
+> node scripts/verify-organization-hierarchy.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 478ms)
+
+$ npm run test:other-masters
+
+> d-mills-global-console@1.0.0 test:other-masters
+> ISOLATED_BROWSER_FOCUS=other-masters node scripts/verify-isolated-browser-workflow.mjs
+
+Generated isolated database names: PostgreSQL=codexqa_mv8nhde5_2ce65a, MongoDB=codexqa_mv8nhde5_2ce65a
+{"timestamp":"2026-10-14T21:57:13.738Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-14T21:57:13.839Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-14T21:57:13.839Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Isolated browser workflow failed: Error Error: Isolated app did not become ready.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-isolated-browser-workflow.mjs:98:21
+Isolated MongoDB browser database removed.
+Isolated PostgreSQL browser database removed.
+
+FAIL (exit 1, 21472ms)
+
+$ npm run test:pg-cleanup-scheduler
+
+> d-mills-global-console@1.0.0 test:pg-cleanup-scheduler
+> node scripts/verify-pg-cleanup-scheduler.mjs
+
+{"timestamp":"2026-10-14T21:57:36.167Z","event":"fixture_cleanup_failed","code":"MAINTENANCE_FAILED"}
+PASS PostgreSQL cleanup scheduler: 1,000 requests coalesce into one rerun, query concurrency stays one and failure is counted
+
+PASS (exit 0, 1651ms)
+
+$ npm run test:picker-zone-preference
+
+> d-mills-global-console@1.0.0 test:picker-zone-preference
+> node scripts/verify-picker-zone-preference.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 479ms)
+
+$ npm run test:po-enquiry
+
+> d-mills-global-console@1.0.0 test:po-enquiry
+> ISOLATED_BROWSER_FOCUS=po-enquiry node scripts/verify-isolated-browser-workflow.mjs
+
+Generated isolated database names: PostgreSQL=codexqa_mv8nhvnl_337c24, MongoDB=codexqa_mv8nhvnl_337c24
+{"timestamp":"2026-10-14T21:57:37.391Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-14T21:57:37.496Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-14T21:57:37.496Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Isolated browser workflow failed: Error Error: Isolated app did not become ready.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-isolated-browser-workflow.mjs:98:21
+Isolated MongoDB browser database removed.
+Isolated PostgreSQL browser database removed.
+
+FAIL (exit 1, 21583ms)
+
+$ npm run test:po-otb-integrity
+
+> d-mills-global-console@1.0.0 test:po-otb-integrity
+> node scripts/verify-po-otb-integrity.mjs
+
+[data] MongoDB selection {
+  selectedDatabase: 'codexqa_mv8nicef_ad38be',
+  maskedHost: '[masked-host]'
+}
+[data] MongoDB configuration warning {
+  code: 'MONGODB_URI_DATABASE_OVERRIDDEN',
+  message: 'MONGODB_DB overrides a different database path in MONGODB_URI; confirm the selected database deliberately.',
+  selectedDatabase: 'codexqa_mv8nicef_ad38be'
+}
+{"timestamp":"2026-10-14T21:57:59.024Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"READY"}
+PASS isolated MongoDB PO/ASN/GRN: OTB and legacy receipt paths fail closed without budget, PO, or GRN drift; client ASN quantities cannot invent receipts.
+Isolated MongoDB test database removed.
+
+PASS (exit 0, 1066ms)
+
+$ npm run test:po-revision
+
+> d-mills-global-console@1.0.0 test:po-revision
+> ISOLATED_BROWSER_FOCUS=po-revision node scripts/verify-isolated-browser-workflow.mjs
+
+Generated isolated database names: PostgreSQL=codexqa_mv8nid39_fc9d93, MongoDB=codexqa_mv8nid39_fc9d93
+{"timestamp":"2026-10-14T21:58:00.014Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-14T21:58:00.129Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-14T21:58:00.129Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Isolated browser workflow failed: Error Error: Isolated app did not become ready.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-isolated-browser-workflow.mjs:98:21
+Isolated MongoDB browser database removed.
+Isolated PostgreSQL browser database removed.
+
+FAIL (exit 1, 21488ms)
+
+$ npm run test:postgres-transaction-cleanup
+
+> d-mills-global-console@1.0.0 test:postgres-transaction-cleanup
+> node scripts/verify-postgres-transaction-cleanup.mjs
+
+{"timestamp":"2026-10-14T21:58:21.394Z","event":"postgres_cleanup_failed","database":"postgresql","operation":"release","code":"CLEANUP_FAILED"}
+{"timestamp":"2026-10-14T21:58:21.395Z","event":"postgres_cleanup_failed","database":"postgresql","operation":"rollback","code":"CLEANUP_FAILED"}
+{"timestamp":"2026-10-14T21:58:21.395Z","event":"postgres_cleanup_failed","database":"postgresql","operation":"release","code":"CLEANUP_FAILED"}
+{"timestamp":"2026-10-14T21:58:21.395Z","event":"postgres_cleanup_failed","database":"postgresql","operation":"release","code":"CLEANUP_FAILED"}
+PASS: PostgreSQL cleanup preserves outcomes, lost commit requires reconciliation, definitive constraints retain primary error and HTTP response is sanitized
+
+PASS (exit 0, 539ms)
+
+$ npm run test:price-zone
+
+> d-mills-global-console@1.0.0 test:price-zone
+> node scripts/verify-price-zone.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 472ms)
+
+$ npm run test:pricing-event
+
+> d-mills-global-console@1.0.0 test:pricing-event
+> node scripts/verify-pricing-event.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 660ms)
+
+$ npm run test:publication-recovery-boundary
+
+> d-mills-global-console@1.0.0 test:publication-recovery-boundary
+> node scripts/verify-publication-recovery-boundary.mjs
+
+PASS: invalid batch rejection before DB access, bounded tenant-scoped recovery query, zero target and both uncertainty projections
+
+PASS (exit 0, 738ms)
+
+$ npm run test:purchase-charge-masters
+
+> d-mills-global-console@1.0.0 test:purchase-charge-masters
+> node scripts/verify-purchase-charge-masters.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+browserType.launch: Executable doesn't exist at /Users/shreshthagupta/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+    at chromium.launch (/private/tmp/oms-ci-safe-preload.mjs:18:24)
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-purchase-charge-masters.mjs:4:32
+    at async node:internal/modules/esm/loader:650:26 {
+  log: [],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 463ms)
+
+$ npm run test:putaway-enquiry
+
+> d-mills-global-console@1.0.0 test:putaway-enquiry
+> node scripts/verify-putaway-enquiry.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: The isolated browser workflow must pass a committed inbound number.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-putaway-enquiry.mjs:9:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: undefined,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 600ms)
+
+$ npm run test:putaway-rules
+
+> d-mills-global-console@1.0.0 test:putaway-rules
+> node scripts/verify-putaway-rules.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 510ms)
+
+$ npm run test:receipt-envelope-boundary
+
+> d-mills-global-console@1.0.0 test:receipt-envelope-boundary
+> node scripts/verify-receipt-envelope-boundary.mjs
+
+PASS receipt envelopes: 30 malformed authorization cases reject before database/effects; valid empty and special-name quantity maps accepted.
+
+PASS (exit 0, 554ms)
+
+$ npm run test:receipt-index-tool
+
+> d-mills-global-console@1.0.0 test:receipt-index-tool
+> node scripts/verify-receipt-index-tool.mjs
+
+PASS Mongo index tool: exact selected DB and yes/scope guards; only measured claim or zone-picker indexes created on injected client.
+
+PASS (exit 0, 561ms)
+
+$ npm run test:receipt-poll-boundary
+
+> d-mills-global-console@1.0.0 test:receipt-poll-boundary
+> node scripts/verify-receipt-poll-boundary.mjs
+
+PASS: slow receipt reads cannot overlap, cleanup stops rescheduling, outages remain pollable, both screens use serial polling
+
+PASS (exit 0, 711ms)
+
+$ npm run test:receipt-validation
+
+> d-mills-global-console@1.0.0 test:receipt-validation
+> node scripts/verify-receipt-validation.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 559ms)
+
+$ npm run test:reliability
+
+> d-mills-global-console@1.0.0 test:reliability
+> node scripts/verify-mongo-reliability.mjs && node scripts/verify-postgres-reliability.mjs && node scripts/verify-provider-reliability.mjs
+
+{"timestamp":"2026-10-14T21:58:27.782Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"DEGRADED"}
+{"timestamp":"2026-10-14T21:58:27.789Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+{"timestamp":"2026-10-14T21:58:27.789Z","event":"database_state","database":"mongodb","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-14T21:58:27.795Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+{"timestamp":"2026-10-14T21:58:27.796Z","event":"database_state","database":"mongodb","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-14T21:58:27.796Z","event":"database_state","database":"mongodb","previous":"DEGRADED","state":"DEGRADED"}
+{"timestamp":"2026-10-14T21:58:27.796Z","event":"database_state","database":"mongodb","previous":"DEGRADED","state":"DEGRADED"}
+{"timestamp":"2026-10-14T21:58:27.801Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+{"timestamp":"2026-10-14T21:58:27.801Z","event":"database_state","database":"mongodb","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-14T21:58:27.807Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+{"timestamp":"2026-10-14T21:58:27.807Z","event":"database_state","database":"mongodb","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-14T21:58:27.813Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+{"timestamp":"2026-10-14T21:58:27.813Z","event":"database_state","database":"mongodb","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-14T21:58:27.819Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+{"timestamp":"2026-10-14T21:58:27.819Z","event":"database_state","database":"mongodb","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-14T21:58:27.823Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+{"timestamp":"2026-10-14T21:58:27.823Z","event":"database_state","database":"mongodb","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-14T21:58:27.829Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+{"timestamp":"2026-10-14T21:58:27.829Z","event":"database_state","database":"mongodb","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-14T21:58:27.835Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+{"timestamp":"2026-10-14T21:58:27.835Z","event":"database_state","database":"mongodb","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-14T21:58:27.841Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+{"timestamp":"2026-10-14T21:58:27.841Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"DEGRADED"}
+PASS: shared pool, single-flight outage, retry, loss after startup, redaction, business errors and shutdown
+{"timestamp":"2026-10-14T21:58:28.081Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-14T21:58:28.082Z","event":"database_state","database":"postgresql","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-14T21:58:28.082Z","event":"database_state","database":"postgresql","previous":"DEGRADED","state":"READY"}
+{"timestamp":"2026-10-14T21:58:28.082Z","event":"database_state","database":"postgresql","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-14T21:58:28.082Z","event":"database_state","database":"postgresql","previous":"DEGRADED","state":"READY"}
+{"timestamp":"2026-10-14T21:58:28.082Z","event":"database_state","database":"postgresql","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-14T21:58:28.082Z","event":"database_state","database":"postgresql","previous":"DEGRADED","state":"STOPPING"}
+{"timestamp":"2026-10-14T21:58:28.082Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+PASS PostgreSQL: bounded pool, idle failure, safe 503, recovery, constraint preservation, query timeout, shutdown
+{"timestamp":"2026-10-14T21:58:28.296Z","event":"provider_call","provider":"fixture","operation":"request","attempt":1,"duration_ms":0,"result":"503"}
+{"timestamp":"2026-10-14T21:58:28.297Z","event":"provider_call","provider":"fixture","operation":"request","attempt":2,"duration_ms":0,"result":"503"}
+{"timestamp":"2026-10-14T21:58:28.297Z","event":"provider_call","provider":"fixture","operation":"request","attempt":3,"duration_ms":0,"result":"200"}
+{"timestamp":"2026-10-14T21:58:28.298Z","event":"provider_call","provider":"status-429","operation":"request","attempt":1,"duration_ms":0,"result":"429"}
+{"timestamp":"2026-10-14T21:58:28.298Z","event":"provider_call","provider":"status-429","operation":"request","attempt":2,"duration_ms":0,"result":"429"}
+{"timestamp":"2026-10-14T21:58:28.298Z","event":"provider_call","provider":"status-429","operation":"request","attempt":3,"duration_ms":0,"result":"200"}
+{"timestamp":"2026-10-14T21:58:28.298Z","event":"provider_call","provider":"status-500","operation":"request","attempt":1,"duration_ms":0,"result":"500"}
+{"timestamp":"2026-10-14T21:58:28.298Z","event":"provider_call","provider":"status-500","operation":"request","attempt":2,"duration_ms":0,"result":"500"}
+{"timestamp":"2026-10-14T21:58:28.298Z","event":"provider_call","provider":"status-500","operation":"request","attempt":3,"duration_ms":0,"result":"200"}
+{"timestamp":"2026-10-14T21:58:28.298Z","event":"provider_call","provider":"status-502","operation":"request","attempt":1,"duration_ms":0,"result":"502"}
+{"timestamp":"2026-10-14T21:58:28.298Z","event":"provider_call","provider":"status-502","operation":"request","attempt":2,"duration_ms":0,"result":"502"}
+{"timestamp":"2026-10-14T21:58:28.298Z","event":"provider_call","provider":"status-502","operation":"request","attempt":3,"duration_ms":0,"result":"200"}
+{"timestamp":"2026-10-14T21:58:28.298Z","event":"provider_call","provider":"status-504","operation":"request","attempt":1,"duration_ms":0,"result":"504"}
+{"timestamp":"2026-10-14T21:58:28.298Z","event":"provider_call","provider":"status-504","operation":"request","attempt":2,"duration_ms":0,"result":"504"}
+{"timestamp":"2026-10-14T21:58:28.298Z","event":"provider_call","provider":"status-504","operation":"request","attempt":3,"duration_ms":0,"result":"200"}
+{"timestamp":"2026-10-14T21:58:28.298Z","event":"provider_call","provider":"invalid-fixture","operation":"request","attempt":1,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-14T21:58:28.298Z","event":"provider_call","provider":"invalid-fixture","operation":"request","attempt":1,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-14T21:58:28.298Z","event":"provider_call","provider":"invalid-fixture","operation":"request","attempt":1,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-14T21:58:28.298Z","event":"provider_call","provider":"invalid-fixture","operation":"request","attempt":1,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-14T21:58:28.298Z","event":"provider_call","provider":"failure-EAI_AGAIN","operation":"request","attempt":1,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-14T21:58:28.298Z","event":"provider_call","provider":"failure-EAI_AGAIN","operation":"request","attempt":2,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-14T21:58:28.298Z","event":"provider_call","provider":"failure-EAI_AGAIN","operation":"request","attempt":3,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-14T21:58:28.298Z","event":"provider_call","provider":"failure-ETIMEDOUT","operation":"request","attempt":1,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-14T21:58:28.298Z","event":"provider_call","provider":"failure-ETIMEDOUT","operation":"request","attempt":2,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-14T21:58:28.298Z","event":"provider_call","provider":"failure-ETIMEDOUT","operation":"request","attempt":3,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-14T21:58:28.298Z","event":"provider_call","provider":"failure-TimeoutError","operation":"request","attempt":1,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-14T21:58:28.298Z","event":"provider_call","provider":"failure-TimeoutError","operation":"request","attempt":2,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-14T21:58:28.299Z","event":"provider_call","provider":"failure-TimeoutError","operation":"request","attempt":3,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-14T21:58:28.299Z","event":"provider_call","provider":"cancelled-fixture","operation":"request","attempt":1,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-14T21:58:28.299Z","event":"provider_call","provider":"fixture","operation":"request","attempt":1,"duration_ms":0,"result":"400"}
+{"timestamp":"2026-10-14T21:58:28.299Z","event":"provider_call","provider":"fixture","operation":"request","attempt":1,"duration_ms":0,"result":"401"}
+{"timestamp":"2026-10-14T21:58:28.299Z","event":"provider_call","provider":"fixture","operation":"request","attempt":1,"duration_ms":0,"result":"403"}
+{"timestamp":"2026-10-14T21:58:28.299Z","event":"provider_call","provider":"fixture","operation":"request","attempt":1,"duration_ms":0,"result":"422"}
+{"timestamp":"2026-10-14T21:58:28.299Z","event":"provider_call","provider":"mutation-fixture","operation":"request","attempt":1,"duration_ms":0,"result":"503"}
+{"timestamp":"2026-10-14T21:58:28.299Z","event":"provider_call","provider":"network-fixture","operation":"request","attempt":1,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-14T21:58:28.299Z","event":"provider_call","provider":"network-fixture","operation":"request","attempt":2,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-14T21:58:28.299Z","event":"provider_call","provider":"network-fixture","operation":"request","attempt":3,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-14T21:58:28.299Z","event":"provider_call","provider":"circuit-fixture","operation":"request","attempt":1,"duration_ms":0,"result":"503"}
+{"timestamp":"2026-10-14T21:58:28.299Z","event":"provider_call","provider":"circuit-fixture","operation":"request","attempt":1,"duration_ms":0,"result":"503"}
+{"timestamp":"2026-10-14T21:58:28.299Z","event":"provider_call","provider":"circuit-fixture","operation":"request","attempt":1,"duration_ms":0,"result":"503"}
+{"timestamp":"2026-10-14T21:58:28.299Z","event":"provider_call","provider":"circuit-fixture","operation":"request","attempt":1,"duration_ms":0,"result":"503"}
+{"timestamp":"2026-10-14T21:58:28.299Z","event":"provider_call","provider":"circuit-fixture","operation":"request","attempt":1,"duration_ms":0,"result":"503"}
+PASS provider reliability: bounded read retry, backoff, no auth/validation retry, no blind mutation retry, connection-reset exhaustion, open circuit
+
+PASS (exit 0, 1056ms)
+
+$ npm run test:reliability-extended
+
+> d-mills-global-console@1.0.0 test:reliability-extended
+> node scripts/run-reliability-extended-gates.mjs
+
+PASS verify-amazon-mfn-api
+PASS verify-ajio-api
+PASS verify-mp-inventory-log
+PASS verify-transhipment
+PASS verify-transhipment-old
+PASS verify-returns-integrity
+PASS verify-dispatch-checkpoint
+PASS verify-ars-integrity
+PASS verify-back-order-integrity
+PASS verify-manage-manifests
+PASS verify-sort-to-box
+PASS verify-download-pdf
+FAIL verify-download-workbook
+PASS verify-common-import
+PASS verify-order-refund
+PASS verify-order-allocation
+PASS verify-delivery-shipping
+PASS verify-bulk-order-update
+PASS verify-manage-picklists
+PASS verify-manage-picking
+PASS verify-delivery-split
+PASS verify-shipment-handover
+PASS verify-order-acknowledgement
+PASS verify-consolidate-ewb
+PASS verify-inventory-move
+PASS verify-order-maintenance
+FAIL verify-inbound-realtime-integrity
+
+FAIL (exit 1, 9136ms)
+
+$ npm run test:reliability-mongo-isolated
+
+> d-mills-global-console@1.0.0 test:reliability-mongo-isolated
+> node scripts/run-isolated-mongo-reliability.mjs
+
+[data] MongoDB selection {
+  selectedDatabase: 'codexqa_reliability',
+  maskedHost: '[masked-host]'
+}
+{"timestamp":"2026-10-14T21:58:39.395Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"READY"}
+PASS isolated real Mongo: empty result, SKU Group list, code/name/client filtering, pagination, structured 503
+Disposable Mongo process and database files removed.
+
+PASS (exit 0, 2349ms)
+
+$ npm run test:reliability-mongo-startup
+
+> d-mills-global-console@1.0.0 test:reliability-mongo-startup
+> node scripts/run-isolated-mongo-reliability.mjs scripts/verify-mongo-startup-recovery.mjs
+
+{"timestamp":"2026-10-14T21:58:41.990Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-14T21:58:42.160Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-14T21:58:42.161Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Disposable startup PostgreSQL fixture removed.
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+503 !== 200
+
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-mongo-startup-recovery.mjs:38:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 503,
+  expected: 200,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+Disposable Mongo process and database files removed.
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/run-isolated-mongo-reliability.mjs:30
+  if (code !== 0) throw new Error('Isolated Mongo reliability verification failed');
+                        ^
+
+Error: Isolated Mongo reliability verification failed
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/run-isolated-mongo-reliability.mjs:30:25
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 21869ms)
+
+$ npm run test:reliability-mongo-timeout
+
+> d-mills-global-console@1.0.0 test:reliability-mongo-timeout
+> node scripts/run-isolated-mongo-reliability.mjs scripts/verify-mongo-timeout-fixture.mjs
+
+[data] MongoDB selection {
+  selectedDatabase: 'codexqa_reliability',
+  maskedHost: '[masked-host]'
+}
+{"timestamp":"2026-10-14T21:59:03.654Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"READY"}
+{"timestamp":"2026-10-14T21:59:03.658Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"READY"}
+PASS real Mongo maxTimeMS: deadline classified 504 at shared API boundary, no false rows, healthy pool retained, durable value unchanged, subsequent reads recovered
+Disposable Mongo process and database files removed.
+
+PASS (exit 0, 2181ms)
+
+$ npm run test:reliability-postgres-failures
+
+> d-mills-global-console@1.0.0 test:reliability-postgres-failures
+> node scripts/verify-postgres-failure-injection.mjs
+
+{"timestamp":"2026-10-14T21:59:04.449Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-14T21:59:04.605Z","event":"database_state","database":"postgresql","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-14T21:59:04.607Z","event":"database_state","database":"postgresql","previous":"DEGRADED","state":"READY"}
+{"timestamp":"2026-10-14T21:59:04.921Z","event":"database_state","database":"postgresql","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-14T21:59:04.924Z","event":"database_state","database":"postgresql","previous":"DEGRADED","state":"READY"}
+PASS real PostgreSQL failures: bounded pool exhaustion, recovery, slow query/transaction deadlines, terminated fixture backend, reconnect, durable row preserved, business conflict preserved
+{"timestamp":"2026-10-14T21:59:04.927Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-14T21:59:04.927Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Disposable PostgreSQL failure fixture removed.
+
+PASS (exit 0, 1116ms)
+
+$ npm run test:reliability-purchase-orders
+
+> d-mills-global-console@1.0.0 test:reliability-purchase-orders
+> node scripts/run-isolated-mongo-reliability.mjs scripts/verify-purchase-order-reliability.mjs
+
+[data] MongoDB selection {
+  selectedDatabase: 'codexqa_reliability',
+  maskedHost: '[masked-host]'
+}
+{"timestamp":"2026-10-14T21:59:07.011Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"READY"}
+PASS real Mongo purchase-order reliability: 20 concurrent duplicate creates produce one durable draft, remaining requests conflict, identity cannot change, unique index verified, no stock mutation
+Disposable Mongo process and database files removed.
+
+PASS (exit 0, 2367ms)
+
+$ npm run test:restore-batch-boundary
+
+> d-mills-global-console@1.0.0 test:restore-batch-boundary
+> node scripts/verify-restore-batch-boundary.mjs
+
+PASS: restore row and BSON-byte bounds, valid large singleton, oversized document refusal and primary failure stops stream
+
+PASS (exit 0, 717ms)
+
+$ npm run test:restore-manifest-boundary
+
+> d-mills-global-console@1.0.0 test:restore-manifest-boundary
+> node scripts/verify-restore-manifest-boundary.mjs
+
+PASS: bounded manifest read, metadata validation, duplicate files, total-count overflow and upstream cleanup
+
+PASS (exit 0, 584ms)
+
+$ npm run test:return-without-order
+
+> d-mills-global-console@1.0.0 test:return-without-order
+> node scripts/verify-return-without-order.mjs
+
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-return-without-order.mjs:4
+const testDatabase=new URL(process.env.INVENTORY_DATABASE_URL||'');if(!['localhost','127.0.0.1','[::1]'].includes(testDatabase.hostname)||!/^codexqa_test_reliable_[a-f0-9]{12}$/.test(testDatabase.pathname.slice(1)))throw new Error('Use a local isolated test/contract inventory database');
+                                                                                                                                                                                                                             ^
+
+Error: Use a local isolated test/contract inventory database
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-return-without-order.mjs:4:222
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 609ms)
+
+$ npm run test:returns-integrity
+
+> d-mills-global-console@1.0.0 test:returns-integrity
+> node scripts/verify-returns-integrity.mjs
+
+[data] MongoDB selection { selectedDatabase: 'oms_ci_test', maskedHost: '[masked-host]' }
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-returns-integrity.mjs:9
+if (process.env.MONGODB_URI) throw new Error('Run this verifier without a configured MongoDB database.');
+                                   ^
+
+Error: Run this verifier without a configured MongoDB database.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-returns-integrity.mjs:9:36
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 548ms)
+
+$ npm run test:sales-programs
+
+> d-mills-global-console@1.0.0 test:sales-programs
+> node scripts/verify-sales-programs.mjs
+
+{"timestamp":"2026-10-14T21:59:10.702Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-14T21:59:10.777Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-14T21:59:10.777Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Wrong parent must be rejected
+
+401 !== 400
+
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-sales-programs.mjs:31:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 401,
+  expected: 400,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 1001ms)
+
+$ npm run test:sales-promotion-guard
+
+> d-mills-global-console@1.0.0 test:sales-promotion-guard
+> ISOLATED_BROWSER_FOCUS=sales-promotion node scripts/verify-isolated-browser-workflow.mjs
+
+Generated isolated database names: PostgreSQL=codexqa_mv8njwbd_32041f, MongoDB=codexqa_mv8njwbd_32041f
+{"timestamp":"2026-10-14T21:59:11.574Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-14T21:59:11.716Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-14T21:59:11.717Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Isolated browser workflow failed: Error Error: Isolated app did not become ready.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-isolated-browser-workflow.mjs:98:21
+Isolated MongoDB browser database removed.
+Isolated PostgreSQL browser database removed.
+
+FAIL (exit 1, 21657ms)
+
+$ npm run test:seller-connections
+
+> d-mills-global-console@1.0.0 test:seller-connections
+> node scripts/verify-seller-connections.mjs
+
+{"timestamp":"2026-10-14T21:59:33.369Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS seller connections: 20 configs, validation, SSRF rejection, encryption/masking, live-call fixtures, failed rotation, scopes, HMAC, tenant isolation, partner snapshot idempotency, agent pairing replay, sync history
+{"timestamp":"2026-10-14T21:59:34.211Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-14T21:59:34.211Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+
+PASS (exit 0, 1756ms)
+
+$ npm run test:seller-connections-ui
+
+> d-mills-global-console@1.0.0 test:seller-connections-ui
+> node scripts/verify-seller-connections-ui.mjs
+
+{"timestamp":"2026-10-14T21:59:34.875Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+node:_http_outgoing:682
+    throw new ERR_HTTP_HEADERS_SENT('set');
+          ^
+
+Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (node:_http_outgoing:682:11)
+    at issueSession (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/auth-session.js:118:7)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+  code: 'ERR_HTTP_HEADERS_SENT'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 3756ms)
+
+$ npm run test:seller-panel-dashboard
+
+> d-mills-global-console@1.0.0 test:seller-panel-dashboard
+> node scripts/verify-seller-panel-dashboard.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+browserType.launch: Executable doesn't exist at /Users/shreshthagupta/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+    at chromium.launch (/private/tmp/oms-ci-safe-preload.mjs:18:24)
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-seller-panel-dashboard.mjs:5:32
+    at async node:internal/modules/esm/loader:650:26 {
+  log: [],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 631ms)
+
+$ npm run test:service-pin-codes
+
+> d-mills-global-console@1.0.0 test:service-pin-codes
+> node scripts/verify-service-pin-codes.mjs
+
+file:///private/tmp/oms-ci-safe-preload.mjs:12
+ if (!['127.0.0.1','localhost','[::1]'].includes(url.hostname) || [3002,5173,5432,27017].includes(Number(url.port))) throw new Error('Baseline refuses configured service or non-loopback fetch');
+                                                                                                                           ^
+
+Error: Baseline refuses configured service or non-loopback fetch
+    at globalThis.fetch (file:///private/tmp/oms-ci-safe-preload.mjs:12:124)
+    at send (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-service-pin-codes.mjs:5:61)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-service-pin-codes.mjs:8:21
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 629ms)
+
+$ npm run test:shell-quote-boundary
+
+> d-mills-global-console@1.0.0 test:shell-quote-boundary
+> node scripts/verify-shell-quote-boundary.mjs
+
+PASS: patched quote rejects comment/newline injection; concurrently placeholders preserve adversarial arguments through a real shell.
+
+PASS (exit 0, 507ms)
+
+$ npm run test:shipment-handover
+
+> d-mills-global-console@1.0.0 test:shipment-handover
+> node scripts/verify-shipment-handover.mjs
+
+[data] MongoDB selection { selectedDatabase: 'oms_ci_test', maskedHost: null }
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo-connection.js:5
+export const databaseUnavailable = () => Object.assign(new Error('The requested module is temporarily unavailable because its database dependency is unavailable.'), {
+                                                       ^
+
+Error: MONGODB_URI is required when persistent storage is enforced.
+    at databaseUnavailable (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo-connection.js:5:56)
+    at ensureReady (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:178:50)
+    at insertImpl (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:268:9)
+    at insert (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:566:93)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-legacy-fulfillment-write-blocks.mjs:36:7 {
+  status: 503,
+  statusCode: 503,
+  code: 'DATABASE_UNAVAILABLE',
+  database: 'mongodb'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 564ms)
+
+$ npm run test:shopify-order-observation
+
+> d-mills-global-console@1.0.0 test:shopify-order-observation
+> node scripts/verify-shopify-order-observation.mjs
+
+PASS Shopify observation requires stable order/revision and complete physical line snapshots before cursor progress
+
+PASS (exit 0, 727ms)
+
+$ npm run test:shopify-order-observation-isolated
+
+> d-mills-global-console@1.0.0 test:shopify-order-observation-isolated
+> node scripts/run-isolated-shopify-observation.mjs
+
+{"timestamp":"2026-10-14T21:59:42.530Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS isolated Shopify poll receipt replay, changed revision conflict, malformed-order checkpoint guard and observation-only work
+{"timestamp":"2026-10-14T21:59:42.645Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-14T21:59:42.645Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Owned disposable PostgreSQL removed.
+
+PASS (exit 0, 1761ms)
+
+$ npm run test:single-location
+
+> d-mills-global-console@1.0.0 test:single-location
+> node scripts/verify-single-location.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+browserType.launch: Executable doesn't exist at /Users/shreshthagupta/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+    at chromium.launch (/private/tmp/oms-ci-safe-preload.mjs:18:24)
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-single-location.mjs:4:32
+    at async node:internal/modules/esm/loader:650:26 {
+  log: [],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 508ms)
+
+$ npm run test:sku-barcode
+
+> d-mills-global-console@1.0.0 test:sku-barcode
+> node scripts/verify-sku-barcode.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: SKU Barcode verification requires an isolated administrator.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-sku-barcode.mjs:15:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 544ms)
+
+$ npm run test:sku-channel-listing
+
+> d-mills-global-console@1.0.0 test:sku-channel-listing
+> ISOLATED_BROWSER_FOCUS=sku-channel-listing node scripts/verify-isolated-browser-workflow.mjs
+
+Generated isolated database names: PostgreSQL=codexqa_mv8nklv0_e79759, MongoDB=codexqa_mv8nklv0_e79759
+{"timestamp":"2026-10-14T21:59:44.685Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-14T21:59:44.798Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-14T21:59:44.798Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Isolated browser workflow failed: Error Error: Isolated app did not become ready.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-isolated-browser-workflow.mjs:98:21
+Isolated MongoDB browser database removed.
+Isolated PostgreSQL browser database removed.
+
+FAIL (exit 1, 21703ms)
+
+$ npm run test:sku-company-link
+
+> d-mills-global-console@1.0.0 test:sku-company-link
+> ISOLATED_BROWSER_FOCUS=sku-company-link node scripts/verify-isolated-browser-workflow.mjs
+
+Generated isolated database names: PostgreSQL=codexqa_mv8nl2l4_1e2a17, MongoDB=codexqa_mv8nl2l4_1e2a17
+{"timestamp":"2026-10-14T22:00:06.335Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-14T22:00:07.498Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-14T22:00:07.500Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Isolated browser workflow failed: Error Error: Isolated app did not become ready.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-isolated-browser-workflow.mjs:98:21
+Isolated MongoDB browser database removed.
+Isolated PostgreSQL browser database removed.
+
+FAIL (exit 1, 22650ms)
+
+$ npm run test:sku-grading
+
+> d-mills-global-console@1.0.0 test:sku-grading
+> node scripts/verify-sku-grading.mjs
+
+[data] MongoDB selection { selectedDatabase: 'oms_ci_test', maskedHost: null }
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo-connection.js:5
+export const databaseUnavailable = () => Object.assign(new Error('The requested module is temporarily unavailable because its database dependency is unavailable.'), {
+                                                       ^
+
+Error: MONGODB_URI is required when persistent storage is enforced.
+    at databaseUnavailable (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo-connection.js:5:56)
+    at ensureReady (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:178:50)
+    at waitForDataReady (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:215:50)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/server.js:422:62
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-sku-grading.mjs:13:1 {
+  status: 503,
+  statusCode: 503,
+  code: 'DATABASE_UNAVAILABLE',
+  database: 'mongodb'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 1135ms)
+
+$ npm run test:sku-group
+
+> d-mills-global-console@1.0.0 test:sku-group
+> ISOLATED_BROWSER_FOCUS=sku-group node scripts/verify-isolated-browser-workflow.mjs
+
+Generated isolated database names: PostgreSQL=codexqa_mv8nlktk_8a5b08, MongoDB=codexqa_mv8nlktk_8a5b08
+{"timestamp":"2026-10-14T22:00:29.983Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-14T22:00:30.084Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-14T22:00:30.084Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Isolated browser workflow failed: Error Error: Isolated app did not become ready.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-isolated-browser-workflow.mjs:98:21
+Isolated MongoDB browser database removed.
+Isolated PostgreSQL browser database removed.
+
+FAIL (exit 1, 21474ms)
+
+$ npm run test:sku-import
+
+> d-mills-global-console@1.0.0 test:sku-import
+> node scripts/verify-sku-import.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+browserType.launch: Executable doesn't exist at /Users/shreshthagupta/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+    at chromium.launch (/private/tmp/oms-ci-safe-preload.mjs:18:24)
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-sku-import.mjs:42:28 {
+  log: [],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 581ms)
+
+$ npm run test:sku-label-print
+
+> d-mills-global-console@1.0.0 test:sku-label-print
+> node scripts/verify-sku-label-print.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 450ms)
+
+$ npm run test:sku-master
+
+> d-mills-global-console@1.0.0 test:sku-master
+> node scripts/verify-sku-master.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 503ms)
+
+$ npm run test:sku-master-workflow
+
+> d-mills-global-console@1.0.0 test:sku-master-workflow
+> node scripts/verify-sku-master-workflow.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: SKU Master verification requires an isolated administrator.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-sku-master-workflow.mjs:14:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 481ms)
+
+$ npm run test:sku-moderation
+
+> d-mills-global-console@1.0.0 test:sku-moderation
+> ISOLATED_BROWSER_FOCUS=sku-moderation node scripts/verify-isolated-browser-workflow.mjs
+
+Generated isolated database names: PostgreSQL=codexqa_mv8nm2yi_905785, MongoDB=codexqa_mv8nm2yi_905785
+{"timestamp":"2026-10-14T22:00:53.476Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-14T22:00:53.566Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-14T22:00:53.566Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Isolated browser workflow failed: Error Error: Isolated app did not become ready.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-isolated-browser-workflow.mjs:98:21
+Isolated MongoDB browser database removed.
+Isolated PostgreSQL browser database removed.
+
+FAIL (exit 1, 21683ms)
+
+$ npm run test:sort-to-box
+
+> d-mills-global-console@1.0.0 test:sort-to-box
+> node scripts/verify-sort-to-box.mjs
+
+[data] MongoDB selection { selectedDatabase: 'oms_ci_test', maskedHost: null }
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo-connection.js:5
+export const databaseUnavailable = () => Object.assign(new Error('The requested module is temporarily unavailable because its database dependency is unavailable.'), {
+                                                       ^
+
+Error: MONGODB_URI is required when persistent storage is enforced.
+    at databaseUnavailable (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo-connection.js:5:56)
+    at ensureReady (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:178:50)
+    at insertImpl (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:268:9)
+    at insert (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:566:93)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-legacy-fulfillment-write-blocks.mjs:36:7 {
+  status: 503,
+  statusCode: 503,
+  code: 'DATABASE_UNAVAILABLE',
+  database: 'mongodb'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 1080ms)
+
+$ npm run test:stock-lock-cleanup
+
+> d-mills-global-console@1.0.0 test:stock-lock-cleanup
+> node scripts/verify-stock-lock-cleanup.mjs
+
+{"timestamp":"2026-10-14T22:01:16.173Z","event":"stock_lock_release_failed","code":"LOCK_CLEANUP_FAILED"}
+{"timestamp":"2026-10-14T22:01:16.173Z","event":"stock_lock_release_failed","code":"LOCK_CLEANUP_FAILED"}
+{"timestamp":"2026-10-14T22:01:16.173Z","event":"stock_lock_release_failed","code":"LOCK_CLEANUP_FAILED"}
+{"timestamp":"2026-10-14T22:01:16.173Z","event":"stock_lock_release_failed","code":"LOCK_CLEANUP_FAILED"}
+{"timestamp":"2026-10-14T22:01:16.173Z","event":"stock_lock_release_failed","code":"LOCK_CLEANUP_FAILED"}
+PASS: confirmed unlock reuses client, failed/unconfirmed unlock discards client, cleanup preserves success and exact primary failure
+
+PASS (exit 0, 557ms)
+
+$ npm run test:stock-publication-isolated
+
+> d-mills-global-console@1.0.0 test:stock-publication-isolated
+> node scripts/run-isolated-stock-publication.mjs
+
+{"timestamp":"2026-10-14T22:01:17.911Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS isolated Shopify/WooCommerce/Amazon timeout, readback resolution, crash lease hold, mismatch quarantine, mapping lock and no blind resend
+{"timestamp":"2026-10-14T22:01:19.991Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-14T22:01:19.991Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+{"timestamp":"2026-10-14T22:01:20.177Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS inventory publication order and Shopify readback: overlapping sale ends at 495 and drift is corrected
+{"timestamp":"2026-10-14T22:01:21.585Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-14T22:01:21.585Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Owned disposable PostgreSQL removed.
+
+PASS (exit 0, 5624ms)
+
+$ npm run test:store-group
+
+> d-mills-global-console@1.0.0 test:store-group
+> node scripts/verify-store-group.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 599ms)
+
+$ npm run test:tally-configuration
+
+> d-mills-global-console@1.0.0 test:tally-configuration
+> node scripts/verify-tally-configuration.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 504ms)
+
+$ npm run test:tax-application
+
+> d-mills-global-console@1.0.0 test:tax-application
+> node scripts/verify-tax-application.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 529ms)
+
+$ npm run test:tax-application-workflow
+
+> d-mills-global-console@1.0.0 test:tax-application-workflow
+> node scripts/verify-tax-application-workflow.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Tax Application verification requires an isolated administrator.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-tax-application-workflow.mjs:16:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 573ms)
+
+$ npm run test:tax-category
+
+> d-mills-global-console@1.0.0 test:tax-category
+> node scripts/verify-tax-category.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+browserType.launch: Executable doesn't exist at /Users/shreshthagupta/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+    at chromium.launch (/private/tmp/oms-ci-safe-preload.mjs:18:24)
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-tax-category.mjs:1:122
+    at async node:internal/modules/esm/loader:650:26 {
+  log: [],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 483ms)
+
+$ npm run test:tax-category-workflow
+
+> d-mills-global-console@1.0.0 test:tax-category-workflow
+> node scripts/verify-tax-category-workflow.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Tax Category verification requires an isolated administrator.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-tax-category-workflow.mjs:15:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 594ms)
+
+$ npm run test:tax-code
+
+> d-mills-global-console@1.0.0 test:tax-code
+> node scripts/verify-tax-code.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+browserType.launch: Executable doesn't exist at /Users/shreshthagupta/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+    at chromium.launch (/private/tmp/oms-ci-safe-preload.mjs:18:24)
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-tax-code.mjs:1:122
+    at async node:internal/modules/esm/loader:650:26 {
+  log: [],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 491ms)
+
+$ npm run test:tax-code-workflow
+
+> d-mills-global-console@1.0.0 test:tax-code-workflow
+> node scripts/verify-tax-code-workflow.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Tax Code verification requires an isolated administrator.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-tax-code-workflow.mjs:13:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 533ms)
+
+$ npm run test:tax-group
+
+> d-mills-global-console@1.0.0 test:tax-group
+> node scripts/verify-tax-group.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+browserType.launch: Executable doesn't exist at /Users/shreshthagupta/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+    at chromium.launch (/private/tmp/oms-ci-safe-preload.mjs:18:24)
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-tax-group.mjs:1:122
+    at async node:internal/modules/esm/loader:650:26 {
+  log: [],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 477ms)
+
+$ npm run test:tax-group-workflow
+
+> d-mills-global-console@1.0.0 test:tax-group-workflow
+> node scripts/verify-tax-group-workflow.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Tax Group verification requires an isolated administrator.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-tax-group-workflow.mjs:15:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 558ms)
+
+$ npm run test:tax-zone
+
+> d-mills-global-console@1.0.0 test:tax-zone
+> node scripts/verify-tax-zone.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+browserType.launch: Executable doesn't exist at /Users/shreshthagupta/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+    at chromium.launch (/private/tmp/oms-ci-safe-preload.mjs:18:24)
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-tax-zone.mjs:1:122
+    at async node:internal/modules/esm/loader:650:26 {
+  log: [],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 481ms)
+
+$ npm run test:tax-zone-workflow
+
+> d-mills-global-console@1.0.0 test:tax-zone-workflow
+> node scripts/verify-tax-zone-workflow.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Tax Zone verification requires an isolated administrator.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-tax-zone-workflow.mjs:12:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 564ms)
+
+$ npm run test:terms-html-sanitizer
+
+> d-mills-global-console@1.0.0 test:terms-html-sanitizer
+> node scripts/verify-terms-html-sanitizer.mjs
+
+PASS: real browser sanitizer rejects execution payloads while preserving formatting; editor/preview/paste use sanitized HTML.
+
+PASS (exit 0, 3436ms)
+
+$ npm run test:transhipment-integrity
+
+> d-mills-global-console@1.0.0 test:transhipment-integrity
+> node scripts/verify-transhipment.mjs
+
+[data] MongoDB selection { selectedDatabase: 'oms_ci_test', maskedHost: '[masked-host]' }
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-transhipment.mjs:6
+if (process.env.MONGODB_URI) throw new Error('Run this verifier without a configured MongoDB database.');
+                                   ^
+
+Error: Run this verifier without a configured MongoDB database.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-transhipment.mjs:6:36
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 788ms)
+
+$ npm run test:transhipment-old-integrity
+
+> d-mills-global-console@1.0.0 test:transhipment-old-integrity
+> node scripts/verify-transhipment-old.mjs
+
+[data] MongoDB selection { selectedDatabase: 'oms_ci_test', maskedHost: '[masked-host]' }
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-transhipment-old.mjs:6
+if (process.env.MONGODB_URI) throw new Error('Run this verifier without a configured MongoDB database.');
+                                   ^
+
+Error: Run this verifier without a configured MongoDB database.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-transhipment-old.mjs:6:36
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 934ms)
+
+$ npm run test:transporter-enquiry-parity
+
+> d-mills-global-console@1.0.0 test:transporter-enquiry-parity
+> node scripts/verify-transporter-enquiry-parity.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+browserType.launch: Executable doesn't exist at /Users/shreshthagupta/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+    at chromium.launch (/private/tmp/oms-ci-safe-preload.mjs:18:24)
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-transporter-enquiry-parity.mjs:5:32
+    at async node:internal/modules/esm/loader:650:26 {
+  log: [],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 614ms)
+
+$ npm run test:transporter-integrity
+
+> d-mills-global-console@1.0.0 test:transporter-integrity
+> node scripts/verify-transporter-integrity.mjs
+
+[data] MongoDB selection {
+  selectedDatabase: 'codexqa_mv8nmysn_a79bbd',
+  maskedHost: '[masked-host]'
+}
+[data] MongoDB configuration warning {
+  code: 'MONGODB_URI_DATABASE_OVERRIDDEN',
+  message: 'MONGODB_DB overrides a different database path in MONGODB_URI; confirm the selected database deliberately.',
+  selectedDatabase: 'codexqa_mv8nmysn_a79bbd'
+}
+{"timestamp":"2026-10-14T22:01:34.672Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"READY"}
+PASS isolated MongoDB transporter create, search, rename, immutable code/audit, historical courier names, and delete guard.
+Isolated MongoDB test database removed.
+
+PASS (exit 0, 990ms)
+
+$ npm run test:transporter-master
+
+> d-mills-global-console@1.0.0 test:transporter-master
+> node scripts/verify-transporter-master.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+browserType.launch: Executable doesn't exist at /Users/shreshthagupta/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+    at chromium.launch (/private/tmp/oms-ci-safe-preload.mjs:18:24)
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-transporter-master.mjs:10:32
+    at async node:internal/modules/esm/loader:650:26 {
+  log: [],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 502ms)
+
+$ npm run test:transporter-preferences
+
+> d-mills-global-console@1.0.0 test:transporter-preferences
+> node scripts/verify-transporter-preferences.mjs
+
+file:///private/tmp/oms-ci-safe-preload.mjs:12
+ if (!['127.0.0.1','localhost','[::1]'].includes(url.hostname) || [3002,5173,5432,27017].includes(Number(url.port))) throw new Error('Baseline refuses configured service or non-loopback fetch');
+                                                                                                                           ^
+
+Error: Baseline refuses configured service or non-loopback fetch
+    at globalThis.fetch (file:///private/tmp/oms-ci-safe-preload.mjs:12:124)
+    at send (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-transporter-preferences.mjs:1:171)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-transporter-preferences.mjs:1:508
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 1711ms)
+
+$ npm run test:unified-orders
+
+> d-mills-global-console@1.0.0 test:unified-orders
+> node scripts/verify-unified-orders.mjs
+
+{"timestamp":"2026-10-14T22:01:38.200Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-14T22:01:40.291Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-14T22:01:40.292Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
++ actual - expected
+
++ 'Review order; wait for stock reservation'
+- 'Check stock in D-Mills'
+
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-unified-orders.mjs:51:152
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 'Review order; wait for stock reservation',
+  expected: 'Check stock in D-Mills',
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 3112ms)
+
+$ npm run test:unified-orders-isolated
+
+> d-mills-global-console@1.0.0 test:unified-orders-isolated
+> node scripts/run-isolated-unified-orders.mjs
+
+{"timestamp":"2026-10-14T22:01:43.129Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-14T22:01:45.321Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-14T22:01:45.322Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
++ actual - expected
+
++ 'Review order; wait for stock reservation'
+- 'Check stock in D-Mills'
+
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-unified-orders.mjs:51:152
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 'Review order; wait for stock reservation',
+  expected: 'Check stock in D-Mills',
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+Isolated unified-orders PostgreSQL database removed.
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/run-isolated-unified-orders.mjs:35
+  if (code !== 0) failure = new Error(`Unified-order verifier exited with ${code ?? signal}.`);
+                            ^
+
+Error: Unified-order verifier exited with 1.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/run-isolated-unified-orders.mjs:35:29
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 5103ms)
+
+$ npm run test:validation-master-inputs
+
+> d-mills-global-console@1.0.0 test:validation-master-inputs
+> node scripts/verify-validation-master-inputs.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS: malformed default flags and PUT identities reject without changes; valid explicit update persists.
+
+PASS (exit 0, 684ms)
+
+$ npm run test:vendor-enquiry-parity
+
+> d-mills-global-console@1.0.0 test:vendor-enquiry-parity
+> node scripts/verify-vendor-enquiry-parity.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+browserType.launch: Executable doesn't exist at /Users/shreshthagupta/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+    at chromium.launch (/private/tmp/oms-ci-safe-preload.mjs:18:24)
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-vendor-enquiry-parity.mjs:5:32
+    at async node:internal/modules/esm/loader:650:26 {
+  log: [],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 549ms)
+
+$ npm run test:vendor-integrity
+
+> d-mills-global-console@1.0.0 test:vendor-integrity
+> node scripts/verify-vendor-integrity.mjs
+
+[data] MongoDB selection {
+  selectedDatabase: 'codexqa_mv8nn8hh_72184c',
+  maskedHost: '[masked-host]'
+}
+[data] MongoDB configuration warning {
+  code: 'MONGODB_URI_DATABASE_OVERRIDDEN',
+  message: 'MONGODB_DB overrides a different database path in MONGODB_URI; confirm the selected database deliberately.',
+  selectedDatabase: 'codexqa_mv8nn8hh_72184c'
+}
+{"timestamp":"2026-10-14T22:01:47.222Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"READY"}
+PASS isolated MongoDB vendor create, rename, audit actor, immutable code, duplicate guard, and PO/GRN historical names.
+Isolated MongoDB test database removed.
+
+PASS (exit 0, 877ms)
+
+$ npm run test:vendor-master
+
+> d-mills-global-console@1.0.0 test:vendor-master
+> node scripts/verify-vendor-master.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+browserType.launch: Executable doesn't exist at /Users/shreshthagupta/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+    at chromium.launch (/private/tmp/oms-ci-safe-preload.mjs:18:24)
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-vendor-master.mjs:12:32
+    at async node:internal/modules/esm/loader:650:26 {
+  log: [],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 489ms)
+
+$ npm run test:vendor-promotions
+
+> d-mills-global-console@1.0.0 test:vendor-promotions
+> node scripts/verify-vendor-promotions.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+browserType.launch: Executable doesn't exist at /Users/shreshthagupta/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+    at chromium.launch (/private/tmp/oms-ci-safe-preload.mjs:18:24)
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-vendor-promotions.mjs:4:32
+    at async node:internal/modules/esm/loader:650:26 {
+  log: [],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 455ms)
+
+$ npm run test:vendor-sku-catalog
+
+> d-mills-global-console@1.0.0 test:vendor-sku-catalog
+> node scripts/verify-vendor-sku-catalog.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Vendor SKU Catalog verification requires a signed-in isolated administrator.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-vendor-sku-catalog.mjs:14:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 1608ms)
+
+$ npm run test:vendor-sku-loc-catalog
+
+> d-mills-global-console@1.0.0 test:vendor-sku-loc-catalog
+> node scripts/verify-vendor-sku-loc-catalog.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Vendor SKU Location Catalog verification requires a signed-in isolated administrator.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-vendor-sku-loc-catalog.mjs:18:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 586ms)
+
+$ npm run test:voucher-guard
+
+> d-mills-global-console@1.0.0 test:voucher-guard
+> ISOLATED_BROWSER_FOCUS=vouchers node scripts/verify-isolated-browser-workflow.mjs
+
+Generated isolated database names: PostgreSQL=codexqa_mv8nnbnl_74a722, MongoDB=codexqa_mv8nnbnl_74a722
+{"timestamp":"2026-10-14T22:01:51.423Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-14T22:01:51.560Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-14T22:01:51.560Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Isolated browser workflow failed: Error Error: Isolated app did not become ready.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-isolated-browser-workflow.mjs:98:21
+Isolated MongoDB browser database removed.
+Isolated PostgreSQL browser database removed.
+
+FAIL (exit 1, 21591ms)
+
+$ npm run test:whatsapp-total-deadline
+
+> d-mills-global-console@1.0.0 test:whatsapp-total-deadline
+> node scripts/verify-whatsapp-total-deadline.mjs
+
+PASS: slow-drip response hits total deadline and destroys request; stalled DNS rejects before dispatch.
+
+PASS (exit 0, 879ms)
+
+$ npm run test:wms-dedicated-menu-routing
+
+> d-mills-global-console@1.0.0 test:wms-dedicated-menu-routing
+> node scripts/verify-wms-dedicated-menu-routing.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+browserType.launch: Executable doesn't exist at /Users/shreshthagupta/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+    at chromium.launch (/private/tmp/oms-ci-safe-preload.mjs:18:24)
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-wms-dedicated-menu-routing.mjs:28:32
+    at async node:internal/modules/esm/loader:650:26 {
+  log: [],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 516ms)
+
+$ npm run test:wms-zone
+
+> d-mills-global-console@1.0.0 test:wms-zone
+> node scripts/verify-wms-zone.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 536ms)
+
+$ npm run test:workbook-inspector
+
+> d-mills-global-console@1.0.0 test:workbook-inspector
+> node scripts/verify-workbook-inspector.mjs
+
+PASS structural workbook inspection, data-row redaction and 50,000-row limit
+
+PASS (exit 0, 2687ms)
+
+$ npm run test:zone-picker-csv
+
+> d-mills-global-console@1.0.0 test:zone-picker-csv
+> node scripts/verify-zone-picker-csv.mjs
+
+PASS zone-picker CSV parser: quoted fields, malformed/duplicate/oversized files and one-request batch outcome messaging
+
+PASS (exit 0, 552ms)
+
+$ npm run test:zone-picker-mutation
+
+> d-mills-global-console@1.0.0 test:zone-picker-mutation
+> node scripts/verify-zone-picker-mutation.mjs
+
+[data] MongoDB selection { selectedDatabase: 'zone_picker_test', maskedHost: null }
+PASS zone-picker mutation: server validation, single-zone atomic guards and all-or-error memory batch
+
+PASS (exit 0, 582ms)

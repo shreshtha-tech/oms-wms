@@ -13,7 +13,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  checks:
+  hermetic:
     runs-on: ubuntu-24.04
     timeout-minutes: 120
     services:
@@ -28,18 +28,70 @@ jobs:
         options: >-
           --health-cmd "pg_isready -U postgres -d oms_ci_test"
           --health-interval 5s --health-timeout 5s --health-retries 20
-      mongo:
-        image: mongo:7
+    env:
+      NODE_ENV: test
+      DMILLS_SKIP_DOTENV: 'true'
+      INVENTORY_DATABASE_URL: postgresql://postgres:ci_disposable@127.0.0.1:5432/oms_ci_test
+      INVENTORY_DB_SSL: 'false'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Install owned PostgreSQL runner binaries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-16
+          echo "PG_BIN=/usr/lib/postgresql/16/bin" >> "$GITHUB_ENV"
+          echo "/usr/lib/postgresql/16/bin" >> "$GITHUB_PATH"
+      - name: Migrate disposable service database
+        run: npm run inventory:migrate
+      - name: TypeScript
+        run: npm run typecheck
+      - name: Build
+        run: npm run build
+      - name: Isolated SKU server contracts
+        run: |
+          node scripts/verify-sku-import-provenance.mjs
+          node scripts/verify-sku-import-integrity.mjs
+      - name: Migration history and recovery on owned PostgreSQL
+        run: node scripts/verify-migration-history.mjs
+      - name: Run required tier and report quarantined tests
+        run: node scripts/run-ci-tests.mjs --job=hermetic --tier=required --output=artifacts/ci-hermetic-results.json
+      - name: Retain complete test outcomes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-hermetic-test-results
+          path: artifacts/ci-hermetic-results.json
+          if-no-files-found: error
+
+  mongo:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ci_disposable
+          POSTGRES_DB: oms_ci_test
         ports:
-          - 27017:27017
+          - 5432:5432
         options: >-
-          --health-cmd "mongosh --quiet --eval 'db.adminCommand({ping:1})'"
+          --health-cmd "pg_isready -U postgres -d oms_ci_test"
           --health-interval 5s --health-timeout 5s --health-retries 20
     env:
       NODE_ENV: test
+      DMILLS_SKIP_DOTENV: 'true'
       INVENTORY_DATABASE_URL: postgresql://postgres:ci_disposable@127.0.0.1:5432/oms_ci_test
       INVENTORY_DB_SSL: 'false'
-      MONGODB_URI: mongodb://127.0.0.1:27017/oms_ci_test
+      MONGODB_URI: mongodb://127.0.0.1:27017/oms_ci_test?replicaSet=rs0&directConnection=true
       MONGODB_DB: oms_ci_test
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -51,32 +103,116 @@ jobs:
           cache: npm
       - name: Install locked dependencies
         run: npm ci
-      - name: TypeScript
-        run: npm run typecheck
-      - name: Build
-        run: npm run build
+      - name: Install owned PostgreSQL runner binaries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-16
+          echo "PG_BIN=/usr/lib/postgresql/16/bin" >> "$GITHUB_ENV"
+          echo "/usr/lib/postgresql/16/bin" >> "$GITHUB_PATH"
       - name: Migrate disposable service database
         run: npm run inventory:migrate
-      - name: Isolated SKU server contracts
-        run: |
-          node scripts/verify-sku-import-provenance.mjs
-          node scripts/verify-sku-import-integrity.mjs
-      - name: Migration history and recovery on owned PostgreSQL
+      - name: Start MongoDB 7 replica set
         shell: bash
         run: |
-          pg_initdb="$(rg --files /usr/lib/postgresql -g initdb | sort -V | tail -n 1)"
-          test -n "$pg_initdb"
-          export PG_BIN_DIR="$(dirname "$pg_initdb")"
-          test -x "$PG_BIN_DIR/postgres"
-          node scripts/verify-migration-history.mjs
-      - name: Install test browser
-        run: npm exec -- playwright install --with-deps chromium
-      - name: Run every registered test script
-        run: node scripts/run-ci-tests.mjs
+          docker run -d --name mongo -p 27017:27017 mongo:7 --replSet rs0 --bind_ip_all
+          ready=false
+          for attempt in $(seq 1 90); do
+            if docker exec mongo mongosh --quiet --eval 'try{rs.status().ok}catch(e){rs.initiate().ok}' | rg -q '^1$'; then
+              if docker exec mongo mongosh --quiet --eval 'db.hello().isWritablePrimary' | rg -q '^true$'; then
+                ready=true
+                break
+              fi
+            fi
+            sleep 1
+          done
+          test "$ready" = true
+          mkdir -p "$RUNNER_TEMP/mongodb-bin"
+          docker cp mongo:/usr/bin/mongod "$RUNNER_TEMP/mongodb-bin/mongod"
+          chmod +x "$RUNNER_TEMP/mongodb-bin/mongod"
+          "$RUNNER_TEMP/mongodb-bin/mongod" --version
+          echo "MONGOD_BIN=$RUNNER_TEMP/mongodb-bin/mongod" >> "$GITHUB_ENV"
+          echo "$RUNNER_TEMP/mongodb-bin" >> "$GITHUB_PATH"
+      - name: Run required tier and report quarantined tests
+        run: node scripts/run-ci-tests.mjs --job=mongo --tier=required --output=artifacts/ci-mongo-results.json
       - name: Retain complete test outcomes
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: ci-test-results
-          path: artifacts/ci-test-results.json
-          if-no-files-found: warn
+          name: ci-mongo-test-results
+          path: artifacts/ci-mongo-results.json
+          if-no-files-found: error
+
+  browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ci_disposable
+          POSTGRES_DB: oms_ci_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d oms_ci_test"
+          --health-interval 5s --health-timeout 5s --health-retries 20
+    env:
+      NODE_ENV: test
+      DMILLS_SKIP_DOTENV: 'true'
+      INVENTORY_DATABASE_URL: postgresql://postgres:ci_disposable@127.0.0.1:5432/oms_ci_test
+      INVENTORY_DB_SSL: 'false'
+      MONGODB_URI: mongodb://127.0.0.1:27017/oms_ci_test?replicaSet=rs0&directConnection=true
+      MONGODB_DB: oms_ci_test
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Install owned PostgreSQL runner binaries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-16
+          echo "PG_BIN=/usr/lib/postgresql/16/bin" >> "$GITHUB_ENV"
+          echo "/usr/lib/postgresql/16/bin" >> "$GITHUB_PATH"
+      - name: Migrate disposable service database
+        run: npm run inventory:migrate
+      - name: Start MongoDB 7 replica set
+        shell: bash
+        run: |
+          docker run -d --name mongo -p 27017:27017 mongo:7 --replSet rs0 --bind_ip_all
+          ready=false
+          for attempt in $(seq 1 90); do
+            if docker exec mongo mongosh --quiet --eval 'try{rs.status().ok}catch(e){rs.initiate().ok}' | rg -q '^1$'; then
+              if docker exec mongo mongosh --quiet --eval 'db.hello().isWritablePrimary' | rg -q '^true$'; then
+                ready=true
+                break
+              fi
+            fi
+            sleep 1
+          done
+          test "$ready" = true
+          mkdir -p "$RUNNER_TEMP/mongodb-bin"
+          docker cp mongo:/usr/bin/mongod "$RUNNER_TEMP/mongodb-bin/mongod"
+          chmod +x "$RUNNER_TEMP/mongodb-bin/mongod"
+          "$RUNNER_TEMP/mongodb-bin/mongod" --version
+          echo "MONGOD_BIN=$RUNNER_TEMP/mongodb-bin/mongod" >> "$GITHUB_ENV"
+          echo "$RUNNER_TEMP/mongodb-bin" >> "$GITHUB_PATH"
+      - name: Build browser app
+        run: npm run build
+      - name: Install test browser
+        run: npm exec -- playwright install --with-deps chromium
+      - name: Run required tier and report quarantined tests
+        run: node scripts/run-ci-tests.mjs --job=browser --tier=required --output=artifacts/ci-browser-results.json
+      - name: Retain complete test outcomes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-browser-test-results
+          path: artifacts/ci-browser-results.json
+          if-no-files-found: error

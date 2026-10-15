@@ -4,6 +4,6 @@ import dotenv from 'dotenv';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-if (!globalThis[Symbol.for('dmills.isolated.test')]) {
+if (process.env.DMILLS_SKIP_DOTENV !== 'true' && !globalThis[Symbol.for('dmills.isolated.test')]) {
   dotenv.config({ path: path.join(path.dirname(fileURLToPath(import.meta.url)), '.env') });
 }

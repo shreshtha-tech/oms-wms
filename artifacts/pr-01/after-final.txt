@@ -1,0 +1,4004 @@
+
+$ npm run inventory:migrate
+
+> d-mills-global-console@1.0.0 inventory:migrate
+> node scripts/inventory-migrate.mjs
+
+{"timestamp":"2026-10-15T02:14:51.027Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-15T02:14:51.141Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:14:51.141Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Central inventory migration applied
+
+PASS (exit 0, 777ms)
+
+$ npm run test:admin-api-key-projection
+
+> d-mills-global-console@1.0.0 test:admin-api-key-projection
+> node scripts/verify-admin-api-key-projection.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Admin API-key projection: both list/catalog expose only UI fields and redact top-level/nested unknown secrets without rewriting storage.
+
+PASS (exit 0, 534ms)
+
+$ npm run test:admin-create-identity
+
+> d-mills-global-console@1.0.0 test:admin-create-identity
+> node scripts/verify-admin-create-identity.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Admin create identity: id-zero form obtains a server ID, API key stays masked, caller-chosen identities and malformed bodies create no record.
+
+PASS (exit 0, 515ms)
+
+$ npm run test:admin-csv-boundary
+
+> d-mills-global-console@1.0.0 test:admin-csv-boundary
+> node scripts/verify-admin-csv-boundary.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Admin CSV boundary: formula-leading values and headers are inert after CSV parsing; quotes/newlines round-trip through the report handler.
+
+PASS (exit 0, 541ms)
+
+$ npm run test:ajio-integrity
+
+> d-mills-global-console@1.0.0 test:ajio-integrity
+> node scripts/verify-ajio-api.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS AJIO: blank config reads are side-effect free, credentials are not stored, local SKU mappings show no feed success, and every provider-dependent action returns 503 without creating fulfillment artifacts.
+
+PASS (exit 0, 533ms)
+
+$ npm run test:allocation-strategies
+
+> d-mills-global-console@1.0.0 test:allocation-strategies
+> node scripts/verify-allocation-strategies.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 469ms)
+
+$ npm run test:amazon-location-discovery
+
+> d-mills-global-console@1.0.0 test:amazon-location-discovery
+> node scripts/verify-amazon-location-discovery.mjs
+
+PASS Amazon MFN location discovery uses only unique fulfillment-channel codes returned for the verified seller SKU.
+
+PASS (exit 0, 466ms)
+
+$ npm run test:amazon-mfn-integrity
+
+> d-mills-global-console@1.0.0 test:amazon-mfn-integrity
+> node scripts/verify-amazon-mfn-api.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Amazon MFN: new secrets are not stored, legacy secrets are redacted and flagged, config saves as connector-not-configured, and provider operations return 503 without simulated artifacts.
+
+PASS (exit 0, 513ms)
+
+$ npm run test:api-outcome-boundary
+
+> d-mills-global-console@1.0.0 test:api-outcome-boundary
+> node scripts/verify-api-outcome-boundary.mjs
+
+PASS: mutation response loss, timeout, malformed success, explicit conflict, read retry and in-flight deduplication
+
+PASS (exit 0, 686ms)
+
+$ npm run test:ars-execution-log
+
+> d-mills-global-console@1.0.0 test:ars-execution-log
+> node scripts/verify-ars-execution-log.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: ARS Execution Log verification requires a signed-in isolated administrator.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-ars-execution-log.mjs:13:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 491ms)
+
+$ npm run test:ars-integrity
+
+> d-mills-global-console@1.0.0 test:ars-integrity
+> node scripts/verify-ars-integrity.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS ARS: run cannot create duplicate or sales-history-derived POs; fake export and log processing create no records or status changes.
+
+PASS (exit 0, 547ms)
+
+$ npm run test:ars-rules
+
+> d-mills-global-console@1.0.0 test:ars-rules
+> node scripts/verify-ars-rules.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: ARS Rules verification requires a signed-in isolated administrator.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-ars-rules.mjs:10:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 507ms)
+
+$ npm run test:ars-settings
+
+> d-mills-global-console@1.0.0 test:ars-settings
+> node scripts/verify-ars-settings.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: ARS Settings verification requires a signed-in isolated administrator.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-ars-settings.mjs:10:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 527ms)
+
+$ npm run test:ars-sku-location
+
+> d-mills-global-console@1.0.0 test:ars-sku-location
+> node scripts/verify-ars-sku-location.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: ARS SKU-Location verification requires a signed-in isolated administrator.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-ars-sku-location.mjs:13:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 527ms)
+
+$ npm run test:attribute-set
+
+> d-mills-global-console@1.0.0 test:attribute-set
+> node scripts/verify-attribute-set.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Attribute Set verification requires an isolated signed-in administrator.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-attribute-set.mjs:14:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 507ms)
+
+$ npm run test:auth-refresh-browser
+
+> d-mills-global-console@1.0.0 test:auth-refresh-browser
+> node scripts/verify-auth-refresh-browser.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.evaluate: TypeError: Failed to fetch dynamically imported module: http://127.0.0.1:5173/@react-refresh
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-auth-refresh-browser.mjs:17:14 {
+  log: []
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 3014ms)
+
+$ npm run test:auth-refresh-race
+
+> d-mills-global-console@1.0.0 test:auth-refresh-race
+> node scripts/verify-auth-refresh-race.mjs
+
+PASS: actual AuthProvider fences stale refresh/login and keeps failed or uncertain sign-out visible until server acknowledgement
+
+PASS (exit 0, 816ms)
+
+$ npm run test:back-order-integrity
+
+> d-mills-global-console@1.0.0 test:back-order-integrity
+> node scripts/verify-back-order-integrity.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Back Orders: planning edits are constrained, old stock is hidden, filters work, and duplicate/phantom PO paths create no records.
+
+PASS (exit 0, 543ms)
+
+$ npm run test:backup-line-boundary
+
+> d-mills-global-console@1.0.0 test:backup-line-boundary
+> node scripts/verify-backup-line-boundary.mjs
+
+PASS: backup line byte cap before decode, chunked UTF-8, CRLF/empty/final lines, exact boundary, invalid encoding and upstream cleanup
+
+PASS (exit 0, 480ms)
+
+$ npm run test:balance-read-boundary
+
+> d-mills-global-console@1.0.0 test:balance-read-boundary
+> node scripts/verify-balance-read-boundary.mjs
+
+PASS: tenant-scoped SQL limit, complete 10,000-row response, excess/UTF-8 byte rejection, original query failure preserved.
+
+PASS (exit 0, 481ms)
+
+$ npm run test:bin-audit
+
+> d-mills-global-console@1.0.0 test:bin-audit
+> node scripts/verify-bin-audit.mjs
+
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/lib/ci-isolation-preload.mjs:13
+ if (!['127.0.0.1','localhost','[::1]'].includes(url.hostname) || [3002,5173,5432,27017].includes(Number(url.port))) throw new Error('Baseline refuses configured service or non-loopback fetch');
+                                                                                                                           ^
+
+Error: Baseline refuses configured service or non-loopback fetch
+    at globalThis.fetch (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/lib/ci-isolation-preload.mjs:13:124)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-bin-audit.mjs:11:21
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 469ms)
+
+$ npm run test:bin-editor
+
+> d-mills-global-console@1.0.0 test:bin-editor
+> node scripts/verify-bin-editor.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 476ms)
+
+$ npm run test:bin-enquiry
+
+> d-mills-global-console@1.0.0 test:bin-enquiry
+> node scripts/verify-bin-enquiry.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 480ms)
+
+$ npm run test:browser-csv-boundary
+
+> d-mills-global-console@1.0.0 test:browser-csv-boundary
+> node scripts/verify-browser-csv-boundary.mjs
+
+PASS browser CSV boundary: actual TypeScript serializer guards formulas, quotes/newlines and UTF-8/row/column size; seven inspected exports integrate it.
+
+PASS (exit 0, 562ms)
+
+$ npm run test:bulk-lottables
+
+> d-mills-global-console@1.0.0 test:bulk-lottables
+> node scripts/verify-bulk-lottables.mjs
+
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/lib/ci-isolation-preload.mjs:13
+ if (!['127.0.0.1','localhost','[::1]'].includes(url.hostname) || [3002,5173,5432,27017].includes(Number(url.port))) throw new Error('Baseline refuses configured service or non-loopback fetch');
+                                                                                                                           ^
+
+Error: Baseline refuses configured service or non-loopback fetch
+    at globalThis.fetch (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/lib/ci-isolation-preload.mjs:13:124)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-bulk-lottables.mjs:1:343
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 463ms)
+
+$ npm run test:bulk-order-update
+
+> d-mills-global-console@1.0.0 test:bulk-order-update
+> node scripts/verify-bulk-order-update.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS legacy fulfillment safety: allocation/unallocation/cancellation, labels, provider acknowledgement, CEWB, dispatch checkpoint, shipment lifecycle, manifest dispatch transitions, pick, pack, sort, delivery split, and bulk status updates fail closed; local draft metadata stays labeled; priority-only metadata remains editable; screens disclose unavailable actions.
+
+PASS (exit 0, 552ms)
+
+$ npm run test:category-buyers
+
+> d-mills-global-console@1.0.0 test:category-buyers
+> node scripts/verify-category-buyers.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+
+  D-Mills Global server running on http://localhost:3024 / http://<your-ip>:3024
+
+{"timestamp":"2026-10-15T02:15:07.873Z","event":"http_request","request_id":"33b0bff5-3841-4fef-b244-a6451d75b400","method":"GET","route":"/api/auth/session","status":200,"duration_ms":3}
+{"timestamp":"2026-10-15T02:15:08.508Z","event":"http_request","request_id":"b0005558-e3d4-4b83-b9c7-04be18a79d37","method":"GET","route":"/^(?!\\/api).*/","status":200,"duration_ms":3}
+{"timestamp":"2026-10-15T02:15:08.535Z","event":"http_request","request_id":"788c69fc-ad8a-40a7-9360-086a824d3b60","method":"GET","route":"/static","status":200,"duration_ms":3}
+{"timestamp":"2026-10-15T02:15:08.536Z","event":"http_request","request_id":"ae006080-a81d-40b0-bf43-3bbf88bb0391","method":"GET","route":"/static","status":200,"duration_ms":7}
+{"timestamp":"2026-10-15T02:15:08.601Z","event":"http_request","request_id":"ed3b890a-e49d-470a-a797-2c46f99c9601","method":"GET","route":"/api/auth/session","status":200,"duration_ms":1}
+{"timestamp":"2026-10-15T02:15:09.175Z","event":"database_state","request_id":"8097d0e8-377a-4da7-b368-ff6642bae30b","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-15T02:15:09.221Z","event":"http_request","request_id":"8097d0e8-377a-4da7-b368-ff6642bae30b","method":"POST","route":"/api/auth/login","status":200,"duration_ms":78}
+{"timestamp":"2026-10-15T02:15:09.230Z","event":"http_request","request_id":"c2014979-8726-42cb-b325-3061ed3e92cc","method":"GET","route":"/static","status":503,"duration_ms":1,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:15:09.231Z","event":"http_request","request_id":"a89d2f42-d570-48f6-959f-7aff8334d15f","method":"GET","route":"/^(?!\\/api).*/","status":200,"duration_ms":3}
+{"timestamp":"2026-10-15T02:15:09.237Z","event":"http_request","request_id":"b9e8f4bc-7bde-4899-95ee-e34a04f6c90e","method":"GET","route":"/static","status":200,"duration_ms":1}
+{"timestamp":"2026-10-15T02:15:09.238Z","event":"http_request","request_id":"151ace17-3979-4f76-b9fb-cbeb8fdab326","method":"GET","route":"/static","status":200,"duration_ms":2}
+{"timestamp":"2026-10-15T02:15:09.249Z","event":"http_request","request_id":"fc1aa34f-103a-4a89-8ed5-c138f845985d","method":"GET","route":"/api/auth/session","status":200,"duration_ms":1}
+{"timestamp":"2026-10-15T02:15:09.258Z","event":"http_request","request_id":"1f8d366c-b404-4f58-a824-8d398707469c","method":"GET","route":"/static","status":200,"duration_ms":2}
+{"timestamp":"2026-10-15T02:15:09.259Z","event":"http_request","request_id":"01c72390-5cca-4b42-9853-d0f1d94223d4","method":"GET","route":"/static","status":200,"duration_ms":2}
+{"timestamp":"2026-10-15T02:15:09.260Z","event":"http_request","request_id":"f3647d71-2a40-4ee2-807e-a6595019dd69","method":"GET","route":"/static","status":200,"duration_ms":2}
+{"timestamp":"2026-10-15T02:15:09.260Z","event":"http_request","request_id":"e7e0c6f0-7013-4581-90ca-a71b30012e0e","method":"GET","route":"/static","status":503,"duration_ms":1,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:15:09.261Z","event":"http_request","request_id":"7930aefd-c42e-46de-a4d5-5928701e1957","method":"GET","route":"/static","status":200,"duration_ms":3}
+{"timestamp":"2026-10-15T02:15:09.262Z","event":"http_request","request_id":"b708be30-404f-4ba9-b0c4-4c7ee855da07","method":"GET","route":"/static","status":200,"duration_ms":3}
+{"timestamp":"2026-10-15T02:15:09.263Z","event":"http_request","request_id":"22b9dc36-d7e5-432b-b7c2-5348579ab76c","method":"GET","route":"/static","status":200,"duration_ms":2}
+{"timestamp":"2026-10-15T02:15:09.566Z","event":"http_request","request_id":"b014b5e5-fffd-45bc-9f78-8dddaa23c907","method":"GET","route":"/static","status":503,"duration_ms":1,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:15:09.888Z","event":"http_request","request_id":"21a1c034-9b34-454c-a9cb-de1eef1ffe50","method":"GET","route":"/api/merch-hierarchy","status":200,"duration_ms":2,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:15:09.891Z","event":"http_request","request_id":"4561d59a-5fb7-4cf3-ba21-aae85039b5b7","method":"GET","route":"/api/locations","status":200,"duration_ms":3,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:15:09.893Z","event":"http_request","request_id":"55f05590-4242-4690-9d9a-9da176cf4aa5","method":"POST","route":"/api/categoryBuyerSearch","status":200,"duration_ms":4,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:15:09.897Z","event":"http_request","request_id":"8a442cd2-e8ef-41ed-aca6-87548f73e526","method":"GET","route":"/api/merch-hierarchy","status":200,"duration_ms":1,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:15:09.898Z","event":"http_request","request_id":"f50d15ed-5d4e-4b57-9c02-db24e15b83df","method":"GET","route":"/api/locations","status":200,"duration_ms":2,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:15:09.903Z","event":"http_request","request_id":"bff30f8f-4094-4bb7-a65c-7cd69ea255e1","method":"POST","route":"/api/categoryBuyerSearch","status":200,"duration_ms":6,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:15:10.402Z","event":"http_request","request_id":"5de41a53-5b3d-443d-a9c5-d946833b9c4e","method":"POST","route":"/api/catBuyerSaveBS","status":201,"duration_ms":13,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:15:10.458Z","event":"http_request","request_id":"93b185a9-712a-427d-a412-26c84e991dba","method":"POST","route":"/api/categoryBuyerSearch","status":200,"duration_ms":25,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:15:10.463Z","event":"http_request","request_id":"bdba0042-cd5b-44ec-9736-e8b060bae06d","method":"POST","route":"/api/categoryBuyerSearch","status":200,"duration_ms":1,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:15:10.466Z","event":"http_request","request_id":"f6066076-a65b-448c-8e85-b3b604a3a4fd","method":"POST","route":"/api/catBuyerSaveBS","status":400,"duration_ms":1,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:15:10.485Z","event":"http_request","request_id":"4a98acad-7ab3-45e7-9a81-f3c590e074bc","method":"GET","route":"/^(?!\\/api).*/","status":200,"duration_ms":1}
+{"timestamp":"2026-10-15T02:15:10.499Z","event":"http_request","request_id":"c1742ec6-2f1d-41f4-a395-413453af660a","method":"GET","route":"/static","status":200,"duration_ms":1}
+{"timestamp":"2026-10-15T02:15:10.500Z","event":"http_request","request_id":"d7c0d48f-de9f-48bb-844b-205c1400051c","method":"GET","route":"/static","status":200,"duration_ms":1}
+{"timestamp":"2026-10-15T02:15:10.511Z","event":"http_request","request_id":"8a3b8e9c-4508-4fbb-9c37-b3480410fcec","method":"GET","route":"/api/auth/session","status":200,"duration_ms":1}
+{"timestamp":"2026-10-15T02:15:10.519Z","event":"http_request","request_id":"b27e7a9a-5e4c-4a1a-9663-bf9500b42014","method":"GET","route":"/static","status":200,"duration_ms":1}
+{"timestamp":"2026-10-15T02:15:10.519Z","event":"http_request","request_id":"2cf1dd65-04ff-4f70-b9f6-3d18baff2c99","method":"GET","route":"/static","status":200,"duration_ms":1}
+{"timestamp":"2026-10-15T02:15:10.520Z","event":"http_request","request_id":"b2f08066-bbf7-49fa-a354-4971ea791e2d","method":"GET","route":"/static","status":200,"duration_ms":1}
+{"timestamp":"2026-10-15T02:15:10.520Z","event":"http_request","request_id":"6c42c1dc-712d-4f95-ac37-79df31d70f7f","method":"GET","route":"/static","status":200,"duration_ms":2}
+{"timestamp":"2026-10-15T02:15:10.520Z","event":"http_request","request_id":"037cf701-ddc5-47ee-9cfd-ae1adad9c83e","method":"GET","route":"/static","status":200,"duration_ms":2}
+{"timestamp":"2026-10-15T02:15:10.521Z","event":"http_request","request_id":"096f1e74-549a-4106-9322-b4bfb560d394","method":"GET","route":"/static","status":200,"duration_ms":2}
+{"timestamp":"2026-10-15T02:15:10.522Z","event":"http_request","request_id":"0d846f0c-3891-4f8f-948f-6195c5ee6462","method":"GET","route":"/static","status":503,"duration_ms":1,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:15:10.836Z","event":"http_request","request_id":"df2b3cfb-08c6-447c-aec2-6eb8380eccc5","method":"GET","route":"/static","status":503,"duration_ms":3,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:15:10.837Z","event":"http_request","request_id":"7fd92acb-610e-4a04-a014-48876e4b7a4c","method":"GET","route":"/api/merch-hierarchy","status":200,"duration_ms":4,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:15:10.839Z","event":"http_request","request_id":"91ee1007-2a9c-4dd7-9372-59d92e330900","method":"GET","route":"/api/locations","status":200,"duration_ms":5,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:15:10.844Z","event":"http_request","request_id":"10e822b2-b19a-4337-a83b-d0d2f2b83c6f","method":"POST","route":"/api/categoryBuyerSearch","status":200,"duration_ms":10,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:15:10.845Z","event":"http_request","request_id":"49f7424f-7e9d-4cbe-8cfd-6cf6f42e1c00","method":"GET","route":"/api/merch-hierarchy","status":200,"duration_ms":2,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:15:10.846Z","event":"http_request","request_id":"c799a098-7723-46fe-9e7d-81a7f292cd3f","method":"GET","route":"/api/locations","status":200,"duration_ms":3,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:15:10.846Z","event":"http_request","request_id":"f74d5451-2d31-4469-a8bf-5ef6880b54b3","method":"POST","route":"/api/categoryBuyerSearch","status":200,"duration_ms":3,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:15:11.370Z","event":"http_request","request_id":"240b387a-4a25-4528-9167-83bf5400443a","method":"POST","route":"/api/catBuyerSaveBS","status":200,"duration_ms":1,"operator_id":"buyercheck"}
+{"timestamp":"2026-10-15T02:15:11.371Z","event":"http_request","request_id":"89607cb2-5736-47e6-8f1a-e8fa9b322973","method":"GET","route":"/api/category-buyers","status":200,"duration_ms":0,"operator_id":"buyercheck"}
+PASS Category Buyers: empty configured locations, create without copied warehouse, configured location validation and edit persistence
+
+PASS (exit 0, 4555ms)
+
+$ npm run test:central-inventory
+
+> d-mills-global-console@1.0.0 test:central-inventory
+> node scripts/verify-central-inventory.mjs
+
+{"timestamp":"2026-10-15T02:15:12.131Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS central inventory: ledger concurrency, reservations, immutable event, HMAC, Shopify mutation, encryption, Shopify/Amazon order lifecycle and replay
+{"timestamp":"2026-10-15T02:15:12.783Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:15:12.783Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+
+PASS (exit 0, 1372ms)
+
+$ npm run test:central-inventory-api
+
+> d-mills-global-console@1.0.0 test:central-inventory-api
+> node scripts/verify-central-inventory-api.mjs
+
+{"timestamp":"2026-10-15T02:15:13.432Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS central inventory API: SKU/location, unverified count rejection, existing-basis count, idempotency, adjustment, threshold alert and recovery
+{"timestamp":"2026-10-15T02:15:13.525Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:15:13.526Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+
+PASS (exit 0, 744ms)
+
+$ npm run test:central-inventory-files
+
+> d-mills-global-console@1.0.0 test:central-inventory-files
+> node scripts/run-owned-inventory-files.mjs
+
+{"timestamp":"2026-10-15T02:15:14.922Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS template and mapped-workbook SKU counts, exact SKU update, mapping digest, permission enforcement, idempotency, stale preview rejection, duplicate/negative/formula rejection, tenant isolation, alert lifecycle, Excel roundtrip, PDF and dashboard totals
+{"timestamp":"2026-10-15T02:15:15.363Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:15:15.363Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Owned disposable PostgreSQL removed.
+
+PASS (exit 0, 1968ms)
+
+$ npm run test:central-inventory-ui
+
+> d-mills-global-console@1.0.0 test:central-inventory-ui
+> node scripts/run-owned-central-inventory-ui.mjs
+
+{"timestamp":"2026-10-15T02:15:17.015Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS authenticated UI: exact mapped SKU count preview/commit, stock adjustment and threshold, real downloads, reload persistence, dashboard totals, 6 sections at 4 viewport sizes and preferences dialog
+{"timestamp":"2026-10-15T02:15:24.355Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:15:24.356Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Owned disposable Central Inventory UI PostgreSQL and artifacts removed.
+
+PASS (exit 0, 9033ms)
+
+$ npm run test:central-inventory-ui-isolated
+
+> d-mills-global-console@1.0.0 test:central-inventory-ui-isolated
+> node scripts/run-owned-central-inventory-ui.mjs
+
+{"timestamp":"2026-10-15T02:15:26.367Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS authenticated UI: exact mapped SKU count preview/commit, stock adjustment and threshold, real downloads, reload persistence, dashboard totals, 6 sections at 4 viewport sizes and preferences dialog
+{"timestamp":"2026-10-15T02:15:32.844Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:15:32.845Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Owned disposable Central Inventory UI PostgreSQL and artifacts removed.
+
+PASS (exit 0, 8498ms)
+
+$ npm run test:ci-env
+
+> d-mills-global-console@1.0.0 test:ci-env
+> node scripts/verify-ci-env.mjs
+
+PASS CI dotenv: explicit skip ignores synthetic .env; default loading preserved
+
+PASS (exit 0, 613ms)
+
+$ npm run test:ci-runner
+
+> d-mills-global-console@1.0.0 test:ci-runner
+> node scripts/verify-ci-test-runner.mjs
+
+
+$ npm run test:failure [quarantined]
+
+> test:failure
+> node -e "process.exit(7)"
+
+test:failure: FAIL (quarantined)
+
+$ npm run test:pass [required]
+
+> test:pass
+> node pass.mjs
+
+test:pass: PASS (required)
+
+$ npm run test:timeout [quarantined]
+
+> test:timeout
+> node -e "setTimeout(()=>{},30000)"
+
+test:timeout: FAIL (quarantined)
+
+$ npm run test:failure [required]
+
+> test:failure
+> node -e "process.exit(7)"
+
+test:failure: FAIL (required)
+PASS CI runner: exhaustive manifest, required failure gate, quarantine execution, continuation, timeout, job routing, environment isolation and binary overrides
+
+PASS (exit 0, 2949ms)
+
+$ npm run test:client-master
+
+> d-mills-global-console@1.0.0 test:client-master
+> node scripts/verify-client-master.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3011/app/clients
+Call log:
+  - navigating to "http://127.0.0.1:3011/app/clients", waiting until "domcontentloaded"
+
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-client-master.mjs:11:14 {
+  log: [
+    '  - navigating to "http://127.0.0.1:3011/app/clients", waiting until "domcontentloaded"'
+  ],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 1109ms)
+
+$ npm run test:client-master-workflow
+
+> d-mills-global-console@1.0.0 test:client-master-workflow
+> node scripts/verify-client-master-workflow.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 565ms)
+
+$ npm run test:cod-reconciliation
+
+> d-mills-global-console@1.0.0 test:cod-reconciliation
+> ISOLATED_BROWSER_FOCUS=cod-reconciliation node scripts/verify-isolated-browser-workflow.mjs
+
+Generated isolated database names: PostgreSQL=codexqa_mv8wpp9e_50524f, MongoDB=codexqa_mv8wpp9e_50524f
+{"timestamp":"2026-10-15T02:15:38.901Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-15T02:15:38.995Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:15:38.995Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Isolated browser workflow failed: Error Error: Isolated app did not become ready.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-isolated-browser-workflow.mjs:98:21
+Isolated MongoDB browser database removed.
+Isolated PostgreSQL browser database removed.
+
+FAIL (exit 1, 21581ms)
+
+$ npm run test:common-import
+
+> d-mills-global-console@1.0.0 test:common-import
+> node scripts/verify-common-import.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Common Import: metadata and validation remain available; template/import report unavailable service and create no false file or processed batch.
+
+PASS (exit 0, 637ms)
+
+$ npm run test:connection-authorization
+
+> d-mills-global-console@1.0.0 test:connection-authorization
+> node scripts/verify-connection-authorization.mjs
+
+PASS authorization setup: exact HTTPS callbacks and provider-specific deployment prerequisites
+
+PASS (exit 0, 730ms)
+
+$ npm run test:connection-readiness
+
+> d-mills-global-console@1.0.0 test:connection-readiness
+> node scripts/verify-connection-readiness.mjs
+
+PASS connection readiness: credentials, feed setup, worker evidence, partial returns, Amazon queue/activation limits, and Meesho report-only intake are distinguished.
+
+PASS (exit 0, 458ms)
+
+$ npm run test:consolidate-ewb
+
+> d-mills-global-console@1.0.0 test:consolidate-ewb
+> node scripts/verify-consolidate-ewb.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Consolidate EWB: enquiry and legacy links are read-only, generation fails closed, and no CEWB number or history row is fabricated.
+
+PASS (exit 0, 563ms)
+
+$ npm run test:coupon-guard
+
+> d-mills-global-console@1.0.0 test:coupon-guard
+> ISOLATED_BROWSER_FOCUS=coupons node scripts/verify-isolated-browser-workflow.mjs
+
+Generated isolated database names: PostgreSQL=codexqa_mv8wq7r3_5db4e7, MongoDB=codexqa_mv8wq7r3_5db4e7
+{"timestamp":"2026-10-15T02:16:02.855Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-15T02:16:02.947Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:16:02.947Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Isolated browser workflow failed: Error Error: Isolated app did not become ready.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-isolated-browser-workflow.mjs:98:21
+Isolated MongoDB browser database removed.
+Isolated PostgreSQL browser database removed.
+
+FAIL (exit 1, 21418ms)
+
+$ npm run test:customer-enquiry-parity
+
+> d-mills-global-console@1.0.0 test:customer-enquiry-parity
+> node scripts/verify-customer-enquiry-parity.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3011/app/customers
+Call log:
+  - navigating to "http://127.0.0.1:3011/app/customers", waiting until "domcontentloaded"
+
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-customer-enquiry-parity.mjs:11:14 {
+  log: [
+    '  - navigating to "http://127.0.0.1:3011/app/customers", waiting until "domcontentloaded"'
+  ],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 1162ms)
+
+$ npm run test:customer-group
+
+> d-mills-global-console@1.0.0 test:customer-group
+> node scripts/verify-customer-group.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3011/app/customer-groups
+Call log:
+  - navigating to "http://127.0.0.1:3011/app/customer-groups", waiting until "domcontentloaded"
+
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-customer-group.mjs:6:129 {
+  log: [
+    '  - navigating to "http://127.0.0.1:3011/app/customer-groups", waiting until "domcontentloaded"'
+  ],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 644ms)
+
+$ npm run test:customer-group-workflow
+
+> d-mills-global-console@1.0.0 test:customer-group-workflow
+> node scripts/verify-customer-group-workflow.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Customer Group verification requires an isolated administrator.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-customer-group-workflow.mjs:12:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 525ms)
+
+$ npm run test:customer-integrity
+
+> d-mills-global-console@1.0.0 test:customer-integrity
+> node scripts/verify-customer-integrity.mjs
+
+[data] MongoDB selection {
+  selectedDatabase: 'codexqa_mv8wqq4z_d5176e',
+  maskedHost: '[masked-host]'
+}
+[data] MongoDB configuration warning {
+  code: 'MONGODB_URI_DATABASE_OVERRIDDEN',
+  message: 'MONGODB_DB overrides a different database path in MONGODB_URI; confirm the selected database deliberately.',
+  selectedDatabase: 'codexqa_mv8wqq4z_d5176e'
+}
+{"timestamp":"2026-10-15T02:16:26.612Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"READY"}
+PASS isolated MongoDB customer create, search, rename, immutable code, protected order/return history, and delete guard.
+Isolated MongoDB test database removed.
+
+PASS (exit 0, 893ms)
+
+$ npm run test:customer-master
+
+> d-mills-global-console@1.0.0 test:customer-master
+> node scripts/verify-customer-master.mjs
+
+Customer Master browser workflow failed: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3005/app/customers
+Call log:
+  - navigating to "http://127.0.0.1:3005/app/customers", waiting until "domcontentloaded"
+
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-customer-master.mjs:21:14 {
+  log: [
+    '  - navigating to "http://127.0.0.1:3005/app/customers", waiting until "domcontentloaded"'
+  ],
+  name: 'Error'
+}
+
+FAIL (exit 1, 640ms)
+
+$ npm run test:cycle-count
+
+> d-mills-global-console@1.0.0 test:cycle-count
+> node scripts/verify-cycle-count.mjs
+
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/lib/ci-isolation-preload.mjs:13
+ if (!['127.0.0.1','localhost','[::1]'].includes(url.hostname) || [3002,5173,5432,27017].includes(Number(url.port))) throw new Error('Baseline refuses configured service or non-loopback fetch');
+                                                                                                                           ^
+
+Error: Baseline refuses configured service or non-loopback fetch
+    at globalThis.fetch (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/lib/ci-isolation-preload.mjs:13:124)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-cycle-count.mjs:1:340
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 459ms)
+
+$ npm run test:cycle-count-waves
+
+> d-mills-global-console@1.0.0 test:cycle-count-waves
+> node scripts/verify-cycle-count-waves.mjs
+
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/lib/ci-isolation-preload.mjs:13
+ if (!['127.0.0.1','localhost','[::1]'].includes(url.hostname) || [3002,5173,5432,27017].includes(Number(url.port))) throw new Error('Baseline refuses configured service or non-loopback fetch');
+                                                                                                                           ^
+
+Error: Baseline refuses configured service or non-loopback fetch
+    at globalThis.fetch (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/lib/ci-isolation-preload.mjs:13:124)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-cycle-count-waves.mjs:10:21
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 462ms)
+
+$ npm run test:delivery-shipping
+
+> d-mills-global-console@1.0.0 test:delivery-shipping
+> node scripts/verify-delivery-shipping.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS legacy fulfillment safety: allocation/unallocation/cancellation, labels, provider acknowledgement, CEWB, dispatch checkpoint, shipment lifecycle, manifest dispatch transitions, pick, pack, sort, delivery split, and bulk status updates fail closed; local draft metadata stays labeled; priority-only metadata remains editable; screens disclose unavailable actions.
+
+PASS (exit 0, 534ms)
+
+$ npm run test:delivery-split
+
+> d-mills-global-console@1.0.0 test:delivery-split
+> node scripts/verify-delivery-split.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Delivery Split: isolated in-memory search is read-only, SKU and split writes fail closed, quantities and audit rows stay unchanged, and the UI explains the boundary.
+
+PASS (exit 0, 502ms)
+
+$ npm run test:dispatch-checkpoint
+
+> d-mills-global-console@1.0.0 test:dispatch-checkpoint
+> node scripts/verify-dispatch-checkpoint.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Dispatch Checkpoint: legacy enquiry/detail remain read-only, all physical or provider actions fail closed, and CSV export creates no server-side job.
+
+PASS (exit 0, 503ms)
+
+$ npm run test:download-pdf
+
+> d-mills-global-console@1.0.0 test:download-pdf
+> node scripts/verify-download-pdf.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS PDF: real PDF bytes, matching size/MIME, authenticated actor, metadata-only list and exact detail re-download. Layout fixture saved.
+
+PASS (exit 0, 665ms)
+
+$ npm run test:download-update-boundary
+
+> d-mills-global-console@1.0.0 test:download-update-boundary
+> node scripts/verify-download-update-boundary.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS: download updates reject malformed, excessive and protected fields; missing IDs return 404; valid metadata preserves provenance.
+
+PASS (exit 0, 506ms)
+
+$ npm run test:download-workbook
+
+> d-mills-global-console@1.0.0 test:download-workbook
+> node scripts/verify-download-workbook.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS XLSX: real workbook bytes, typed cells, literal formula text, authenticated actor, metadata-only history, exact detail re-download and HTML escaping.
+
+PASS (exit 0, 889ms)
+
+$ npm run test:drift-count-boundary
+
+> d-mills-global-console@1.0.0 test:drift-count-boundary
+> node scripts/verify-drift-count-boundary.mjs
+
+PASS: aggregate drift count, tenant join, safe-integer conversion and invalid/overflow rejection
+
+PASS (exit 0, 466ms)
+
+$ npm run test:eretail-dashboard
+
+> d-mills-global-console@1.0.0 test:eretail-dashboard
+> node scripts/verify-eretail-dashboard.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3011/app/dashboard
+Call log:
+  - navigating to "http://127.0.0.1:3011/app/dashboard", waiting until "domcontentloaded"
+
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-eretail-dashboard.mjs:11:14 {
+  log: [
+    '  - navigating to "http://127.0.0.1:3011/app/dashboard", waiting until "domcontentloaded"'
+  ],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 659ms)
+
+$ npm run test:exceljs-uuid-override
+
+> d-mills-global-console@1.0.0 test:exceljs-uuid-override
+> node scripts/verify-exceljs-uuid-override.mjs
+
+PASS: ExcelJS resolves patched UUID v4; data-bar extension IDs, values, formula and formatting survive XLSX round trip.
+
+PASS (exit 0, 559ms)
+
+$ npm run test:exports-boundary
+
+> d-mills-global-console@1.0.0 test:exports-boundary
+> node scripts/verify-exports.mjs
+
+[data] MongoDB selection { selectedDatabase: 'exports_test', maskedHost: null }
+PASS Exports boundary: no client-declared success, legacy content disclosure or false downloadable report
+
+PASS (exit 0, 517ms)
+
+$ npm run test:external-apps
+
+> d-mills-global-console@1.0.0 test:external-apps
+> node scripts/verify-external-apps.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 461ms)
+
+$ npm run test:external-apps-more-configuration
+
+> d-mills-global-console@1.0.0 test:external-apps-more-configuration
+> node scripts/verify-external-apps-more-configuration.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 461ms)
+
+$ npm run test:generate-vouchers
+
+> d-mills-global-console@1.0.0 test:generate-vouchers
+> npm run test:voucher-guard
+
+
+> d-mills-global-console@1.0.0 test:voucher-guard
+> ISOLATED_BROWSER_FOCUS=vouchers node scripts/verify-isolated-browser-workflow.mjs
+
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-isolated-browser-workflow.mjs:17
+if (!pgUrl || !mongoUri) throw new Error('Both database connections are required.');
+                               ^
+
+Error: Both database connections are required.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-isolated-browser-workflow.mjs:17:32
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 772ms)
+
+$ npm run test:global-controls-keyboard
+
+> d-mills-global-console@1.0.0 test:global-controls-keyboard
+> node scripts/verify-global-controls-keyboard.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3011/app/dashboard
+Call log:
+  - navigating to "http://127.0.0.1:3011/app/dashboard", waiting until "domcontentloaded"
+
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-global-controls-keyboard.mjs:10:14 {
+  log: [
+    '  - navigating to "http://127.0.0.1:3011/app/dashboard", waiting until "domcontentloaded"'
+  ],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 657ms)
+
+$ npm run test:global-dialog-navigation
+
+> d-mills-global-console@1.0.0 test:global-dialog-navigation
+> node scripts/verify-global-dialog-navigation.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3011/app/dashboard
+Call log:
+  - navigating to "http://127.0.0.1:3011/app/dashboard", waiting until "domcontentloaded"
+
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-global-dialog-navigation.mjs:10:14 {
+  log: [
+    '  - navigating to "http://127.0.0.1:3011/app/dashboard", waiting until "domcontentloaded"'
+  ],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 636ms)
+
+$ npm run test:global-feedback-shell
+
+> d-mills-global-console@1.0.0 test:global-feedback-shell
+> node scripts/verify-global-feedback-shell.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3011/app/dashboard
+Call log:
+  - navigating to "http://127.0.0.1:3011/app/dashboard", waiting until "domcontentloaded"
+
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-global-feedback-shell.mjs:10:14 {
+  log: [
+    '  - navigating to "http://127.0.0.1:3011/app/dashboard", waiting until "domcontentloaded"'
+  ],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 644ms)
+
+$ npm run test:global-grid-loading
+
+> d-mills-global-console@1.0.0 test:global-grid-loading
+> node scripts/verify-global-grid-loading.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3011/app/m/price-zone
+Call log:
+  - navigating to "http://127.0.0.1:3011/app/m/price-zone", waiting until "domcontentloaded"
+
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-global-grid-loading.mjs:10:14 {
+  log: [
+    '  - navigating to "http://127.0.0.1:3011/app/m/price-zone", waiting until "domcontentloaded"'
+  ],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 659ms)
+
+$ npm run test:global-header-dialogs
+
+> d-mills-global-console@1.0.0 test:global-header-dialogs
+> node scripts/verify-global-header-dialogs.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3011/app/dashboard
+Call log:
+  - navigating to "http://127.0.0.1:3011/app/dashboard", waiting until "domcontentloaded"
+
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-global-header-dialogs.mjs:9:14 {
+  log: [
+    '  - navigating to "http://127.0.0.1:3011/app/dashboard", waiting until "domcontentloaded"'
+  ],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 627ms)
+
+$ npm run test:global-header-search
+
+> d-mills-global-console@1.0.0 test:global-header-search
+> node scripts/verify-global-header-search.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3011/app/dashboard
+Call log:
+  - navigating to "http://127.0.0.1:3011/app/dashboard", waiting until "domcontentloaded"
+
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-global-header-search.mjs:11:14 {
+  log: [
+    '  - navigating to "http://127.0.0.1:3011/app/dashboard", waiting until "domcontentloaded"'
+  ],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 620ms)
+
+$ npm run test:global-login
+
+> d-mills-global-console@1.0.0 test:global-login
+> node scripts/verify-global-login-contract.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.goto: net::ERR_FAILED at http://127.0.0.1:3002/
+Call log:
+  - navigating to "http://127.0.0.1:3002/", waiting until "domcontentloaded"
+
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-global-login-contract.mjs:8:14 {
+  log: [
+    '  - navigating to "http://127.0.0.1:3002/", waiting until "domcontentloaded"'
+  ],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 631ms)
+
+$ npm run test:global-menu
+
+> d-mills-global-console@1.0.0 test:global-menu
+> node scripts/verify-global-menu.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3011/app/dashboard
+Call log:
+  - navigating to "http://127.0.0.1:3011/app/dashboard", waiting until "domcontentloaded"
+
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-global-menu.mjs:10:14 {
+  log: [
+    '  - navigating to "http://127.0.0.1:3011/app/dashboard", waiting until "domcontentloaded"'
+  ],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 665ms)
+
+$ npm run test:global-order-search
+
+> d-mills-global-console@1.0.0 test:global-order-search
+> node scripts/verify-global-order-search.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 466ms)
+
+$ npm run test:global-responsive-shell
+
+> d-mills-global-console@1.0.0 test:global-responsive-shell
+> node scripts/verify-global-responsive-shell.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3011/app/dashboard
+Call log:
+  - navigating to "http://127.0.0.1:3011/app/dashboard", waiting until "domcontentloaded"
+
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-global-responsive-shell.mjs:1:487 {
+  log: [
+    '  - navigating to "http://127.0.0.1:3011/app/dashboard", waiting until "domcontentloaded"'
+  ],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 631ms)
+
+$ npm run test:global-screen-shell
+
+> d-mills-global-console@1.0.0 test:global-screen-shell
+> node scripts/verify-global-screen-shell.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3011/app/dashboard
+Call log:
+  - navigating to "http://127.0.0.1:3011/app/dashboard", waiting until "domcontentloaded"
+
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-global-screen-shell.mjs:10:14 {
+  log: [
+    '  - navigating to "http://127.0.0.1:3011/app/dashboard", waiting until "domcontentloaded"'
+  ],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 641ms)
+
+$ npm run test:http-latency-integration
+
+> d-mills-global-console@1.0.0 test:http-latency-integration
+> node scripts/verify-http-latency-integration.mjs
+
+{"timestamp":"2026-10-15T02:16:43.369Z","event":"http_request","request_id":"fixture-request-0","method":"GET","route":"/instrumentation/:id","status":204,"duration_ms":1}
+{"timestamp":"2026-10-15T02:16:43.372Z","event":"http_request","request_id":"fixture-request-1","method":"GET","route":"/instrumentation/:id","status":204,"duration_ms":0}
+{"timestamp":"2026-10-15T02:16:43.373Z","event":"http_request","request_id":"fixture-request-2","method":"GET","route":"/instrumentation/:id","status":204,"duration_ms":0}
+{"timestamp":"2026-10-15T02:16:43.374Z","event":"http_request","request_id":"fixture-request-4","method":"GET","route":"/instrumentation/:id","status":204,"duration_ms":0}
+{"timestamp":"2026-10-15T02:16:43.374Z","event":"http_request","request_id":"fixture-request-3","method":"GET","route":"/instrumentation/:id","status":204,"duration_ms":0}
+{"timestamp":"2026-10-15T02:16:43.375Z","event":"http_request","request_id":"fixture-request-5","method":"GET","route":"/instrumentation/:id","status":204,"duration_ms":0}
+{"timestamp":"2026-10-15T02:16:43.376Z","event":"http_request","request_id":"fixture-request-6","method":"GET","route":"/instrumentation/:id","status":204,"duration_ms":0}
+{"timestamp":"2026-10-15T02:16:43.376Z","event":"http_request","request_id":"fixture-request-7","method":"GET","route":"/instrumentation/:id","status":204,"duration_ms":0}
+{"timestamp":"2026-10-15T02:16:43.377Z","event":"http_request","request_id":"fixture-request-8","method":"GET","route":"/instrumentation/:id","status":204,"duration_ms":0}
+{"timestamp":"2026-10-15T02:16:43.378Z","event":"http_request","request_id":"fixture-request-9","method":"GET","route":"/instrumentation/:id","status":204,"duration_ms":0}
+{"timestamp":"2026-10-15T02:16:43.378Z","event":"http_request","request_id":"fixture-request-10","method":"GET","route":"/instrumentation/:id","status":204,"duration_ms":0}
+{"timestamp":"2026-10-15T02:16:43.378Z","event":"http_request","request_id":"fixture-request-11","method":"GET","route":"/instrumentation/:id","status":204,"duration_ms":0}
+PASS: 12 completed HTTP requests produce 12 histogram samples; three-worker traffic retains matched route labels without object/query values.
+
+PASS (exit 0, 554ms)
+
+$ npm run test:http-shutdown
+
+> d-mills-global-console@1.0.0 test:http-shutdown
+> node scripts/verify-http-shutdown.mjs
+
+PASS: completed drain clears deadline; hung requests, hung pools and failed cleanup reach one bounded termination.
+
+PASS (exit 0, 781ms)
+
+$ npm run test:inbound-create-edit
+
+> d-mills-global-console@1.0.0 test:inbound-create-edit
+> node scripts/verify-inbound-create-edit.mjs
+
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/lib/ci-isolation-preload.mjs:13
+ if (!['127.0.0.1','localhost','[::1]'].includes(url.hostname) || [3002,5173,5432,27017].includes(Number(url.port))) throw new Error('Baseline refuses configured service or non-loopback fetch');
+                                                                                                                           ^
+
+Error: Baseline refuses configured service or non-loopback fetch
+    at globalThis.fetch (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/lib/ci-isolation-preload.mjs:13:124)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-inbound-create-edit.mjs:6:27
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 457ms)
+
+$ npm run test:inbound-csv-boundary
+
+> d-mills-global-console@1.0.0 test:inbound-csv-boundary
+> node scripts/verify-inbound-csv-boundary.mjs
+
+PASS: pre-read byte cap, actual UTF-8 cap, 200-row boundary, oversized record, duplicate-header and ambiguous integer-notation rejection, malformed/header/empty rejection and quoted BOM CSV
+
+PASS (exit 0, 680ms)
+
+$ npm run test:inbound-enquiry
+
+> d-mills-global-console@1.0.0 test:inbound-enquiry
+> node scripts/verify-inbound-enquiry.mjs
+
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/lib/ci-isolation-preload.mjs:13
+ if (!['127.0.0.1','localhost','[::1]'].includes(url.hostname) || [3002,5173,5432,27017].includes(Number(url.port))) throw new Error('Baseline refuses configured service or non-loopback fetch');
+                                                                                                                           ^
+
+Error: Baseline refuses configured service or non-loopback fetch
+    at globalThis.fetch (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/lib/ci-isolation-preload.mjs:13:124)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-inbound-enquiry.mjs:6:27
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 454ms)
+
+$ npm run test:inbound-gate-pass
+
+> d-mills-global-console@1.0.0 test:inbound-gate-pass
+> node scripts/verify-inbound-gate-pass.mjs
+
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/lib/ci-isolation-preload.mjs:13
+ if (!['127.0.0.1','localhost','[::1]'].includes(url.hostname) || [3002,5173,5432,27017].includes(Number(url.port))) throw new Error('Baseline refuses configured service or non-loopback fetch');
+                                                                                                                           ^
+
+Error: Baseline refuses configured service or non-loopback fetch
+    at globalThis.fetch (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/lib/ci-isolation-preload.mjs:13:124)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-inbound-gate-pass.mjs:1:346
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 453ms)
+
+$ npm run test:inbound-import-inputs
+
+> d-mills-global-console@1.0.0 test:inbound-import-inputs
+> node scripts/verify-inbound-import-inputs.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+Inbound Create/Edit error: { name: 'Error', code: undefined }
+Inbound RealTime error: { name: 'Error', code: undefined }
+Inbound Create/Edit error: { name: 'Error', code: undefined }
+Inbound RealTime error: { name: 'Error', code: undefined }
+PASS: malformed row rejection, nonnumeric quantity rejection, numeric compatibility and no receipt/PO mutation
+
+PASS (exit 0, 559ms)
+
+$ npm run test:inbound-qc
+
+> d-mills-global-console@1.0.0 test:inbound-qc
+> node scripts/verify-inbound-qc.mjs
+
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/lib/ci-isolation-preload.mjs:13
+ if (!['127.0.0.1','localhost','[::1]'].includes(url.hostname) || [3002,5173,5432,27017].includes(Number(url.port))) throw new Error('Baseline refuses configured service or non-loopback fetch');
+                                                                                                                           ^
+
+Error: Baseline refuses configured service or non-loopback fetch
+    at globalThis.fetch (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/lib/ci-isolation-preload.mjs:13:124)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-inbound-qc.mjs:1:339
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 562ms)
+
+$ npm run test:inbound-realtime
+
+> d-mills-global-console@1.0.0 test:inbound-realtime
+> node scripts/verify-inbound-realtime.mjs
+
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/lib/ci-isolation-preload.mjs:13
+ if (!['127.0.0.1','localhost','[::1]'].includes(url.hostname) || [3002,5173,5432,27017].includes(Number(url.port))) throw new Error('Baseline refuses configured service or non-loopback fetch');
+                                                                                                                           ^
+
+Error: Baseline refuses configured service or non-loopback fetch
+    at globalThis.fetch (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/lib/ci-isolation-preload.mjs:13:124)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-inbound-realtime.mjs:2:83
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 466ms)
+
+$ npm run test:inbound-realtime-integrity
+
+> d-mills-global-console@1.0.0 test:inbound-realtime-integrity
+> node scripts/verify-inbound-realtime-integrity.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+Inbound RealTime: PO receipts stage an idempotent Central Inventory request; unsupported types, imports and reversals fail closed; fake UI successes are removed.
+
+PASS (exit 0, 519ms)
+
+$ npm run test:inventory-move
+
+> d-mills-global-console@1.0.0 test:inventory-move
+> node scripts/verify-inventory-move.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS bin/LPN move endpoints return 501, UI identifies the missing mapping, and isolated Mongo stock remains unchanged
+
+PASS (exit 0, 516ms)
+
+$ npm run test:inventory-move-history
+
+> d-mills-global-console@1.0.0 test:inventory-move-history
+> node scripts/verify-inventory-move-history.mjs
+
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/lib/ci-isolation-preload.mjs:13
+ if (!['127.0.0.1','localhost','[::1]'].includes(url.hostname) || [3002,5173,5432,27017].includes(Number(url.port))) throw new Error('Baseline refuses configured service or non-loopback fetch');
+                                                                                                                           ^
+
+Error: Baseline refuses configured service or non-loopback fetch
+    at globalThis.fetch (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/lib/ci-isolation-preload.mjs:13:124)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-inventory-move-history.mjs:5:24
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 495ms)
+
+$ npm run test:inventory-move-scan
+
+> d-mills-global-console@1.0.0 test:inventory-move-scan
+> node scripts/verify-inventory-move-scan.mjs
+
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/lib/ci-isolation-preload.mjs:13
+ if (!['127.0.0.1','localhost','[::1]'].includes(url.hostname) || [3002,5173,5432,27017].includes(Number(url.port))) throw new Error('Baseline refuses configured service or non-loopback fetch');
+                                                                                                                           ^
+
+Error: Baseline refuses configured service or non-loopback fetch
+    at globalThis.fetch (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/lib/ci-isolation-preload.mjs:13:124)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-inventory-move-scan.mjs:4:24
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 464ms)
+
+$ npm run test:inventory-publish-order
+
+> d-mills-global-console@1.0.0 test:inventory-publish-order
+> node scripts/verify-inventory-publish-order.mjs
+
+{"timestamp":"2026-10-15T02:16:50.548Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS inventory publication order and Shopify readback: overlapping sale ends at 495 and drift is corrected
+{"timestamp":"2026-10-15T02:16:51.980Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:16:51.981Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+
+PASS (exit 0, 2188ms)
+
+$ npm run test:inventory-summary-boundary
+
+> d-mills-global-console@1.0.0 test:inventory-summary-boundary
+> node scripts/verify-inventory-summary-boundary.mjs
+
+PASS: summary uses one aggregate query and preserves payload shape; unsafe totals or missing rows reject. SQL semantics need owned DB parity evidence.
+
+PASS (exit 0, 468ms)
+
+$ npm run test:inventory-tenant-middleware
+
+> d-mills-global-console@1.0.0 test:inventory-tenant-middleware
+> node scripts/verify-inventory-tenant-middleware.mjs
+
+PASS: foreign/malformed tenant inputs reject; configured tenant overrides request state; missing configuration fails closed.
+
+PASS (exit 0, 455ms)
+
+$ npm run test:inventory-view
+
+> d-mills-global-console@1.0.0 test:inventory-view
+> node scripts/verify-inventory-view.mjs
+
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/lib/ci-isolation-preload.mjs:13
+ if (!['127.0.0.1','localhost','[::1]'].includes(url.hostname) || [3002,5173,5432,27017].includes(Number(url.port))) throw new Error('Baseline refuses configured service or non-loopback fetch');
+                                                                                                                           ^
+
+Error: Baseline refuses configured service or non-loopback fetch
+    at globalThis.fetch (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/lib/ci-isolation-preload.mjs:13:124)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-inventory-view.mjs:5:24
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 455ms)
+
+$ npm run test:isolated-browser-workflow
+
+> d-mills-global-console@1.0.0 test:isolated-browser-workflow
+> node scripts/verify-isolated-browser-workflow.mjs
+
+Generated isolated database names: PostgreSQL=codexqa_mv8wrb73_8b9fe9, MongoDB=codexqa_mv8wrb73_8b9fe9
+{"timestamp":"2026-10-15T02:16:53.969Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-15T02:16:54.057Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:16:54.057Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Isolated browser workflow failed: Error Error: Isolated app did not become ready.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-isolated-browser-workflow.mjs:98:21
+Isolated MongoDB browser database removed.
+Isolated PostgreSQL browser database removed.
+
+FAIL (exit 1, 21446ms)
+
+$ npm run test:kitting-order
+
+> d-mills-global-console@1.0.0 test:kitting-order
+> node scripts/verify-kitting-order.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 532ms)
+
+$ npm run test:latency-histograms
+
+> d-mills-global-console@1.0.0 test:latency-histograms
+> node scripts/verify-latency-histograms.mjs
+
+PASS: cumulative latency buckets, totals/max/overflow, invalid sample rejection, snapshot isolation and bounded cardinality with visible drops.
+
+PASS (exit 0, 452ms)
+
+$ npm run test:ledger-contention-owned
+
+> d-mills-global-console@1.0.0 test:ledger-contention-owned
+> node scripts/run-phase-b-isolated.mjs scripts/measure-owned-ledger-contention.mjs
+
+{"timestamp":"2026-10-15T02:17:18.173Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"status":"PASS","durationMs":249.446708,"summary":{"reserve":{"count":100,"p50Ms":3.9505829999999946,"p95Ms":8.264375000000001,"p99Ms":15.026167000000015,"maxMs":17.079874999999987},"release":{"count":100,"p50Ms":3.670792000000006,"p95Ms":4.171500000000037,"p99Ms":5.434541000000024,"maxMs":5.539416999999958},"duplicate-replay":{"count":100,"p50Ms":1.1835839999999962,"p95Ms":1.6291250000000446,"p99Ms":1.7007920000000354,"maxMs":1.704667000000029}},"correctness":{"events":201,"releasedReservations":100,"onHand":100,"reservedOrder":0}}
+{"timestamp":"2026-10-15T02:17:18.520Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:17:18.520Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Owned disposable stack removed.
+
+PASS (exit 0, 2908ms)
+
+$ npm run test:ledger-input-boundary
+
+> d-mills-global-console@1.0.0 test:ledger-input-boundary
+> node scripts/verify-ledger-input-boundary.mjs
+
+PASS: six ledger delta fields reject coercible/noninteger values before DB access; numeric scalar compatibility retained
+
+PASS (exit 0, 541ms)
+
+$ npm run test:legacy-fulfillment-write-blocks
+
+> d-mills-global-console@1.0.0 test:legacy-fulfillment-write-blocks
+> node scripts/verify-legacy-fulfillment-write-blocks.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS legacy fulfillment safety: allocation/unallocation/cancellation, labels, provider acknowledgement, CEWB, dispatch checkpoint, shipment lifecycle, manifest dispatch transitions, pick, pack, sort, delivery split, and bulk status updates fail closed; local draft metadata stays labeled; priority-only metadata remains editable; screens disclose unavailable actions.
+
+PASS (exit 0, 547ms)
+
+$ npm run test:legacy-stock-write-blocks
+
+> d-mills-global-console@1.0.0 test:legacy-stock-write-blocks
+> node scripts/verify-legacy-stock-write-blocks.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+Amazon MFN API error: { name: 'Error', code: undefined }
+Amazon MFN API error: { name: 'Error', code: undefined }
+returns error: { name: 'Error', code: undefined }
+vendor return editor error: { name: 'Error', code: undefined }
+sto editor error: { name: 'Error', code: undefined }
+PASS legacy order allocation, STO confirmation/allocation/shipping/closure/import, generic transfer writes, cycle-count and SKU-grading actions, lottable imports, and marketplace reservations fail closed against Mongo-only stock
+
+PASS (exit 0, 585ms)
+
+$ npm run test:location
+
+> d-mills-global-console@1.0.0 test:location
+> node scripts/verify-location.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 472ms)
+
+$ npm run test:login-input-boundary
+
+> d-mills-global-console@1.0.0 test:login-input-boundary
+> node scripts/verify-login-input-boundary.mjs
+
+PASS: malformed login fields rejected before rate-limit database or credential verification
+
+PASS (exit 0, 470ms)
+
+$ npm run test:lottable-validation
+
+> d-mills-global-console@1.0.0 test:lottable-validation
+> node scripts/verify-lottable-validation.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 554ms)
+
+$ npm run test:manage-asn
+
+> d-mills-global-console@1.0.0 test:manage-asn
+> node scripts/verify-manage-asn.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3011/
+Call log:
+  - navigating to "http://127.0.0.1:3011/", waiting until "domcontentloaded"
+
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-manage-asn.mjs:14:14 {
+  log: [
+    '  - navigating to "http://127.0.0.1:3011/", waiting until "domcontentloaded"'
+  ],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 1446ms)
+
+$ npm run test:manage-attribute
+
+> d-mills-global-console@1.0.0 test:manage-attribute
+> node scripts/verify-manage-attribute.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Manage Attribute verification requires an isolated signed-in administrator.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-manage-attribute.mjs:13:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 491ms)
+
+$ npm run test:manage-awb
+
+> d-mills-global-console@1.0.0 test:manage-awb
+> node scripts/verify-manage-awb.mjs
+
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/lib/ci-isolation-preload.mjs:13
+ if (!['127.0.0.1','localhost','[::1]'].includes(url.hostname) || [3002,5173,5432,27017].includes(Number(url.port))) throw new Error('Baseline refuses configured service or non-loopback fetch');
+                                                                                                                           ^
+
+Error: Baseline refuses configured service or non-loopback fetch
+    at globalThis.fetch (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/lib/ci-isolation-preload.mjs:13:124)
+    at send (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-manage-awb.mjs:1:187)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-manage-awb.mjs:1:571
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 501ms)
+
+$ npm run test:manage-channels
+
+> d-mills-global-console@1.0.0 test:manage-channels
+> node scripts/verify-manage-channels.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Manage Channels verification requires the isolated administrator login.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-manage-channels.mjs:10:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 501ms)
+
+$ npm run test:manage-coupons
+
+> d-mills-global-console@1.0.0 test:manage-coupons
+> node scripts/verify-manage-coupons.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3011/app/coupons
+Call log:
+  - navigating to "http://127.0.0.1:3011/app/coupons", waiting until "domcontentloaded"
+
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-manage-coupons.mjs:1:481 {
+  log: [
+    '  - navigating to "http://127.0.0.1:3011/app/coupons", waiting until "domcontentloaded"'
+  ],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 684ms)
+
+$ npm run test:manage-manifests
+
+> d-mills-global-console@1.0.0 test:manage-manifests
+> node scripts/verify-manage-manifests.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS legacy fulfillment safety: allocation/unallocation/cancellation, labels, provider acknowledgement, CEWB, dispatch checkpoint, shipment lifecycle, manifest dispatch transitions, pick, pack, sort, delivery split, and bulk status updates fail closed; local draft metadata stays labeled; priority-only metadata remains editable; screens disclose unavailable actions.
+
+PASS (exit 0, 651ms)
+
+$ npm run test:manage-picking
+
+> d-mills-global-console@1.0.0 test:manage-picking
+> node scripts/verify-manage-picking.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS legacy fulfillment safety: allocation/unallocation/cancellation, labels, provider acknowledgement, CEWB, dispatch checkpoint, shipment lifecycle, manifest dispatch transitions, pick, pack, sort, delivery split, and bulk status updates fail closed; local draft metadata stays labeled; priority-only metadata remains editable; screens disclose unavailable actions.
+
+PASS (exit 0, 535ms)
+
+$ npm run test:manage-picklists
+
+> d-mills-global-console@1.0.0 test:manage-picklists
+> node scripts/verify-manage-picklists.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS legacy fulfillment safety: allocation/unallocation/cancellation, labels, provider acknowledgement, CEWB, dispatch checkpoint, shipment lifecycle, manifest dispatch transitions, pick, pack, sort, delivery split, and bulk status updates fail closed; local draft metadata stays labeled; priority-only metadata remains editable; screens disclose unavailable actions.
+
+PASS (exit 0, 644ms)
+
+$ npm run test:market-order-view
+
+> d-mills-global-console@1.0.0 test:market-order-view
+> node scripts/verify-market-order-view.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 474ms)
+
+$ npm run test:master-order-enquiry
+
+> d-mills-global-console@1.0.0 test:master-order-enquiry
+> node scripts/verify-master-order-enquiry.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 499ms)
+
+$ npm run test:merchandising-hierarchy
+
+> d-mills-global-console@1.0.0 test:merchandising-hierarchy
+> node scripts/verify-merchandising-hierarchy.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Merchandising Hierarchy verification requires an isolated signed-in administrator.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-merchandising-hierarchy.mjs:15:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 502ms)
+
+$ npm run test:mongo-isolated-workflows
+
+> d-mills-global-console@1.0.0 test:mongo-isolated-workflows
+> node scripts/verify-mongo-isolated-workflows.mjs
+
+[data] MongoDB selection {
+  selectedDatabase: 'codexqa_mv8ws2ky_12a711',
+  maskedHost: '[masked-host]'
+}
+[data] MongoDB configuration warning {
+  code: 'MONGODB_URI_DATABASE_OVERRIDDEN',
+  message: 'MONGODB_DB overrides a different database path in MONGODB_URI; confirm the selected database deliberately.',
+  selectedDatabase: 'codexqa_mv8ws2ky_12a711'
+}
+{"timestamp":"2026-10-15T02:17:29.387Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"READY"}
+PASS isolated MongoDB persistence: saved planning edit is visible through a second client; back-order PO, refund, and ARS guarded actions leave no PO, payment status, job, or execution mutation.
+Isolated MongoDB test database removed.
+
+PASS (exit 0, 815ms)
+
+$ npm run test:mongo-mutation-boundary
+
+> d-mills-global-console@1.0.0 test:mongo-mutation-boundary
+> node scripts/verify-mongo-mutation-boundary.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Mongo mutations: pre-write ID/field limits, immutable identity, atomic single-document result, transactional batch readback faults and explicit-memory integration. Real DB rollback remains separate.
+
+PASS (exit 0, 543ms)
+
+$ npm run test:mongo-read-boundary
+
+> d-mills-global-console@1.0.0 test:mongo-read-boundary
+> node scripts/verify-mongo-read-boundary.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Mongo reads: complete-or-error row/byte bounds, deadline, bounded cursor, cleanup, original error, genuine findOne, memory alias and safe HTTP 413.
+
+PASS (exit 0, 552ms)
+
+$ npm run test:mongo-safety
+
+> d-mills-global-console@1.0.0 test:mongo-safety
+> node scripts/verify-mongo-safety.mjs
+
+{"timestamp":"2026-10-15T02:17:31.280Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:17:31.281Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+{"timestamp":"2026-10-15T02:17:31.281Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:17:31.281Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:17:31.281Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+{"timestamp":"2026-10-15T02:17:31.281Z","event":"database_state","database":"mongodb","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:17:31.281Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:17:31.281Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+PASS offline Mongo safety: configuration, auth/outage/recovery, empty/populated, readiness/header, redaction, restricted inventory and tool guards; zero database writes or live connections
+PASS offline export/restore integration: canonical BSON types, outside-repo files, integrity manifest, dry-run zero connections, non-test/nonempty target refusal
+PASS offline Render health: actual live/ready/mapped handlers, minimal payload, proxy cookie/IP, hung inspection, empty header and route ordering; no database connections
+
+PASS (exit 0, 1433ms)
+
+$ npm run test:mongo-session-boundary
+
+> d-mills-global-console@1.0.0 test:mongo-session-boundary
+> node scripts/verify-mongo-session-boundary.mjs
+
+{"timestamp":"2026-10-15T02:17:32.668Z","event":"mongodb_session_cleanup_failed","database":"mongodb","code":"SESSION_CLEANUP_FAILED"}
+{"timestamp":"2026-10-15T02:17:32.669Z","event":"mongodb_session_cleanup_failed","database":"mongodb","code":"SESSION_CLEANUP_FAILED"}
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Mongo sessions: cleanup preserves committed result/primary error, bounded transaction options, unknown commit classification, session-owned read deadline and truthful HTTP response.
+
+PASS (exit 0, 503ms)
+
+$ npm run test:mp-inventory-log
+
+> d-mills-global-console@1.0.0 test:mp-inventory-log
+> node scripts/verify-mp-inventory-log.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS MP Inventory Log: empty configured source stays empty; ingest, push, retransmit and export fail closed without fabricated logs or report jobs.
+
+PASS (exit 0, 521ms)
+
+$ npm run test:oms-rules
+
+> d-mills-global-console@1.0.0 test:oms-rules
+> ISOLATED_BROWSER_FOCUS=oms-rules node scripts/verify-isolated-browser-workflow.mjs
+
+Generated isolated database names: PostgreSQL=codexqa_mv8ws5xb_9050f1, MongoDB=codexqa_mv8ws5xb_9050f1
+{"timestamp":"2026-10-15T02:17:33.807Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-15T02:17:33.915Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:17:33.915Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Isolated browser workflow failed: Error Error: Isolated app did not become ready.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-isolated-browser-workflow.mjs:98:21
+Isolated MongoDB browser database removed.
+Isolated PostgreSQL browser database removed.
+
+FAIL (exit 1, 21472ms)
+
+$ npm run test:opening-stock-isolated
+
+> d-mills-global-console@1.0.0 test:opening-stock-isolated
+> node scripts/run-isolated-opening-stock.mjs
+
+{"timestamp":"2026-10-15T02:17:56.432Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS isolated opening-stock migration, multi-SKU source order, exact replay/conflict, dual control, ledger posting and readback
+{"timestamp":"2026-10-15T02:17:56.663Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:17:56.663Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Owned disposable PostgreSQL removed.
+
+PASS (exit 0, 2128ms)
+
+$ npm run test:opening-stock-validation
+
+> d-mills-global-console@1.0.0 test:opening-stock-validation
+> node scripts/verify-opening-stock-validation.mjs
+
+PASS read-only opening-stock row classification, tenant scope, exact mapping and duplicate conflicts
+
+PASS (exit 0, 685ms)
+
+$ npm run test:order-acknowledgement
+
+> d-mills-global-console@1.0.0 test:order-acknowledgement
+> node scripts/verify-order-acknowledgement.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Order Acknowledgement: search is read-only, provider actions fail closed, and neither order status nor audit history changes.
+
+PASS (exit 0, 604ms)
+
+$ npm run test:order-allocation
+
+> d-mills-global-console@1.0.0 test:order-allocation
+> node scripts/verify-order-allocation.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Order Allocation: enquiry/import are read-only, allocation/unallocation/cancellation fail closed, and order/audit state remains unchanged.
+
+PASS (exit 0, 583ms)
+
+$ npm run test:order-enquiry
+
+> d-mills-global-console@1.0.0 test:order-enquiry
+> node scripts/verify-order-enquiry.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 683ms)
+
+$ npm run test:order-enquiry-integrity
+
+> d-mills-global-console@1.0.0 test:order-enquiry-integrity
+> node scripts/verify-order-enquiry-integrity.mjs
+
+[data] MongoDB selection {
+  selectedDatabase: 'codexqa_mv8wsq51_d1761a',
+  maskedHost: '[masked-host]'
+}
+[data] MongoDB configuration warning {
+  code: 'MONGODB_URI_DATABASE_OVERRIDDEN',
+  message: 'MONGODB_DB overrides a different database path in MONGODB_URI; confirm the selected database deliberately.',
+  selectedDatabase: 'codexqa_mv8wsq51_d1761a'
+}
+{"timestamp":"2026-10-15T02:17:59.921Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"READY"}
+PASS isolated MongoDB order enquiry: search works; import, force pull, putaway, retry, and unsupported sale-order mutations leave order state unchanged.
+Isolated MongoDB test database removed.
+
+PASS (exit 0, 782ms)
+
+$ npm run test:order-maintenance
+
+> d-mills-global-console@1.0.0 test:order-maintenance
+> node scripts/verify-order-maintenance.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Order Maintenance and Market Order View: status/quantity edits, close/cancel, quick ship, return creation and simulated E-way Bill actions fail closed; controls are gated and no synthetic PDF or order mutation is produced.
+
+PASS (exit 0, 532ms)
+
+$ npm run test:order-refund
+
+> d-mills-global-console@1.0.0 test:order-refund
+> node scripts/verify-order-refund.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Order Refund: enquiry retains stored records and labels trust; approval/reapproval cannot invent payment processing or change statuses.
+
+PASS (exit 0, 551ms)
+
+$ npm run test:organization-hierarchy
+
+> d-mills-global-console@1.0.0 test:organization-hierarchy
+> node scripts/verify-organization-hierarchy.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 592ms)
+
+$ npm run test:other-masters
+
+> d-mills-global-console@1.0.0 test:other-masters
+> ISOLATED_BROWSER_FOCUS=other-masters node scripts/verify-isolated-browser-workflow.mjs
+
+Generated isolated database names: PostgreSQL=codexqa_mv8wss8v_6bfbbc, MongoDB=codexqa_mv8wss8v_6bfbbc
+{"timestamp":"2026-10-15T02:18:02.752Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-15T02:18:02.861Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:18:02.862Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Isolated browser workflow failed: Error Error: Isolated app did not become ready.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-isolated-browser-workflow.mjs:98:21
+Isolated MongoDB browser database removed.
+Isolated PostgreSQL browser database removed.
+
+FAIL (exit 1, 21782ms)
+
+$ npm run test:pg-cleanup-scheduler
+
+> d-mills-global-console@1.0.0 test:pg-cleanup-scheduler
+> node scripts/verify-pg-cleanup-scheduler.mjs
+
+{"timestamp":"2026-10-15T02:18:25.217Z","event":"fixture_cleanup_failed","code":"MAINTENANCE_FAILED"}
+PASS PostgreSQL cleanup scheduler: 1,000 requests coalesce into one rerun, query concurrency stays one and failure is counted
+
+PASS (exit 0, 1673ms)
+
+$ npm run test:picker-zone-preference
+
+> d-mills-global-console@1.0.0 test:picker-zone-preference
+> node scripts/verify-picker-zone-preference.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 477ms)
+
+$ npm run test:po-enquiry
+
+> d-mills-global-console@1.0.0 test:po-enquiry
+> ISOLATED_BROWSER_FOCUS=po-enquiry node scripts/verify-isolated-browser-workflow.mjs
+
+Generated isolated database names: PostgreSQL=codexqa_mv8wtakv_6f54ac, MongoDB=codexqa_mv8wtakv_6f54ac
+{"timestamp":"2026-10-15T02:18:26.498Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-15T02:18:26.618Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:18:26.618Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Isolated browser workflow failed: Error Error: Isolated app did not become ready.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-isolated-browser-workflow.mjs:98:21
+Isolated MongoDB browser database removed.
+Isolated PostgreSQL browser database removed.
+
+FAIL (exit 1, 21593ms)
+
+$ npm run test:po-otb-integrity
+
+> d-mills-global-console@1.0.0 test:po-otb-integrity
+> node scripts/verify-po-otb-integrity.mjs
+
+[data] MongoDB selection {
+  selectedDatabase: 'codexqa_mv8wtr7m_15ba69',
+  maskedHost: '[masked-host]'
+}
+[data] MongoDB configuration warning {
+  code: 'MONGODB_URI_DATABASE_OVERRIDDEN',
+  message: 'MONGODB_DB overrides a different database path in MONGODB_URI; confirm the selected database deliberately.',
+  selectedDatabase: 'codexqa_mv8wtr7m_15ba69'
+}
+{"timestamp":"2026-10-15T02:18:47.971Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"READY"}
+PASS isolated MongoDB PO/ASN/GRN: OTB and legacy receipt paths fail closed without budget, PO, or GRN drift; client ASN quantities cannot invent receipts.
+Isolated MongoDB test database removed.
+
+PASS (exit 0, 981ms)
+
+$ npm run test:po-revision
+
+> d-mills-global-console@1.0.0 test:po-revision
+> ISOLATED_BROWSER_FOCUS=po-revision node scripts/verify-isolated-browser-workflow.mjs
+
+Generated isolated database names: PostgreSQL=codexqa_mv8wtrxx_31bfb6, MongoDB=codexqa_mv8wtrxx_31bfb6
+{"timestamp":"2026-10-15T02:18:48.998Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-15T02:18:49.136Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:18:49.136Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Isolated browser workflow failed: Error Error: Isolated app did not become ready.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-isolated-browser-workflow.mjs:98:21
+Isolated MongoDB browser database removed.
+Isolated PostgreSQL browser database removed.
+
+FAIL (exit 1, 21538ms)
+
+$ npm run test:postgres-transaction-cleanup
+
+> d-mills-global-console@1.0.0 test:postgres-transaction-cleanup
+> node scripts/verify-postgres-transaction-cleanup.mjs
+
+{"timestamp":"2026-10-15T02:19:10.423Z","event":"postgres_cleanup_failed","database":"postgresql","operation":"release","code":"CLEANUP_FAILED"}
+{"timestamp":"2026-10-15T02:19:10.424Z","event":"postgres_cleanup_failed","database":"postgresql","operation":"rollback","code":"CLEANUP_FAILED"}
+{"timestamp":"2026-10-15T02:19:10.424Z","event":"postgres_cleanup_failed","database":"postgresql","operation":"release","code":"CLEANUP_FAILED"}
+{"timestamp":"2026-10-15T02:19:10.424Z","event":"postgres_cleanup_failed","database":"postgresql","operation":"release","code":"CLEANUP_FAILED"}
+PASS: PostgreSQL cleanup preserves outcomes, lost commit requires reconciliation, definitive constraints retain primary error and HTTP response is sanitized
+
+PASS (exit 0, 557ms)
+
+$ npm run test:price-zone
+
+> d-mills-global-console@1.0.0 test:price-zone
+> node scripts/verify-price-zone.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 546ms)
+
+$ npm run test:pricing-event
+
+> d-mills-global-console@1.0.0 test:pricing-event
+> node scripts/verify-pricing-event.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 506ms)
+
+$ npm run test:provider-dispatch-authority
+
+> d-mills-global-console@1.0.0 test:provider-dispatch-authority
+> node scripts/run-phase-b-isolated.mjs scripts/verify-phase-b-dispatch.mjs
+
+{"timestamp":"2026-10-15T02:19:14.094Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS: provider-authority cutover, review/evidence, alert timing, and Amazon partial-shipment reservation hold.
+{"timestamp":"2026-10-15T02:19:14.338Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:19:14.338Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Owned disposable stack removed.
+
+PASS (exit 0, 3104ms)
+
+$ npm run test:publication-recovery-boundary
+
+> d-mills-global-console@1.0.0 test:publication-recovery-boundary
+> node scripts/verify-publication-recovery-boundary.mjs
+
+PASS: invalid batch rejection before DB access, bounded tenant-scoped recovery query, zero target and both uncertainty projections
+
+PASS (exit 0, 620ms)
+
+$ npm run test:purchase-charge-masters
+
+> d-mills-global-console@1.0.0 test:purchase-charge-masters
+> node scripts/verify-purchase-charge-masters.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3011/
+Call log:
+  - navigating to "http://127.0.0.1:3011/", waiting until "load"
+
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-purchase-charge-masters.mjs:7:14 {
+  log: [
+    '  - navigating to "http://127.0.0.1:3011/", waiting until "load"'
+  ],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 1521ms)
+
+$ npm run test:putaway-enquiry
+
+> d-mills-global-console@1.0.0 test:putaway-enquiry
+> node scripts/verify-putaway-enquiry.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: The isolated browser workflow must pass a committed inbound number.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-putaway-enquiry.mjs:9:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: undefined,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 574ms)
+
+$ npm run test:putaway-rules
+
+> d-mills-global-console@1.0.0 test:putaway-rules
+> node scripts/verify-putaway-rules.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 467ms)
+
+$ npm run test:receipt-envelope-boundary
+
+> d-mills-global-console@1.0.0 test:receipt-envelope-boundary
+> node scripts/verify-receipt-envelope-boundary.mjs
+
+PASS receipt envelopes: 30 malformed authorization cases reject before database/effects; valid empty and special-name quantity maps accepted.
+
+PASS (exit 0, 498ms)
+
+$ npm run test:receipt-index-tool
+
+> d-mills-global-console@1.0.0 test:receipt-index-tool
+> node scripts/verify-receipt-index-tool.mjs
+
+PASS Mongo index tool: exact selected DB and yes/scope guards; only measured claim or zone-picker indexes created on injected client.
+
+PASS (exit 0, 503ms)
+
+$ npm run test:receipt-poll-boundary
+
+> d-mills-global-console@1.0.0 test:receipt-poll-boundary
+> node scripts/verify-receipt-poll-boundary.mjs
+
+PASS: slow receipt reads cannot overlap, cleanup stops rescheduling, outages remain pollable, both screens use serial polling
+
+PASS (exit 0, 688ms)
+
+$ npm run test:receipt-validation
+
+> d-mills-global-console@1.0.0 test:receipt-validation
+> node scripts/verify-receipt-validation.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 464ms)
+
+$ npm run test:reliability
+
+> d-mills-global-console@1.0.0 test:reliability
+> node scripts/verify-mongo-reliability.mjs && node scripts/verify-postgres-reliability.mjs && node scripts/verify-provider-reliability.mjs
+
+{"timestamp":"2026-10-15T02:19:20.503Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:19:20.511Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+{"timestamp":"2026-10-15T02:19:20.511Z","event":"database_state","database":"mongodb","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:19:20.517Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+{"timestamp":"2026-10-15T02:19:20.518Z","event":"database_state","database":"mongodb","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:19:20.518Z","event":"database_state","database":"mongodb","previous":"DEGRADED","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:19:20.518Z","event":"database_state","database":"mongodb","previous":"DEGRADED","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:19:20.524Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+{"timestamp":"2026-10-15T02:19:20.524Z","event":"database_state","database":"mongodb","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:19:20.530Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+{"timestamp":"2026-10-15T02:19:20.530Z","event":"database_state","database":"mongodb","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:19:20.537Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+{"timestamp":"2026-10-15T02:19:20.537Z","event":"database_state","database":"mongodb","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:19:20.543Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+{"timestamp":"2026-10-15T02:19:20.543Z","event":"database_state","database":"mongodb","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:19:20.548Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+{"timestamp":"2026-10-15T02:19:20.548Z","event":"database_state","database":"mongodb","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:19:20.554Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+{"timestamp":"2026-10-15T02:19:20.554Z","event":"database_state","database":"mongodb","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:19:20.560Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+{"timestamp":"2026-10-15T02:19:20.560Z","event":"database_state","database":"mongodb","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:19:20.566Z","event":"database_state","database":"mongodb","previous":"RECONNECTING","state":"READY"}
+{"timestamp":"2026-10-15T02:19:20.566Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"DEGRADED"}
+PASS: shared pool, single-flight outage, retry, loss after startup, redaction, business errors and shutdown
+{"timestamp":"2026-10-15T02:19:20.775Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-15T02:19:20.776Z","event":"database_state","database":"postgresql","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:19:20.776Z","event":"database_state","database":"postgresql","previous":"DEGRADED","state":"READY"}
+{"timestamp":"2026-10-15T02:19:20.776Z","event":"database_state","database":"postgresql","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:19:20.776Z","event":"database_state","database":"postgresql","previous":"DEGRADED","state":"READY"}
+{"timestamp":"2026-10-15T02:19:20.776Z","event":"database_state","database":"postgresql","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:19:20.777Z","event":"database_state","database":"postgresql","previous":"DEGRADED","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:19:20.777Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+PASS PostgreSQL: bounded pool, idle failure, safe 503, recovery, constraint preservation, query timeout, shutdown
+{"timestamp":"2026-10-15T02:19:20.979Z","event":"provider_call","provider":"fixture","operation":"request","attempt":1,"duration_ms":0,"result":"503"}
+{"timestamp":"2026-10-15T02:19:20.979Z","event":"provider_call","provider":"fixture","operation":"request","attempt":2,"duration_ms":0,"result":"503"}
+{"timestamp":"2026-10-15T02:19:20.979Z","event":"provider_call","provider":"fixture","operation":"request","attempt":3,"duration_ms":0,"result":"200"}
+{"timestamp":"2026-10-15T02:19:20.980Z","event":"provider_call","provider":"status-429","operation":"request","attempt":1,"duration_ms":0,"result":"429"}
+{"timestamp":"2026-10-15T02:19:20.980Z","event":"provider_call","provider":"status-429","operation":"request","attempt":2,"duration_ms":0,"result":"429"}
+{"timestamp":"2026-10-15T02:19:20.980Z","event":"provider_call","provider":"status-429","operation":"request","attempt":3,"duration_ms":0,"result":"200"}
+{"timestamp":"2026-10-15T02:19:20.980Z","event":"provider_call","provider":"status-500","operation":"request","attempt":1,"duration_ms":0,"result":"500"}
+{"timestamp":"2026-10-15T02:19:20.980Z","event":"provider_call","provider":"status-500","operation":"request","attempt":2,"duration_ms":0,"result":"500"}
+{"timestamp":"2026-10-15T02:19:20.980Z","event":"provider_call","provider":"status-500","operation":"request","attempt":3,"duration_ms":0,"result":"200"}
+{"timestamp":"2026-10-15T02:19:20.980Z","event":"provider_call","provider":"status-502","operation":"request","attempt":1,"duration_ms":0,"result":"502"}
+{"timestamp":"2026-10-15T02:19:20.980Z","event":"provider_call","provider":"status-502","operation":"request","attempt":2,"duration_ms":0,"result":"502"}
+{"timestamp":"2026-10-15T02:19:20.980Z","event":"provider_call","provider":"status-502","operation":"request","attempt":3,"duration_ms":0,"result":"200"}
+{"timestamp":"2026-10-15T02:19:20.980Z","event":"provider_call","provider":"status-504","operation":"request","attempt":1,"duration_ms":0,"result":"504"}
+{"timestamp":"2026-10-15T02:19:20.980Z","event":"provider_call","provider":"status-504","operation":"request","attempt":2,"duration_ms":0,"result":"504"}
+{"timestamp":"2026-10-15T02:19:20.980Z","event":"provider_call","provider":"status-504","operation":"request","attempt":3,"duration_ms":0,"result":"200"}
+{"timestamp":"2026-10-15T02:19:20.980Z","event":"provider_call","provider":"invalid-fixture","operation":"request","attempt":1,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-15T02:19:20.981Z","event":"provider_call","provider":"invalid-fixture","operation":"request","attempt":1,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-15T02:19:20.981Z","event":"provider_call","provider":"invalid-fixture","operation":"request","attempt":1,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-15T02:19:20.981Z","event":"provider_call","provider":"invalid-fixture","operation":"request","attempt":1,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-15T02:19:20.981Z","event":"provider_call","provider":"failure-EAI_AGAIN","operation":"request","attempt":1,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-15T02:19:20.981Z","event":"provider_call","provider":"failure-EAI_AGAIN","operation":"request","attempt":2,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-15T02:19:20.981Z","event":"provider_call","provider":"failure-EAI_AGAIN","operation":"request","attempt":3,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-15T02:19:20.981Z","event":"provider_call","provider":"failure-ETIMEDOUT","operation":"request","attempt":1,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-15T02:19:20.981Z","event":"provider_call","provider":"failure-ETIMEDOUT","operation":"request","attempt":2,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-15T02:19:20.981Z","event":"provider_call","provider":"failure-ETIMEDOUT","operation":"request","attempt":3,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-15T02:19:20.981Z","event":"provider_call","provider":"failure-TimeoutError","operation":"request","attempt":1,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-15T02:19:20.981Z","event":"provider_call","provider":"failure-TimeoutError","operation":"request","attempt":2,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-15T02:19:20.981Z","event":"provider_call","provider":"failure-TimeoutError","operation":"request","attempt":3,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-15T02:19:20.981Z","event":"provider_call","provider":"cancelled-fixture","operation":"request","attempt":1,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-15T02:19:20.981Z","event":"provider_call","provider":"fixture","operation":"request","attempt":1,"duration_ms":0,"result":"400"}
+{"timestamp":"2026-10-15T02:19:20.981Z","event":"provider_call","provider":"fixture","operation":"request","attempt":1,"duration_ms":0,"result":"401"}
+{"timestamp":"2026-10-15T02:19:20.981Z","event":"provider_call","provider":"fixture","operation":"request","attempt":1,"duration_ms":0,"result":"403"}
+{"timestamp":"2026-10-15T02:19:20.981Z","event":"provider_call","provider":"fixture","operation":"request","attempt":1,"duration_ms":0,"result":"422"}
+{"timestamp":"2026-10-15T02:19:20.981Z","event":"provider_call","provider":"mutation-fixture","operation":"request","attempt":1,"duration_ms":0,"result":"503"}
+{"timestamp":"2026-10-15T02:19:20.981Z","event":"provider_call","provider":"network-fixture","operation":"request","attempt":1,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-15T02:19:20.981Z","event":"provider_call","provider":"network-fixture","operation":"request","attempt":2,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-15T02:19:20.981Z","event":"provider_call","provider":"network-fixture","operation":"request","attempt":3,"duration_ms":0,"result":"error"}
+{"timestamp":"2026-10-15T02:19:20.981Z","event":"provider_call","provider":"circuit-fixture","operation":"request","attempt":1,"duration_ms":0,"result":"503"}
+{"timestamp":"2026-10-15T02:19:20.981Z","event":"provider_call","provider":"circuit-fixture","operation":"request","attempt":1,"duration_ms":0,"result":"503"}
+{"timestamp":"2026-10-15T02:19:20.981Z","event":"provider_call","provider":"circuit-fixture","operation":"request","attempt":1,"duration_ms":0,"result":"503"}
+{"timestamp":"2026-10-15T02:19:20.981Z","event":"provider_call","provider":"circuit-fixture","operation":"request","attempt":1,"duration_ms":0,"result":"503"}
+{"timestamp":"2026-10-15T02:19:20.981Z","event":"provider_call","provider":"circuit-fixture","operation":"request","attempt":1,"duration_ms":0,"result":"503"}
+PASS provider reliability: bounded read retry, backoff, no auth/validation retry, no blind mutation retry, connection-reset exhaustion, open circuit
+
+PASS (exit 0, 1056ms)
+
+$ npm run test:reliability-extended
+
+> d-mills-global-console@1.0.0 test:reliability-extended
+> node scripts/run-reliability-extended-gates.mjs
+
+PASS verify-amazon-mfn-api
+PASS verify-ajio-api
+PASS verify-mp-inventory-log
+PASS verify-transhipment
+PASS verify-transhipment-old
+PASS verify-returns-integrity
+PASS verify-dispatch-checkpoint
+PASS verify-ars-integrity
+PASS verify-back-order-integrity
+PASS verify-manage-manifests
+PASS verify-sort-to-box
+PASS verify-download-pdf
+PASS verify-download-workbook
+PASS verify-common-import
+PASS verify-order-refund
+PASS verify-order-allocation
+PASS verify-delivery-shipping
+PASS verify-bulk-order-update
+PASS verify-manage-picklists
+PASS verify-manage-picking
+PASS verify-delivery-split
+PASS verify-shipment-handover
+PASS verify-order-acknowledgement
+PASS verify-consolidate-ewb
+PASS verify-inventory-move
+PASS verify-order-maintenance
+PASS verify-inbound-realtime-integrity
+
+PASS (exit 0, 8016ms)
+
+$ npm run test:reliability-mongo-isolated
+
+> d-mills-global-console@1.0.0 test:reliability-mongo-isolated
+> node scripts/run-isolated-mongo-reliability.mjs
+
+[data] MongoDB selection {
+  selectedDatabase: 'codexqa_reliability',
+  maskedHost: '[masked-host]'
+}
+{"timestamp":"2026-10-15T02:19:30.725Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"READY"}
+PASS isolated real Mongo: empty result, SKU Group list, code/name/client filtering, pagination, structured 503
+Disposable Mongo process and database files removed.
+
+PASS (exit 0, 2096ms)
+
+$ npm run test:reliability-mongo-startup
+
+> d-mills-global-console@1.0.0 test:reliability-mongo-startup
+> node scripts/run-isolated-mongo-reliability.mjs scripts/verify-mongo-startup-recovery.mjs
+
+{"timestamp":"2026-10-15T02:19:32.895Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-15T02:19:32.989Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:19:32.990Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+PASS real Mongo startup/restart outage: liveness, safe 503 without fake rows, PG independence, durable auth across server restart, recovery without restart, concurrent reads and graceful shutdown
+Disposable startup PostgreSQL fixture removed.
+Disposable Mongo process and database files removed.
+
+PASS (exit 0, 36092ms)
+
+$ npm run test:reliability-mongo-timeout
+
+> d-mills-global-console@1.0.0 test:reliability-mongo-timeout
+> node scripts/run-isolated-mongo-reliability.mjs scripts/verify-mongo-timeout-fixture.mjs
+
+[data] MongoDB selection {
+  selectedDatabase: 'codexqa_reliability',
+  maskedHost: '[masked-host]'
+}
+{"timestamp":"2026-10-15T02:20:09.064Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"READY"}
+{"timestamp":"2026-10-15T02:20:09.065Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"READY"}
+PASS real Mongo maxTimeMS: deadline classified 504 at shared API boundary, no false rows, healthy pool retained, durable value unchanged, subsequent reads recovered
+Disposable Mongo process and database files removed.
+
+PASS (exit 0, 2064ms)
+
+$ npm run test:reliability-postgres-failures
+
+> d-mills-global-console@1.0.0 test:reliability-postgres-failures
+> node scripts/verify-postgres-failure-injection.mjs
+
+{"timestamp":"2026-10-15T02:20:09.786Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-15T02:20:09.940Z","event":"database_state","database":"postgresql","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:20:09.941Z","event":"database_state","database":"postgresql","previous":"DEGRADED","state":"READY"}
+{"timestamp":"2026-10-15T02:20:10.252Z","event":"database_state","database":"postgresql","previous":"READY","state":"DEGRADED"}
+{"timestamp":"2026-10-15T02:20:10.255Z","event":"database_state","database":"postgresql","previous":"DEGRADED","state":"READY"}
+PASS real PostgreSQL failures: bounded pool exhaustion, recovery, slow query/transaction deadlines, terminated fixture backend, reconnect, durable row preserved, business conflict preserved
+{"timestamp":"2026-10-15T02:20:10.256Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:20:10.257Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Disposable PostgreSQL failure fixture removed.
+
+PASS (exit 0, 1019ms)
+
+$ npm run test:reliability-purchase-orders
+
+> d-mills-global-console@1.0.0 test:reliability-purchase-orders
+> node scripts/run-isolated-mongo-reliability.mjs scripts/verify-purchase-order-reliability.mjs
+
+[data] MongoDB selection {
+  selectedDatabase: 'codexqa_reliability',
+  maskedHost: '[masked-host]'
+}
+{"timestamp":"2026-10-15T02:20:11.988Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"READY"}
+PASS real Mongo purchase-order reliability: 20 concurrent duplicate creates produce one durable draft, remaining requests conflict, identity cannot change, unique index verified, no stock mutation
+Disposable Mongo process and database files removed.
+
+PASS (exit 0, 2056ms)
+
+$ npm run test:restore-batch-boundary
+
+> d-mills-global-console@1.0.0 test:restore-batch-boundary
+> node scripts/verify-restore-batch-boundary.mjs
+
+PASS: restore row and BSON-byte bounds, valid large singleton, oversized document refusal and primary failure stops stream
+
+PASS (exit 0, 509ms)
+
+$ npm run test:restore-manifest-boundary
+
+> d-mills-global-console@1.0.0 test:restore-manifest-boundary
+> node scripts/verify-restore-manifest-boundary.mjs
+
+PASS: bounded manifest read, metadata validation, duplicate files, total-count overflow and upstream cleanup
+
+PASS (exit 0, 485ms)
+
+$ npm run test:return-without-order
+
+> d-mills-global-console@1.0.0 test:return-without-order
+> node scripts/verify-return-without-order.mjs
+
+node:internal/url:840
+      href = bindingUrl.parse(input, base, true);
+                        ^
+
+TypeError: Invalid URL
+    at new URL (node:internal/url:840:25)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-return-without-order.mjs:4:20
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  code: 'ERR_INVALID_URL',
+  input: ''
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 571ms)
+
+$ npm run test:returns-integrity
+
+> d-mills-global-console@1.0.0 test:returns-integrity
+> node scripts/verify-returns-integrity.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Returns: typed customer/vendor/no-order flows retain their current behavior, untyped legacy create/update/delete reject without mutation, unsupported physical actions fail closed, and no stock rows or transactions change.
+
+PASS (exit 0, 558ms)
+
+$ npm run test:sales-programs
+
+> d-mills-global-console@1.0.0 test:sales-programs
+> node scripts/verify-sales-programs.mjs
+
+{"timestamp":"2026-10-15T02:20:15.267Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS: programme parent/tenant isolation, report replay/concurrency, stale/conflicting stock rejection, ownership protection, shared order/return/activity filtering, no duplicate orders or stock writes, CSV/XLSX validation
+{"timestamp":"2026-10-15T02:20:15.421Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:20:15.421Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+
+PASS (exit 0, 966ms)
+
+$ npm run test:sales-promotion-guard
+
+> d-mills-global-console@1.0.0 test:sales-promotion-guard
+> ISOLATED_BROWSER_FOCUS=sales-promotion node scripts/verify-isolated-browser-workflow.mjs
+
+Generated isolated database names: PostgreSQL=codexqa_mv8wvn3s_14bde8, MongoDB=codexqa_mv8wvn3s_14bde8
+{"timestamp":"2026-10-15T02:20:16.072Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-15T02:20:16.180Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:20:16.180Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Isolated browser workflow failed: Error Error: Isolated app did not become ready.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-isolated-browser-workflow.mjs:98:21
+Isolated MongoDB browser database removed.
+Isolated PostgreSQL browser database removed.
+
+FAIL (exit 1, 21522ms)
+
+$ npm run test:seller-connections
+
+> d-mills-global-console@1.0.0 test:seller-connections
+> node scripts/verify-seller-connections.mjs
+
+{"timestamp":"2026-10-15T02:20:37.801Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS seller connections: 20 configs, validation, SSRF rejection, encryption/masking, live-call fixtures, failed rotation, scopes, HMAC, tenant isolation, partner snapshot idempotency, agent pairing replay, sync history
+{"timestamp":"2026-10-15T02:20:38.536Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:20:38.536Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+
+PASS (exit 0, 1593ms)
+
+$ npm run test:seller-connections-ui
+
+> d-mills-global-console@1.0.0 test:seller-connections-ui
+> node scripts/verify-seller-connections-ui.mjs
+
+{"timestamp":"2026-10-15T02:20:39.363Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS seller connection UI: 20 platform dialogs, in-place Myntra M-Now and Amazon Now parent-account setup, unified-order status count/dropdown, Tata CLiQ setup, and cross-screen Order Enquiry → Nykaa setup navigation; validation, history and responsive layouts
+{"timestamp":"2026-10-15T02:20:50.618Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:20:50.618Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+
+PASS (exit 0, 12178ms)
+
+$ npm run test:seller-panel-dashboard
+
+> d-mills-global-console@1.0.0 test:seller-panel-dashboard
+> node scripts/verify-seller-panel-dashboard.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3011/app/seller-panel-dashboard
+Call log:
+  - navigating to "http://127.0.0.1:3011/app/seller-panel-dashboard", waiting until "domcontentloaded"
+
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-seller-panel-dashboard.mjs:11:14 {
+  log: [
+    '  - navigating to "http://127.0.0.1:3011/app/seller-panel-dashboard", waiting until "domcontentloaded"'
+  ],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 2128ms)
+
+$ npm run test:service-pin-codes
+
+> d-mills-global-console@1.0.0 test:service-pin-codes
+> node scripts/verify-service-pin-codes.mjs
+
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/lib/ci-isolation-preload.mjs:13
+ if (!['127.0.0.1','localhost','[::1]'].includes(url.hostname) || [3002,5173,5432,27017].includes(Number(url.port))) throw new Error('Baseline refuses configured service or non-loopback fetch');
+                                                                                                                           ^
+
+Error: Baseline refuses configured service or non-loopback fetch
+    at globalThis.fetch (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/lib/ci-isolation-preload.mjs:13:124)
+    at send (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-service-pin-codes.mjs:5:61)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-service-pin-codes.mjs:8:21
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 462ms)
+
+$ npm run test:shell-quote-boundary
+
+> d-mills-global-console@1.0.0 test:shell-quote-boundary
+> node scripts/verify-shell-quote-boundary.mjs
+
+PASS: patched quote rejects comment/newline injection; concurrently placeholders preserve adversarial arguments through a real shell.
+
+PASS (exit 0, 510ms)
+
+$ npm run test:shipment-handover
+
+> d-mills-global-console@1.0.0 test:shipment-handover
+> node scripts/verify-shipment-handover.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS legacy fulfillment safety: allocation/unallocation/cancellation, labels, provider acknowledgement, CEWB, dispatch checkpoint, shipment lifecycle, manifest dispatch transitions, pick, pack, sort, delivery split, and bulk status updates fail closed; local draft metadata stays labeled; priority-only metadata remains editable; screens disclose unavailable actions.
+
+PASS (exit 0, 603ms)
+
+$ npm run test:shopify-order-observation
+
+> d-mills-global-console@1.0.0 test:shopify-order-observation
+> node scripts/verify-shopify-order-observation.mjs
+
+PASS Shopify observation requires stable order/revision and complete physical line snapshots before cursor progress
+
+PASS (exit 0, 707ms)
+
+$ npm run test:shopify-order-observation-isolated
+
+> d-mills-global-console@1.0.0 test:shopify-order-observation-isolated
+> node scripts/run-isolated-shopify-observation.mjs
+
+{"timestamp":"2026-10-15T02:20:56.648Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS isolated Shopify poll receipt replay, changed revision conflict, malformed-order checkpoint guard and observation-only work
+{"timestamp":"2026-10-15T02:20:56.779Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:20:56.780Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Owned disposable PostgreSQL removed.
+
+PASS (exit 0, 1789ms)
+
+$ npm run test:single-location
+
+> d-mills-global-console@1.0.0 test:single-location
+> node scripts/verify-single-location.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.goto: net::ERR_FAILED at http://127.0.0.1:5173/
+Call log:
+  - navigating to "http://127.0.0.1:5173/", waiting until "domcontentloaded"
+
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-single-location.mjs:13:14 {
+  log: [
+    '  - navigating to "http://127.0.0.1:5173/", waiting until "domcontentloaded"'
+  ],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 838ms)
+
+$ npm run test:sku-barcode
+
+> d-mills-global-console@1.0.0 test:sku-barcode
+> node scripts/verify-sku-barcode.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: SKU Barcode verification requires an isolated administrator.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-sku-barcode.mjs:15:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 522ms)
+
+$ npm run test:sku-channel-listing
+
+> d-mills-global-console@1.0.0 test:sku-channel-listing
+> ISOLATED_BROWSER_FOCUS=sku-channel-listing node scripts/verify-isolated-browser-workflow.mjs
+
+Generated isolated database names: PostgreSQL=codexqa_mv8wwk6d_5cd832, MongoDB=codexqa_mv8wwk6d_5cd832
+{"timestamp":"2026-10-15T02:20:58.890Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-15T02:20:58.989Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:20:58.989Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Isolated browser workflow failed: Error Error: Isolated app did not become ready.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-isolated-browser-workflow.mjs:98:21
+Isolated MongoDB browser database removed.
+Isolated PostgreSQL browser database removed.
+
+FAIL (exit 1, 21454ms)
+
+$ npm run test:sku-company-link
+
+> d-mills-global-console@1.0.0 test:sku-company-link
+> ISOLATED_BROWSER_FOCUS=sku-company-link node scripts/verify-isolated-browser-workflow.mjs
+
+Generated isolated database names: PostgreSQL=codexqa_mv8wx0vf_4babb6, MongoDB=codexqa_mv8wx0vf_4babb6
+{"timestamp":"2026-10-15T02:21:20.544Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-15T02:21:20.646Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:21:20.647Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Isolated browser workflow failed: Error Error: Isolated app did not become ready.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-isolated-browser-workflow.mjs:98:21
+Isolated MongoDB browser database removed.
+Isolated PostgreSQL browser database removed.
+
+FAIL (exit 1, 21653ms)
+
+$ npm run test:sku-grading
+
+> d-mills-global-console@1.0.0 test:sku-grading
+> node scripts/verify-sku-grading.mjs
+
+[data] MongoDB selection { selectedDatabase: 'oms_ci_test', maskedHost: null }
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo-connection.js:5
+export const databaseUnavailable = () => Object.assign(new Error('The requested module is temporarily unavailable because its database dependency is unavailable.'), {
+                                                       ^
+
+Error: MONGODB_URI is required when persistent storage is enforced.
+    at databaseUnavailable (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo-connection.js:5:56)
+    at ensureReady (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:178:50)
+    at waitForDataReady (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/api/mongo.js:215:50)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/server.js:422:62
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-sku-grading.mjs:13:1 {
+  status: 503,
+  statusCode: 503,
+  code: 'DATABASE_UNAVAILABLE',
+  database: 'mongodb'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 881ms)
+
+$ npm run test:sku-group
+
+> d-mills-global-console@1.0.0 test:sku-group
+> ISOLATED_BROWSER_FOCUS=sku-group node scripts/verify-isolated-browser-workflow.mjs
+
+Generated isolated database names: PostgreSQL=codexqa_mv8wxi44_f5b03e, MongoDB=codexqa_mv8wxi44_f5b03e
+{"timestamp":"2026-10-15T02:21:42.877Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-15T02:21:42.994Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:21:42.994Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Isolated browser workflow failed: Error Error: Isolated app did not become ready.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-isolated-browser-workflow.mjs:98:21
+Isolated MongoDB browser database removed.
+Isolated PostgreSQL browser database removed.
+
+FAIL (exit 1, 21477ms)
+
+$ npm run test:sku-import
+
+> d-mills-global-console@1.0.0 test:sku-import
+> node scripts/verify-sku-import.mjs
+
+PASS SKU import browser boundary: actual component sends only an import request, shows unavailable outcome, and never accesses individual SKUs. Layout and HTTP client are fixture adapters; no configured store was used.
+
+PASS (exit 0, 1597ms)
+
+$ npm run test:sku-label-print
+
+> d-mills-global-console@1.0.0 test:sku-label-print
+> node scripts/verify-sku-label-print.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 441ms)
+
+$ npm run test:sku-master
+
+> d-mills-global-console@1.0.0 test:sku-master
+> node scripts/verify-sku-master.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 464ms)
+
+$ npm run test:sku-master-workflow
+
+> d-mills-global-console@1.0.0 test:sku-master-workflow
+> node scripts/verify-sku-master-workflow.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: SKU Master verification requires an isolated administrator.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-sku-master-workflow.mjs:14:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 509ms)
+
+$ npm run test:sku-moderation
+
+> d-mills-global-console@1.0.0 test:sku-moderation
+> ISOLATED_BROWSER_FOCUS=sku-moderation node scripts/verify-isolated-browser-workflow.mjs
+
+Generated isolated database names: PostgreSQL=codexqa_mv8wy11h_3905be, MongoDB=codexqa_mv8wy11h_3905be
+{"timestamp":"2026-10-15T02:22:07.437Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-15T02:22:07.550Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:22:07.550Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Isolated browser workflow failed: Error Error: Isolated app did not become ready.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-isolated-browser-workflow.mjs:98:21
+Isolated MongoDB browser database removed.
+Isolated PostgreSQL browser database removed.
+
+FAIL (exit 1, 21558ms)
+
+$ npm run test:sort-to-box
+
+> d-mills-global-console@1.0.0 test:sort-to-box
+> node scripts/verify-sort-to-box.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS legacy fulfillment safety: allocation/unallocation/cancellation, labels, provider acknowledgement, CEWB, dispatch checkpoint, shipment lifecycle, manifest dispatch transitions, pick, pack, sort, delivery split, and bulk status updates fail closed; local draft metadata stays labeled; priority-only metadata remains editable; screens disclose unavailable actions.
+
+PASS (exit 0, 626ms)
+
+$ npm run test:stock-lock-cleanup
+
+> d-mills-global-console@1.0.0 test:stock-lock-cleanup
+> node scripts/verify-stock-lock-cleanup.mjs
+
+{"timestamp":"2026-10-15T02:22:29.467Z","event":"stock_lock_release_failed","code":"LOCK_CLEANUP_FAILED"}
+{"timestamp":"2026-10-15T02:22:29.468Z","event":"stock_lock_release_failed","code":"LOCK_CLEANUP_FAILED"}
+{"timestamp":"2026-10-15T02:22:29.468Z","event":"stock_lock_release_failed","code":"LOCK_CLEANUP_FAILED"}
+{"timestamp":"2026-10-15T02:22:29.468Z","event":"stock_lock_release_failed","code":"LOCK_CLEANUP_FAILED"}
+{"timestamp":"2026-10-15T02:22:29.468Z","event":"stock_lock_release_failed","code":"LOCK_CLEANUP_FAILED"}
+PASS: confirmed unlock reuses client, failed/unconfirmed unlock discards client, cleanup preserves success and exact primary failure
+
+PASS (exit 0, 495ms)
+
+$ npm run test:stock-publication-isolated
+
+> d-mills-global-console@1.0.0 test:stock-publication-isolated
+> node scripts/run-isolated-stock-publication.mjs
+
+{"timestamp":"2026-10-15T02:22:31.132Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS isolated Shopify/WooCommerce/Amazon timeout, readback resolution, crash lease hold, mismatch quarantine, mapping lock and no blind resend
+{"timestamp":"2026-10-15T02:22:33.170Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:22:33.170Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+{"timestamp":"2026-10-15T02:22:33.336Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS inventory publication order and Shopify readback: overlapping sale ends at 495 and drift is corrected
+{"timestamp":"2026-10-15T02:22:34.748Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:22:34.749Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Owned disposable PostgreSQL removed.
+
+PASS (exit 0, 5449ms)
+
+$ npm run test:store-group
+
+> d-mills-global-console@1.0.0 test:store-group
+> node scripts/verify-store-group.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 472ms)
+
+$ npm run test:tally-configuration
+
+> d-mills-global-console@1.0.0 test:tally-configuration
+> node scripts/verify-tally-configuration.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 437ms)
+
+$ npm run test:tax-application
+
+> d-mills-global-console@1.0.0 test:tax-application
+> node scripts/verify-tax-application.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 462ms)
+
+$ npm run test:tax-application-workflow
+
+> d-mills-global-console@1.0.0 test:tax-application-workflow
+> node scripts/verify-tax-application-workflow.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Tax Application verification requires an isolated administrator.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-tax-application-workflow.mjs:16:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 472ms)
+
+$ npm run test:tax-category
+
+> d-mills-global-console@1.0.0 test:tax-category
+> node scripts/verify-tax-category.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3011/
+Call log:
+  - navigating to "http://127.0.0.1:3011/", waiting until "load"
+
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-tax-category.mjs:1:350 {
+  log: [
+    '  - navigating to "http://127.0.0.1:3011/", waiting until "load"'
+  ],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 1058ms)
+
+$ npm run test:tax-category-workflow
+
+> d-mills-global-console@1.0.0 test:tax-category-workflow
+> node scripts/verify-tax-category-workflow.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Tax Category verification requires an isolated administrator.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-tax-category-workflow.mjs:15:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 507ms)
+
+$ npm run test:tax-code
+
+> d-mills-global-console@1.0.0 test:tax-code
+> node scripts/verify-tax-code.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3011/
+Call log:
+  - navigating to "http://127.0.0.1:3011/", waiting until "load"
+
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-tax-code.mjs:1:350 {
+  log: [
+    '  - navigating to "http://127.0.0.1:3011/", waiting until "load"'
+  ],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 588ms)
+
+$ npm run test:tax-code-workflow
+
+> d-mills-global-console@1.0.0 test:tax-code-workflow
+> node scripts/verify-tax-code-workflow.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Tax Code verification requires an isolated administrator.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-tax-code-workflow.mjs:13:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 502ms)
+
+$ npm run test:tax-group
+
+> d-mills-global-console@1.0.0 test:tax-group
+> node scripts/verify-tax-group.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3011/
+Call log:
+  - navigating to "http://127.0.0.1:3011/", waiting until "load"
+
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-tax-group.mjs:1:350 {
+  log: [
+    '  - navigating to "http://127.0.0.1:3011/", waiting until "load"'
+  ],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 627ms)
+
+$ npm run test:tax-group-workflow
+
+> d-mills-global-console@1.0.0 test:tax-group-workflow
+> node scripts/verify-tax-group-workflow.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Tax Group verification requires an isolated administrator.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-tax-group-workflow.mjs:15:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 482ms)
+
+$ npm run test:tax-zone
+
+> d-mills-global-console@1.0.0 test:tax-zone
+> node scripts/verify-tax-zone.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3011/
+Call log:
+  - navigating to "http://127.0.0.1:3011/", waiting until "load"
+
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-tax-zone.mjs:1:350 {
+  log: [
+    '  - navigating to "http://127.0.0.1:3011/", waiting until "load"'
+  ],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 635ms)
+
+$ npm run test:tax-zone-workflow
+
+> d-mills-global-console@1.0.0 test:tax-zone-workflow
+> node scripts/verify-tax-zone-workflow.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Tax Zone verification requires an isolated administrator.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-tax-zone-workflow.mjs:12:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 474ms)
+
+$ npm run test:terms-html-sanitizer
+
+> d-mills-global-console@1.0.0 test:terms-html-sanitizer
+> node scripts/verify-terms-html-sanitizer.mjs
+
+PASS: real browser sanitizer rejects execution payloads while preserving formatting; editor/preview/paste use sanitized HTML.
+
+PASS (exit 0, 2253ms)
+
+$ npm run test:transhipment-integrity
+
+> d-mills-global-console@1.0.0 test:transhipment-integrity
+> node scripts/verify-transhipment.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Transhipment: enquiry and metadata-only UDF edits work in isolated memory; stock, manifest, print, export, and ingest actions return 501 without fake state changes.
+
+PASS (exit 0, 532ms)
+
+$ npm run test:transhipment-old-integrity
+
+> d-mills-global-console@1.0.0 test:transhipment-old-integrity
+> node scripts/verify-transhipment-old.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS Transhipment Old: explicit CSV import/search/export work in isolated memory; direct fake ingest and stock lifecycle transitions fail closed without changing status.
+
+PASS (exit 0, 483ms)
+
+$ npm run test:transporter-enquiry-parity
+
+> d-mills-global-console@1.0.0 test:transporter-enquiry-parity
+> node scripts/verify-transporter-enquiry-parity.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3011/app/transporters
+Call log:
+  - navigating to "http://127.0.0.1:3011/app/transporters", waiting until "domcontentloaded"
+
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-transporter-enquiry-parity.mjs:11:14 {
+  log: [
+    '  - navigating to "http://127.0.0.1:3011/app/transporters", waiting until "domcontentloaded"'
+  ],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 977ms)
+
+$ npm run test:transporter-integrity
+
+> d-mills-global-console@1.0.0 test:transporter-integrity
+> node scripts/verify-transporter-integrity.mjs
+
+[data] MongoDB selection {
+  selectedDatabase: 'codexqa_mv8wyv76_eaa3b8',
+  maskedHost: '[masked-host]'
+}
+[data] MongoDB configuration warning {
+  code: 'MONGODB_URI_DATABASE_OVERRIDDEN',
+  message: 'MONGODB_DB overrides a different database path in MONGODB_URI; confirm the selected database deliberately.',
+  selectedDatabase: 'codexqa_mv8wyv76_eaa3b8'
+}
+{"timestamp":"2026-10-15T02:22:46.409Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"READY"}
+PASS isolated MongoDB transporter create, search, rename, immutable code/audit, historical courier names, and delete guard.
+Isolated MongoDB test database removed.
+
+PASS (exit 0, 810ms)
+
+$ npm run test:transporter-master
+
+> d-mills-global-console@1.0.0 test:transporter-master
+> node scripts/verify-transporter-master.mjs
+
+Transporter Master browser workflow failed: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3005/app/transporters
+Call log:
+  - navigating to "http://127.0.0.1:3005/app/transporters", waiting until "domcontentloaded"
+
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-transporter-master.mjs:17:14 {
+  log: [
+    '  - navigating to "http://127.0.0.1:3005/app/transporters", waiting until "domcontentloaded"'
+  ],
+  name: 'Error'
+}
+
+FAIL (exit 1, 636ms)
+
+$ npm run test:transporter-preferences
+
+> d-mills-global-console@1.0.0 test:transporter-preferences
+> node scripts/verify-transporter-preferences.mjs
+
+file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/lib/ci-isolation-preload.mjs:13
+ if (!['127.0.0.1','localhost','[::1]'].includes(url.hostname) || [3002,5173,5432,27017].includes(Number(url.port))) throw new Error('Baseline refuses configured service or non-loopback fetch');
+                                                                                                                           ^
+
+Error: Baseline refuses configured service or non-loopback fetch
+    at globalThis.fetch (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/lib/ci-isolation-preload.mjs:13:124)
+    at send (file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-transporter-preferences.mjs:1:171)
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-transporter-preferences.mjs:1:508
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
+
+FAIL (exit 1, 444ms)
+
+$ npm run test:unified-orders
+
+> d-mills-global-console@1.0.0 test:unified-orders
+> node scripts/run-isolated-unified-orders.mjs
+
+{"timestamp":"2026-10-15T02:22:48.763Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-15T02:23:19.708Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS GENERATED_LOCAL provider double: diagnostic outage preserves success state and subsequent account processing; no REAL_PROVIDER evidence.
+{"timestamp":"2026-10-15T02:23:19.775Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:23:19.775Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+PASS unified orders: signed/replayed ingress, tenant queue/sender isolation, lease redelivery, revision rejection, cancel/dispatch races, provider-state separation, credential-failure retry/dead-letter, pack-unit conversion/replay/conflict/overflow, reservation SKU/location identity, return replay, staff guards, and oversell rejection
+{"timestamp":"2026-10-15T02:23:20.930Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:23:20.930Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Isolated unified-orders PostgreSQL database removed.
+
+PASS (exit 0, 33183ms)
+
+$ npm run test:unified-orders-isolated
+
+> d-mills-global-console@1.0.0 test:unified-orders-isolated
+> node scripts/run-isolated-unified-orders.mjs
+
+{"timestamp":"2026-10-15T02:23:21.957Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-15T02:23:52.899Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS GENERATED_LOCAL provider double: diagnostic outage preserves success state and subsequent account processing; no REAL_PROVIDER evidence.
+{"timestamp":"2026-10-15T02:23:52.962Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:23:52.962Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+PASS unified orders: signed/replayed ingress, tenant queue/sender isolation, lease redelivery, revision rejection, cancel/dispatch races, provider-state separation, credential-failure retry/dead-letter, pack-unit conversion/replay/conflict/overflow, reservation SKU/location identity, return replay, staff guards, and oversell rejection
+{"timestamp":"2026-10-15T02:23:54.123Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:23:54.123Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Isolated unified-orders PostgreSQL database removed.
+
+PASS (exit 0, 33194ms)
+
+$ npm run test:validation-master-inputs
+
+> d-mills-global-console@1.0.0 test:validation-master-inputs
+> node scripts/verify-validation-master-inputs.mjs
+
+[data] MongoDB selection { selectedDatabase: 'd_mills_global', maskedHost: null }
+[data] MongoDB configuration warning {
+  code: 'MONGODB_DB_UNSET_DEFAULT_USED',
+  message: 'MONGODB_DB is unset; using the development default d_mills_global.',
+  selectedDatabase: 'd_mills_global'
+}
+PASS: malformed default flags and PUT identities reject without changes; valid explicit update persists.
+
+PASS (exit 0, 576ms)
+
+$ npm run test:vendor-enquiry-parity
+
+> d-mills-global-console@1.0.0 test:vendor-enquiry-parity
+> node scripts/verify-vendor-enquiry-parity.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3011/app/vendors
+Call log:
+  - navigating to "http://127.0.0.1:3011/app/vendors", waiting until "domcontentloaded"
+
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-vendor-enquiry-parity.mjs:11:14 {
+  log: [
+    '  - navigating to "http://127.0.0.1:3011/app/vendors", waiting until "domcontentloaded"'
+  ],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 1086ms)
+
+$ npm run test:vendor-integrity
+
+> d-mills-global-console@1.0.0 test:vendor-integrity
+> node scripts/verify-vendor-integrity.mjs
+
+[data] MongoDB selection {
+  selectedDatabase: 'codexqa_mv8x0d6r_102dc1',
+  maskedHost: '[masked-host]'
+}
+[data] MongoDB configuration warning {
+  code: 'MONGODB_URI_DATABASE_OVERRIDDEN',
+  message: 'MONGODB_DB overrides a different database path in MONGODB_URI; confirm the selected database deliberately.',
+  selectedDatabase: 'codexqa_mv8x0d6r_102dc1'
+}
+{"timestamp":"2026-10-15T02:23:56.380Z","event":"database_state","database":"mongodb","previous":"CONNECTING","state":"READY"}
+PASS isolated MongoDB vendor create, rename, audit actor, immutable code, duplicate guard, and PO/GRN historical names.
+Isolated MongoDB test database removed.
+
+PASS (exit 0, 852ms)
+
+$ npm run test:vendor-master
+
+> d-mills-global-console@1.0.0 test:vendor-master
+> node scripts/verify-vendor-master.mjs
+
+Starting Vendor Master browser workflow at http://127.0.0.1:62208
+Vendor Master browser workflow passed: VM-E2E-1792031038377
+
+PASS (exit 0, 3963ms)
+
+$ npm run test:vendor-promotions
+
+> d-mills-global-console@1.0.0 test:vendor-promotions
+> node scripts/verify-vendor-promotions.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3011/
+Call log:
+  - navigating to "http://127.0.0.1:3011/", waiting until "domcontentloaded"
+
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-vendor-promotions.mjs:8:14 {
+  log: [
+    '  - navigating to "http://127.0.0.1:3011/", waiting until "domcontentloaded"'
+  ],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 612ms)
+
+$ npm run test:vendor-sku-catalog
+
+> d-mills-global-console@1.0.0 test:vendor-sku-catalog
+> node scripts/verify-vendor-sku-catalog.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Vendor SKU Catalog verification requires a signed-in isolated administrator.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-vendor-sku-catalog.mjs:14:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 469ms)
+
+$ npm run test:vendor-sku-loc-catalog
+
+> d-mills-global-console@1.0.0 test:vendor-sku-loc-catalog
+> node scripts/verify-vendor-sku-loc-catalog.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Vendor SKU Location Catalog verification requires a signed-in isolated administrator.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-vendor-sku-loc-catalog.mjs:18:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 502ms)
+
+$ npm run test:voucher-guard
+
+> d-mills-global-console@1.0.0 test:voucher-guard
+> ISOLATED_BROWSER_FOCUS=vouchers node scripts/verify-isolated-browser-workflow.mjs
+
+Generated isolated database names: PostgreSQL=codexqa_mv8x0i3p_3c16b0, MongoDB=codexqa_mv8x0i3p_3c16b0
+{"timestamp":"2026-10-15T02:24:02.820Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-15T02:24:02.908Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T02:24:02.908Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Isolated browser workflow failed: Error Error: Isolated app did not become ready.
+    at file:///Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-isolated-browser-workflow.mjs:98:21
+Isolated MongoDB browser database removed.
+Isolated PostgreSQL browser database removed.
+
+FAIL (exit 1, 21416ms)
+
+$ npm run test:whatsapp-total-deadline
+
+> d-mills-global-console@1.0.0 test:whatsapp-total-deadline
+> node scripts/verify-whatsapp-total-deadline.mjs
+
+PASS: slow-drip response hits total deadline and destroys request; stalled DNS rejects before dispatch.
+
+PASS (exit 0, 749ms)
+
+$ npm run test:wms-dedicated-menu-routing
+
+> d-mills-global-console@1.0.0 test:wms-dedicated-menu-routing
+> node scripts/verify-wms-dedicated-menu-routing.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3011/
+Call log:
+  - navigating to "http://127.0.0.1:3011/", waiting until "domcontentloaded"
+
+    at /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/verify-wms-dedicated-menu-routing.mjs:41:14 {
+  log: [
+    '  - navigating to "http://127.0.0.1:3011/", waiting until "domcontentloaded"'
+  ],
+  name: 'Error'
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 962ms)
+
+$ npm run test:wms-zone
+
+> d-mills-global-console@1.0.0 test:wms-zone
+> node scripts/verify-wms-zone.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[TypeError: fetch failed] {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:3011
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1864:16) {
+    errno: -61,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 3011
+  }
+}
+
+Node.js v26.5.0
+
+FAIL (exit 1, 444ms)
+
+$ npm run test:workbook-inspector
+
+> d-mills-global-console@1.0.0 test:workbook-inspector
+> node scripts/verify-workbook-inspector.mjs
+
+PASS structural workbook inspection, data-row redaction and 50,000-row limit
+
+PASS (exit 0, 2411ms)
+
+$ npm run test:zone-picker-csv
+
+> d-mills-global-console@1.0.0 test:zone-picker-csv
+> node scripts/verify-zone-picker-csv.mjs
+
+PASS zone-picker CSV parser: quoted fields, malformed/duplicate/oversized files and one-request batch outcome messaging
+
+PASS (exit 0, 516ms)
+
+$ npm run test:zone-picker-mutation
+
+> d-mills-global-console@1.0.0 test:zone-picker-mutation
+> node scripts/verify-zone-picker-mutation.mjs
+
+[data] MongoDB selection { selectedDatabase: 'zone_picker_test', maskedHost: null }
+PASS zone-picker mutation: server validation, single-zone atomic guards and all-or-error memory batch
+
+PASS (exit 0, 555ms)

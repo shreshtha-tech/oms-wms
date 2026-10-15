@@ -1,3 +1,4 @@
+import { resolveTestBinary, testBinaryPath } from './lib/test-binaries.mjs';
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
 import { mkdtemp, rm, statfs, readFile, appendFile, mkdir, writeFile } from 'node:fs/promises';
@@ -12,9 +13,9 @@ const disk = await statfs(tmpdir());
 if (disk.bavail * disk.bsize < 500 * 1024 * 1024) throw new Error('NOT RUN: disposable Mongo requires at least 500 MiB free.');
 const directory = await mkdtemp(join(tmpdir(), 'mongo-boundaries-owned-'));
 const port = randomInt(20000, 50000);
-const env = { PATH: '/opt/homebrew/bin:/usr/bin:/bin', TMPDIR: tmpdir() };
+const env = { PATH: testBinaryPath(), DMILLS_SKIP_DOTENV: 'true', TMPDIR: tmpdir() };
 const daemonArgs = ['--replSet', 'owned_boundary', '--dbpath', directory, '--port', String(port), '--bind_ip', '127.0.0.1', '--nounixsocket', '--wiredTigerCacheSizeGB', '0.25', '--logpath', join(directory, 'mongod.log')];
-let daemon = spawn('/opt/homebrew/bin/mongod', daemonArgs, { env, stdio: 'ignore' });
+let daemon = spawn(resolveTestBinary('mongod'), daemonArgs, { env, stdio: 'ignore' });
 async function stopOwnedDaemon(signal = 'SIGTERM') {
   if (!daemon.pid || daemon.exitCode !== null || daemon.signalCode !== null) return;
   const exited = new Promise(resolve => daemon.once('exit', resolve));
@@ -172,7 +173,7 @@ try {
         await assert.rejects(mongo.findOne('generic_records', { id: record.id }), error => ['DATABASE_UNAVAILABLE', 'DATABASE_TIMEOUT'].includes(error.code) && [503, 504].includes(error.status));
         assert.ok(performance.now() - outageStarted < 20000, 'Outage read is bounded by the operation deadline plus test scheduling allowance');
         assert.notEqual(mongo.getMode(), 'memory', 'A configured outage cannot use memory');
-        daemon = spawn('/opt/homebrew/bin/mongod', daemonArgs, { env, stdio: 'ignore' });
+        daemon = spawn(resolveTestBinary('mongod'), daemonArgs, { env, stdio: 'ignore' });
         daemon.on('error', error => { startError = error; });
         let recovered;
         for (let attempt = 0; attempt < 40; attempt++) {

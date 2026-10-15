@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { randomUUID, randomBytes, scryptSync } from 'node:crypto';
 import { spawn } from 'node:child_process';
 import pg from 'pg';
+import { MongoClient } from 'mongodb';
 const mongo=new URL(process.env.MONGODB_URI||'');
 assert.equal(mongo.hostname,'127.0.0.1');
 const mongoPid=Number(process.env.MONGO_TEST_PROCESS_PID);assert.ok(mongoPid>0,'Use disposable Mongo wrapper');
@@ -35,7 +36,13 @@ try{
  let recovered;for(let i=0;i<40;i++){recovered=await request('/api/sku-groups');if(recovered.status===200)break;await new Promise(resolve=>setTimeout(resolve,500));}
  assert.equal(recovered.status,200);assert.deepEqual(recovered.body.rows,[]);
  const concurrent=await Promise.all(Array.from({length:20},()=>request('/api/sku-groups')));assert.ok(concurrent.every(result=>result.status===200));
- assert.equal((await request('/health/ready')).status,200);
+ const emptyReady=await request('/health/ready');
+ assert.equal(emptyReady.status,503,'A recovered but empty Mongo dataset is not ready');
+ assert.equal(emptyReady.body.dependencies.mongodb,'EMPTY');
+ const mongoClient=new MongoClient(process.env.MONGODB_URI,{serverSelectionTimeoutMS:5000});
+ try{await mongoClient.connect();await mongoClient.db(process.env.MONGODB_DB).collection('skus').insertOne({sku_code:'RECOVERY-FIXTURE',product_name:'Recovery fixture'});}finally{await mongoClient.close();}
+ let populatedReady;for(let i=0;i<40;i++){populatedReady=await request('/health/ready');if(populatedReady.status===200)break;await new Promise(resolve=>setTimeout(resolve,500));}
+ assert.equal(populatedReady.status,200,'A populated recovered dataset is ready after dataset cache refresh');
  console.log('PASS real Mongo startup/restart outage: liveness, safe 503 without fake rows, PG independence, durable auth across server restart, recovery without restart, concurrent reads and graceful shutdown');
 }finally{
  if(paused)process.kill(mongoPid,'SIGCONT');

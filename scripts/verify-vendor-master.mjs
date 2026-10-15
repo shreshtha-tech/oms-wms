@@ -1,6 +1,8 @@
 import { chromium } from 'playwright';
+import { startTestServer } from './lib/test-server.mjs';
 
-const baseUrl = process.env.VENDOR_TEST_URL || 'http://127.0.0.1:3003';
+const fixture = await startTestServer();
+const baseUrl = fixture.baseUrl;
 const uniqueCode = `VM-E2E-${Date.now()}`;
 const requiredTabs = ['Vendor Master', 'Address', 'User Defined Fields', 'Attached Document', 'Terms and Conditions', 'Seller Details', 'Other Details'];
 
@@ -9,14 +11,18 @@ const exactLabel = (page, text, index = 0) => page.locator('label').filter({ has
 const labelInput = (page, text, index = 0) => exactLabel(page, text, index).locator('input');
 const labelSelect = (page, text, index = 0) => exactLabel(page, text, index).locator('select');
 
-const browser = await chromium.launch({ headless: true });
-const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+let browser;
+let page;
 const pageErrors = [];
-page.on('pageerror', (error) => pageErrors.push(error.message));
-page.setDefaultTimeout(10_000);
 try {
+  browser = await chromium.launch({ headless: true });
+  const context = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
+  const [name,value] = fixture.sessionCookie.split('=');
+  await context.addCookies([{ name,value,url:baseUrl,httpOnly:true,sameSite:'Strict' }]);
+  page = await context.newPage();
+  page.on('pageerror', (error) => pageErrors.push(error.message));
+  page.setDefaultTimeout(10_000);
   console.log(`Starting Vendor Master browser workflow at ${baseUrl}`);
-  await page.addInitScript(() => localStorage.setItem('vin_user', JSON.stringify({ username: 'vendor-e2e' })));
   await page.goto(`${baseUrl}/app/vendors`, { waitUntil: 'domcontentloaded', timeout: 10_000 });
   await page.getByRole('button', { name: 'add new' }).waitFor();
   await page.getByRole('button', { name: 'add new' }).click();
@@ -110,5 +116,6 @@ try {
   console.error('Vendor Master browser workflow failed:', error);
   process.exitCode = 1;
 } finally {
-  await browser.close();
+  await browser?.close();
+  await fixture.close();
 }

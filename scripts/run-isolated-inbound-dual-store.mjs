@@ -1,3 +1,4 @@
+import { resolveTestBinary } from './lib/test-binaries.mjs';
 import '../env.js';
 import { randomInt, randomUUID } from 'node:crypto';
 import { spawn } from 'node:child_process';
@@ -16,7 +17,7 @@ const pgName = `codexqa_inbound_ds_${suffix}`, mongoName = `codexqa_inbound_ds_$
 const mongoDir = await mkdtemp(join(tmpdir(), 'codexqa-inbound-mongo-'));
 const port = randomInt(20000, 50000);
 const mongoUri = `mongodb://127.0.0.1:${port}`;
-const mongod = spawn('/opt/homebrew/bin/mongod', ['--dbpath', mongoDir, '--port', String(port), '--bind_ip', '127.0.0.1',
+const mongod = spawn(resolveTestBinary('mongod'), ['--dbpath', mongoDir, '--port', String(port), '--bind_ip', '127.0.0.1',
   '--nounixsocket', '--logpath', join(mongoDir, 'mongod.log')], { stdio: 'ignore' });
 let mongoError = null;
 mongod.on('error', error => { mongoError = error; });
