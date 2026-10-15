@@ -247,7 +247,8 @@
     "verify:flipkart-orders": "node scripts/verify-flipkart-orders.mjs",
     "test:ci-runner": "node scripts/verify-ci-test-runner.mjs",
     "test:ci-env": "node scripts/verify-ci-env.mjs",
-    "test:provider-dispatch-authority": "node scripts/run-phase-b-isolated.mjs scripts/verify-phase-b-dispatch.mjs"
+    "test:provider-dispatch-authority": "node scripts/run-phase-b-isolated.mjs scripts/verify-phase-b-dispatch.mjs",
+    "test:partial-reservations": "node scripts/run-phase-b-isolated.mjs scripts/verify-partial-reservations.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-sqs": "^3.1138.0",

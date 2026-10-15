@@ -1,0 +1,21 @@
+commit: working tree pr/02-partial-reservations
+command: node /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/run-phase-b-isolated.mjs scripts/verify-central-inventory.mjs
+cwd: /Users/shreshthagupta/AI-Workspaces/oms-wms
+exit: 0
+{"timestamp":"2026-10-15T07:45:46.810Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS central inventory: ledger concurrency, reservations, immutable event, HMAC, Shopify mutation, encryption, Shopify/Amazon order lifecycle and replay
+{"timestamp":"2026-10-15T07:45:47.506Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T07:45:47.506Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Owned disposable stack removed.
+
+command: npm run test:partial-reservations
+exit: 0
+
+> d-mills-global-console@1.0.0 test:partial-reservations
+> node scripts/run-phase-b-isolated.mjs scripts/verify-partial-reservations.mjs
+
+{"timestamp":"2026-10-15T07:46:17.412Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS partial reservations: backfill, reapply, concurrent consume/release, replay and balance
+{"timestamp":"2026-10-15T07:46:17.702Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T07:46:17.702Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Owned disposable stack removed.
