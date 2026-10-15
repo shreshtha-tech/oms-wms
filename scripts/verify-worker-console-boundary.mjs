@@ -35,4 +35,16 @@ for(const blocked of ['heartbeat','order','reconciliation','woo','amazon','selle
  }finally{release({accounts:0,errors:[]});await batch;}
  assert.equal(leaseReleased,true);
 }
+{
+ const listeners=new Map(),logs=[];let tick=0,bridgeCalls=0;
+ const processDouble={env:{INVENTORY_DATABASE_URL:'fixture',INVENTORY_ALLOWED_TENANT_ID:'fixture',INVENTORY_CREDENTIAL_KEY:'a'.repeat(64)},on:(event,fn)=>listeners.set(event,fn),exit:()=>{}};
+ const pool={query:async sql=>({rows:sql.includes('to_regclass')?[{outbox:'ci_outbox',event_receipt:'ci_event_receipt',domain_outbox:'ci_domain_outbox',receipt_claim_token:true,receipt_lease_until:true,receipt_claim_index:true,receipt_expired_index:true}]:[]}),connect:async()=>({on:()=>{},query:async()=>({rows:[{acquired:true}]}),release:()=>{}}),end:async()=>{}};
+ const virtualNow=()=>[0,1000,2000,31000,32000][Math.min(tick,4)];
+ const run=new AsyncFunction('process','inventoryPool','runInventoryTaskBatch','reconcileShopifyStock','reconcileWooUncertainStock','reconcileAmazonUncertainStock','observeSellerConnections','runWhatsAppBatch','pollShopifyOrderObservations','runReceiptBridgeBatch','console','setTimeout','virtualNow',source.replaceAll('Date.now()','virtualNow()'));
+ await run(processDouble,()=>pool,async()=>{await new Promise(resolve=>setImmediate(resolve));if(++tick===5)listeners.get('SIGTERM')();return 1;},async()=>({}),async()=>({}),async()=>({}),async()=>({}),async()=>({}),async()=>({accounts:0,errors:[]}),async()=>{if(++bridgeCalls===1)throw Object.assign(new Error('fixture-private-uri'),{code:'DATABASE_UNAVAILABLE'});return {commands:0,results:0};},{log:message=>logs.push(message),error:message=>logs.push(message)},fn=>fn(),virtualNow);
+ assert.equal(bridgeCalls,3,'MongoDB outage must back off, then resume normal cadence after recovery');
+ const bridgeLogs=logs.filter(line=>line.includes('inbound_receipt_bridge')).map(JSON.parse);
+ assert.deepEqual(bridgeLogs.map(line=>[line.state,line.reason]),[['DEGRADED','MONGODB_UNAVAILABLE'],['READY',undefined]]);
+ assert.equal(logs.join('\n').includes('fixture-private'),false,'Dependency details must stay out of worker logs');
+}
 console.log('PASS isolated worker loop: safe console and individually stalled scheduled jobs cannot prevent task progression or accumulate duplicate jobs.');
