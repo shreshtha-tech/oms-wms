@@ -1,11 +1,12 @@
 // Resolve database selection without exposing connection credentials.
 export function resolveMongoConfiguration(env = process.env) {
-  const explicitDatabase = Boolean(env.MONGODB_DB?.trim());
+  const configuredDatabase = env.MONGODB_DB?.trim();
+  const explicitDatabase = Boolean(configuredDatabase);
   const required = env.NODE_ENV === 'production' || env.DMILLS_REQUIRE_PERSISTENCE === 'true';
-  if (required && !explicitDatabase) {
-    throw new Error('MONGODB_DB must be explicitly set when production or DMILLS_REQUIRE_PERSISTENCE=true requires persistent storage.');
-  }
-  const selectedDatabase = explicitDatabase ? env.MONGODB_DB : 'd_mills_global';
+  // Production may use the documented default database when MONGODB_DB is
+  // absent; Render's Blueprint sets it explicitly, but the app must not fail
+  // if a service was created outside that Blueprint.
+  const selectedDatabase = explicitDatabase ? configuredDatabase : 'd_mills_global';
   if (/[\/\\. "$\x00]/.test(selectedDatabase) || Buffer.byteLength(selectedDatabase) > 63) {
     throw new Error('MONGODB_DB must be a valid database name, not a connection string.');
   }
