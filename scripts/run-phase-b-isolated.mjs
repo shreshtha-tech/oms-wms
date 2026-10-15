@@ -10,7 +10,7 @@ import pg from 'pg';
 import { validateTestStores } from './lib/isolated-stack-guard.mjs';
 
 const suite = process.argv[2] || 'scripts/verify-phase-b-stack.mjs';
-const allowed = new Set(['scripts/verify-phase-b-stack.mjs', 'scripts/verify-phase-b-propagation.mjs', 'scripts/verify-phase-b-dispatch.mjs', 'scripts/verify-seller-connections.mjs', 'scripts/verify-session-recovery.mjs', 'scripts/measure-owned-ledger-contention.mjs', 'scripts/verify-receipt-claim-mongo-plan.mjs', 'scripts/measure-receipt-claim-backlog.mjs', 'scripts/verify-partial-reservations.mjs', 'scripts/verify-central-inventory.mjs']);
+const allowed = new Set(['scripts/verify-phase-b-stack.mjs', 'scripts/verify-phase-b-propagation.mjs', 'scripts/verify-phase-b-dispatch.mjs', 'scripts/verify-seller-connections.mjs', 'scripts/verify-sales-programs.mjs', 'scripts/verify-session-recovery.mjs', 'scripts/measure-owned-ledger-contention.mjs', 'scripts/verify-receipt-claim-mongo-plan.mjs', 'scripts/measure-receipt-claim-backlog.mjs', 'scripts/verify-partial-reservations.mjs', 'scripts/verify-central-inventory.mjs', 'scripts/verify-central-inventory-api.mjs', 'scripts/verify-variant-identity-db.mjs', 'scripts/verify-sku-service-db.mjs', 'scripts/verify-sku-projection-isolated.mjs', 'scripts/verify-variant-backfill-isolated.mjs']);
 if (!allowed.has(suite)) throw new Error('Unapproved isolated suite');
 const directory = await mkdtemp(join(tmpdir(), 'dmills-phase-b-'));
 const nativeEnv = { PATH: testBinaryPath(), DMILLS_SKIP_DOTENV: 'true', LANG: 'C', TMPDIR: directory };

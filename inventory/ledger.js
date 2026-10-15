@@ -22,11 +22,15 @@ export async function applyInventoryEventInTransaction(db,input) {
   const hash=createHash('sha256').update(canonical).digest('hex');
   return (async()=>{
     // Serialize changes across a SKU's locations so aggregate alerts see committed balances.
-    await db.query('SELECT id FROM ci_master_sku WHERE tenant_id=$1 AND id=$2 FOR UPDATE',[tenantId,masterSkuId]);
+    const master=await db.query('SELECT id,merged_into_id,merge_in_progress FROM ci_master_sku WHERE tenant_id=$1 AND id=$2 FOR UPDATE',[tenantId,masterSkuId]);
+    if(master.rowCount!==1)throw new InventoryConflict('SKU identity is unavailable');
     await db.query('INSERT INTO ci_inventory_balance(tenant_id,master_sku_id,location_id) VALUES($1,$2,$3) ON CONFLICT DO NOTHING',[tenantId,masterSkuId,locationId]);
     const current=await db.query('SELECT * FROM ci_inventory_balance WHERE tenant_id=$1 AND master_sku_id=$2 AND location_id=$3 FOR UPDATE',[tenantId,masterSkuId,locationId]);
     const existing=await db.query('SELECT id,payload_hash FROM ci_inventory_event WHERE tenant_id=$1 AND event_key=$2',[tenantId,eventKey]);
     if(existing.rowCount){if(existing.rows[0].payload_hash!==hash)throw new InventoryConflict('Event key replayed with different content');return {duplicate:true,eventId:existing.rows[0].id};}
+    if(master.rows[0].merged_into_id)throw new InventoryConflict('SKU was merged into a canonical variant');
+    if(master.rows[0].merge_in_progress&&(eventType!=='variant_merge_out'||source!=='variant-backfill'))throw new InventoryConflict('SKU is being merged into a canonical variant');
+    if(eventType==='variant_merge_out'&&!master.rows[0].merge_in_progress)throw new InventoryConflict('Variant merge source is not locked for migration');
     let transition;
     if(reservation){const {action,orderId,lineId,quantity}=reservation;const args=[tenantId,source,orderId,lineId];if(action==='reserve'){const prior=await db.query('SELECT id FROM ci_reservation WHERE tenant_id=$1 AND source=$2 AND external_order_id=$3 AND external_line_id=$4',args);if(prior.rowCount)throw new InventoryConflict('Order line already reserved');}else{const prior=await db.query('SELECT * FROM ci_reservation WHERE tenant_id=$1 AND source=$2 AND external_order_id=$3 AND external_line_id=$4 FOR UPDATE',args);const row=prior.rows[0];const total=Number(row?.quantity),consumed=Number(row?.consumed_qty),released=Number(row?.released_qty);const remaining=total-consumed-released;if(prior.rowCount!==1||row.status!=='active'||row.master_sku_id!==masterSkuId||row.location_id!==locationId||![total,consumed,released,remaining].every(integer)||quantity>remaining)throw new InventoryConflict('Active reservation does not match');const nextConsumed=consumed+(action==='consume'?quantity:0),nextReleased=released+(action==='release'?quantity:0),nextRemaining=total-nextConsumed-nextReleased;if(![nextConsumed,nextReleased,nextRemaining].every(integer))throw new InventoryConflict('Reservation quantity exceeds the supported integer range');transition={id:row.id,consumed:nextConsumed,released:nextReleased,status:nextRemaining>0?'active':nextReleased===0?'consumed':nextConsumed===0?'released':'closed_partial'};}}
     const stored=Object.fromEntries(columns.map(c=>[c,Number(current.rows[0][c])]));

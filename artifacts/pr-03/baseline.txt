@@ -1,0 +1,33 @@
+base: f7063b6 (current main)
+Node: v24.21.0
+
+command: node scripts/run-phase-b-isolated.mjs scripts/verify-central-inventory.mjs
+exit: 0
+{"timestamp":"2026-10-15T08:22:57.044Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS central inventory: ledger concurrency, reservations, immutable event, HMAC, Shopify mutation, encryption, Shopify/Amazon order lifecycle and replay
+{"timestamp":"2026-10-15T08:22:57.795Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T08:22:57.795Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Owned disposable stack removed.
+
+command: node scripts/verify-migration-history.mjs
+exit: 0
+{"timestamp":"2026-10-15T08:22:59.519Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+{"timestamp":"2026-10-15T08:22:59.751Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS migration recovery: repeated and concurrent schema application, constraints/data preserved, injected failure rolled back, pool healthy, repair/retry succeeded.
+{"timestamp":"2026-10-15T08:22:59.901Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T08:22:59.901Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+PASS migration history: 30 checksums recorded, repeat verification retained, drift and newer history rejected, invalid manifests rejected, existing crash/concurrency/repair checks passed. Disposable PostgreSQL only.
+{"timestamp":"2026-10-15T08:22:59.906Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T08:22:59.907Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+
+command: npm run test:central-inventory-files
+exit: 0
+
+> d-mills-global-console@1.0.0 test:central-inventory-files
+> node scripts/run-owned-inventory-files.mjs
+
+{"timestamp":"2026-10-15T08:23:01.634Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS template and mapped-workbook SKU counts, exact SKU update, mapping digest, permission enforcement, idempotency, stale preview rejection, duplicate/negative/formula rejection, tenant isolation, alert lifecycle, Excel roundtrip, PDF and dashboard totals
+{"timestamp":"2026-10-15T08:23:02.048Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T08:23:02.048Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Owned disposable PostgreSQL removed.

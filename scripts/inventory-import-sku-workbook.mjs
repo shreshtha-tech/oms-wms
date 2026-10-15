@@ -4,6 +4,7 @@ import { basename } from 'node:path';
 import { createHash } from 'node:crypto';
 import ExcelJS from 'exceljs';
 import { inventoryPool, migrateInventory, transaction } from '../inventory/db.js';
+import { upsertMaster } from '../inventory/sku-service.js';
 
 const path=process.argv[2],tenant=process.env.INVENTORY_ALLOWED_TENANT_ID;
 if(!path||!tenant)throw new Error('Workbook path and inventory tenant required');
@@ -34,9 +35,9 @@ await migrateInventory();
 let created=0,sourceRows=0;
 await transaction(async db=>{
   for(const item of records){
-    const inserted=await db.query('INSERT INTO ci_master_sku(tenant_id,sku,product_name) VALUES($1,$2,$3) ON CONFLICT(tenant_id,sku) DO NOTHING RETURNING id',[tenant,item.sku,item.productName||item.sku]);
-    created+=inserted.rowCount;
-    const source=await db.query('INSERT INTO ci_catalog_source_row(tenant_id,file_sha256,file_name,sheet_name,row_number,sku,product_name,listed_stock,pack_size,listing_status,channel_hint) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) ON CONFLICT DO NOTHING RETURNING sku',[tenant,fileSha256,basename(path),item.sheet,item.rowNo,item.sku,item.productName,item.listedStock,item.packSize,item.status,item.channelHint]);
+    const master=await upsertMaster(db,{tenantId:tenant,sku:item.sku,productName:item.productName||item.sku,source:'import'});
+    created+=Number(master.created);
+    const source=await db.query('INSERT INTO ci_catalog_source_row(tenant_id,file_sha256,file_name,sheet_name,row_number,sku,master_sku_id,product_name,listed_stock,pack_size,listing_status,channel_hint) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) ON CONFLICT DO NOTHING RETURNING sku',[tenant,fileSha256,basename(path),item.sheet,item.rowNo,item.sku,master.id,item.productName,item.listedStock,item.packSize,item.status,item.channelHint]);
     sourceRows+=source.rowCount;
   }
 });

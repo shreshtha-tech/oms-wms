@@ -32,8 +32,9 @@ export async function approveReturnReceipt({tenantId,returnId,requestId,masterSk
   const ordered=(await db.query(`SELECT coalesce(sum(l.quantity),0)::bigint AS qty FROM ci_unified_order_line l JOIN (SELECT DISTINCT tenant_id,account_id,master_sku_id,external_sku FROM ci_channel_mapping) m ON m.tenant_id=l.tenant_id AND m.account_id=$3 AND m.external_sku=l.seller_sku AND m.master_sku_id=$4
    WHERE l.tenant_id=$1 AND l.order_id=$2`,[tenantId,order.id,claim.account_id,masterSkuId])).rows[0];
   const priorReceived=(await db.query(`SELECT coalesce(sum(rr.quantity),0)::bigint AS qty FROM ci_return_receipt rr JOIN ci_return_case rc ON rc.id=rr.return_id
-   WHERE rr.tenant_id=$1 AND rc.account_id=$2 AND rc.external_order_id=$3 AND rr.master_sku_id=$4`,[tenantId,claim.account_id,claim.external_order_id,masterSkuId])).rows[0];
-  const consumed=(await db.query("SELECT coalesce(sum(quantity),0)::bigint AS qty FROM ci_reservation WHERE tenant_id=$1 AND source=$2 AND external_order_id=$3 AND master_sku_id=$4 AND status='consumed'",[tenantId,`${claim.platform}:${claim.account_id}`,claim.external_order_id,masterSkuId])).rows[0];
+   JOIN ci_master_sku s ON s.tenant_id=rr.tenant_id AND s.id=rr.master_sku_id
+   WHERE rr.tenant_id=$1 AND rc.account_id=$2 AND rc.external_order_id=$3 AND coalesce(s.merged_into_id,s.id)=$4`,[tenantId,claim.account_id,claim.external_order_id,masterSkuId])).rows[0];
+  const consumed=(await db.query("SELECT coalesce(sum(r.consumed_qty),0)::bigint AS qty FROM ci_reservation r JOIN ci_master_sku s ON s.tenant_id=r.tenant_id AND s.id=r.master_sku_id WHERE r.tenant_id=$1 AND r.source=$2 AND r.external_order_id=$3 AND coalesce(s.merged_into_id,s.id)=$4",[tenantId,`${claim.platform}:${claim.account_id}`,claim.external_order_id,masterSkuId])).rows[0];
   if(Number(priorReceived.qty)+quantity>Math.min(Number(ordered.qty)*packSize,Number(consumed.qty)))throw Object.assign(new Error('Approved return exceeds stock actually dispatched from the central ledger'),{status:409});
   const location=(await db.query("SELECT id FROM ci_location WHERE tenant_id=$1 AND id=$2 AND location_type IN ('warehouse','store')",[tenantId,locationId])).rows[0];
   if(!location)throw Object.assign(new Error('Choose a physical warehouse or store location'),{status:400});

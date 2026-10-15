@@ -6,17 +6,18 @@ import { runWhatsAppBatch } from '../inventory/whatsapp.js';
 import { pollShopifyOrderObservations } from '../inventory/shopify-orders.js';
 import { pollFlipkartOrderObservations } from '../inventory/flipkart-order-observation.js';
 import { runReceiptBridgeBatch } from '../inventory/receipt-bridge.js';
+import { runSkuProjectionBatch } from '../inventory/sku-projection.js';
 // Console availability is not authority for worker progress or recovery.
 function workerLog(method,...args){try{console[method](...args);}catch{}}
 if(!process.env.INVENTORY_DATABASE_URL)throw new Error('INVENTORY_DATABASE_URL required');
 if(!process.env.INVENTORY_ALLOWED_TENANT_ID)throw new Error('INVENTORY_ALLOWED_TENANT_ID required');
 if(!/^[a-f0-9]{64}$/i.test(process.env.INVENTORY_CREDENTIAL_KEY||''))throw new Error('INVENTORY_CREDENTIAL_KEY must be a 32-byte hex key');
-const schema=await inventoryPool().query(`SELECT to_regclass('public.ci_outbox') AS outbox,to_regclass('public.ci_event_receipt') AS event_receipt,to_regclass('public.ci_domain_outbox') AS domain_outbox,
+const schema=await inventoryPool().query(`SELECT to_regclass('public.ci_outbox') AS outbox,to_regclass('public.ci_event_receipt') AS event_receipt,to_regclass('public.ci_domain_outbox') AS domain_outbox,to_regclass('public.ci_sku_projection_outbox') AS sku_projection_outbox,
  EXISTS(SELECT 1 FROM information_schema.columns WHERE table_schema='public' AND table_name='ci_domain_outbox' AND column_name='claim_token') AS receipt_claim_token,
  EXISTS(SELECT 1 FROM information_schema.columns WHERE table_schema='public' AND table_name='ci_domain_outbox' AND column_name='lease_until') AS receipt_lease_until,
  EXISTS(SELECT 1 FROM pg_index i JOIN pg_class c ON c.oid=i.indexrelid JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='public' AND c.relname='ci_domain_outbox_claim_active_idx' AND i.indisvalid) AS receipt_claim_index,
  EXISTS(SELECT 1 FROM pg_index i JOIN pg_class c ON c.oid=i.indexrelid JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='public' AND c.relname='ci_domain_outbox_claim_expired_idx' AND i.indisvalid) AS receipt_expired_index`);
-if(!schema.rows[0].outbox||!schema.rows[0].event_receipt||!schema.rows[0].domain_outbox||!schema.rows[0].receipt_claim_token||!schema.rows[0].receipt_lease_until||!schema.rows[0].receipt_claim_index||!schema.rows[0].receipt_expired_index)throw new Error('Central inventory migrations through 028 are required before starting the worker');
+if(!schema.rows[0].outbox||!schema.rows[0].event_receipt||!schema.rows[0].domain_outbox||!schema.rows[0].receipt_claim_token||!schema.rows[0].receipt_lease_until||!schema.rows[0].receipt_claim_index||!schema.rows[0].receipt_expired_index||!schema.rows[0].sku_projection_outbox)throw new Error('Central inventory migrations through 032 are required before starting the worker');
 let stopped=false;process.on('SIGTERM',()=>{stopped=true;});process.on('SIGINT',()=>{stopped=true;});
 // Keep one worker per inventory tenant, including when a second dev or deploy
 // process starts. PostgreSQL releases this session lock if the worker dies.
@@ -35,6 +36,8 @@ let nextFlipkartOrderObservation=Date.now();
 let nextHeartbeat=Date.now();
 let nextReceiptBridgeAttempt=Date.now();
 let receiptBridgeFailure=null;
+let nextSkuProjectionAttempt=Date.now();
+let skuProjectionFailure=false;
 let heartbeatInFlight=false;
 const scheduledJobs=new Set();
 const scheduledJobPromises=new Set();
@@ -94,6 +97,20 @@ while(!stopped){
         nextReceiptBridgeAttempt=Date.now()+retryMs;
         if(receiptBridgeFailure!==reason)workerLog('error',JSON.stringify({kind:'inbound_receipt_bridge',state:'DEGRADED',reason,retry_ms:retryMs}));
         receiptBridgeFailure=reason;
+      }
+    });
+  }
+  if(Date.now()>=nextSkuProjectionAttempt){
+    nextSkuProjectionAttempt=Date.now()+5000;
+    scheduleJob('SKU projection',async()=>{
+      try{
+        await runSkuProjectionBatch();
+        if(skuProjectionFailure)workerLog('log',JSON.stringify({kind:'sku_projection',state:'READY'}));
+        skuProjectionFailure=false;
+      }catch{
+        nextSkuProjectionAttempt=Date.now()+30000;
+        if(!skuProjectionFailure)workerLog('error',JSON.stringify({kind:'sku_projection',state:'DEGRADED',retry_ms:30000}));
+        skuProjectionFailure=true;
       }
     });
   }

@@ -11,6 +11,7 @@ import { inventoryPrivate, inventoryPublic } from '../inventory/http.js';
 import { openCredential } from '../inventory/credentials.js';
 import { activateConnection } from '../inventory/connection-setup.js';
 import { readTallyCatalog } from '../inventory/tally-bridge.js';
+import { closeDataStore } from '../api/mongo.js';
 
 const testDatabase=new URL(process.env.INVENTORY_DATABASE_URL||'');if(!['localhost','127.0.0.1','[::1]'].includes(testDatabase.hostname)||!/(?:^|[_-])(?:test|contract)(?:[_-]|$)/i.test(decodeURIComponent(testDatabase.pathname.slice(1))))throw new Error('Use a local isolated test/contract inventory database');
 process.env.INVENTORY_CREDENTIAL_KEY=randomBytes(32).toString('hex');
@@ -67,4 +68,4 @@ try{
  const paired=await request('/agent/pair','POST',{code:pairing.data.code});assert.equal(paired.status,200);assert.equal((await request('/agent/pair','POST',{code:pairing.data.code})).status,400);
  const attempts=await request('/attempts?page=1');assert.ok(attempts.data.total>=4);assert.equal(JSON.stringify(attempts).includes(fields.accessToken),false);
  console.log('PASS seller connections: 20 configs, validation, SSRF rejection, encryption/masking, live-call fixtures, failed rotation, scopes, HMAC, tenant isolation, partner snapshot idempotency, agent pairing replay, sync history');
-}finally{await new Promise(resolve=>server.close(resolve));await inventoryPool().end();}
+}finally{await new Promise(resolve=>server.close(resolve));await closeDataStore();await inventoryPool().end();}
