@@ -33,6 +33,8 @@ let nextReconciliation=Date.now();
 let nextOrderObservation=Date.now();
 let nextFlipkartOrderObservation=Date.now();
 let nextHeartbeat=Date.now();
+let nextReceiptBridgeAttempt=Date.now();
+let receiptBridgeFailure=null;
 let heartbeatInFlight=false;
 const scheduledJobs=new Set();
 const scheduledJobPromises=new Set();
@@ -77,7 +79,24 @@ while(!stopped){
   // A slow notification provider must not gate authoritative inventory work.
   // The scheduled-job guard keeps delivery single-flight for this tenant.
   scheduleJob('WhatsApp delivery',async()=>{await runWhatsAppBatch();});
-  scheduleJob('Inbound receipt bridge',async()=>{await runReceiptBridgeBatch();});
+  if(Date.now()>=nextReceiptBridgeAttempt){
+    nextReceiptBridgeAttempt=Date.now()+1000;
+    scheduleJob('Inbound receipt bridge',async()=>{
+      try{
+        await runReceiptBridgeBatch();
+        if(receiptBridgeFailure)workerLog('log',JSON.stringify({kind:'inbound_receipt_bridge',state:'READY'}));
+        receiptBridgeFailure=null;
+      }catch(error){
+        // MongoDB holds the command outbox and result projection. Keep both
+        // queues intact while it is unavailable, and retry without a hot loop.
+        const reason=error?.code==='DATABASE_UNAVAILABLE'?'MONGODB_UNAVAILABLE':error?.code==='RECEIPT_CLAIM_INDEX_MISSING'?'CLAIM_INDEX_MISSING':'BRIDGE_FAILED';
+        const retryMs=reason==='MONGODB_UNAVAILABLE'?30000:5000;
+        nextReceiptBridgeAttempt=Date.now()+retryMs;
+        if(receiptBridgeFailure!==reason)workerLog('error',JSON.stringify({kind:'inbound_receipt_bridge',state:'DEGRADED',reason,retry_ms:retryMs}));
+        receiptBridgeFailure=reason;
+      }
+    });
+  }
   try{const count=await runInventoryTaskBatch();if(!count)await new Promise(r=>setTimeout(r,1000));}
   catch{workerLog('error','Inventory worker failed');await new Promise(r=>setTimeout(r,5000));}
 }
