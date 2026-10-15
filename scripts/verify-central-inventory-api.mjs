@@ -5,6 +5,7 @@ import express from 'express';
 import { inventoryPrivate } from '../inventory/http.js';
 import { inventoryPool, migrateInventory } from '../inventory/db.js';
 import { applyInventoryEvent } from '../inventory/ledger.js';
+import { closeDataStore } from '../api/mongo.js';
 
 if (!/\/[a-z][a-z0-9_]*_test$/.test(new URL(process.env.INVENTORY_DATABASE_URL || '').pathname)) throw new Error('Disposable _test database required');
 const tenant=`central-api-test-${randomUUID()}`;
@@ -34,4 +35,4 @@ try{
   response=await request('/overview');assert.equal(response.data.alerts.length,0);
   response=await request('/events');assert.equal(response.status,200);assert.equal(response.data.length,4);
   console.log('PASS central inventory API: SKU/location, unverified count rejection, existing-basis count, idempotency, adjustment, threshold alert and recovery');
-}finally{await new Promise(resolve=>server.close(resolve));await inventoryPool().end();}
+}finally{await new Promise(resolve=>server.close(resolve));await closeDataStore();await inventoryPool().end();}

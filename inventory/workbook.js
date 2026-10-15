@@ -2,6 +2,8 @@ import ExcelJS from 'exceljs';
 import { createHash } from 'node:crypto';
 import { inventoryPool, transaction } from './db.js';
 import { applyInventoryEventInTransaction, InventoryConflict } from './ledger.js';
+import { upsertMaster } from './sku-service.js';
+import { normalizeSkuCode } from './sku-parser.mjs';
 
 const MAX_ROWS=50000;
 const normalize=value=>String(value||'').trim().toLowerCase().replace(/[_\s]+/g,' ');
@@ -116,21 +118,22 @@ export async function previewWorkbook({tenantId,fileName,bytes,mode,locationId,m
   if(!/\.xlsx$/i.test(fileName||''))throw new Error('Only .xlsx workbooks are supported');
   const {rows,errors}=await parseInventoryWorkbook(bytes,mode,mapping);
   const db=inventoryPool();
-  const [skus,locations,balances]=await Promise.all([
+  const [skus,aliases,locations,balances]=await Promise.all([
     db.query('SELECT id,sku FROM ci_master_sku WHERE tenant_id=$1',[tenantId]),
+    db.query('SELECT alias_sku,master_sku_id FROM ci_sku_alias WHERE tenant_id=$1',[tenantId]),
     db.query("SELECT id,code FROM ci_location WHERE tenant_id=$1 AND location_type IN ('warehouse','store')",[tenantId]),
     db.query('SELECT *,reserved_order+reserved_cart+damaged+quarantined+safety_stock AS encumbered FROM ci_inventory_balance WHERE tenant_id=$1',[tenantId]),
   ]);
-  const bySku=new Map(skus.rows.map(s=>[s.sku,s.id])),byBalance=new Map(balances.rows.map(b=>[`${b.master_sku_id}:${b.location_id}`,b]));
+  const bySku=new Map(skus.rows.map(s=>[s.sku,s.id])),byAlias=new Map(aliases.rows.map(a=>[a.alias_sku,a.master_sku_id])),byBalance=new Map(balances.rows.map(b=>[`${b.master_sku_id}:${b.location_id}`,b]));
   const seenTargets=new Set();
   for(const row of rows){
-    row.masterSkuId=bySku.get(row.sku)||null;
+    row.masterSkuId=byAlias.get(normalizeSkuCode(row.sku))||bySku.get(row.sku)||null;
     if(mode==='counts'){
       if(!row.masterSkuId){errors.push({sheet:row.sheet,row:row.row,message:`SKU does not exactly match a Central Inventory master SKU: ${row.sku}. Add or correct the SKU in Catalog first.`});continue;}
       const location=row.location?locations.rows.find(l=>l.code===row.location):locations.rows.find(l=>l.id===locationId);
       if(!location){errors.push({sheet:row.sheet,row:row.row,message:'Choose an existing warehouse/store or supply its exact Location code'});continue;}
       row.locationId=location.id;row.location=location.code;
-      const key=`${row.sku}:${location.id}`;
+      const key=`${row.masterSkuId}:${location.id}`;
       if(seenTargets.has(key))errors.push({sheet:row.sheet,row:row.row,message:'Duplicate SKU/location after resolving locations'});
       seenTargets.add(key);
       const balance=byBalance.get(`${row.masterSkuId}:${location.id}`);
@@ -156,15 +159,15 @@ export async function commitWorkbook(tenantId,id){
     for(const row of batch.rows.sort((a,b)=>`${a.sku}:${a.locationId||''}`.localeCompare(`${b.sku}:${b.locationId||''}`))){
       let skuId;
       if(batch.mode==='counts'){
-        const identity=(await db.query('SELECT id FROM ci_master_sku WHERE tenant_id=$1 AND id=$2 AND sku=$3 FOR UPDATE',[tenantId,row.masterSkuId,row.sku])).rows[0];
+        const identity=(await db.query('SELECT s.id FROM ci_master_sku s LEFT JOIN ci_sku_alias a ON a.tenant_id=s.tenant_id AND a.master_sku_id=s.id AND a.alias_sku=$3 WHERE s.tenant_id=$1 AND s.id=$2 AND (s.sku=$4 OR a.alias_sku IS NOT NULL) FOR UPDATE OF s',[tenantId,row.masterSkuId,normalizeSkuCode(row.sku),row.sku])).rows[0];
         if(!identity)throw new InventoryConflict(`The approved SKU identity changed for ${row.sku}; preview the workbook again`);
         skuId=identity.id;
       }else{
-        const inserted=await db.query('INSERT INTO ci_master_sku(tenant_id,sku,product_name) VALUES($1,$2,$3) ON CONFLICT(tenant_id,sku) DO NOTHING RETURNING id',[tenantId,row.sku,row.productName]);
-        created+=inserted.rowCount;
-        skuId=inserted.rows[0]?.id||(await db.query('SELECT id FROM ci_master_sku WHERE tenant_id=$1 AND sku=$2',[tenantId,row.sku])).rows[0].id;
+        const master=await upsertMaster(db,{tenantId,sku:row.sku,productName:row.productName,source:'import'});
+        created+=Number(master.created);
+        skuId=master.id;
       }
-      await db.query('INSERT INTO ci_catalog_source_row(tenant_id,file_sha256,file_name,sheet_name,row_number,sku,product_name,listed_stock,pack_size) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) ON CONFLICT DO NOTHING',[tenantId,batch.file_sha256,batch.file_name,row.sheet,row.row,row.sku,row.productName,row.stock,row.packSize]);
+      await db.query('INSERT INTO ci_catalog_source_row(tenant_id,file_sha256,file_name,sheet_name,row_number,sku,master_sku_id,product_name,listed_stock,pack_size) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) ON CONFLICT DO NOTHING',[tenantId,batch.file_sha256,batch.file_name,row.sheet,row.row,row.sku,skuId,row.productName,row.stock,row.packSize]);
       if(batch.mode==='counts'){
         // Lock the exact SKU identity, then compare the existing balance version.
         await db.query('SELECT id FROM ci_master_sku WHERE tenant_id=$1 AND id=$2 FOR UPDATE',[tenantId,skuId]);

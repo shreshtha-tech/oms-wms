@@ -1586,6 +1586,26 @@
       "owner": "oms-wms-maintainers",
       "timeoutSeconds": 300
     },
+    "test:sku-projection-isolated": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "mongo-rs"
+      ],
+      "reason": "Required durable SKU projection, replay, uncertain readback and legacy-tenant hold coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:sku-service-db": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "mongo-rs"
+      ],
+      "reason": "Required variant master, alias and durable projection-intent behavior on owned databases.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
     "test:sort-to-box": {
       "tier": "required",
       "needs": [],
@@ -1808,6 +1828,20 @@
         "mongo-rs"
       ],
       "reason": "PASS in the complete isolated baseline; required regression coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:variant-backfill-dry-run": {
+      "tier": "required",
+      "needs": ["postgres", "mongo-rs"],
+      "reason": "Required two-source dry-run artifacts and repeatable review hash on owned stores.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:variant-backfill-plan": {
+      "tier": "required",
+      "needs": [],
+      "reason": "Required deterministic backfill review plan, drift detection and merge blockers.",
       "owner": "oms-wms-maintainers",
       "timeoutSeconds": 180
     },

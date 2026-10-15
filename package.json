@@ -252,7 +252,11 @@
     "test:receipt-bridge-worker": "node scripts/verify-worker-console-boundary.mjs",
     "test:receipt-bridge-propagation": "node scripts/run-phase-b-isolated.mjs scripts/verify-phase-b-propagation.mjs",
     "test:variant-sku-parser": "node scripts/verify-variant-sku-parser.mjs",
-    "test:variant-identity-db": "node scripts/run-phase-b-isolated.mjs scripts/verify-variant-identity-db.mjs"
+    "test:variant-identity-db": "node scripts/run-phase-b-isolated.mjs scripts/verify-variant-identity-db.mjs",
+    "test:sku-service-db": "node scripts/run-phase-b-isolated.mjs scripts/verify-sku-service-db.mjs",
+    "test:sku-projection-isolated": "node scripts/run-phase-b-isolated.mjs scripts/verify-sku-projection-isolated.mjs",
+    "test:variant-backfill-plan": "node scripts/verify-variant-backfill-plan.mjs",
+    "test:variant-backfill-dry-run": "node scripts/run-phase-b-isolated.mjs scripts/verify-variant-backfill-dry-run.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-sqs": "^3.1138.0",

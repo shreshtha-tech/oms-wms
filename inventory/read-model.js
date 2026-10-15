@@ -43,7 +43,7 @@ export async function readInventoryOverview(tenant,db=inventoryPool()){
         FROM ci_inventory_balance b JOIN ci_location l ON l.tenant_id=b.tenant_id AND l.id=b.location_id
         WHERE b.tenant_id=s.tenant_id AND b.master_sku_id=s.id AND l.location_type IN ('warehouse','store')) b ON true
       LEFT JOIN ci_alert_rule r ON r.tenant_id=s.tenant_id AND r.master_sku_id=s.id
-      LEFT JOIN LATERAL (SELECT x.sku,x.listed_stock,x.pack_size FROM ci_catalog_source_row x WHERE x.tenant_id=s.tenant_id AND x.sku=s.sku ORDER BY x.imported_at DESC,x.file_sha256 LIMIT 1) x ON true
+      LEFT JOIN LATERAL (SELECT x.sku,x.listed_stock,x.pack_size FROM ci_catalog_source_row x WHERE x.tenant_id=s.tenant_id AND x.master_sku_id=s.id ORDER BY x.imported_at DESC,x.file_sha256 LIMIT 1) x ON true
       WHERE s.tenant_id=$1 ORDER BY s.sku`,[tenant]),
     query("SELECT l.id,l.code,l.location_type,l.external_id,COUNT(b.master_sku_id)::int AS stocked_skus FROM ci_location l LEFT JOIN ci_inventory_balance b ON b.tenant_id=l.tenant_id AND b.location_id=l.id WHERE l.tenant_id=$1 GROUP BY l.id ORDER BY l.code",[tenant]),
     query("SELECT a.id,a.platform,a.external_account_id,a.status,a.scopes,COUNT(m.id)::int AS mapping_count,COUNT(m.id) FILTER (WHERE m.active)::int AS active_mapping_count FROM ci_channel_account a LEFT JOIN ci_channel_mapping m ON m.tenant_id=a.tenant_id AND m.account_id=a.id WHERE a.tenant_id=$1 GROUP BY a.id ORDER BY a.platform,a.external_account_id",[tenant]),

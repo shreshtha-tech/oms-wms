@@ -42,7 +42,7 @@ try {
   await migrateInventory();
   const history = () => pool.query('SELECT name,checksum,verification_count FROM ci_schema_migration ORDER BY name');
   const first = (await history()).rows;
-  assert.equal(first.length, 31);
+  assert.equal(first.length, 33);
   for (const row of first) {
     assert.match(row.checksum, /^[a-f0-9]{64}$/);
     assert.equal(Number(row.verification_count), 1);
@@ -64,7 +64,7 @@ try {
   await pool.query("INSERT INTO ci_master_sku(tenant_id,sku,product_name) VALUES('history-fixture','KEEP','Keep existing data')");
   await pool.query('DROP TABLE ci_schema_migration');
   await migrateInventory();
-  assert.equal((await history()).rows.length, 31);
+  assert.equal((await history()).rows.length, 33);
   assert.equal((await pool.query("SELECT count(*)::int AS n FROM ci_master_sku WHERE tenant_id='history-fixture'")).rows[0].n, 1);
   // Missing/duplicate manifest entries are rejected before database access.
   const noDatabase = { query() { throw Error('Must not contact database'); } };
@@ -78,7 +78,7 @@ try {
   assert.equal(code, 0, `Owned migration recovery checks failed: ${output.slice(-3000)}`);
   assert.match(output, /PASS migration recovery/);
   console.log(output.trim());
-  console.log('PASS migration history: 31 checksums recorded, repeat verification retained, drift and newer history rejected, invalid manifests rejected, existing crash/concurrency/repair checks passed. Disposable PostgreSQL only.');
+  console.log('PASS migration history: 33 checksums recorded, repeat verification retained, drift and newer history rejected, invalid manifests rejected, existing crash/concurrency/repair checks passed. Disposable PostgreSQL only.');
 } finally {
   if (pool) await pool.end();
   if (admin) await admin.end();

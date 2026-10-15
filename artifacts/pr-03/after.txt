@@ -83,3 +83,20 @@ $ npm run test:failure [required]
 
 test:failure: FAIL (required)
 PASS CI runner: exhaustive manifest, required failure gate, quarantine execution, continuation, timeout, job routing, environment isolation and binary overrides
+
+PR3 implementation checkpoint 2026-10-15 15:17 IST (draft; merge/apply path still incomplete)
+PASS npm run test:variant-sku-parser — 48 parser cases across three brands.
+PASS npm run test:sku-service-db — canonical alias service, catalog/count alias resolution, review states, no direct Mongo SKU POST/PUT.
+PASS npm run test:sku-projection-isolated — projection, replay and uncertain readback on disposable PG/Mongo.
+PASS npm run test:variant-backfill-plan — stable hash, drift, blocker and conflict classification.
+PASS npm run test:variant-backfill-dry-run — five review artifacts and repeatable hash on disposable PG/Mongo.
+PASS npm run test:central-inventory-files — existing catalog/count import regression on disposable PG.
+PASS node scripts/verify-migration-history.mjs — 33 migrations, repeat and concurrent application.
+PASS npm run test:receipt-bridge-worker — worker loop and stalled job safety.
+PASS node scripts/verify-ci-test-runner.mjs — manifest/required-tier behavior.
+PASS npx tsc --noEmit -p tsconfig.app.json.
+PASS npm run build -- --configLoader runner --outDir /private/tmp/oms-pr3-build.
+NOT RUN configured tenant backfill; Atlas MongoDB currently fails TLS before authentication.
+NOT IMPLEMENTED reviewed --apply stock merge; dry run intentionally rejects --apply.
+NOT RUN hosted PR3 CI for this checkpoint until pushed.
+PASS node scripts/run-phase-b-isolated.mjs scripts/verify-central-inventory-api.mjs — product create and adjustment route on disposable PG/Mongo; clean shutdown.

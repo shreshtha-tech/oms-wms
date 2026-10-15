@@ -37,11 +37,11 @@ export function createDictionary({ values = [], aliases = [], noise = [] } = {})
 
 export async function buildDictionary(db, tenantId) {
   if (!tenantId) throw new TypeError('Tenant is required for SKU dictionary');
-  const [values, aliases, noise] = await Promise.all([
-    db.query('SELECT kind,code,active FROM ci_attribute_value WHERE tenant_id=$1', [tenantId]),
-    db.query('SELECT kind,alias_norm,code FROM ci_attribute_alias WHERE tenant_id=$1', [tenantId]),
-    db.query('SELECT platform,kind,token_norm,active FROM ci_sku_noise_rule WHERE tenant_id=$1', [tenantId]),
-  ]);
+  // The caller may own a single transaction client; never issue concurrent
+  // queries on it because pg queues them with deprecated behavior.
+  const values = await db.query('SELECT kind,code,active FROM ci_attribute_value WHERE tenant_id=$1', [tenantId]);
+  const aliases = await db.query('SELECT kind,alias_norm,code FROM ci_attribute_alias WHERE tenant_id=$1', [tenantId]);
+  const noise = await db.query('SELECT platform,kind,token_norm,active FROM ci_sku_noise_rule WHERE tenant_id=$1', [tenantId]);
   return createDictionary({ values: values.rows, aliases: aliases.rows, noise: noise.rows });
 }
 
