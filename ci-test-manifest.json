@@ -1811,6 +1811,23 @@
       "owner": "oms-wms-maintainers",
       "timeoutSeconds": 180
     },
+    "test:variant-identity-db": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "mongo-rs"
+      ],
+      "reason": "Required tenant-scoped variant schema and idempotent migration coverage on owned databases.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:variant-sku-parser": {
+      "tier": "required",
+      "needs": [],
+      "reason": "Required dictionary parser coverage for brand-independent variant identity and review-only unknowns.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
     "test:vendor-enquiry-parity": {
       "tier": "quarantined",
       "needs": [
