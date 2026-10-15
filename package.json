@@ -287,7 +287,7 @@
     "vite": "^7.3.1"
   },
   "description": "D-Mills Global Private Limited order and inventory management console.",
-  "main": ".vite-source-tags.js",
+  "main": "server.js",
   "directories": {
     "doc": "docs"
   },
