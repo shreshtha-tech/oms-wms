@@ -117,11 +117,9 @@ jobs:
           docker run -d --name mongo -p 27017:27017 mongo:7 --replSet rs0 --bind_ip_all
           ready=false
           for attempt in $(seq 1 90); do
-            if docker exec mongo mongosh --quiet --eval 'try{rs.status().ok}catch(e){rs.initiate().ok}' | rg -q '^1$'; then
-              if docker exec mongo mongosh --quiet --eval 'db.hello().isWritablePrimary' | rg -q '^true$'; then
-                ready=true
-                break
-              fi
+            if docker exec mongo mongosh --quiet --eval 'try { rs.status() } catch (e) { rs.initiate() }; if (!db.hello().isWritablePrimary) quit(1)' >/dev/null 2>&1; then
+              ready=true
+              break
             fi
             sleep 1
           done
@@ -188,11 +186,9 @@ jobs:
           docker run -d --name mongo -p 27017:27017 mongo:7 --replSet rs0 --bind_ip_all
           ready=false
           for attempt in $(seq 1 90); do
-            if docker exec mongo mongosh --quiet --eval 'try{rs.status().ok}catch(e){rs.initiate().ok}' | rg -q '^1$'; then
-              if docker exec mongo mongosh --quiet --eval 'db.hello().isWritablePrimary' | rg -q '^true$'; then
-                ready=true
-                break
-              fi
+            if docker exec mongo mongosh --quiet --eval 'try { rs.status() } catch (e) { rs.initiate() }; if (!db.hello().isWritablePrimary) quit(1)' >/dev/null 2>&1; then
+              ready=true
+              break
             fi
             sleep 1
           done
