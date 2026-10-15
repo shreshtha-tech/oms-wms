@@ -1,0 +1,9 @@
+commit: 760d044
+command: node /Users/shreshthagupta/AI-Workspaces/oms-wms/scripts/run-phase-b-isolated.mjs scripts/verify-central-inventory.mjs
+cwd: /private/tmp/oms-pr2-baseline
+exit: 0
+{"timestamp":"2026-10-15T07:45:44.073Z","event":"database_state","database":"postgresql","previous":"STARTING","state":"READY"}
+PASS central inventory: ledger concurrency, reservations, immutable event, HMAC, Shopify mutation, encryption, Shopify/Amazon order lifecycle and replay
+{"timestamp":"2026-10-15T07:45:44.779Z","event":"database_state","database":"postgresql","previous":"READY","state":"STOPPING"}
+{"timestamp":"2026-10-15T07:45:44.779Z","event":"database_state","database":"postgresql","previous":"STOPPING","state":"STOPPED"}
+Owned disposable stack removed.

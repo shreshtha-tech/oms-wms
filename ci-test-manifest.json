@@ -1158,6 +1158,16 @@
       "owner": "oms-wms-maintainers",
       "timeoutSeconds": 180
     },
+    "test:partial-reservations": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "mongo-rs"
+      ],
+      "reason": "Required isolated partial-reservation, concurrency, replay and migration-backfill coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
     "test:price-zone": {
       "tier": "quarantined",
       "needs": [
