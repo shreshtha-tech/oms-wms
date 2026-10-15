@@ -1233,6 +1233,23 @@
       "owner": "oms-wms-maintainers",
       "timeoutSeconds": 300
     },
+    "test:receipt-bridge-propagation": {
+      "tier": "required",
+      "needs": [
+        "postgres",
+        "mongo-rs"
+      ],
+      "reason": "Required isolated receipt command, result projection and recovery coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
+    "test:receipt-bridge-worker": {
+      "tier": "required",
+      "needs": [],
+      "reason": "Required worker outage backoff, recovery and safe logging coverage.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 180
+    },
     "test:receipt-envelope-boundary": {
       "tier": "required",
       "needs": [

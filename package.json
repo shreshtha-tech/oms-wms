@@ -248,7 +248,9 @@
     "test:ci-runner": "node scripts/verify-ci-test-runner.mjs",
     "test:ci-env": "node scripts/verify-ci-env.mjs",
     "test:provider-dispatch-authority": "node scripts/run-phase-b-isolated.mjs scripts/verify-phase-b-dispatch.mjs",
-    "test:partial-reservations": "node scripts/run-phase-b-isolated.mjs scripts/verify-partial-reservations.mjs"
+    "test:partial-reservations": "node scripts/run-phase-b-isolated.mjs scripts/verify-partial-reservations.mjs",
+    "test:receipt-bridge-worker": "node scripts/verify-worker-console-boundary.mjs",
+    "test:receipt-bridge-propagation": "node scripts/run-phase-b-isolated.mjs scripts/verify-phase-b-propagation.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-sqs": "^3.1138.0",
@@ -286,7 +288,7 @@
     "vite": "^7.3.1"
   },
   "description": "D-Mills Global Private Limited order and inventory management console.",
-  "main": ".vite-source-tags.js",
+  "main": "server.js",
   "directories": {
     "doc": "docs"
   },
