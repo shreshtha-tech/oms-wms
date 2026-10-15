@@ -50,6 +50,10 @@ try {
   doc = await skus.findOne({ sku_code: 'NOVA-JEANS-SLIM-BLACK-32' });
   assert.equal(doc.name, 'Legacy unknown tenant');
   assert.equal(doc.tenant_id, undefined);
+  await pg.query("UPDATE ci_sku_projection_outbox SET status='pending',legacy_claim=$3,available_at=now() WHERE tenant_id=$1 AND alias_sku=$2", [tenantId, 'NOVA-JEANS-SLIM-BLACK-32', { id: String(doc._id), digest: '0'.repeat(64) }]);
+  await runSkuProjectionBatch();
+  assert.deepEqual(await status('NOVA-JEANS-SLIM-BLACK-32'), { status: 'held', reason: 'LEGACY_TENANT_UNVERIFIED' });
+  assert.equal((await skus.findOne({ _id: doc._id })).tenant_id, undefined, 'A changed or unverified document must not be claimed');
   console.log('PASS SKU projection: committed intent, numeric identity, replay, expired-lease readback, no blind resend, legacy tenant hold');
 } finally {
   await closeDataStore();

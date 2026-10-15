@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { inventoryPool, transaction } from './db.js';
 import { parsePartnerReport } from './report-parser.js';
+import { normalizeSkuCode } from './sku-parser.mjs';
 
 export const salesPrograms=JSON.parse(readFileSync(new URL('./sales-program-catalog.json',import.meta.url),'utf8'));
 const fail=(message,status=400)=>Object.assign(new Error(message),{status});
@@ -60,11 +61,12 @@ export async function importProgramReport({tenantId,accountId,programKey,kind,fi
     const sku=String(row[mapping.sku]||'').trim(),location=String(row[mapping.location]||'').trim(),raw=String(row[mapping.quantity]||'').trim(),quantity=Number(raw);
     if(!sku||sku.length>120||!location||location.length>120||!/^\d+$/.test(raw)||!Number.isSafeInteger(quantity))throw fail(`Invalid SKU, facility or nonnegative whole quantity at data row ${index+1}`);
     const key=JSON.stringify([sku,location]);if(seen.has(key))throw fail(`Duplicate SKU/facility at data row ${index+1}`);seen.add(key);
-    return {sku,location,quantity};
+    return {sku,location,quantity,alias_norm:normalizeSkuCode(sku)};
    });
-   const matches=(await db.query(`WITH incoming AS (SELECT * FROM jsonb_to_recordset($3::jsonb) AS r(sku text,location text))
-    SELECT r.sku,r.location,s.id AS master_sku_id FROM incoming r JOIN ci_master_sku s ON s.tenant_id=$1 AND s.sku=r.sku
-    UNION SELECT r.sku,r.location,m.master_sku_id FROM incoming r JOIN ci_channel_mapping m ON m.tenant_id=$1 AND m.account_id=$2 AND m.external_sku=r.sku AND m.external_location_id=r.location`,[tenantId,accountId,JSON.stringify(rows)])).rows;
+   const matches=(await db.query(`WITH incoming AS (SELECT * FROM jsonb_to_recordset($3::jsonb) AS r(sku text,location text,alias_norm text))
+    SELECT r.sku,r.location,s.id AS master_sku_id FROM incoming r JOIN ci_master_sku s ON s.tenant_id=$1 AND s.sku=r.sku AND s.merged_into_id IS NULL
+    UNION SELECT r.sku,r.location,a.master_sku_id FROM incoming r JOIN ci_sku_alias a ON a.tenant_id=$1 AND a.alias_sku=r.alias_norm JOIN ci_master_sku s ON s.tenant_id=a.tenant_id AND s.id=a.master_sku_id AND s.merged_into_id IS NULL
+    UNION SELECT r.sku,r.location,m.master_sku_id FROM incoming r JOIN ci_channel_mapping m ON m.tenant_id=$1 AND m.account_id=$2 AND m.external_sku=r.sku AND m.external_location_id=r.location JOIN ci_master_sku s ON s.tenant_id=m.tenant_id AND s.id=m.master_sku_id AND s.merged_into_id IS NULL`,[tenantId,accountId,JSON.stringify(rows)])).rows;
    for(const row of rows){
     const ids=[...new Set(matches.filter(m=>m.sku===row.sku&&m.location===row.location).map(m=>m.master_sku_id))];
     if(ids.length!==1)throw fail(`SKU ${row.sku} at ${row.location} needs one exact Master SKU mapping`,409);

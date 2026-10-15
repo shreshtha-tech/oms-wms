@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { ensureIndex, mongoDomainTransaction } from '../api/mongo.js';
 import { inventoryPool } from './db.js';
+import { legacySkuIdentityDigest } from './sku-legacy-claim.mjs';
 
 const leaseMs = 120000;
 const conflict = reason => Object.assign(new Error('SKU projection requires review'), { code: 'SKU_PROJECTION_CONFLICT', reason });
@@ -33,7 +34,11 @@ async function project(row) {
     const skus = db.collection('skus');
     const prior = await findProjected(db, session, row);
     if (prior) {
-      if (prior.tenant_id !== row.tenant_id) throw conflict('LEGACY_TENANT_UNVERIFIED');
+      const claimingLegacy = prior.tenant_id == null;
+      if (claimingLegacy) {
+        const claim = row.legacy_claim;
+        if (!claim || String(prior._id) !== claim.id || legacySkuIdentityDigest(prior) !== claim.digest) throw conflict('LEGACY_TENANT_UNVERIFIED');
+      } else if (prior.tenant_id !== row.tenant_id) throw conflict('REMOTE_TENANT_MISMATCH');
       const remote = prior.ci_projection;
       if (remote && (remote.tenant_id !== row.tenant_id || remote.alias_sku !== row.alias_sku || remote.master_sku_id !== row.master_sku_id)) throw conflict('REMOTE_IDENTITY_MISMATCH');
       if (remote && Number(remote.revision) > Number(row.revision)) return { superseded: true };
@@ -41,7 +46,8 @@ async function project(row) {
         if (!sameProjection(prior, row)) throw conflict('REVISION_DIGEST_MISMATCH');
         return { duplicate: true };
       }
-      await skus.updateOne({ _id: prior._id, tenant_id: row.tenant_id }, { $set: { ...row.payload, ci_projection: marker } }, { session });
+      const updated = await skus.updateOne({ _id: prior._id, tenant_id: claimingLegacy ? null : row.tenant_id }, { $set: { ...row.payload, tenant_id: row.tenant_id, ci_projection: marker } }, { session });
+      if (updated.matchedCount !== 1) throw conflict('REMOTE_IDENTITY_CHANGED');
       return { updated: true };
     }
     const top = await skus.find({}, { session, projection: { id: 1 } }).sort({ id: -1 }).limit(1).next();

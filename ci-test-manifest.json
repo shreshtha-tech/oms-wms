@@ -1831,10 +1831,10 @@
       "owner": "oms-wms-maintainers",
       "timeoutSeconds": 180
     },
-    "test:variant-backfill-dry-run": {
+    "test:variant-backfill-isolated": {
       "tier": "required",
       "needs": ["postgres", "mongo-rs"],
-      "reason": "Required two-source dry-run artifacts and repeatable review hash on owned stores.",
+      "reason": "Required two-source review artifacts, hash and artifact gates, paired ledger merge, replay, interruption recovery and source-write refusal on owned stores.",
       "owner": "oms-wms-maintainers",
       "timeoutSeconds": 180
     },

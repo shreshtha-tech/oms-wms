@@ -39,7 +39,7 @@ function projectionPayload({ aliasSku, master, brand }) {
   return payload;
 }
 
-async function queueProjection(db, tenantId, aliasSku, master, brand) {
+export async function queueProjection(db, tenantId, aliasSku, master, brand, legacyClaim = null) {
   const payload = projectionPayload({ aliasSku, master, brand });
   const digest = hashPayload(payload);
   const revision = (await db.query(
@@ -47,8 +47,8 @@ async function queueProjection(db, tenantId, aliasSku, master, brand) {
     [tenantId, aliasSku],
   )).rows[0].projection_revision;
   await db.query(
-    'INSERT INTO ci_sku_projection_outbox(tenant_id,alias_sku,master_sku_id,revision,payload,payload_digest) VALUES($1,$2,$3,$4,$5,$6)',
-    [tenantId, aliasSku, master.id, revision, payload, digest],
+    'INSERT INTO ci_sku_projection_outbox(tenant_id,alias_sku,master_sku_id,revision,payload,payload_digest,legacy_claim) VALUES($1,$2,$3,$4,$5,$6,$7)',
+    [tenantId, aliasSku, master.id, revision, payload, digest, legacyClaim],
   );
 }
 

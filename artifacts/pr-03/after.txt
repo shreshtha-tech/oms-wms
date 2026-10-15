@@ -100,3 +100,13 @@ NOT RUN configured tenant backfill; Atlas MongoDB currently fails TLS before aut
 NOT IMPLEMENTED reviewed --apply stock merge; dry run intentionally rejects --apply.
 NOT RUN hosted PR3 CI for this checkpoint until pushed.
 PASS node scripts/run-phase-b-isolated.mjs scripts/verify-central-inventory-api.mjs — product create and adjustment route on disposable PG/Mongo; clean shutdown.
+
+PR3 superseding checkpoint 2026-10-15 (draft; reviewed apply implemented, configured apply NOT RUN)
+PASS npm run test:variant-backfill-isolated — reviewed artifact/hash refusal, multi-location paired stock move, mapping/open-order repoint, legacy Mongo claim, replay/interruption recovery, reservation and opening-stock holds, historical return into canonical pool. Disposable PG/Mongo; no configured stock touched.
+PASS npm run test:variant-backfill-plan — deterministic hash, source drift, reservation and conflict review.
+PASS npx tsc --noEmit -p tsconfig.app.json.
+PASS npm run build -- --configLoader runner --outDir /private/tmp/oms-pr3-build.
+PASS git diff --check.
+NOT RUN hosted checks for this uncommitted checkpoint.
+NOT RUN configured tenant backfill or apply; Atlas TLS remains unavailable from this host and A1 requires owner confirmation.
+NOT RUN broad unified-order verifier; its crash child requires a different owned database naming harness. Targeted merged-return fixture passed.

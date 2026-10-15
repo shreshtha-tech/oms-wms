@@ -29,4 +29,8 @@ assert.notEqual(first.summary.sha256, changed.summary.sha256, 'Stock changes mus
 const conflict = buildVariantBackfillPlan({ tenantId: 'fixture', masters, mongoSkus: [{ sku_code: 'ACME-JEANS-SLIM-BLACK-32', brand: 'ACME', category: 'JEANS', style: 'SLIM', color: 'NAVY-BLUE', size: '32' }], dictionary });
 assert.equal(conflict.conflicts.length, 1);
 assert.equal(conflict.variants[0].total_on_hand, 7, 'Conflicted stock must never silently join the pool');
+const wrongTenant = buildVariantBackfillPlan({ tenantId: 'fixture', masters, mongoSkus: [{ sku_code: 'ACME-JEANS-SLIM-BLACK-32', tenant_id: 'another-tenant' }], dictionary });
+assert.equal(wrongTenant.conflicts[0].code, 'MONGO_TENANT_MISMATCH');
+const differentCode = buildVariantBackfillPlan({ tenantId: 'fixture', masters, mongoSkus: [{ sku_code: 'ACME / JEANS / SLIM / BLACK / 32' }], dictionary });
+assert.equal(differentCode.conflicts[0].code, 'MONGO_SKU_CODE_FORMAT_CONFLICT');
 console.log('PASS variant backfill planner: stable hash, stock drift changes hash, reservations block merging, unknown and conflicting SKU review');

@@ -256,7 +256,7 @@
     "test:sku-service-db": "node scripts/run-phase-b-isolated.mjs scripts/verify-sku-service-db.mjs",
     "test:sku-projection-isolated": "node scripts/run-phase-b-isolated.mjs scripts/verify-sku-projection-isolated.mjs",
     "test:variant-backfill-plan": "node scripts/verify-variant-backfill-plan.mjs",
-    "test:variant-backfill-dry-run": "node scripts/run-phase-b-isolated.mjs scripts/verify-variant-backfill-dry-run.mjs"
+    "test:variant-backfill-isolated": "node scripts/run-phase-b-isolated.mjs scripts/verify-variant-backfill-isolated.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-sqs": "^3.1138.0",
