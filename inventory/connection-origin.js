@@ -13,6 +13,9 @@ export function connectionRequestOriginAllowed(req, { publicOrigin = process.env
   // The browser can reach the same service through its Render URL or a custom
   // domain. A same-origin mutation is valid even when OAuth uses another URL.
   if (origin === `${req.protocol}://${req.get('host')}`) return true;
+  // Render terminates TLS before Express. The public HTTPS Host is still the
+  // browser's own origin if a dashboard proxy override leaves req.protocol HTTP.
+  if (process.env.RENDER === 'true' && origin === `https://${req.get('host')}`) return true;
   // Render supplies its public URL independently of Express proxy settings.
   if (renderOrigin && origin === renderOrigin) return true;
   if (publicOrigin) return origin === publicOrigin;

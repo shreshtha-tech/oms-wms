@@ -162,7 +162,7 @@ app.set('trust proxy', process.env.TRUST_PROXY === 'true' ? 1 : false);
 app.use(requestTelemetry);
 app.use((req, res, next) => { res.set('X-Content-Type-Options', 'nosniff'); res.set('Referrer-Policy', 'same-origin'); res.set('X-Frame-Options', 'SAMEORIGIN'); next(); });
 let shuttingDown = false;
-app.get(['/health/live', '/api/health/live'], (_req, res) => res.status(200).json({ status: shuttingDown ? 'stopping' : 'alive' }));
+app.get(['/health/live', '/api/health/live'], (_req, res) => res.status(200).json({ status: shuttingDown ? 'stopping' : 'alive', commit: process.env.RENDER_GIT_COMMIT?.slice(0, 7) || null }));
 const PORT = process.env.PORT || 3002;
 
 app.use('/api/inventory-sync',inventoryPublic);
