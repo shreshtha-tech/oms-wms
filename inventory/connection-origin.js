@@ -10,9 +10,10 @@ export function connectionRequestOriginAllowed(req, { publicOrigin = process.env
   if (!origin) return true;
   if (origin === 'null') return false;
 
-  // The configured public URL is authoritative behind a production proxy.
-  if (publicOrigin) return origin === publicOrigin;
+  // The browser can reach the same service through its Render URL or a custom
+  // domain. A same-origin mutation is valid even when OAuth uses another URL.
   if (origin === `${req.protocol}://${req.get('host')}`) return true;
+  if (publicOrigin) return origin === publicOrigin;
   if (production || !loopbackAddress(req.socket.remoteAddress)) return false;
 
   // Vite forwards local browser requests to the API with its own Host header.
