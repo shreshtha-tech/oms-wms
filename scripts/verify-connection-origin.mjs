@@ -18,6 +18,8 @@ assert.equal(connectionRequestOriginAllowed(request('http://localhost:5173', '10
 assert.equal(connectionRequestOriginAllowed(request('https://app.example.com'), { publicOrigin: 'https://app.example.com', production: true }), true);
 assert.equal(connectionRequestOriginAllowed({ ...request('https://service.onrender.com', '10.0.0.5', 'service.onrender.com'), protocol: 'https' }, { publicOrigin: 'https://app.example.com', production: true }), true);
 assert.equal(connectionRequestOriginAllowed({ ...request('https://evil.example', '10.0.0.5', 'service.onrender.com'), protocol: 'https' }, { publicOrigin: 'https://app.example.com', production: true }), false);
+assert.equal(connectionRequestOriginAllowed(request('https://dmills-oms.onrender.com', '10.0.0.5', 'dmills-oms.onrender.com'), { publicOrigin: 'https://app.example.com', renderOrigin: 'https://dmills-oms.onrender.com', production: true }), true);
+assert.equal(connectionRequestOriginAllowed(request('https://evil.example', '10.0.0.5', 'dmills-oms.onrender.com'), { publicOrigin: 'https://app.example.com', renderOrigin: 'https://dmills-oms.onrender.com', production: true }), false);
 assert.equal(connectionRequestOriginAllowed(request('https://evil.example'), { publicOrigin: 'https://app.example.com', production: true }), false);
 assert.equal(connectionRequestOriginAllowed(request('http://localhost:5173'), { publicOrigin: 'https://app.example.com' }), false);
 console.log('PASS connection origin: local Vite proxy, direct origin, production and remote-client rejection');
