@@ -4,7 +4,7 @@ Status: draft parallel track after PR1. This checkpoint addresses the legacy COR
 
 1. Characterize the current CORS helper and route ordering before editing.
 2. Replace wildcard legacy CORS with exact `CORS_ORIGINS` matching. Invalid entries fail closed; same-origin calls need no CORS header.
-3. Handle API preflight before authentication and return 403 for disallowed origins. Send credential permission only to allowed origins.
+3. Handle API preflight before authentication and return 403 for disallowed origins. Send credential permission only to allowed origins; align the mutation-origin guard with the same explicit allowlist.
 4. Add isolated request tests for allowed, denied, missing and malformed origins, actual and preflight requests, and no wildcard.
 5. Run existing security, origin, Render and build/typecheck checks; record baseline and after evidence.
 

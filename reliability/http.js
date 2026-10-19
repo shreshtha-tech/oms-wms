@@ -1,4 +1,5 @@
 import { connectionRequestOriginAllowed } from '../inventory/connection-origin.js';
+import { allowedCorsOrigins } from '../api/cors-policy.js';
 import { metricSnapshot, latencySnapshot, requestTelemetry } from './telemetry.js';
 export { requestTelemetry };
 export function mutationOriginGuard(req, res, next) {
@@ -9,7 +10,7 @@ export function mutationOriginGuard(req, res, next) {
     if (req.get('sec-fetch-site') === 'cross-site') return res.status(403).json({ error: 'ORIGIN_DENIED', message: 'Request origin is not allowed.' });
     return next();
   }
-  if (!connectionRequestOriginAllowed(req)) return res.status(403).json({ error: 'ORIGIN_DENIED', message: 'Request origin is not allowed.' });
+  if (!connectionRequestOriginAllowed(req) && !allowedCorsOrigins().has(origin)) return res.status(403).json({ error: 'ORIGIN_DENIED', message: 'Request origin is not allowed.' });
   next();
 }
 export function protectAsyncRoutes(router) {
