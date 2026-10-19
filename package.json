@@ -44,6 +44,7 @@
     "test:shopify-order-observation": "node scripts/verify-shopify-order-observation.mjs",
     "test:shopify-order-observation-isolated": "node scripts/run-isolated-shopify-observation.mjs",
     "test:connection-authorization": "node scripts/verify-connection-authorization.mjs",
+    "test:cors-policy": "node scripts/verify-cors-policy.mjs",
     "test:sales-programs": "node scripts/verify-sales-programs.mjs",
     "test:central-inventory": "node scripts/verify-central-inventory.mjs",
     "test:central-inventory-api": "node scripts/verify-central-inventory-api.mjs",

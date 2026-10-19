@@ -1,0 +1,11 @@
+PR8 CORS checkpoint (isolated branch pr/08-hardening, 2026-10-20)
+PASS npm run test:cors-policy — exact configured origin, credential header only for allowed origins, allowed 204 and denied 403 preflight, no-origin/invalid configuration fail closed. Loopback HTTP; no business database.
+PASS node scripts/verify-ci-test-runner.mjs — manifest completeness, required failure, quarantine, timeout and routing contracts.
+PASS node scripts/verify-render-health-offline.mjs — offline live/ready and route order.
+PASS node scripts/verify-connection-origin.mjs — local and hosted mutation-origin contract.
+PASS ./node_modules/.bin/tsc --noEmit -p tsconfig.app.json.
+PASS ./node_modules/.bin/tsc --noEmit -p tsconfig.node.json.
+PASS npm run build -- --configLoader runner --outDir /private/tmp/oms-pr8-build.
+PASS git diff --check.
+NOT RUN hosted CI until pushed. NOT RUN configured host/browser security assessment.
+NOT COMPLETE full PR8: security headers, per-route body limits, complete role/permission matrix, and tracked-file cleanup remain.

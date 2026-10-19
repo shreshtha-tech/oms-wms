@@ -1,0 +1,6 @@
+PR8 CORS baseline (main 3301f54, 2026-10-20)
+PASS node scripts/verify-render-health-offline.mjs — offline live/ready and route-order contract.
+PASS node scripts/audit-api-security-matrix.mjs — {"legacyMounts":159,"distinctHandlers":138,"collectionReferences":816,"modernRouteCandidates":96}; inventory only, not complete permission classification.
+OBSERVED api/mongo.js cors() returns Access-Control-Allow-Origin: * for every request and 204 for every OPTIONS request.
+OBSERVED server.js mounts /api/inventory-sync before the authentication middleware and legacy route registry after it; no global CORS preflight boundary exists.
+NOT RUN configured host, browser or production security assessment.
