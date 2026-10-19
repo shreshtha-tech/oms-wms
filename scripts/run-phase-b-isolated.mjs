@@ -10,12 +10,12 @@ import pg from 'pg';
 import { validateTestStores } from './lib/isolated-stack-guard.mjs';
 
 const suite = process.argv[2] || 'scripts/verify-phase-b-stack.mjs';
-const allowed = new Set(['scripts/verify-phase-b-stack.mjs', 'scripts/verify-phase-b-propagation.mjs', 'scripts/verify-phase-b-dispatch.mjs', 'scripts/verify-seller-connections.mjs', 'scripts/verify-sales-programs.mjs', 'scripts/verify-session-recovery.mjs', 'scripts/measure-owned-ledger-contention.mjs', 'scripts/verify-receipt-claim-mongo-plan.mjs', 'scripts/measure-receipt-claim-backlog.mjs', 'scripts/verify-partial-reservations.mjs', 'scripts/verify-central-inventory.mjs', 'scripts/verify-central-inventory-api.mjs', 'scripts/verify-variant-identity-db.mjs', 'scripts/verify-sku-service-db.mjs', 'scripts/verify-sku-projection-isolated.mjs', 'scripts/verify-variant-backfill-isolated.mjs']);
+const allowed = new Set(['scripts/verify-phase-b-stack.mjs', 'scripts/verify-phase-b-propagation.mjs', 'scripts/verify-phase-b-dispatch.mjs', 'scripts/verify-seller-connections.mjs', 'scripts/verify-sales-programs.mjs', 'scripts/verify-session-recovery.mjs', 'scripts/measure-owned-ledger-contention.mjs', 'scripts/verify-receipt-claim-mongo-plan.mjs', 'scripts/measure-receipt-claim-backlog.mjs', 'scripts/verify-partial-reservations.mjs', 'scripts/verify-central-inventory.mjs', 'scripts/verify-central-inventory-api.mjs', 'scripts/verify-variant-identity-db.mjs', 'scripts/verify-sku-service-db.mjs', 'scripts/verify-sku-projection-isolated.mjs', 'scripts/verify-variant-backfill-isolated.mjs', 'scripts/verify-unified-orders.mjs']);
 if (!allowed.has(suite)) throw new Error('Unapproved isolated suite');
 const directory = await mkdtemp(join(tmpdir(), 'dmills-phase-b-'));
 const nativeEnv = { PATH: testBinaryPath(), DMILLS_SKIP_DOTENV: 'true', LANG: 'C', TMPDIR: directory };
 const mongoPort = randomInt(20000, 35000), pgPort = randomInt(35001, 50000);
-const name = `${suite === 'scripts/verify-session-recovery.mjs' ? 'codexqa_test_sessions' : 'phase_b'}_${Date.now().toString(36)}_test`;
+const name = `${suite === 'scripts/verify-session-recovery.mjs' ? 'codexqa_test_sessions' : suite === 'scripts/verify-unified-orders.mjs' ? 'codexqa_test_unified' : 'phase_b'}_${Date.now().toString(36)}_test`;
 const env = { ...nativeEnv, NODE_ENV: 'test', MONGODB_DB: name,
   MONGODB_URI: `mongodb://127.0.0.1:${mongoPort}/${name}?replicaSet=phase_b`,
   INVENTORY_DATABASE_URL: `postgresql://127.0.0.1:${pgPort}/${name}`,
