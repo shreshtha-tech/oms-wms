@@ -7,6 +7,7 @@ import { readInventoryOverview, readInventorySummary } from './read-model.js';
 import { inventoryFilesApi } from './files-api.js';
 import { requirePermission } from '../api/auth-session.js';
 import { publicationStatusError } from './publication-status-error.js';
+import { upsertMaster } from './sku-service.js';
 
 export const centralInventoryApi=express.Router();
 centralInventoryApi.use(inventoryFilesApi);
@@ -73,8 +74,8 @@ centralInventoryApi.post('/products',requirePermission('central_inventory.master
   try{
     const sku=String(req.body?.sku||'').trim(),name=String(req.body?.productName||'').trim();
     if(!sku||sku.length>120||!name||name.length>250)throw new Error('SKU and product name are required');
-    const result=await inventoryPool().query('INSERT INTO ci_master_sku(tenant_id,sku,product_name) VALUES($1,$2,$3) RETURNING id,sku,product_name',[req.inventoryTenantId,sku,name]);
-    res.status(201).json(result.rows[0]);
+    const result=await transaction(db=>upsertMaster(db,{tenantId:req.inventoryTenantId,sku,productName:name,source:'manual',createOnly:true}));
+    res.status(201).json({id:result.id,sku:result.sku,product_name:result.product_name,aliasSku:result.aliasSku,attrStatus:result.attr_status,reviewIssues:result.reviewIssues});
   }catch(error){if(error.code==='23505')return res.status(409).json({error:'SKU already exists'});fail(res,error);}
 });
 

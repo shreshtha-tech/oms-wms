@@ -19,6 +19,7 @@ import { salesProgramsApi } from './sales-programs.js';
 import { connectionReadiness } from './connection-readiness.js';
 import { connectionRequestOriginAllowed } from './connection-origin.js';
 import { currentUser, requirePermission } from '../api/auth-session.js';
+import { normalizeSkuCode } from './sku-parser.mjs';
 
 export const sellerConnectionsApi=express.Router(),sellerOAuthApi=express.Router();
 sellerOAuthApi.use('/agent',tallyPublic);
@@ -256,7 +257,9 @@ sellerConnectionsApi.post('/:id/snapshot',wrap(async(req,res)=>{
  const digest=hash(bytes);
  const result=await transaction(async db=>{
   const receipt=await db.query('INSERT INTO ci_ingress(tenant_id,source,message_id,payload_hash) VALUES($1,$2,$3,$3) ON CONFLICT DO NOTHING RETURNING message_id',[account.tenant_id,`file:${account.id}`,digest]);if(!receipt.rowCount)return {duplicate:true,count:0};
-  for(const row of rows){const master=(await db.query('SELECT id FROM ci_master_sku WHERE tenant_id=$1 AND sku=$2',[account.tenant_id,row.external_sku])).rows[0];if(!master)throw new Error(`Master SKU not found: ${row.external_sku}`);const mapping=(await db.query('INSERT INTO ci_channel_mapping(tenant_id,account_id,master_sku_id,external_sku,external_location_id) VALUES($1,$2,$3,$4,$5) ON CONFLICT(tenant_id,account_id,external_sku,external_location_id) DO UPDATE SET external_sku=EXCLUDED.external_sku RETURNING id',[account.tenant_id,account.id,master.id,row.external_sku,row.external_location_id])).rows[0];await db.query("INSERT INTO ci_channel_stock(tenant_id,mapping_id,observed_quantity,observed_at,publish_state) VALUES($1,$2,$3,now(),'observed') ON CONFLICT(tenant_id,mapping_id) DO UPDATE SET observed_quantity=EXCLUDED.observed_quantity,observed_at=now()",[account.tenant_id,mapping.id,Number(row.available)]);}
+  for(const row of rows){const master=(await db.query(`SELECT s.id FROM ci_master_sku s WHERE s.tenant_id=$1 AND s.merged_into_id IS NULL AND s.id=coalesce(
+    (SELECT a.master_sku_id FROM ci_sku_alias a WHERE a.tenant_id=$1 AND a.alias_sku=$2),
+    (SELECT direct.id FROM ci_master_sku direct WHERE direct.tenant_id=$1 AND direct.sku=$3 AND direct.merged_into_id IS NULL))`,[account.tenant_id,normalizeSkuCode(row.external_sku),row.external_sku])).rows[0];if(!master)throw new Error(`Master SKU not found: ${row.external_sku}`);const mapping=(await db.query('INSERT INTO ci_channel_mapping(tenant_id,account_id,master_sku_id,external_sku,external_location_id) VALUES($1,$2,$3,$4,$5) ON CONFLICT(tenant_id,account_id,external_sku,external_location_id) DO UPDATE SET external_sku=EXCLUDED.external_sku RETURNING id,master_sku_id',[account.tenant_id,account.id,master.id,row.external_sku,row.external_location_id])).rows[0];if(mapping.master_sku_id!==master.id)throw new Error(`Existing mapping needs identity review: ${row.external_sku}`);await db.query("INSERT INTO ci_channel_stock(tenant_id,mapping_id,observed_quantity,observed_at,publish_state) VALUES($1,$2,$3,now(),'observed') ON CONFLICT(tenant_id,mapping_id) DO UPDATE SET observed_quantity=EXCLUDED.observed_quantity,observed_at=now()",[account.tenant_id,mapping.id,Number(row.available)]);}
   const locations=[...new Set(rows.map(row=>row.external_location_id))].map(id=>({id,name:id}));
   await db.query("UPDATE ci_channel_account SET connection_state='report_observed',verification=$3,updated_at=now(),settings=settings||jsonb_build_object('lastReportAt',now()) WHERE tenant_id=$1 AND id=$2",[account.tenant_id,account.id,JSON.stringify({raw:{fileName,count:rows.length,digest,sample:rows.slice(0,1)},locations})]);
   return {duplicate:false,count:rows.length};

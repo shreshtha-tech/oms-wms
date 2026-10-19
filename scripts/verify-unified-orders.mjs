@@ -18,6 +18,7 @@ import { pollShopifyOrderObservations } from '../inventory/shopify-orders.js';
 import { transferCentralWmsStock, adjustCentralWmsStock } from '../inventory/wms-operations.js';
 import { importMeeshoOrders } from '../inventory/meesho-orders.js';
 import { verifyAndSave } from '../inventory/connections.js';
+import { closeDataStore } from '../api/mongo.js';
 
 if(!/test|contract/.test(process.env.INVENTORY_DATABASE_URL||''))throw new Error('Use isolated test database');
 const tenant=`unified-${randomUUID()}`,secret='fixture-webhook-secret';
@@ -758,4 +759,4 @@ try{
   }
   console.log('PASS unified orders: signed/replayed ingress, tenant queue/sender isolation, lease redelivery, revision rejection, cancel/dispatch races, provider-state separation, credential-failure retry/dead-letter, pack-unit conversion/replay/conflict/overflow, reservation SKU/location identity, return replay, staff guards, and oversell rejection');
  }finally{await new Promise(resolve=>server.close(resolve));}
-}finally{await db.end();}
+}finally{await closeDataStore();await db.end();}

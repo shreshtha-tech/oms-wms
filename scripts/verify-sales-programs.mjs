@@ -8,6 +8,7 @@ import { recordIncomingOrder, recordReturn } from '../inventory/unified-orders.j
 import { importProgramReport, salesPrograms } from '../inventory/sales-programs.js';
 import { parsePartnerReport } from '../inventory/report-parser.js';
 import ExcelJS from 'exceljs';
+import { closeDataStore } from '../api/mongo.js';
 
 const url=new URL(process.env.INVENTORY_DATABASE_URL||'postgres://localhost/invalid');
 assert.match(url.pathname,/test|contract/,'Use an isolated test database');
@@ -59,4 +60,4 @@ try{
  assert.equal((await parsePartnerReport({fileName:'orders.xlsx',bytes:Buffer.from(await workbook.xlsx.writeBuffer())})).rows[0]['Order ID'],'FK-100');
  sheet.getCell('A2').value={formula:'1+1',result:2};await assert.rejects(parsePartnerReport({fileName:'orders.xlsx',bytes:Buffer.from(await workbook.xlsx.writeBuffer())}),/Formulas/);
  console.log('PASS: programme parent/tenant isolation, report replay/concurrency, stale/conflicting stock rejection, ownership protection, shared order/return/activity filtering, no duplicate orders or stock writes, CSV/XLSX validation');
-}finally{await new Promise(resolve=>server.close(resolve));await db.end();}
+}finally{await new Promise(resolve=>server.close(resolve));await closeDataStore();await db.end();}
