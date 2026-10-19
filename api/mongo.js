@@ -11,6 +11,7 @@
 //  frontend contract is identical to the previous backend.
 // ============================================================================
 import { createMongoConnection, databaseUnavailable } from './mongo-connection.js';
+import { cors as applyCors } from './cors-policy.js';
 import { SEED } from './seed.js';
 import { currentUser } from './auth-session.js';
 import { persistenceRequired } from './storage-policy.js';
@@ -483,11 +484,7 @@ async function removeIfPresentImpl(collection, id) {
 
 // CORS + JSON helper shared by all routes.
 export function cors(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  if (req.method === 'OPTIONS') { res.status(204).end(); return true; }
-  return false;
+  return applyCors(req, res);
 }
 
 // Own the complete legacy Tax Group metadata/component write boundary.

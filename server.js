@@ -12,6 +12,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { authConfigured, currentUser, authenticateSession, issueSession, revokeSession, verifyCredentials } from "./api/auth-session.js";
 import { probeDataStore, waitForDataReady, dataStoreStatus, dataStoreDataset, closeDataStore } from './api/mongo.js';
+import { cors } from './api/cors-policy.js';
 import { mongoRoutes } from './api/mongo-collections.js';
 import { publicReadiness, createDatasetHeaderObserver } from './api/mongo-health.js';
 import { persistenceRequired } from './api/storage-policy.js';
@@ -165,6 +166,7 @@ let shuttingDown = false;
 app.get(['/health/live', '/api/health/live'], (_req, res) => res.status(200).json({ status: shuttingDown ? 'stopping' : 'alive', commit: process.env.RENDER_GIT_COMMIT?.slice(0, 7) || null }));
 const PORT = process.env.PORT || 3002;
 
+app.use('/api', (req, res, next) => { if (!cors(req, res)) next(); });
 app.use('/api/inventory-sync',inventoryPublic);
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));

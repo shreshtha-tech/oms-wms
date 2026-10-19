@@ -339,6 +339,13 @@
       "owner": "oms-wms-maintainers",
       "timeoutSeconds": 180
     },
+    "test:cors-policy": {
+      "tier": "required",
+      "needs": [],
+      "reason": "Exact allowlist and preflight behavior protect browser access to legacy and modern API routes.",
+      "owner": "oms-wms-maintainers",
+      "timeoutSeconds": 60
+    },
     "test:consolidate-ewb": {
       "tier": "required",
       "needs": [],
