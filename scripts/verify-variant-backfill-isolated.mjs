@@ -160,7 +160,27 @@ try {
   const receipt = await approveReturnReceipt({ tenantId: returnTenant, returnId: returnCase, requestId: randomUUID(), masterSkuId: returnCanonical, locationId: returnLocation, quantity: 1 });
   assert.equal(receipt.duplicate, false);
   assert.equal((await pg.query('SELECT on_hand FROM ci_inventory_balance WHERE tenant_id=$1 AND master_sku_id=$2 AND location_id=$3', [returnTenant, returnCanonical, returnLocation])).rows[0].on_hand, '5');
-  console.log('PASS variant backfill: reviewed artifact/hash gates, paired multi-location stock conservation, mapping and order repoint, legacy Mongo claim, replay and interrupted recovery, reservation/merge write refusal, opening-stock gate, historical return into canonical pool');
+  const mixedTenant = `variant-mixed-${randomUUID()}`, mixedLocation = randomUUID();
+  for (const [kind, code] of [['brand', 'ACME'], ['brand', 'ZED'], ['brand', 'NOVA'], ['category', 'JEANS'], ['type', 'SLIM'], ['color', 'BLACK'], ['size', '37']]) {
+    await pg.query('INSERT INTO ci_attribute_value(tenant_id,kind,code) VALUES($1,$2,$3)', [mixedTenant, kind, code]);
+  }
+  await pg.query("INSERT INTO ci_location(id,tenant_id,code,location_type) VALUES($1,$2,'MIXED-WH','warehouse')", [mixedLocation, mixedTenant]);
+  const mixedSources = [];
+  for (const [brand, units] of [['ACME', 2], ['ZED', 3], ['NOVA', 4]]) {
+    const id = (await pg.query('INSERT INTO ci_master_sku(tenant_id,sku,product_name) VALUES($1,$2,$3) RETURNING id', [mixedTenant, `${brand}-JEANS-SLIM-BLACK-37`, `${brand} fixture`])).rows[0].id;
+    mixedSources.push(id);
+    await applyInventoryEvent({ tenantId: mixedTenant, masterSkuId: id, locationId: mixedLocation, source: 'mixed-backfill', eventKey: `mixed:${brand}`, eventType: 'receipt', delta_on_hand: units });
+  }
+  await applyInventoryEvent({ tenantId: mixedTenant, masterSkuId: mixedSources[2], locationId: mixedLocation, source: 'mixed-backfill', eventKey: 'mixed:reserve', eventType: 'reserve', delta_reserved_order: 1, reservation: { action: 'reserve', orderId: 'mixed-order', lineId: 'mixed-line', quantity: 1 } });
+  const mixedPlan = await readVariantBackfillPlan(pg, mixedTenant);
+  assert.equal(mixedPlan.mergeable.length, 1, 'All three brand SKUs must resolve to one physical variant');
+  const mixedApply = await applyVariantBackfill({ tenantId: mixedTenant, expectHash: mixedPlan.summary.sha256, currentPlan: mixedPlan, reviewedMergeable: mixedPlan.mergeable });
+  assert.equal(mixedApply.results.filter(row => row.merged).length, 2, 'Unreserved sources must merge');
+  assert.deepEqual(mixedApply.results.filter(row => row.held).map(row => [row.sourceId, row.reason]), [[mixedSources[2], 'ACTIVE_RESERVATIONS']]);
+  const mixedCanonical = (await pg.query("SELECT id FROM ci_master_sku WHERE tenant_id=$1 AND sku='JEANS-SLIM-BLACK-37'", [mixedTenant])).rows[0].id;
+  assert.equal((await pg.query('SELECT sum(on_hand)::int AS total FROM ci_inventory_balance WHERE tenant_id=$1 AND master_sku_id=$2', [mixedTenant, mixedCanonical])).rows[0].total, 5);
+  assert.equal((await pg.query('SELECT sum(on_hand)::int AS total FROM ci_inventory_balance WHERE tenant_id=$1', [mixedTenant])).rows[0].total, 9, 'Partial plan apply must conserve all physical stock');
+  console.log('PASS variant backfill: reviewed artifact/hash gates, paired multi-location stock conservation, mapping and order repoint, legacy Mongo claim, replay and interrupted recovery, reservation/merge write refusal, mixed three-brand variant with one reserved source held, opening-stock gate, historical return into canonical pool');
 } finally {
   await closeDataStore();
   await mongo.close();

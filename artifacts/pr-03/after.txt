@@ -115,3 +115,6 @@ PR3 superseding validation 2026-10-20 (disposable stores only)
 PASS node scripts/run-phase-b-isolated.mjs scripts/verify-unified-orders.mjs — full unified-order verifier exited 0 after its Mongo client was closed; owned PostgreSQL/MongoDB removed. The runner uses codexqa_test_unified_*_test, satisfying both owned-store guards.
 PASS hosted Actions for d8748fa — both hermetic, both mongo and both browser jobs completed SUCCESS (2026-10-15 16:00:48 UTC latest).
 NOT RUN hosted Actions for this later test-harness change until pushed.
+
+PR3 S6 acceptance fixture 2026-10-20
+PASS npm run test:variant-backfill-isolated — three old brand masters resolved to one variant; two unreserved sources merged, one active-reservation source held, all 9 physical units conserved. Owned disposable PG/Mongo; no configured stock touched.
